@@ -28,14 +28,11 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">CompetitionPlatform</a>
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="navbar-nav navbar-brand">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
-                </ul>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Home</a>
+                <a asp-area="" asp-controller="Home" asp-action="About" class="navbar-brand">About</a>
+                <a asp-area="" asp-controller="Home" asp-action="Contact" class="navbar-brand">Contact</a>
                 @await Html.PartialAsync("_LoginPartial")
             </div>
         </div>
