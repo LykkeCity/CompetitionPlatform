@@ -9,16 +9,18 @@ namespace CompetitionPlatform.Models
     public class Project
     {
         [Required]
+        [Display(Name = "Project name")]
         public string Name { get; set; }
         [Required]
+        [Display(Name = "Describe the project")]
         public string Description { get; set; }
         public Status Status { get; set; }
         public List<string> Categories { get; set; }
-        [Display(Name = "Registration Deadline")]
+        [Display(Name = "Competition Registration")]
         public DateTime CompetitionRegistrationDeadline { get; set; }
-        [Display(Name = "Implementation Deadline")]
+        [Display(Name = "Implementation")]
         public DateTime ImplementationDeadline { get; set; }
-        [Display(Name = "Voting Deadline")]
+        [Display(Name = "Voting")]
         public DateTime VotingDeadline { get; set; }
         public List<double> Budget { get; set; }
         public int VotesFor { get; set; }
