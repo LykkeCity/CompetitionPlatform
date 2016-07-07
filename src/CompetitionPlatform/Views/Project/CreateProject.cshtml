@@ -30,18 +30,41 @@
         <div class="form-group">
             <div class="col-md-3">
                 <label asp-for="CompetitionRegistrationDeadline" class="control-label"></label>
-                <input asp-for="CompetitionRegistrationDeadline" class="form-control datepicker" />
+                <input asp-for="CompetitionRegistrationDeadline" class="form-control datepicker"/>
                 <span asp-validation-for="CompetitionRegistrationDeadline" class="text-danger" />
             </div>
             <div class="col-md-3">
                 <label asp-for="ImplementationDeadline" class="control-label"></label>
-                <input asp-for="ImplementationDeadline" class="form-control datepicker" />
+                <input asp-for="ImplementationDeadline" class="form-control datepicker"/>
                 <span asp-validation-for="ImplementationDeadline" class="text-danger" />
             </div>
             <div class="col-md-3">
                 <label asp-for="VotingDeadline" class="control-label"></label>
-                <input asp-for="VotingDeadline" class="form-control datepicker" />
+                <input asp-for="VotingDeadline" class="form-control datepicker"/>
                 <span asp-validation-for="VotingDeadline" class="text-danger" />
+            </div>
+        </div>
+        <h4>Budget</h4>
+        <hr/>
+        <div class="form-group">
+            <div class="col-md-3">
+                <label asp-for="BudgetFirstPlace" class="control-label"></label>
+                <input asp-for="BudgetFirstPlace" class="form-control" />
+                <span asp-validation-for="BudgetFirstPlace" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-3">
+                <label asp-for="BudgetSecondPlace" class="control-label"></label>
+                <input asp-for="BudgetSecondPlace" class="form-control" />
+                <span asp-validation-for="BudgetSecondPlace" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-3">
+                <label asp-for="BudgetThirdPlace" class="control-label"></label>
+                <input asp-for="BudgetThirdPlace" class="form-control" />
+                <span asp-validation-for="BudgetThirdPlace" class="text-danger" />
             </div>
         </div>
         <div class="form-group">
