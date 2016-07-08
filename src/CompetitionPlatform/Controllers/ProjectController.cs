@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CompetitionPlatform.Data.AzureRepositories;
 using CompetitionPlatform.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,8 +21,8 @@ namespace CompetitionPlatform.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Project project)
-        {
+        public IActionResult CreateProject(Project project)
+        { 
             return null;
         }
     }
