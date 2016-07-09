@@ -25,7 +25,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
         
     }
 
-    interface IProjectRepository
+    public interface IProjectRepository
     {
         Task<IProjectData> GetAsync(string id);
         Task SaveAsync(IProjectData projectData);
