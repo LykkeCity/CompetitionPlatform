@@ -43,7 +43,8 @@
       "version": "1.0.0-preview2-final",
       "type": "build"
     },
-    "AzureStorage": "1.0.0-*"  },
+    "AzureStorage": "1.0.0-*",
+    "Common": "1.0.0-*"  },
 
   "tools": {
     "BundlerMinifier.Core": "2.0.238",
