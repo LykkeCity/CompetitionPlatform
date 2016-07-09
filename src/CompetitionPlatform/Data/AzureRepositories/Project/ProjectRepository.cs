@@ -49,6 +49,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
             var result = new ProjectEntity
             {
                 RowKey = Guid.NewGuid().ToString(),
+                PartitionKey = GeneratePartitionKey(),
                 Name = src.Name,
                 Description = src.Description,
                 Status = Status.Initiative,
