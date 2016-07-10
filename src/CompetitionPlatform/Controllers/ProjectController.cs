@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CompetitionPlatform.Data.AzureRepositories;
 using CompetitionPlatform.Data.AzureRepositories.Project;
-using CompetitionPlatform.Models;
+using CompetitionPlatform.Models.ProjectViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CompetitionPlatform.Controllers
@@ -29,10 +29,10 @@ namespace CompetitionPlatform.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateProject(Project project)
+        public IActionResult CreateProject(ProjectViewModel projectViewModel)
         {
-            _projectRepository.SaveAsync(project);
-            return View("~/Views/Home/Index.cshtml");
+            _projectRepository.SaveAsync(projectViewModel);
+            return RedirectToAction("Index", "Home");
         }
     }
 }

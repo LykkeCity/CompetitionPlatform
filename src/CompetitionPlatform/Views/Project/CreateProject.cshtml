@@ -1,102 +1,102 @@
-@model CompetitionPlatform.Models.Project
+@model CompetitionPlatform.Models.ProjectViewModels.ProjectViewModel
 
-@{
-    ViewData["Title"] = "Create Project";
-}
+    @{
+        ViewData["Title"] = "Create Project";
+    }
 
-<h2>CreateProject</h2>
+    <h2>CreateProject</h2>
 
-<form asp-action="CreateProject">
-    <div class="form-horizontal">
-        <h4>Basic Info</h4>
-        <hr />
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="form-group">
-            <div class="col-md-9">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger" />
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-md-9">
-                <label asp-for="Description" class="control-label"></label>
-                <textarea asp-for="Description" class="form-control" /></textarea>
-                <span asp-validation-for="Description" class="text-danger" />
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-md-9">
-                <div>
-                    <label class="control-label">Brief</label>
+    <form asp-action="CreateProject">
+        <div class="form-horizontal">
+            <h4>Basic Info</h4>
+            <hr />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <div class="col-md-9">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger" />
                 </div>
-                <label class="btn btn-info btn-file">
-                    Choose File... <input type="file" id="projectBriefFile" style="display: none;">
-                </label>
-                <label class="help-block">Maximum file size is 3Mb</label>
+            </div>
+            <div class="form-group">
+                <div class="col-md-9">
+                    <label asp-for="Description" class="control-label"></label>
+                    <textarea asp-for="Description" class="form-control" /></textarea>
+                    <span asp-validation-for="Description" class="text-danger" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-9">
+                    <div>
+                        <label class="control-label">Brief</label>
+                    </div>
+                    <label class="btn btn-info btn-file">
+                        Choose File... <input type="file" id="projectBriefFile" style="display: none;">
+                    </label>
+                    <label class="help-block">Maximum file size is 3Mb</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-4">
+                    <label class="control-label">Category</label>
+                    <select class="form-control">
+                        <option>.Net</option>
+                        <option>Java</option>
+                        <option>Android</option>
+                        <option>iPhone</option>
+                    </select>
+                </div>
+            </div>
+            <h4>Deadlines</h4>
+            <hr />
+            <div class="form-group">
+                <div class="col-md-3">
+                    <label asp-for="CompetitionRegistrationDeadline" class="control-label"></label>
+                    <input asp-for="CompetitionRegistrationDeadline" class="form-control datepicker" />
+                    <span asp-validation-for="CompetitionRegistrationDeadline" class="text-danger" />
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="ImplementationDeadline" class="control-label"></label>
+                    <input asp-for="ImplementationDeadline" class="form-control datepicker" />
+                    <span asp-validation-for="ImplementationDeadline" class="text-danger" />
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="VotingDeadline" class="control-label"></label>
+                    <input asp-for="VotingDeadline" class="form-control datepicker" />
+                    <span asp-validation-for="VotingDeadline" class="text-danger" />
+                </div>
+            </div>
+            <h4>Budget</h4>
+            <hr />
+            <div class="form-group">
+                <div class="col-md-3">
+                    <label asp-for="BudgetFirstPlace" class="control-label"></label>
+                    <input asp-for="BudgetFirstPlace" class="form-control" />
+                    <span asp-validation-for="BudgetFirstPlace" class="text-danger" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-3">
+                    <label asp-for="BudgetSecondPlace" class="control-label"></label>
+                    <input asp-for="BudgetSecondPlace" class="form-control" />
+                    <span asp-validation-for="BudgetSecondPlace" class="text-danger" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-3">
+                    <label asp-for="BudgetThirdPlace" class="control-label"></label>
+                    <input asp-for="BudgetThirdPlace" class="form-control" />
+                    <span asp-validation-for="BudgetThirdPlace" class="text-danger" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-9">
+                    <input type="submit" value="Create" class="btn btn-default" />
+                </div>
             </div>
         </div>
-        <div class="form-group">
-            <div class="col-md-4">
-                <label class="control-label">Category</label>
-                <select class="form-control">
-                    <option>.Net</option>
-                    <option>Java</option>
-                    <option>Android</option>
-                    <option>iPhone</option>
-                </select>
-            </div>
-        </div>
-        <h4>Deadlines</h4>
-        <hr />
-        <div class="form-group">
-            <div class="col-md-3">
-                <label asp-for="CompetitionRegistrationDeadline" class="control-label"></label>
-                <input asp-for="CompetitionRegistrationDeadline" class="form-control datepicker" />
-                <span asp-validation-for="CompetitionRegistrationDeadline" class="text-danger" />
-            </div>
-            <div class="col-md-3">
-                <label asp-for="ImplementationDeadline" class="control-label"></label>
-                <input asp-for="ImplementationDeadline" class="form-control datepicker" />
-                <span asp-validation-for="ImplementationDeadline" class="text-danger" />
-            </div>
-            <div class="col-md-3">
-                <label asp-for="VotingDeadline" class="control-label"></label>
-                <input asp-for="VotingDeadline" class="form-control datepicker" />
-                <span asp-validation-for="VotingDeadline" class="text-danger" />
-            </div>
-        </div>
-        <h4>Budget</h4>
-        <hr />
-        <div class="form-group">
-            <div class="col-md-3">
-                <label asp-for="BudgetFirstPlace" class="control-label"></label>
-                <input asp-for="BudgetFirstPlace" class="form-control" />
-                <span asp-validation-for="BudgetFirstPlace" class="text-danger" />
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-md-3">
-                <label asp-for="BudgetSecondPlace" class="control-label"></label>
-                <input asp-for="BudgetSecondPlace" class="form-control" />
-                <span asp-validation-for="BudgetSecondPlace" class="text-danger" />
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-md-3">
-                <label asp-for="BudgetThirdPlace" class="control-label"></label>
-                <input asp-for="BudgetThirdPlace" class="form-control" />
-                <span asp-validation-for="BudgetThirdPlace" class="text-danger" />
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-md-9">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </div>
-    </div>
-</form>
+    </form>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }
