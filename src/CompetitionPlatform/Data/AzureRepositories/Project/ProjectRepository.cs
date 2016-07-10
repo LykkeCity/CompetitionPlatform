@@ -82,6 +82,12 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
             return await _projectsTableStorage.GetDataAsync(partitionKey, rowKey);
         }
 
+        public async Task<IEnumerable<IProjectData>> GetProjectsAsync()
+        {
+            var partitionKey = ProjectEntity.GeneratePartitionKey();
+            return await _projectsTableStorage.GetDataAsync(partitionKey);
+        }
+
         public Task SaveAsync(IProjectData projectData)
         {
             var newEntity = ProjectEntity.Create(projectData);
