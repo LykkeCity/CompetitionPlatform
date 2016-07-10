@@ -1,4 +1,6 @@
-﻿@{
+﻿@model CompetitionPlatform.Models.ProjectViewModels.ProjectListIndexViewModel
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -10,5 +12,23 @@
         </a>
     </div>
 </div>
+
+@foreach (var project in Model.Projects)
+{
+    <div class="col-md-6" style="min-height: 300px; max-height: 300px;">
+        <div class="row">
+            <h3 class="col-md-12">@project.Name<small class="pull-right">$@project.BudgetFirstPlace</small></h3>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="btn btn-info btn-xs">
+                    @project.Status
+                </div>
+            </div>
+        </div>
+        <div>@project.Description</div>
+        <hr />
+    </div>
+}
 
 
