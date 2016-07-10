@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using CompetitionPlatform.Data.AzureRepositories.Project;
 
 namespace CompetitionPlatform.Models
 {
-    public class Project
+    public class Project : IProjectData
     {
+        public string Id { get; }
+
         [Required]
         [Display(Name = "Project name")]
         public string Name { get; set; }
