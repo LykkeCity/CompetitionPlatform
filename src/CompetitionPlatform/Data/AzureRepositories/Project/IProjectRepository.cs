@@ -8,7 +8,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
 {
     public interface IProjectData
     {
-        string Id { get;  }
+        string Id { get; }
         string Name { get; set; }
         string Description { get; set; }
         Status Status { get; set; }
@@ -21,8 +21,6 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
         double? BudgetThirdPlace { get; set; }
         int VotesFor { get; set; }
         int VotesAgainst { get; set; }
-
-        
     }
 
     public interface IProjectRepository
