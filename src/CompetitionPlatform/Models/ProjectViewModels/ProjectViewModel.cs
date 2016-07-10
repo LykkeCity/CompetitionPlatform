@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using CompetitionPlatform.Data.AzureRepositories.Project;
+using Microsoft.AspNetCore.Http;
 
 namespace CompetitionPlatform.Models.ProjectViewModels
 {
@@ -50,6 +51,8 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public int VotesFor { get; set; }
 
         public int VotesAgainst { get; set; }
+
+        public IFormFile File { set; get; }
     }
 
     public class ProjectCompactViewModel
