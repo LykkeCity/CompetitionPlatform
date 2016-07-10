@@ -10,8 +10,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using CompetitionPlatform.Data;
+using CompetitionPlatform.Data.AzureRepositories.Log;
+using CompetitionPlatform.Data.AzureRepositories.Project;
 using CompetitionPlatform.Models;
 using CompetitionPlatform.Services;
+using AzureStorage.Tables;
+using Microsoft.VisualBasic.CompilerServices;
+using Microsoft.WindowsAzure.Storage.Shared.Protocol;
 
 namespace CompetitionPlatform
 {
@@ -52,6 +57,14 @@ namespace CompetitionPlatform
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
+
+
+            var log = new LogToTable(new AzureTableStorage<LogEntity>(Configuration.GetConnectionString("AzureStorageLog"), "LogJobs", null));
+
+            services.AddSingleton<IAzureTableStorage<ProjectEntity>>(
+                new AzureTableStorage<ProjectEntity>(Configuration.GetConnectionString("AzureStorage"), "Projects", log));
+
+            services.AddTransient<IProjectRepository, ProjectRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
