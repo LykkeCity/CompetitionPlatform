@@ -5,14 +5,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using CompetitionPlatform.Data.AzureRepositories.Project;
 
-namespace CompetitionPlatform.Models
+namespace CompetitionPlatform.Models.ProjectViewModels
 {
-    public class Project : IProjectData
+    public class ProjectViewModel : IProjectData
     {
         public string Id { get; }
 
         [Required]
-        [Display(Name = "Project name")]
+        [Display(Name = "ProjectViewModel name")]
         public string Name { get; set; }
 
         [Required]
@@ -50,6 +50,20 @@ namespace CompetitionPlatform.Models
         public int VotesFor { get; set; }
 
         public int VotesAgainst { get; set; }
+    }
 
+    public class ProjectCompactViewModel
+    {
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public Status Status { get; set; }
+        public double BudgetFirstPlace { get; set; }
+        public int VotesFor { get; set; }
+        public int VotesAgainst { get; set; }
+    }
+
+    public class ProjectListIndexViewModel
+    {
+        public IEnumerable<ProjectCompactViewModel> Projects { get; set; }
     }
 }
