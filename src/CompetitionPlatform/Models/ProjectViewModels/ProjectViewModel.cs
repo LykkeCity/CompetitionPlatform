@@ -10,7 +10,7 @@ namespace CompetitionPlatform.Models.ProjectViewModels
 {
     public class ProjectViewModel : IProjectData
     {
-        public string Id { get; }
+        public string Id { get; set; }
 
         [Required]
         [Display(Name = "ProjectViewModel name")]
@@ -57,6 +57,7 @@ namespace CompetitionPlatform.Models.ProjectViewModels
 
     public class ProjectCompactViewModel
     {
+        public string Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public Status Status { get; set; }
