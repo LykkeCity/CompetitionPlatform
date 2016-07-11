@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace CompetitionPlatform.Data.AzureRepositories.Project
 {
-    interface IProjectFileRepository
+    public interface IProjectFileRepository
     {
-        Task<string> InsertAttachment(Stream stream);
-        Task<Stream> GetAttachment(string fileId);
+        Task InsertProjectFile(Stream stream, string projectId);
+        Task<Stream> GetProjectFile(string projectId);
     }
 }
