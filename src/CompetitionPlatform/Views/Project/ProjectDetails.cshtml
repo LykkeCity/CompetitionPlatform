@@ -5,11 +5,22 @@
 }
 
 <h2>@Model.Name</h2>
-<div>
-    <h1>
-        <small>$ @Model.BudgetFirstPlace</small>
-    </h1>
+<div class="row" style="display: inline">
+
+    <span class="h2">$ @Model.BudgetFirstPlace</span>
     <label>1st PLACE</label>
+    
+    @if (Model.BudgetSecondPlace != null)
+    {
+        <span class="h2">$ @Model.BudgetSecondPlace</span>
+        <label>2nd PLACE</label>
+    }
+    @if (Model.BudgetThirdPlace != null)
+    {
+        <span class="h2">$ @Model.BudgetThirdPlace</span>
+        <label>3rd PLACE</label>
+    }
+
 </div>
 
 <div class="progress">
@@ -19,7 +30,11 @@
             @Model.Status
         </div>
     }
-    
+    @if (Model.Status == Status.Implementation)
+    {
+
+    }
+
 </div>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -30,7 +45,7 @@
 </ul>
 
 <div class="tab-content project-details-tabs">
-    <div role="tabpanel" class="tab-pane active"  id="Info">@Model.Description</div>
+    <div role="tabpanel" class="tab-pane active" id="Info">@Model.Description</div>
     <div role="tabpanel" class="tab-pane" id="Participants">....</div>
     <div role="tabpanel" class="tab-pane" id="Comments">....</div>
     <div role="tabpanel" class="tab-pane" id="Results">....</div>
