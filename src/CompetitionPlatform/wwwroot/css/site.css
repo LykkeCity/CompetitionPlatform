@@ -48,3 +48,12 @@ textarea {
     display: none
   }
 }
+
+.project-status {
+    margin-bottom:20px;
+}
+
+.project-tile {
+    min-height: 300px; 
+    max-height: 300px;
+}
