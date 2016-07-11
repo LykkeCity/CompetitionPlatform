@@ -12,10 +12,12 @@ namespace CompetitionPlatform.Controllers
     public class ProjectController : Controller
     {
         private readonly IProjectRepository _projectRepository;
+        private readonly IProjectFileRepository _projectFileRepository;
 
-        public ProjectController(IProjectRepository projectRepository)
+        public ProjectController(IProjectRepository projectRepository, IProjectFileRepository projectFileRepository)
         {
             _projectRepository = projectRepository;
+            _projectFileRepository = projectFileRepository;
         }
 
         public IActionResult Index()
@@ -29,10 +31,36 @@ namespace CompetitionPlatform.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateProject(ProjectViewModel projectViewModel)
+        public async Task<IActionResult> CreateProject(ProjectViewModel projectViewModel)
         {
-            _projectRepository.SaveAsync(projectViewModel);
+            string newProjectId = await _projectRepository.SaveAsync(projectViewModel);
+
+            if (projectViewModel.File != null)
+            {
+                await _projectFileRepository.InsertProjectFile(projectViewModel.File.OpenReadStream(), newProjectId);
+            }
+
             return RedirectToAction("Index", "Home");
+        }
+
+        public async Task<IActionResult> ProjectDetails(string id)
+        {
+            var project = await _projectRepository.GetAsync(id);
+
+            var projectViewModel = new ProjectViewModel()
+            {
+                Id = project.Id,
+                Name = project.Name,
+                Description = project.Description,
+                Status = project.Status,
+                BudgetFirstPlace = project.BudgetFirstPlace,
+                BudgetSecondPlace = project.BudgetSecondPlace,
+                BudgetThirdPlace = project.BudgetThirdPlace,
+                VotesFor = project.VotesFor,
+                VotesAgainst = project.VotesAgainst
+            };
+
+            return View(projectViewModel);
         }
     }
 }
