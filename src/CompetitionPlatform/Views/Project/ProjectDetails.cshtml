@@ -1,0 +1,37 @@
+@model CompetitionPlatform.Models.ProjectViewModels.ProjectViewModel
+
+@{
+    ViewData["Title"] = "ProjectDetails";
+}
+
+<h2>@Model.Name</h2>
+<div>
+    <h1>
+        <small>$ @Model.BudgetFirstPlace</small>
+    </h1>
+    <label>1st PLACE</label>
+</div>
+
+<div class="progress">
+    @if (Model.Status == Status.Initiative)
+    {
+        <div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%;">
+            @Model.Status
+        </div>
+    }
+    
+</div>
+
+<ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#Info" aria-controls="Info" role="tab" data-toggle="tab">Info</a></li>
+    <li role="presentation"><a href="#Participants" aria-controls="Participants" role="tab" data-toggle="tab">Participants</a></li>
+    <li role="presentation"><a href="#Comments" aria-controls="Comments" role="tab" data-toggle="tab">Comments</a></li>
+    <li role="presentation"><a href="#Results" aria-controls="Results" role="tab" data-toggle="tab">Results</a></li>
+</ul>
+
+<div class="tab-content project-details-tabs">
+    <div role="tabpanel" class="tab-pane active"  id="Info">@Model.Description</div>
+    <div role="tabpanel" class="tab-pane" id="Participants">....</div>
+    <div role="tabpanel" class="tab-pane" id="Comments">....</div>
+    <div role="tabpanel" class="tab-pane" id="Results">....</div>
+</div>
