@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AzureStorage.Blobs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -64,7 +65,11 @@ namespace CompetitionPlatform
             services.AddSingleton<IAzureTableStorage<ProjectEntity>>(
                 new AzureTableStorage<ProjectEntity>(Configuration.GetConnectionString("AzureStorage"), "Projects", log));
 
+            services.AddSingleton<IAzureBlob>(
+                new AzureBlobStorage(Configuration.GetConnectionString("AzureStorage")));
+
             services.AddTransient<IProjectRepository, ProjectRepository>();
+            services.AddTransient<IProjectFileRepository, ProjectFileRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
