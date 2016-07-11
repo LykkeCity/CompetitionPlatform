@@ -13,7 +13,7 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public string Id { get; set; }
 
         [Required]
-        [Display(Name = "ProjectViewModel name")]
+        [Display(Name = "Project name")]
         public string Name { get; set; }
 
         [Required]
