@@ -57,3 +57,7 @@ textarea {
     min-height: 300px; 
     max-height: 300px;
 }
+
+.project-details-tabs {
+    margin-top:40px;
+}
