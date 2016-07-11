@@ -21,12 +21,15 @@
         </div>
         <div class="row">
             <div class="col-md-3">
-                <div class="btn btn-info btn-xs project-status">
+                <div class="btn btn-xs btn-info project-status">
                     @project.Status
                 </div>
             </div>
         </div>
         <div>@project.Description</div>
+        <div class="row">
+            <a asp-area="" asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.Id" class="btn btn-xs btn-info pull-right">...</a>
+        </div>
         <hr />
     </div>
 }
