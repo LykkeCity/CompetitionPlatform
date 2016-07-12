@@ -24,6 +24,8 @@ namespace CompetitionPlatform.Models.ProjectViewModels
 
         public List<string> Categories { get; set; }
 
+        public string Tags { get; set; }
+
         [Required]
         [Display(Name = "Competition Registration")]
         public DateTime CompetitionRegistrationDeadline { get; set; }
