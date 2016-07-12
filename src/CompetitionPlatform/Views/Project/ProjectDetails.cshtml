@@ -5,35 +5,56 @@
 }
 
 <h2>@Model.Name</h2>
-<div class="row" style="display: inline">
 
-    <span class="h2">$ @Model.BudgetFirstPlace</span>
-    <label>1st PLACE</label>
-    
-    @if (Model.BudgetSecondPlace != null)
-    {
-        <span class="h2">$ @Model.BudgetSecondPlace</span>
-        <label>2nd PLACE</label>
-    }
-    @if (Model.BudgetThirdPlace != null)
-    {
-        <span class="h2">$ @Model.BudgetThirdPlace</span>
-        <label>3rd PLACE</label>
-    }
-
+<div class="project-details-budget">
+    <span class="h2">$@Model.BudgetFirstPlace</span>
+    <div>1st PLACE</div>
 </div>
 
-<div class="progress">
-    @if (Model.Status == Status.Initiative)
-    {
-        <div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%;">
-            @Model.Status
-        </div>
-    }
-    @if (Model.Status == Status.Implementation)
-    {
 
+@if (Model.BudgetSecondPlace != null)
+{
+    <div class="project-details-budget">
+        <span class="h2">$@Model.BudgetSecondPlace</span>
+        <div>2nd PLACE</div>
+    </div>
+}
+@if (Model.BudgetThirdPlace != null)
+{
+    <div class="project-details-budget">
+        <span class="h2">$@Model.BudgetThirdPlace</span>
+        <div>3rd PLACE</div>
+    </div>
+}
+
+<div class="progress">
+    @{ var completion = 0;}
+
+    @switch (Model.Status)
+    {
+        case Status.Initiative:
+            completion = 20;
+            break;
+        case Status.CompetitionRegistration:
+            completion = 40;
+            break;
+        case Status.Implementation:
+            completion = 60;
+            break;
+        case Status.Voting:
+            completion = 80;
+            break;
+        case Status.Archive:
+            completion = 100;
+            break;
+        default:
+            completion = 0;
+            break;
     }
+
+    <div class="progress-bar" role="progressbar" aria-valuenow="@completion" aria-valuemin="0" aria-valuemax="100" style="width: @completion%;">
+        @Model.Status
+    </div>
 
 </div>
 
