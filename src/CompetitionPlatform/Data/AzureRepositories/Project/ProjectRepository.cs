@@ -24,7 +24,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
         public string Name { get; set; }
         public string Description { get; set; }
         public Status Status { get; set; }
-        public List<string> Categories { get; set; }
+        public IEnumerable<string> Categories { get; set; }
         public DateTime CompetitionRegistrationDeadline { get; set; }
         public DateTime ImplementationDeadline { get; set; }
         public DateTime VotingDeadline { get; set; }
@@ -53,6 +53,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
                 Name = src.Name,
                 Description = src.Description,
                 Status = Status.Initiative,
+                Categories = src.Categories,
                 CompetitionRegistrationDeadline = src.CompetitionRegistrationDeadline,
                 ImplementationDeadline = src.ImplementationDeadline,
                 VotingDeadline = src.VotingDeadline,

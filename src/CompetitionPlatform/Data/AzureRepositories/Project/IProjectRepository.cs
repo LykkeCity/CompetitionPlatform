@@ -12,7 +12,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
         string Name { get; set; }
         string Description { get; set; }
         Status Status { get; set; }
-        List<string> Categories { get; set; }
+        IEnumerable<string> Categories { get; set; }
         DateTime CompetitionRegistrationDeadline { get; set; }
         DateTime ImplementationDeadline { get; set; }
         DateTime VotingDeadline { get; set; }
