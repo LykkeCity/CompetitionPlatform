@@ -8,6 +8,6 @@ $(function () {
     });
 
     $("#categoriesDropdown").change(function () {
-        $('#Tags').val($('#Tags').val() + $('#categoriesDropdown :selected').text() + ', ');
+        $('#Tags').val($('#Tags').val() + $('#categoriesDropdown :selected').text() + ',');
     });
 });
