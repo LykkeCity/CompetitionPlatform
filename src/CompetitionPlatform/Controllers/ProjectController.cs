@@ -33,6 +33,11 @@ namespace CompetitionPlatform.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateProject(ProjectViewModel projectViewModel)
         {
+            var tags = projectViewModel.Tags.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+
+            var tagsList = new List<string>(tags);
+            projectViewModel.Categories = tagsList;
+
             string newProjectId = await _projectRepository.SaveAsync(projectViewModel);
 
             if (projectViewModel.File != null)
