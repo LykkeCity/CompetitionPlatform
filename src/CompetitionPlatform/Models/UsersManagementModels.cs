@@ -12,7 +12,8 @@ namespace CompetitionPlatform.Models
         public string Create { get; set; }
 
         [Required]
-        [Display(Name = "Username")]
+        [EmailAddress]
+        [Display(Name = "Email")]
         public string Id { get; set; }
 
         [Required]
