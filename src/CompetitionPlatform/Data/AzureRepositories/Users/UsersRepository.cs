@@ -42,6 +42,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Users
             };
 
             result.Edit(src);
+            result.SetPassword(password);
 
             return result;
         }
@@ -102,7 +103,8 @@ namespace CompetitionPlatform.Data.AzureRepositories.Users
 
         public Task SaveAsync(IUser user, string password)
         {
-            if (string.IsNullOrEmpty(user.Id))
+            //if (string.IsNullOrEmpty(user.Id))
+            if (!string.IsNullOrEmpty(password))
                 return CreateAsync(user, password);
 
             return UpdateAsync(user);
