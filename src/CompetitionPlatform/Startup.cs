@@ -16,6 +16,7 @@ using CompetitionPlatform.Data.AzureRepositories.Project;
 using CompetitionPlatform.Models;
 using CompetitionPlatform.Services;
 using AzureStorage.Tables;
+using CompetitionPlatform.Data.AzureRepositories.Users;
 using Microsoft.VisualBasic.CompilerServices;
 using Microsoft.WindowsAzure.Storage.Shared.Protocol;
 
@@ -68,8 +69,12 @@ namespace CompetitionPlatform
             services.AddSingleton<IAzureBlob>(
                 new AzureBlobStorage(Configuration.GetConnectionString("AzureStorage")));
 
+            services.AddSingleton<IAzureTableStorage<UserEntity>>(
+                new AzureTableStorage<UserEntity>(Configuration.GetConnectionString("AzureStorage"), "Users", log));
+
             services.AddTransient<IProjectRepository, ProjectRepository>();
             services.AddTransient<IProjectFileRepository, ProjectFileRepository>();
+            services.AddTransient<IUsersRepository, UsersRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
