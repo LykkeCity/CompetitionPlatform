@@ -44,8 +44,8 @@
       "type": "build"
     },
     "AzureStorage": "1.0.0-*",
-    "Common": "1.0.0-*"
-  },
+    "Common": "1.0.0-*",
+    "Newtonsoft.Json": "9.0.1"  },
 
   "tools": {
     "BundlerMinifier.Core": "2.0.238",
