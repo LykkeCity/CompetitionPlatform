@@ -6,6 +6,7 @@ using CompetitionPlatform.Data.AzureRepositories;
 using CompetitionPlatform.Data.AzureRepositories.Project;
 using CompetitionPlatform.Models.ProjectViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace CompetitionPlatform.Controllers
 {
@@ -36,7 +37,7 @@ namespace CompetitionPlatform.Controllers
             var tags = projectViewModel.Tags.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
 
             var tagsList = new List<string>(tags);
-            projectViewModel.Categories = tagsList;
+            projectViewModel.Tags = JsonConvert.SerializeObject(tagsList);
 
             string newProjectId = await _projectRepository.SaveAsync(projectViewModel);
 
@@ -57,6 +58,7 @@ namespace CompetitionPlatform.Controllers
                 Id = project.Id,
                 Name = project.Name,
                 Description = project.Description,
+                Categories = JsonConvert.DeserializeObject<List<string>>(project.Tags),
                 Status = project.Status,
                 BudgetFirstPlace = project.BudgetFirstPlace,
                 BudgetSecondPlace = project.BudgetSecondPlace,

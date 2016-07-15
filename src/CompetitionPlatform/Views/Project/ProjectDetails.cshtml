@@ -58,6 +58,16 @@
 
 </div>
 
+<div>
+    <h4>Tags</h4>
+    <div>
+        @foreach (var category in Model.Categories)
+        {
+            <span class="label label-default">@category</span>
+        }
+    </div>
+</div>
+
 <ul class="nav nav-tabs" role="tablist">
     <li role="presentation" class="active"><a href="#Info" aria-controls="Info" role="tab" data-toggle="tab">Info</a></li>
     <li role="presentation"><a href="#Participants" aria-controls="Participants" role="tab" data-toggle="tab">Participants</a></li>

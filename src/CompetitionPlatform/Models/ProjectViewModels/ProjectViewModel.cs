@@ -22,7 +22,7 @@ namespace CompetitionPlatform.Models.ProjectViewModels
 
         public Status Status { get; set; }
 
-        public IEnumerable<string> Categories { get; set; }
+        public List<string> Categories { get; set; }
 
         public string Tags { get; set; }
 
