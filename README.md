@@ -6,7 +6,7 @@ A website to help manage Projects Competitions.
 
 appsettings.json is structured like this: 
 
-ConnectionStrings contains AzureStorage and AzureStorageLog connection string.
+ConnectionStrings contains AzureStorage and AzureStorageLog connection strings.
 
 AzureStorage is a main connection string that is used to store information about projects, users, etc.
 
