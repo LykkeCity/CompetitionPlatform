@@ -1,4 +1,5 @@
-﻿@model CompetitionPlatform.Models.ProjectViewModels.ProjectListIndexViewModel
+﻿@using CompetitionPlatform.Models
+@model CompetitionPlatform.Models.ProjectViewModels.ProjectListIndexViewModel
 
 @{
     ViewData["Title"] = "Home Page";
@@ -13,11 +14,21 @@
     </div>
 </div>
 
+<select id="projectStatusFilter" name="projectStatusFilter" class="form-control">
+    <option>Initiative</option>
+    <option>Archive</option>
+</select>
+
 @foreach (var project in Model.Projects)
 {
     <div class="col-md-6 project-tile">
         <div class="row">
-            <h3 class="col-md-12">@project.Name<small class="pull-right">$@project.BudgetFirstPlace</small></h3>
+            <div class="col-md-12">
+                <a class="inline h3" asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.Id">@project.Name</a>
+                <div class="pull-right">
+                    <div class="project-index-budget">$@project.BudgetFirstPlace</div>
+                </div>
+            </div>
         </div>
         <div class="row">
             <div class="col-md-3">
