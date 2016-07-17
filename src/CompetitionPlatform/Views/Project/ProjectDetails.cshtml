@@ -86,12 +86,13 @@
             </div>
             <input type="submit" value="Post Comment" class="btn btn-primary pull-right"/>
         </form>
-
-        @foreach (var comment in Model.Comments)
-        {
-            <p class ="h5">@comment.User</p>
-            <p class="">@comment.Comment</p>
-        }
+        <div class="project-details-comments">
+            @foreach (var comment in Model.Comments)
+            {
+                <p class="h5">@comment.User</p>
+                <p class="">@comment.Comment</p>
+            }
+        </div>
     </div>
     <div role="tabpanel" class="tab-pane" id="Results">....</div>
 </div>
