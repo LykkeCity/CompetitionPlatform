@@ -14,16 +14,13 @@ namespace CompetitionPlatform.Controllers
     {
         private readonly IProjectRepository _projectRepository;
         private readonly IProjectFileRepository _projectFileRepository;
+        private readonly IProjectCommentsRepository _projectCommentsRepository;
 
-        public ProjectController(IProjectRepository projectRepository, IProjectFileRepository projectFileRepository)
+        public ProjectController(IProjectRepository projectRepository, IProjectFileRepository projectFileRepository, IProjectCommentsRepository projectCommentsRepository)
         {
             _projectRepository = projectRepository;
             _projectFileRepository = projectFileRepository;
-        }
-
-        public IActionResult Index()
-        {
-            return View();
+            _projectCommentsRepository = projectCommentsRepository;
         }
 
         public IActionResult Create()
@@ -53,6 +50,8 @@ namespace CompetitionPlatform.Controllers
         {
             var project = await _projectRepository.GetAsync(id);
 
+            var comments = await _projectCommentsRepository.GetProjectCommentsAsync(id);
+
             var projectViewModel = new ProjectViewModel()
             {
                 Id = project.Id,
@@ -64,7 +63,8 @@ namespace CompetitionPlatform.Controllers
                 BudgetSecondPlace = project.BudgetSecondPlace,
                 BudgetThirdPlace = project.BudgetThirdPlace,
                 VotesFor = project.VotesFor,
-                VotesAgainst = project.VotesAgainst
+                VotesAgainst = project.VotesAgainst,
+                Comments = comments
             };
 
             return View(projectViewModel);

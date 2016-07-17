@@ -17,8 +17,11 @@ using CompetitionPlatform.Models;
 using CompetitionPlatform.Services;
 using AzureStorage.Tables;
 using CompetitionPlatform.Data.AzureRepositories.Users;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
 using Microsoft.VisualBasic.CompilerServices;
 using Microsoft.WindowsAzure.Storage.Shared.Protocol;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 
 namespace CompetitionPlatform
 {
@@ -54,6 +57,9 @@ namespace CompetitionPlatform
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
+            services.AddAuthentication(
+                options => { options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme; });
+
             services.AddMvc();
 
             // Add application services.
@@ -72,9 +78,13 @@ namespace CompetitionPlatform
             services.AddSingleton<IAzureTableStorage<UserEntity>>(
                 new AzureTableStorage<UserEntity>(Configuration.GetConnectionString("AzureStorage"), "Users", log));
 
+            services.AddSingleton<IAzureTableStorage<CommentEntity>>(
+                new AzureTableStorage<CommentEntity>(Configuration.GetConnectionString("AzureStorage"), "ProjectComments", log));
+
             services.AddTransient<IProjectRepository, ProjectRepository>();
             services.AddTransient<IProjectFileRepository, ProjectFileRepository>();
             services.AddTransient<IUsersRepository, UsersRepository>();
+            services.AddTransient<IProjectCommentsRepository, ProjectCommentsRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -93,6 +103,38 @@ namespace CompetitionPlatform
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
+            //app.UseCookieAuthentication(new CookieAuthenticationOptions
+            //{
+            //    AutomaticAuthenticate = true,
+            //    AutomaticChallenge = true,
+            //    ExpireTimeSpan = TimeSpan.FromMinutes(5),
+            //    LoginPath = new PathString("/signin"),
+            //    AccessDeniedPath = "/Home/Forbidden"
+            //});
+
+            //app.UseOpenIdConnectAuthentication(new OpenIdConnectOptions
+            //{
+            //    RequireHttpsMetadata = false,
+            //    SaveTokens = true,
+
+            //    // Note: these settings must match the application details
+            //    // inserted in the database at the server level.
+            //    ClientId = "myClient",
+            //    ClientSecret = "secret_secret_secret",
+            //    PostLogoutRedirectUri = "https://lykke-auth-dev.azurewebsites.net/",
+            //    CallbackPath = "/auth",
+
+            //    // Use the authorization code flow.
+            //    ResponseType = OpenIdConnectResponseType.Code,
+            //    //Events = new TerminalAuthenticationEvents(),
+
+            //    // Note: setting the Authority allows the OIDC client middleware to automatically
+            //    // retrieve the identity provider's configuration and spare you from setting
+            //    // the different endpoints URIs or the token validation parameters explicitly.
+            //    Authority = "https://lykke-auth-dev.azurewebsites.net",
+            //    Scope = { "email" }
+            //});
 
             app.UseStaticFiles();
 

@@ -55,6 +55,8 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public int VotesAgainst { get; set; }
 
         public IFormFile File { set; get; }
+
+        public IEnumerable<ICommentData> Comments { get; set; }
     }
 
     public class ProjectCompactViewModel
