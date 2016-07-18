@@ -1,3 +1,5 @@
+@using System.Threading.Tasks
+@using CompetitionPlatform.Models.ProjectViewModels
 @model CompetitionPlatform.Models.ProjectViewModels.ProjectViewModel
 
 @{
@@ -79,20 +81,7 @@
     <div role="tabpanel" class="tab-pane active" id="Info">@Model.Description</div>
     <div role="tabpanel" class="tab-pane" id="Participants">....</div>
     <div role="tabpanel" class="tab-pane" id="Comments">
-        <form asp-controller="ProjectDetails" asp-action="AddComment" enctype="multipart/form-data">
-            <div class="form-group">
-                @Html.Hidden("projectId", Model.Id)
-                <textarea class="form-control" rows="5" name="comment" id="comment" placeholder="Enter your comment here..."></textarea>
-            </div>
-            <input type="submit" value="Post Comment" class="btn btn-primary pull-right"/>
-        </form>
-        <div class="project-details-comments">
-            @foreach (var comment in Model.Comments)
-            {
-                <p class="h5">@comment.User</p>
-                <p class="">@comment.Comment</p>
-            }
-        </div>
+        @await Html.PartialAsync("CommentsPartial", Model.CommentsPartial)
     </div>
     <div role="tabpanel" class="tab-pane" id="Results">....</div>
 </div>

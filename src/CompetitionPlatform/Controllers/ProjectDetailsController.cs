@@ -17,15 +17,11 @@ namespace CompetitionPlatform.Controllers
             _projectCommentsRepository = projectCommentsRepository;
         }
 
-        public IActionResult AddComment(string projectId, string comment)
+        public IActionResult AddComment(ProjectCommentPartialViewModel model)
         {
-            var commentViewModel = new ProjectCommentsViewModel()
-            {
-                ProjectId = projectId,
-                Comment = comment,
-                User = "User1"
-            };
-            _projectCommentsRepository.SaveAsync(commentViewModel);
+            model.User = "User1";
+
+            _projectCommentsRepository.SaveAsync(model);
 
             return RedirectToAction("Index", "Home");
         }

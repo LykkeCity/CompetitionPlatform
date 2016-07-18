@@ -52,7 +52,13 @@ namespace CompetitionPlatform.Controllers
 
             var comments = await _projectCommentsRepository.GetProjectCommentsAsync(id);
 
-            var projectViewModel = new ProjectViewModel()
+            var commentsPartial = new ProjectCommentPartialViewModel()
+            {
+                ProjectId = project.Id,
+                Comments = comments
+            };
+
+            var projectViewModel = new ProjectViewModel
             {
                 Id = project.Id,
                 Name = project.Name,
@@ -64,7 +70,7 @@ namespace CompetitionPlatform.Controllers
                 BudgetThirdPlace = project.BudgetThirdPlace,
                 VotesFor = project.VotesFor,
                 VotesAgainst = project.VotesAgainst,
-                Comments = comments
+                CommentsPartial = commentsPartial
             };
 
             return View(projectViewModel);
