@@ -35,6 +35,11 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
 
             return result;
         }
+
+        internal void Update(ICommentData src)
+        {
+            Comment = src.Comment;
+        }
     }
 
     public class ProjectCommentsRepository : IProjectCommentsRepository
@@ -46,11 +51,6 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
             _projectCommentsTableStorage = projectCommentsTableStorage;
         }
 
-        public Task<ICommentData> GetAsync(string projectId, string username)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<IEnumerable<ICommentData>> GetProjectCommentsAsync(string projectId)
         {
             var partitionKey = CommentEntity.GeneratePartitionKey(projectId);
@@ -60,12 +60,19 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
         public async Task SaveAsync(ICommentData projectCommentData)
         {
             var newEntity = CommentEntity.Create(projectCommentData);
-            await _projectCommentsTableStorage.InsertAsync(newEntity);
+            await _projectCommentsTableStorage.InsertAndGenerateRowKeyAsDateTimeAsync(newEntity, DateTime.Now);
         }
 
         public Task UpdateAsync(ICommentData projectData)
         {
-            throw new NotImplementedException();
+            var partitionKey = CommentEntity.GeneratePartitionKey(projectData.ProjectId);
+            var rowKey = CommentEntity.GenerateRowKey();
+
+            return _projectCommentsTableStorage.ReplaceAsync(partitionKey, rowKey, itm =>
+            {
+                itm.Update(projectData);
+                return itm;
+            });
         }
     }
 }
