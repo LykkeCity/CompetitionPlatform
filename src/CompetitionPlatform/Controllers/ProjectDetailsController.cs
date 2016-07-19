@@ -23,7 +23,7 @@ namespace CompetitionPlatform.Controllers
 
             _projectCommentsRepository.SaveAsync(model);
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("ProjectDetails", "Project", new { id = model.ProjectId });
         }
     }
 }
