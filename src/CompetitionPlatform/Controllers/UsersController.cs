@@ -11,6 +11,23 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CompetitionPlatform.Controllers
 {
+    public static class UsersControllerExtension
+    {
+        public static string SessionCookie => "Session";
+
+        public static string GetSession(this Controller contr)
+        {
+            var sessionCookie = contr.HttpContext.Request.Cookies[SessionCookie];
+            if (sessionCookie != null)
+                return sessionCookie;
+
+            var sessionId = Guid.NewGuid().ToString();
+            //var newCookie = new HttpCookie(SessionCookie, sessionId) { Expires = DateTime.UtcNow.AddYears(5) };
+            //contr.Response.SetCookie(newCookie);
+            return sessionId;
+        }
+    }
+
     public class UsersController : Controller
     {
         private readonly IUsersRepository _usersRepository;
@@ -23,10 +40,10 @@ namespace CompetitionPlatform.Controllers
         [HttpPost]
         public async Task<ActionResult> Authenticate(AuthenticateModel data)
         {
-            var user = await _usersRepository.AuthenticateAsync(data.Username, data.Password);
+            var user = await _usersRepository.AuthenticateAsync(data.FullName, data.Password);
             SignIn(user);
-
-            return null;
+            var authenticated = User.Identity.IsAuthenticated;
+            return View("~/Views/Home/Index.cshtml");
         }
 
         private void SignIn(IUser user)
@@ -45,13 +62,15 @@ namespace CompetitionPlatform.Controllers
                 new Claim(ClaimTypes.Name, user.Id),
                 new Claim(ClaimTypes.Email, user.Id)
             };
-            
+
             var identity = new ClaimsIdentity(claims, "ApplicationCookie");
 
             var principalIdentity = new ClaimsPrincipal(identity);
 
             return principalIdentity;
         }
+
+
 
         public IActionResult Index()
         {
