@@ -83,3 +83,11 @@ textarea {
 .project-details-comments {
     margin-top: 60px;
 }
+
+.project-comments-user {
+    font-weight: bold;
+}
+
+.project-comment {
+     margin-bottom: 30px;
+}

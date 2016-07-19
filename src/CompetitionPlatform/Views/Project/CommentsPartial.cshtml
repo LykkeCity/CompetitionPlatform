@@ -11,7 +11,9 @@
 <div class="project-details-comments">
     @foreach (var comment in Model.Comments)
     {
-        <p class="h5">@comment.User</p>
-        <p class="">@comment.Comment</p>
+        <div class="project-comment">
+            <p class="project-comments-user">@comment.User</p>
+            <p class="">@comment.Comment</p>
+        </div>
     }
 </div>
