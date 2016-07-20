@@ -7,7 +7,11 @@ $(function () {
         $(this).datepicker('hide');
     });
 
-    $("#categoriesDropdown").change(function () {
-        $('#Tags').val($('#Tags').val() + $('#categoriesDropdown :selected').text() + ',');
+    $("#projectStatusFilter").change(function () {
+        $.ajax({
+            url: 'Home/Index?projectStatusFilter=' + $('#projectStatusFilter :selected').text(),
+            data: {}
+        }).done(function () {
+        });
     });
 });
