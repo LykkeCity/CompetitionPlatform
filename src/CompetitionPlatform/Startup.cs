@@ -32,7 +32,8 @@ namespace CompetitionPlatform
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                .AddEnvironmentVariables();
 
             if (env.IsDevelopment())
             {
@@ -40,11 +41,12 @@ namespace CompetitionPlatform
                // builder.AddUserSecrets();
             }
 
-            builder.AddEnvironmentVariables();
             Configuration = builder.Build();
         }
 
         public IConfigurationRoot Configuration { get; }
+
+
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -65,13 +67,12 @@ namespace CompetitionPlatform
                 options => { options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme; });
 
             services.AddMvc();
-
             services.RegisterLyykeServices();
 
 
             var log = new LogToTable(new AzureTableStorage<LogEntity>(connectionStringLogs, "LogCompPlatform", null));
 
-            services.RegisterRepositories(connectionString, log);
+          services.RegisterRepositories(connectionString, log);
 
         }
 
@@ -130,6 +131,13 @@ namespace CompetitionPlatform
 
             // Add external authentication middleware below. To configure them please see http://go.microsoft.com/fwlink/?LinkID=532715
 
+            /*
+            app.Run(async (context) =>
+            {
+                await context.Response.WriteAsync(connStirng ?? "NULL");
+            });
+            */
+            
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
