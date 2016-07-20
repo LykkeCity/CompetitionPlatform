@@ -34,6 +34,9 @@ namespace CompetitionPlatform.Controllers
             var tags = projectViewModel.Tags.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
 
             var tagsList = new List<string>(tags);
+
+            tagsList = tagsList.Where(s => !string.IsNullOrWhiteSpace(s)).ToList();
+
             projectViewModel.Tags = JsonConvert.SerializeObject(tagsList);
 
             string newProjectId = await _projectRepository.SaveAsync(projectViewModel);
