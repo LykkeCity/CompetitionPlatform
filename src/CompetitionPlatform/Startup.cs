@@ -37,7 +37,7 @@ namespace CompetitionPlatform
             if (env.IsDevelopment())
             {
                 // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
-                builder.AddUserSecrets();
+               // builder.AddUserSecrets();
             }
 
             builder.AddEnvironmentVariables();
@@ -49,6 +49,10 @@ namespace CompetitionPlatform
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            var connectionString = Configuration.GetConnectionString("AzureStorage");
+            var connectionStringLogs = Configuration.GetConnectionString("AzureStorageLog");
+
             // Add framework services.
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
@@ -62,29 +66,13 @@ namespace CompetitionPlatform
 
             services.AddMvc();
 
-            // Add application services.
-            services.AddTransient<IEmailSender, AuthMessageSender>();
-            services.AddTransient<ISmsSender, AuthMessageSender>();
+            services.RegisterLyykeServices();
 
 
-            var log = new LogToTable(new AzureTableStorage<LogEntity>(Configuration.GetConnectionString("AzureStorageLog"), "LogJobs", null));
+            var log = new LogToTable(new AzureTableStorage<LogEntity>(connectionStringLogs, "LogCompPlatform", null));
 
-            services.AddSingleton<IAzureTableStorage<ProjectEntity>>(
-                new AzureTableStorage<ProjectEntity>(Configuration.GetConnectionString("AzureStorage"), "Projects", log));
+            services.RegisterRepositories(connectionString, log);
 
-            services.AddSingleton<IAzureBlob>(
-                new AzureBlobStorage(Configuration.GetConnectionString("AzureStorage")));
-
-            services.AddSingleton<IAzureTableStorage<UserEntity>>(
-                new AzureTableStorage<UserEntity>(Configuration.GetConnectionString("AzureStorage"), "Users", log));
-
-            services.AddSingleton<IAzureTableStorage<CommentEntity>>(
-                new AzureTableStorage<CommentEntity>(Configuration.GetConnectionString("AzureStorage"), "ProjectComments", log));
-
-            services.AddTransient<IProjectRepository, ProjectRepository>();
-            services.AddTransient<IProjectFileRepository, ProjectFileRepository>();
-            services.AddTransient<IUsersRepository, UsersRepository>();
-            services.AddTransient<IProjectCommentsRepository, ProjectCommentsRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
