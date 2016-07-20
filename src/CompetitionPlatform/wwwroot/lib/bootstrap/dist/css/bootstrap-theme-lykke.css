@@ -189,7 +189,7 @@ body{
 	border: solid 1px #d3d6db;
 	border-radius: 4px;
 	box-shadow:none;
-	padding: 20px 10px;
+	/*padding: 20px 10px;*/
 	color: #3f4d60;
 	font-size: 16px;
 }
