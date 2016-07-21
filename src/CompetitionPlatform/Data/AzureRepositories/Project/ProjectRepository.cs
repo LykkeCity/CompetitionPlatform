@@ -34,6 +34,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
         public double? BudgetThirdPlace { get; set; }
         public int VotesFor { get; set; }
         public int VotesAgainst { get; set; }
+        public DateTime Created { get; set; }
 
         internal void Update(IProjectData src)
         {
@@ -61,7 +62,8 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
                 VotingDeadline = src.VotingDeadline,
                 BudgetFirstPlace = src.BudgetFirstPlace,
                 BudgetSecondPlace = src.BudgetSecondPlace,
-                BudgetThirdPlace = src.BudgetThirdPlace
+                BudgetThirdPlace = src.BudgetThirdPlace,
+                Created = src.Created
             };
 
             return result;

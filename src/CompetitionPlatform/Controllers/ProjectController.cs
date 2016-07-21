@@ -39,6 +39,8 @@ namespace CompetitionPlatform.Controllers
 
             projectViewModel.Tags = JsonConvert.SerializeObject(tagsList);
 
+            projectViewModel.Created = DateTime.UtcNow;
+
             string newProjectId = await _projectRepository.SaveAsync(projectViewModel);
 
             if (projectViewModel.File != null)
@@ -74,6 +76,7 @@ namespace CompetitionPlatform.Controllers
                 BudgetThirdPlace = project.BudgetThirdPlace,
                 VotesFor = project.VotesFor,
                 VotesAgainst = project.VotesAgainst,
+                Created = project.Created,
                 CommentsPartial = commentsPartial
             };
 

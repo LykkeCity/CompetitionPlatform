@@ -22,6 +22,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
         double? BudgetThirdPlace { get; set; }
         int VotesFor { get; set; }
         int VotesAgainst { get; set; }
+        DateTime Created { get; set; }
     }
 
     public interface IProjectRepository

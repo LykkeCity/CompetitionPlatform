@@ -58,6 +58,8 @@ namespace CompetitionPlatform.Models.ProjectViewModels
 
         public IFormFile File { set; get; }
 
+        public DateTime Created { get; set; }
+
         public ProjectCommentPartialViewModel CommentsPartial { get; set; }
     }
 
