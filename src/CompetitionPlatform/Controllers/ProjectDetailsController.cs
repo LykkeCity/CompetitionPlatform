@@ -20,9 +20,10 @@ namespace CompetitionPlatform.Controllers
         public IActionResult AddComment(ProjectCommentPartialViewModel model)
         {
             model.User = "User1";
+            model.Created = DateTime.UtcNow;
+            model.LastModified = model.Created;
 
             _projectCommentsRepository.SaveAsync(model);
-
             return RedirectToAction("ProjectDetails", "Project", new { id = model.ProjectId });
         }
     }

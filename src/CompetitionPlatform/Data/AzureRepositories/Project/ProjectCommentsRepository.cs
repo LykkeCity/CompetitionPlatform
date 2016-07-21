@@ -22,6 +22,8 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
         public string User { get; set; }
         public string ProjectId { get; set; }
         public string Comment { get; set; }
+        public DateTime Created { get; set; }
+        public DateTime LastModified { get; set; }
 
         public static CommentEntity Create(ICommentData src)
         {
@@ -30,7 +32,9 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
                 RowKey = GenerateRowKey(),
                 PartitionKey = GeneratePartitionKey(src.ProjectId),
                 Comment = src.Comment,
-                User = src.User
+                User = src.User,
+                Created = src.Created,
+                LastModified = src.LastModified
             };
 
             return result;

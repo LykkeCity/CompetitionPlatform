@@ -10,6 +10,8 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
         string ProjectId { get; set; }
         string User { get; }
         string Comment { get; set; }
+        DateTime Created { get; set; }
+        DateTime LastModified { get; set; }
     }
 
     public interface IProjectCommentsRepository
