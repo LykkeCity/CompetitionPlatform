@@ -60,13 +60,19 @@
 
 </div>
 
-<div class="project-details-tags">
+<div class="project-details-tags inline">
     <h4>Tags</h4>
     <div>
         @foreach (var category in Model.Categories)
         {
             <span class="label label-default">@category</span>
         }
+    </div>
+</div>
+<div class="inline pull-right">
+    <h4>Category</h4>
+    <div>
+        <span class="label label-info">@Model.Category</span>
     </div>
 </div>
 

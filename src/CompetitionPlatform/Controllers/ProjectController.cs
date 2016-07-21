@@ -67,6 +67,7 @@ namespace CompetitionPlatform.Controllers
                 Name = project.Name,
                 Description = project.Description,
                 Categories = JsonConvert.DeserializeObject<List<string>>(project.Tags),
+                Category = project.Category,
                 Status = project.Status,
                 BudgetFirstPlace = project.BudgetFirstPlace,
                 BudgetSecondPlace = project.BudgetSecondPlace,
