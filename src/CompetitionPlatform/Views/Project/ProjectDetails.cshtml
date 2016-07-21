@@ -8,7 +8,7 @@
 
 <h2>@Model.Name</h2>
 
-<div class="project-details-budget">
+<div class="project-details-budget inline">
     <span class="h2">$@Model.BudgetFirstPlace</span>
     <div>1st PLACE</div>
 </div>
@@ -16,14 +16,14 @@
 
 @if (Model.BudgetSecondPlace != null)
 {
-    <div class="project-details-budget">
+    <div class="project-details-budget inline">
         <span class="h2">$@Model.BudgetSecondPlace</span>
         <div>2nd PLACE</div>
     </div>
 }
 @if (Model.BudgetThirdPlace != null)
 {
-    <div class="project-details-budget">
+    <div class="project-details-budget inline">
         <span class="h2">$@Model.BudgetThirdPlace</span>
         <div>3rd PLACE</div>
     </div>
