@@ -90,3 +90,7 @@ textarea {
 .project-comment {
      margin-bottom: 30px;
 }
+
+.project-filter {
+    margin-right: 10px;
+}

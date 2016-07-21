@@ -14,10 +14,21 @@
     </div>
 </div>
 
-<select id="projectStatusFilter" name="projectStatusFilter" class="form-control">
-    <option>Initiative</option>
-    <option>Archive</option>
-</select>
+<div class="row col-md-12">
+    <div class="row col-md-3 project-filter">
+        <select id="projectStatusFilter" name="projectStatusFilter" class="form-control" value="Create">
+            <option>Initiative</option>
+            <option>Archive</option>
+        </select>
+    </div>
+
+    <div class="row col-md-3">
+        <select id="projectCategoryFilter" name="projectCategoryFilter" class="form-control" value="Create">
+            <option>Finance</option>
+            <option>Mobile</option>
+        </select>
+    </div>
+</div>
 
 @foreach (var project in Model.Projects)
 {
