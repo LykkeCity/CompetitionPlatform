@@ -17,9 +17,12 @@ namespace CompetitionPlatform.Controllers
             _projectRepository = projectRepository;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string projectStatusFilter)
         {
             var projects = await _projectRepository.GetProjectsAsync();
+
+            if (projectStatusFilter != null)
+                projects = projects.Where(x => x.Status.ToString() == projectStatusFilter);
 
             var compactModels = new List<ProjectCompactViewModel>();
 
@@ -28,7 +31,7 @@ namespace CompetitionPlatform.Controllers
                 var compactModel = new ProjectCompactViewModel()
                 {
                     Id = project.Id,
-                    Name = project.Name.Length > 35 ? project.Name.Substring(0, 32) + "..." : project.Name,
+                    Name = project.Name.Length > 43 ? project.Name.Substring(0, 40) + "..." : project.Name,
                     Description = project.Description.Length > 500 ? project.Description.Substring(0, 497) + "..." : project.Description,
                     Status = project.Status,
                     BudgetFirstPlace = project.BudgetFirstPlace,
