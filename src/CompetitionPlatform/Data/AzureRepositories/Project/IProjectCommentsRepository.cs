@@ -17,6 +17,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
     public interface IProjectCommentsRepository
     {
         Task<IEnumerable<ICommentData>> GetProjectCommentsAsync(string projectId);
+        Task<int> GetProjectCommentsCountAsync(string projectId);
         Task SaveAsync(ICommentData projectCommentData);
         Task UpdateAsync(ICommentData projectData);
     }

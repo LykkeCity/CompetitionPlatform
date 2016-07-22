@@ -50,7 +50,8 @@
         </div>
         <div>@project.Description</div>
         <div class="row">
-            <a asp-area="" asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.Id" class="btn btn-xs btn-info pull-right">...</a>
+            <a asp-area="" asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.Id" class="btn btn-xs btn-info pull-right inline">...</a>
+            <div class="inline pull-right comments-count"><span class="glyphicon glyphicon-envelope"></span> @project.CommentsCount</div>
         </div>
         <hr />
     </div>

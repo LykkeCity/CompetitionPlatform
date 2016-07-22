@@ -11,10 +11,12 @@ namespace CompetitionPlatform.Controllers
     public class HomeController : Controller
     {
         private readonly IProjectRepository _projectRepository;
+        private readonly IProjectCommentsRepository _projectCommentsRepository;
 
-        public HomeController(IProjectRepository projectRepository)
+        public HomeController(IProjectRepository projectRepository, IProjectCommentsRepository projectCommentsRepository)
         {
             _projectRepository = projectRepository;
+            _projectCommentsRepository = projectCommentsRepository;
         }
 
         public async Task<IActionResult> Index(string projectStatusFilter)
@@ -28,6 +30,8 @@ namespace CompetitionPlatform.Controllers
 
             foreach (var project in projects)
             {
+                var projectCommentsCount = await _projectCommentsRepository.GetProjectCommentsCountAsync(project.Id);
+
                 var compactModel = new ProjectCompactViewModel()
                 {
                     Id = project.Id,
@@ -36,7 +40,8 @@ namespace CompetitionPlatform.Controllers
                     Status = project.Status,
                     BudgetFirstPlace = project.BudgetFirstPlace,
                     VotesFor = project.VotesFor,
-                    VotesAgainst = project.VotesAgainst
+                    VotesAgainst = project.VotesAgainst,
+                    CommentsCount = projectCommentsCount
                 };
 
                 compactModels.Add(compactModel);

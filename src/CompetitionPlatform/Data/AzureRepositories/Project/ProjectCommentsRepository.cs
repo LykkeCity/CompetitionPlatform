@@ -78,6 +78,12 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
                 return itm;
             });
         }
+
+        public async Task<int> GetProjectCommentsCountAsync(string projectId)
+        {
+            var comments = await GetProjectCommentsAsync(projectId);
+            return comments.ToList().Count;
+        }
     }
 }
 

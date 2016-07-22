@@ -72,6 +72,7 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public double BudgetFirstPlace { get; set; }
         public int VotesFor { get; set; }
         public int VotesAgainst { get; set; }
+        public int CommentsCount { get; set; }
     }
 
     public class ProjectListIndexViewModel
