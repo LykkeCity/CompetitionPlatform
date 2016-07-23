@@ -40,6 +40,8 @@ namespace CompetitionPlatform.Controllers
 
             tagsList = tagsList.Where(s => !string.IsNullOrWhiteSpace(s)).ToList();
 
+            tagsList = tagsList.Select(s => s.Trim()).ToList();
+
             projectViewModel.Tags = JsonConvert.SerializeObject(tagsList);
 
             projectViewModel.Created = DateTime.UtcNow;
@@ -75,14 +77,6 @@ namespace CompetitionPlatform.Controllers
                 Comments = comments
             };
 
-            var fileInfo = await _projectFileInfoRepository.GetAsync(id);
-
-            var fileInfoViewModel = new ProjectFileInfoViewModel
-            {
-                ContentType = fileInfo.ContentType,
-                FileName = fileInfo.FileName
-            };
-
             var projectViewModel = new ProjectViewModel
             {
                 Id = project.Id,
@@ -97,9 +91,21 @@ namespace CompetitionPlatform.Controllers
                 VotesFor = project.VotesFor,
                 VotesAgainst = project.VotesAgainst,
                 Created = project.Created,
-                CommentsPartial = commentsPartial,
-                FileInfo = fileInfoViewModel
+                CommentsPartial = commentsPartial
             };
+
+            var fileInfo = await _projectFileInfoRepository.GetAsync(id);
+
+            if (fileInfo != null)
+            {
+                var fileInfoViewModel = new ProjectFileInfoViewModel
+                {
+                    ContentType = fileInfo.ContentType,
+                    FileName = fileInfo.FileName
+                };
+
+                projectViewModel.FileInfo = fileInfoViewModel;
+            }
 
             return View(projectViewModel);
         }
