@@ -91,7 +91,11 @@
 </ul>
 
 <div class="tab-content project-details-tabs">
-    <div role="tabpanel" class="tab-pane active" id="Info">@Model.Description</div>
+    <div role="tabpanel" class="tab-pane active" id="Info">
+        @Model.Description
+        <div>@Model.FileInfo.FileName</div>
+        <div>@Model.FileInfo.ContentType</div>
+    </div>
     <div role="tabpanel" class="tab-pane" id="Participants">....</div>
     <div role="tabpanel" class="tab-pane" id="Comments">
         @await Html.PartialAsync("CommentsPartial", Model.CommentsPartial)

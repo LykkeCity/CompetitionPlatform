@@ -61,6 +61,8 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public DateTime Created { get; set; }
 
         public ProjectCommentPartialViewModel CommentsPartial { get; set; }
+
+        public ProjectFileInfoViewModel FileInfo { get; set; }
     }
 
     public class ProjectCompactViewModel
@@ -73,6 +75,12 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public int VotesFor { get; set; }
         public int VotesAgainst { get; set; }
         public int CommentsCount { get; set; }
+    }
+
+    public class ProjectFileInfoViewModel
+    {
+        public string FileName { get; set; }
+        public string ContentType { get; set; }
     }
 
     public class ProjectListIndexViewModel

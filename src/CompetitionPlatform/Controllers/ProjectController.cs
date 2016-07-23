@@ -15,12 +15,15 @@ namespace CompetitionPlatform.Controllers
         private readonly IProjectRepository _projectRepository;
         private readonly IProjectFileRepository _projectFileRepository;
         private readonly IProjectCommentsRepository _projectCommentsRepository;
+        private readonly IProjectFileInfoRepository _projectFileInfoRepository;
 
-        public ProjectController(IProjectRepository projectRepository, IProjectFileRepository projectFileRepository, IProjectCommentsRepository projectCommentsRepository)
+        public ProjectController(IProjectRepository projectRepository, IProjectFileRepository projectFileRepository,
+            IProjectCommentsRepository projectCommentsRepository, IProjectFileInfoRepository projectFileInfoRepository)
         {
             _projectRepository = projectRepository;
             _projectFileRepository = projectFileRepository;
             _projectCommentsRepository = projectCommentsRepository;
+            _projectFileInfoRepository = projectFileInfoRepository;
         }
 
         public IActionResult Create()
@@ -46,6 +49,15 @@ namespace CompetitionPlatform.Controllers
             if (projectViewModel.File != null)
             {
                 await _projectFileRepository.InsertProjectFile(projectViewModel.File.OpenReadStream(), newProjectId);
+
+                var fileInfo = new ProjectFileInfoEntity
+                {
+                    RowKey = newProjectId,
+                    ContentType = projectViewModel.File.ContentType,
+                    FileName = projectViewModel.File.FileName
+                };
+
+                await _projectFileInfoRepository.SaveAsync(fileInfo);
             }
 
             return RedirectToAction("Index", "Home");
@@ -63,6 +75,14 @@ namespace CompetitionPlatform.Controllers
                 Comments = comments
             };
 
+            var fileInfo = await _projectFileInfoRepository.GetAsync(id);
+
+            var fileInfoViewModel = new ProjectFileInfoViewModel
+            {
+                ContentType = fileInfo.ContentType,
+                FileName = fileInfo.FileName
+            };
+
             var projectViewModel = new ProjectViewModel
             {
                 Id = project.Id,
@@ -77,7 +97,8 @@ namespace CompetitionPlatform.Controllers
                 VotesFor = project.VotesFor,
                 VotesAgainst = project.VotesAgainst,
                 Created = project.Created,
-                CommentsPartial = commentsPartial
+                CommentsPartial = commentsPartial,
+                FileInfo = fileInfoViewModel
             };
 
             return View(projectViewModel);

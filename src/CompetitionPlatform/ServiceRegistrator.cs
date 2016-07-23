@@ -28,13 +28,15 @@ namespace CompetitionPlatform
             services.AddSingleton<IAzureTableStorage<CommentEntity>>(
                 new AzureTableStorage<CommentEntity>(connstionString, "ProjectComments", log));
 
+            services.AddSingleton<IAzureTableStorage<ProjectFileInfoEntity>>(
+                new AzureTableStorage<ProjectFileInfoEntity>(connstionString, "ProjectFilesInfo", log));
+
             services.AddTransient<IProjectRepository, ProjectRepository>();
             services.AddTransient<IProjectFileRepository, ProjectFileRepository>();
             services.AddTransient<IUsersRepository, UsersRepository>();
             services.AddTransient<IProjectCommentsRepository, ProjectCommentsRepository>();
-
+            services.AddTransient<IProjectFileInfoRepository, ProjectFileInfoRepository>();
         }
-
 
         public static void RegisterLyykeServices(this IServiceCollection services)
         {
