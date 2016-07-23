@@ -38,21 +38,21 @@
             </div>*@
         <input asp-for="File" />
         <div class="form-group">
-                <div class="col-md-4">
-                    <label class="control-label">Category</label>
-                    <select asp-for="@Model.Category" class="form-control">
-                        <option>Finance</option>
-                        <option>Technology</option>
-                        <option>Bitcoin</option>
-                        <option>Mobile</option>
-                    </select>
-                </div>
-                <div class="col-md-4">
-                    <label class="control-label">Tags</label>
-                    <input asp-for="Tags" class="form-control" />
-                </div>
+            <div class="col-md-4">
+                <label class="control-label">Category</label>
+                <select asp-for="@Model.Category" class="form-control">
+                    <option>Finance</option>
+                    <option>Technology</option>
+                    <option>Bitcoin</option>
+                    <option>Mobile</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label class="control-label">Tags</label>
+                <input asp-for="Tags" class="form-control" />
+            </div>
         </div>
-           
+
         <h4>Deadlines</h4>
         <hr />
         <div class="form-group">
@@ -91,7 +91,7 @@
         <div class="form-group">
             <div class="col-md-3">
                 <label asp-for="BudgetThirdPlace" class="control-label"></label>
-                <input asp-for="BudgetThirdPlace" class="form-control"/>
+                <input asp-for="BudgetThirdPlace" class="form-control" />
                 <span asp-validation-for="BudgetThirdPlace" class="text-danger" />
             </div>
         </div>
