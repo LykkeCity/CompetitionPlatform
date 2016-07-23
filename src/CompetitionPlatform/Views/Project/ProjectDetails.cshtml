@@ -97,7 +97,6 @@
         {
             <div class="project-file">
                 <div class="bold-text">@Model.FileInfo.FileName</div>
-                <div>@Model.FileInfo.ContentType</div>
                 <a asp-area="" asp-controller="ProjectDetails" asp-action="DownloadProjectFile" asp-route-id="@Model.Id">Download</a>
             </div>
         }
