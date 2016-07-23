@@ -12,7 +12,7 @@
     @foreach (var comment in Model.Comments)
     {
         <div class="project-comment">
-            <p class="project-comments-user inline">@comment.User</p> <small class="inline">@comment.LastModified.ToString("hh:mm tt MMMM dd, yyyy")</small>
+            <p class="bold-text inline">@comment.User</p> <small class="inline">@comment.LastModified.ToString("hh:mm tt MMMM dd, yyyy")</small>
             <p class="">@comment.Comment</p>
         </div>
     }

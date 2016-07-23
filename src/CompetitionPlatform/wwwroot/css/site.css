@@ -83,7 +83,7 @@ textarea {
     margin-top: 60px;
 }
 
-.project-comments-user {
+.bold-text {
     font-weight: bold;
 }
 
@@ -97,4 +97,8 @@ textarea {
 
 .comments-count {
     margin-right: 15px;
+}
+
+.project-file {
+    margin-top: 30px;
 }
