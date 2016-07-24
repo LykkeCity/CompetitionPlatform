@@ -77,7 +77,12 @@
         <div class="form-group">
             <div class="col-md-3">
                 <label asp-for="BudgetFirstPlace" class="control-label"></label>
-                <input asp-for="BudgetFirstPlace" class="form-control" />
+                
+                <div class="row">
+                    <span class="glyphicon glyphicon-usd inline"></span>
+                    <input asp-for="BudgetFirstPlace" class="form-control inline" />
+                </div>
+                    
                 <span asp-validation-for="BudgetFirstPlace" class="text-danger" />
             </div>
         </div>
