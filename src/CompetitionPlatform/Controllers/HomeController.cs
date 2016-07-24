@@ -19,12 +19,27 @@ namespace CompetitionPlatform.Controllers
             _projectCommentsRepository = projectCommentsRepository;
         }
 
-        public async Task<IActionResult> Index(string projectStatusFilter)
+        public async Task<IActionResult> Index()
+        {
+            var viewModel = await GetProjectListViewModel();
+            return View(viewModel);
+        }
+
+        public async Task<IActionResult> GetProjectList(string projectStatusFilter, string projectCategoryFilter)
+        {
+            var viewModel = await GetProjectListViewModel(projectStatusFilter, projectCategoryFilter);
+            return PartialView("ProjectListPartial", viewModel);
+        }
+
+        private async Task<ProjectListIndexViewModel> GetProjectListViewModel(string projectStatusFilter = null, string projectCategoryFilter = null)
         {
             var projects = await _projectRepository.GetProjectsAsync();
 
-            if (projectStatusFilter != null)
+            if(!string.IsNullOrEmpty(projectStatusFilter))
                 projects = projects.Where(x => x.Status.ToString() == projectStatusFilter);
+
+            if (!string.IsNullOrEmpty(projectCategoryFilter))
+                projects = projects.Where(x => x.Category == projectCategoryFilter);
 
             var compactModels = new List<ProjectCompactViewModel>();
 
@@ -32,7 +47,7 @@ namespace CompetitionPlatform.Controllers
             {
                 var projectCommentsCount = await _projectCommentsRepository.GetProjectCommentsCountAsync(project.Id);
 
-                var compactModel = new ProjectCompactViewModel()
+                var compactModel = new ProjectCompactViewModel
                 {
                     Id = project.Id,
                     Name = project.Name.Length > 43 ? project.Name.Substring(0, 40) + "..." : project.Name,
@@ -47,12 +62,12 @@ namespace CompetitionPlatform.Controllers
                 compactModels.Add(compactModel);
             }
 
-            var viewModel = new ProjectListIndexViewModel()
+            var viewModel = new ProjectListIndexViewModel
             {
                 Projects = compactModels
             };
 
-            return View(viewModel);
+            return viewModel;
         }
 
         public IActionResult About()

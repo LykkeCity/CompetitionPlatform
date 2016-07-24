@@ -1,17 +1,23 @@
 ﻿// Write your Javascript code.
 
-$(function () { 
+$(function () {
     $('.datepicker').datepicker();
 
     $('.datepicker').on('changeDate', function () {
         $(this).datepicker('hide');
     });
 
-    $("#projectStatusFilter").change(function () {
-        $.ajax({
-            url: 'Home/Index?projectStatusFilter=' + $('#projectStatusFilter :selected').text(),
-            data: {}
-        }).done(function () {
+    $("#projectStatusFilter")
+        .change(function () {
+            $("#projectListResults").load('Home/GetProjectList?projectStatusFilter=' +
+                $('#projectStatusFilter').val() + '&projectCategoryFilter=' +
+                $('#projectCategoryFilter').val());
         });
-    });
+
+    $("#projectCategoryFilter")
+        .change(function () {
+            $("#projectListResults").load('Home/GetProjectList?projectStatusFilter=' +
+                $('#projectStatusFilter :selected').val() + '&projectCategoryFilter=' +
+                $('#projectCategoryFilter :selected').val());
+        });
 });
