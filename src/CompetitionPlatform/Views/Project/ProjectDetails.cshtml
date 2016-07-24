@@ -6,6 +6,8 @@
     ViewData["Title"] = "ProjectDetails";
 }
 
+<a asp-area="" asp-controller="Home" asp-action="Index" class="btn btn-sm btn-info"><span class="glyphicon glyphicon-menu-left"></span> Back to Projects</a>
+
 <h2>@Model.Name</h2>
 
 <div class="project-details-budget inline">
@@ -30,7 +32,7 @@
 }
 
 <div class="progress">
-    @{ var completion = 0;}
+    @{ int completion;}
 
     @switch (Model.Status)
     {

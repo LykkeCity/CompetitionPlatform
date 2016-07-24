@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CompetitionPlatform.Data.AzureRepositories;
 using CompetitionPlatform.Data.AzureRepositories.Project;
 using CompetitionPlatform.Models.ProjectViewModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -13,16 +13,16 @@ namespace CompetitionPlatform.Controllers
     public class ProjectController : Controller
     {
         private readonly IProjectRepository _projectRepository;
-        private readonly IProjectFileRepository _projectFileRepository;
         private readonly IProjectCommentsRepository _projectCommentsRepository;
+        private readonly IProjectFileRepository _projectFileRepository;
         private readonly IProjectFileInfoRepository _projectFileInfoRepository;
 
-        public ProjectController(IProjectRepository projectRepository, IProjectFileRepository projectFileRepository,
-            IProjectCommentsRepository projectCommentsRepository, IProjectFileInfoRepository projectFileInfoRepository)
+        public ProjectController(IProjectRepository projectRepository, IProjectCommentsRepository projectCommentsRepository,
+            IProjectFileRepository projectFileRepository, IProjectFileInfoRepository projectFileInfoRepository)
         {
             _projectRepository = projectRepository;
-            _projectFileRepository = projectFileRepository;
             _projectCommentsRepository = projectCommentsRepository;
+            _projectFileRepository = projectFileRepository;
             _projectFileInfoRepository = projectFileInfoRepository;
         }
 
@@ -34,38 +34,24 @@ namespace CompetitionPlatform.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateProject(ProjectViewModel projectViewModel)
         {
-            var tags = projectViewModel.Tags.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-
-            var tagsList = new List<string>(tags);
-
-            tagsList = tagsList.Where(s => !string.IsNullOrWhiteSpace(s)).ToList();
-
-            tagsList = tagsList.Select(s => s.Trim()).ToList();
-
-            projectViewModel.Tags = JsonConvert.SerializeObject(tagsList);
+            projectViewModel.Tags = TrimAndSerializeTags(projectViewModel.Tags);
 
             projectViewModel.Created = DateTime.UtcNow;
 
-            string newProjectId = await _projectRepository.SaveAsync(projectViewModel);
+            var newProjectId = await _projectRepository.SaveAsync(projectViewModel);
 
-            if (projectViewModel.File != null)
-            {
-                await _projectFileRepository.InsertProjectFile(projectViewModel.File.OpenReadStream(), newProjectId);
-
-                var fileInfo = new ProjectFileInfoEntity
-                {
-                    RowKey = newProjectId,
-                    ContentType = projectViewModel.File.ContentType,
-                    FileName = projectViewModel.File.FileName
-                };
-
-                await _projectFileInfoRepository.SaveAsync(fileInfo);
-            }
+            await SaveProjectFile(projectViewModel.File, newProjectId);
 
             return RedirectToAction("Index", "Home");
         }
 
         public async Task<IActionResult> ProjectDetails(string id)
+        {
+            var viewModel = await GetProjectViewModel(id);
+            return View(viewModel);
+        }
+
+        private async Task<ProjectViewModel> GetProjectViewModel(string id)
         {
             var project = await _projectRepository.GetAsync(id);
 
@@ -107,7 +93,35 @@ namespace CompetitionPlatform.Controllers
                 projectViewModel.FileInfo = fileInfoViewModel;
             }
 
-            return View(projectViewModel);
+            return projectViewModel;
+        }
+
+        private string TrimAndSerializeTags(string tagsString)
+        {
+            var tags = tagsString.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            var tagsList = new List<string>(tags);
+
+            tagsList = tagsList.Where(s => !string.IsNullOrWhiteSpace(s)).ToList();
+            tagsList = tagsList.Select(s => s.Trim()).ToList();
+
+            return JsonConvert.SerializeObject(tagsList);
+        }
+
+        private async Task SaveProjectFile(IFormFile file, string projectId)
+        {
+            if (file != null)
+            {
+                await _projectFileRepository.InsertProjectFile(file.OpenReadStream(), projectId);
+
+                var fileInfo = new ProjectFileInfoEntity
+                {
+                    RowKey = projectId,
+                    ContentType = file.ContentType,
+                    FileName = file.FileName
+                };
+
+                await _projectFileInfoRepository.SaveAsync(fileInfo);
+            }
         }
     }
 }
