@@ -111,3 +111,12 @@ textarea {
 .project-tile-bottom {
     margin-top: 10px;
 }
+
+.projects-filter-buttons {
+    margin-bottom: 25px;
+}
+
+.project-description {
+    min-height: 150px;
+    max-height: 150px;
+}
