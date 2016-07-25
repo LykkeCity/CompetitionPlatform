@@ -101,8 +101,13 @@
         @if (Model.FileInfo != null)
         {
             <div class="project-file">
-                <div class="bold-text">@Model.FileInfo.FileName</div>
-                <a asp-area="" asp-controller="ProjectDetails" asp-action="DownloadProjectFile" asp-route-id="@Model.Id">Download</a>
+                <div class="inline">
+                    <span class="glyphicon glyphicon-file inline project-file-icon"></span>
+                </div>
+                <div class="inline">
+                    <div class="bold-text">@Model.FileInfo.FileName</div>
+                    <a asp-area="" asp-controller="ProjectDetails" asp-action="DownloadProjectFile" asp-route-id="@Model.Id">Download</a>
+                </div>
             </div>
         }
     </div>

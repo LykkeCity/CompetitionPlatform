@@ -120,3 +120,8 @@ textarea {
     min-height: 150px;
     max-height: 150px;
 }
+
+.project-file-icon {
+    font-size: 30px;
+    margin-right: 5px;
+}
