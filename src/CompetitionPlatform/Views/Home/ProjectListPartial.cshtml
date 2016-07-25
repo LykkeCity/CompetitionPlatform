@@ -19,9 +19,14 @@
             </div>
         </div>
         <div>@project.Description</div>
-        <div class="row">
+        <div class="row project-tile-bottom">
             <a asp-area="" asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.Id" class="btn btn-xs btn-info pull-right inline">...</a>
-            <div class="inline pull-right comments-count"><span class="glyphicon glyphicon-comment"></span> @project.CommentsCount</div>
+            <div class="inline pull-right comments-count">
+                <span class="glyphicon glyphicon-comment index-comments-icon"></span>
+                <div class="inline">
+                    @project.CommentsCount
+                </div>
+            </div>
         </div>
         <hr />
     </div>

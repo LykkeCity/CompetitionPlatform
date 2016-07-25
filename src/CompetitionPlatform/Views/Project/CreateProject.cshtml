@@ -18,6 +18,7 @@
                 <span asp-validation-for="Name" class="text-danger" />
             </div>
         </div>
+
         <div class="form-group">
             <div class="col-md-9">
                 <label asp-for="Description" class="control-label"></label>
@@ -25,18 +26,19 @@
                 <span asp-validation-for="Description" class="text-danger" />
             </div>
         </div>
-        @*<div class="form-group">
-                <div class="col-md-9">
-                    <div>
-                        <label class="control-label">Brief</label>
-                    </div>
-                    <label class="btn btn-info btn-file">
-                        Choose File... <input type="file" id="file" style="display: none;">
-                    </label>
-                    <label class="help-block">Maximum file size is 3Mb</label>
+
+        <div class="form-group">
+            <div class="col-md-9">
+                <div>
+                    <label class="control-label">Brief</label>
                 </div>
-            </div>*@
-        <input asp-for="File" />
+                <label class="btn btn-info btn-file">
+                    Choose File... <input type="file" name="File" style="display: none;">
+                </label>
+                <label class="help-block">Maximum file size is 3Mb</label>
+            </div>
+        </div>
+
         <div class="form-group">
             <div class="col-md-4">
                 <label class="control-label">Category</label>
@@ -72,34 +74,48 @@
                 <span asp-validation-for="VotingDeadline" class="text-danger" />
             </div>
         </div>
+
         <h4>Budget</h4>
         <hr />
         <div class="form-group">
             <div class="col-md-3">
                 <label asp-for="BudgetFirstPlace" class="control-label"></label>
-                
-                <div class="row">
-                    <span class="glyphicon glyphicon-usd inline"></span>
-                    <input asp-for="BudgetFirstPlace" class="form-control inline" />
+                <div class="input-group input-group-unstyled">
+                    <span class="input-group-addon">
+                        <i class="glyphicon glyphicon-usd"></i>
+                    </span>
+                    <input asp-for="BudgetFirstPlace" class="form-control" />
+                    <span asp-validation-for="BudgetFirstPlace" class="text-danger" />
                 </div>
-                    
-                <span asp-validation-for="BudgetFirstPlace" class="text-danger" />
             </div>
         </div>
+
         <div class="form-group">
             <div class="col-md-3">
                 <label asp-for="BudgetSecondPlace" class="control-label"></label>
-                <input asp-for="BudgetSecondPlace" class="form-control" />
-                <span asp-validation-for="BudgetSecondPlace" class="text-danger" />
+                <div class="input-group input-group-unstyled">
+                    <span class="input-group-addon">
+                        <i class="glyphicon glyphicon-usd"></i>
+                    </span>
+                    <input asp-for="BudgetSecondPlace" class="form-control" />
+                    <span asp-validation-for="BudgetSecondPlace" class="text-danger" />
+                </div>
             </div>
         </div>
+
         <div class="form-group">
             <div class="col-md-3">
                 <label asp-for="BudgetThirdPlace" class="control-label"></label>
-                <input asp-for="BudgetThirdPlace" class="form-control" />
-                <span asp-validation-for="BudgetThirdPlace" class="text-danger" />
+                <div class="input-group input-group-unstyled">
+                    <span class="input-group-addon">
+                        <i class="glyphicon glyphicon-usd"></i>
+                    </span>
+                    <input asp-for="BudgetThirdPlace" class="form-control" />
+                    <span asp-validation-for="BudgetThirdPlace" class="text-danger" />
+                </div>
             </div>
         </div>
+
         <hr />
         <div class="form-group">
             <div class="col-md-9">
