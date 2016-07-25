@@ -64,9 +64,12 @@
 <div class="project-details-tags inline">
     <h4>Tags</h4>
     <div>
-        @foreach (var category in Model.Categories)
+        @if (Model.Categories != null)
         {
-            <span class="label label-default">@category</span>
+            foreach (var category in Model.Categories)
+            {
+                <span class="label label-default">@category</span>
+            }
         }
     </div>
 </div>

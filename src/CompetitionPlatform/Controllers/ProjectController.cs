@@ -70,7 +70,6 @@ namespace CompetitionPlatform.Controllers
                 Id = project.Id,
                 Name = project.Name,
                 Description = project.Description,
-                Categories = JsonConvert.DeserializeObject<List<string>>(project.Tags),
                 Category = project.Category,
                 Status = project.Status,
                 BudgetFirstPlace = project.BudgetFirstPlace,
@@ -81,6 +80,9 @@ namespace CompetitionPlatform.Controllers
                 Created = project.Created,
                 CommentsPartial = commentsPartial
             };
+
+            if (!string.IsNullOrEmpty(project.Tags))
+                projectViewModel.Categories = JsonConvert.DeserializeObject<List<string>>(project.Tags);
 
             var fileInfo = await _projectFileInfoRepository.GetAsync(id);
 
@@ -100,6 +102,9 @@ namespace CompetitionPlatform.Controllers
 
         private string TrimAndSerializeTags(string tagsString)
         {
+            if (string.IsNullOrEmpty(tagsString))
+                return null;
+
             var tags = tagsString.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
             var tagsList = new List<string>(tags);
 
