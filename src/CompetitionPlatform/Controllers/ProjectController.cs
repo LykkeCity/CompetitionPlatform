@@ -59,7 +59,7 @@ namespace CompetitionPlatform.Controllers
             
             comments = comments.OrderBy(c => c.Created).Reverse().ToList();
 
-            var commentsPartial = new ProjectCommentPartialViewModel()
+            var commentsPartial = new ProjectCommentPartialViewModel
             {
                 ProjectId = project.Id,
                 Comments = comments

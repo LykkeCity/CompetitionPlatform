@@ -20,9 +20,9 @@ namespace CompetitionPlatform.Data.AzureRepositories.Vote
         }
 
         public string ProjectId { get; set; }
-        public string ParticipantUserId { get; set; }
         public string VoterUserId { get; set; }
-
+        public string ParticipantUserId { get; set; }
+        
         public static ProjectResultVoteEntity Create(IProjectResultVoteData src)
         {
             var result = new ProjectResultVoteEntity

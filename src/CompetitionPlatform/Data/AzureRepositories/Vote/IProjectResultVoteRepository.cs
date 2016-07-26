@@ -8,8 +8,8 @@ namespace CompetitionPlatform.Data.AzureRepositories.Vote
     public interface IProjectResultVoteData
     {
         string ProjectId { get; set; }
-        string ParticipantUserId { get; set; }
         string VoterUserId { get; set; }
+        string ParticipantUserId { get; set; }
     }
 
     public interface IProjectResultVoteRepository
