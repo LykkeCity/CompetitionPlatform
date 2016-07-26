@@ -134,3 +134,7 @@ textarea {
 .menu-top-panel {
     background-color: #eaedef;
 }
+
+.new-project-button {
+    margin-top: 20px;
+}
