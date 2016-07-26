@@ -125,3 +125,12 @@ textarea {
     font-size: 30px;
     margin-right: 5px;
 }
+
+.project-details-back {
+    margin-top: 20px;
+}
+
+.menu-top-panel {
+    width: 100%;
+    background-color: #eaedef;
+}
