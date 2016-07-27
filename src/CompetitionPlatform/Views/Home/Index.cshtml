@@ -18,11 +18,10 @@
     <div class="row col-md-3 project-filter">
         <select id="projectStatusFilter" name="projectStatusFilter" class="form-control" value="Create">
             <option value="">Status : All</option>
-            <option value="Initiative">Initiative</option>
-            <option value="CompetitionRegistration">Competition Registration</option>
-            <option value="Implementation">Implementation</option>
-            <option value="Voting">Voting</option>
-            <option value="Archive">Archive</option>
+            @foreach (var status in Status.GetValues(typeof(Status)))
+            {
+                <option value=@status>@status</option>
+            }
         </select>
     </div>
 
