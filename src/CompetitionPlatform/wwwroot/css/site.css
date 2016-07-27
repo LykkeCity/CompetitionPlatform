@@ -135,6 +135,11 @@ textarea {
     background-color: #eaedef;
 }
 
+.menu-top-panel a {
+    margin-left: 15px;
+    margin-bottom: 35px;
+}
+
 .new-project-button {
-    margin-top: 20px;
+    margin-top: 30px;
 }
