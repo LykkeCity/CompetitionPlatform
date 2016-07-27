@@ -18,7 +18,7 @@
     <div class="row col-md-3 project-filter">
         <select id="projectStatusFilter" name="projectStatusFilter" class="form-control" value="Create">
             <option value="">Status : All</option>
-            @foreach (var status in Status.GetValues(typeof(Status)))
+            @foreach (var status in Enum.GetValues(typeof(Status)))
             {
                 <option value=@status>@status</option>
             }
