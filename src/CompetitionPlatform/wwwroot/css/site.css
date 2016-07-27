@@ -133,12 +133,14 @@ textarea {
 
 .menu-top-panel {
     background-color: #eaedef;
+    margin: 0 auto;
+    width: 100%;
 }
 
-.menu-top-panel a {
-    margin-left: 15px;
-    margin-bottom: 35px;
-}
+    .menu-top-panel a {
+        margin-left: 15px;
+        margin-bottom: 35px;
+    }
 
 .new-project-button {
     margin-top: 30px;
