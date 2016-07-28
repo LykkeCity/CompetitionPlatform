@@ -1,12 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using CompetitionPlatform.Data.AzureRepositories.Users;
 using CompetitionPlatform.Models;
 using Microsoft.AspNetCore.Http.Authentication;
-using Microsoft.AspNetCore.Http.Authentication.Internal;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CompetitionPlatform.Controllers

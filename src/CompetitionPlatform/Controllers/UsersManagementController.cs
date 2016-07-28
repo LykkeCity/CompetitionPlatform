@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using CompetitionPlatform.Data.AzureRepositories.Users;
 using CompetitionPlatform.Models;

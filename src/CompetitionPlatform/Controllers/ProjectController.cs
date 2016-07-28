@@ -56,7 +56,7 @@ namespace CompetitionPlatform.Controllers
             var project = await _projectRepository.GetAsync(id);
 
             var comments = await _projectCommentsRepository.GetProjectCommentsAsync(id);
-            
+
             comments = comments.OrderBy(c => c.Created).Reverse().ToList();
 
             var commentsPartial = new ProjectCommentPartialViewModel

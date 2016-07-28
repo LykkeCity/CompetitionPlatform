@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AzureStorage.Blobs;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -12,16 +7,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using CompetitionPlatform.Data;
 using CompetitionPlatform.Data.AzureRepositories.Log;
-using CompetitionPlatform.Data.AzureRepositories.Project;
 using CompetitionPlatform.Models;
-using CompetitionPlatform.Services;
 using AzureStorage.Tables;
-using CompetitionPlatform.Data.AzureRepositories.Users;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Http;
-using Microsoft.VisualBasic.CompilerServices;
-using Microsoft.WindowsAzure.Storage.Shared.Protocol;
-using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 
 namespace CompetitionPlatform
 {

@@ -1,8 +1,5 @@
 ﻿using AzureStorage.Blobs;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace CompetitionPlatform.Data.AzureRepositories.Project
