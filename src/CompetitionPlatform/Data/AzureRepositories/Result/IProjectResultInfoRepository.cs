@@ -10,6 +10,8 @@ namespace CompetitionPlatform.Data.AzureRepositories.Result
         string ProjectId { get; set; }
         string User { get; set; }
         DateTime Submitted { get; set; }
+        string FileName { get; set; }
+        string ContentType { get; set; }
     }
 
     public interface IProjectResultInfoRepository

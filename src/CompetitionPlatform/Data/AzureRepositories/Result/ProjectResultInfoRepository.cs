@@ -23,6 +23,8 @@ namespace CompetitionPlatform.Data.AzureRepositories.Result
         public string ProjectId { get; set; }
         public string User { get; set; }
         public DateTime Submitted { get; set; }
+        public string FileName { get; set; }
+        public string ContentType { get; set; }
 
         public static ProjectResultInfoEntity Create(IProjectResultInfoData src)
         {
@@ -31,7 +33,9 @@ namespace CompetitionPlatform.Data.AzureRepositories.Result
                 PartitionKey = GeneratePartitionKey(src.ProjectId),
                 RowKey = GenerateRowKey(),
                 User = src.User,
-                Submitted = src.Submitted
+                Submitted = src.Submitted,
+                FileName = src.FileName,
+                ContentType = src.ContentType
             };
 
             return result;
