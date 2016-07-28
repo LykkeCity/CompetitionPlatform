@@ -15,14 +15,14 @@ namespace CompetitionPlatform.Data.AzureRepositories.Result
             _blobStorage = blobStorage;
         }
 
-        public async Task InsertProjectResult(Stream stream, string projectId, string userName)
+        public async Task InsertProjectResult(Stream stream, string resultId)
         {
-            await _blobStorage.SaveBlobAsync(ContainerName, projectId + userName, stream);
+            await _blobStorage.SaveBlobAsync(ContainerName, resultId, stream);
         }
 
-        public async Task<Stream> GetProjectResult(string projectId, string userName)
+        public async Task<Stream> GetProjectResult(string resultId)
         {
-            return await _blobStorage.GetAsync(ContainerName, projectId + userName);
+            return await _blobStorage.GetAsync(ContainerName, resultId);
         }
     }
 }
