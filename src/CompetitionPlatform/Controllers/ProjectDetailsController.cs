@@ -39,5 +39,15 @@ namespace CompetitionPlatform.Controllers
             var fileStream = await _projectFileRepository.GetProjectFile(id);
             return File(fileStream, fileInfo.ContentType, fileInfo.FileName);
         }
+
+        public async Task VoteFor(string id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task VoteAgainst(string id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

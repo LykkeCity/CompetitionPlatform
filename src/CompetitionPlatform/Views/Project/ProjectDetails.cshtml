@@ -98,12 +98,20 @@
                 <div>
                     <p class="project-voting-text">Cast your vote for or against the competition. Do you think this is the project that Lykke City needs?</p>
                     <div class="project-voting-buttons">
-                        <button type="button" class="btn btn-sm btn-primary alert-success">
+                        @*<button type="button" class="btn btn-sm btn-primary alert-success">
                             <span class="glyphicon glyphicon-thumbs-up"></span>
                         </button>
                         <button type="button" class="btn btn-sm btn-primary alert-danger">
                             <span class="glyphicon glyphicon-thumbs-down"></span>
-                        </button>
+                        </button>*@
+                        <a asp-area="" asp-controller="ProjectDetails" asp-action="VoteFor" asp-route-id="@Model.Id" type="button" class="btn btn-sm btn-primary alert-success">
+                            <span class="glyphicon glyphicon-thumbs-up"></span>
+                        </a>
+
+                        <a asp-area="" asp-controller="ProjectDetails" asp-action="VoteAgainst" asp-route-id="@Model.Id" type="button" class="btn btn-sm btn-primary alert-danger">
+                            <span class="glyphicon glyphicon-thumbs-up"></span>
+                        </a>
+
                         <p class="inline">@(Model.VotesFor + Model.VotesAgainst) Votes</p>
                     </div>
                 </div>
@@ -122,7 +130,7 @@
 
             <div class="project-details-tags">
                 <h3 class="bold-text">Tags</h3>
-                <hr/>
+                <hr />
                 <div>
                     @if (Model.Categories != null)
                     {
@@ -138,7 +146,7 @@
 
             <div>
                 <h3 class="bold-text">Share</h3>
-                <hr/>
+                <hr />
             </div>
 
             <div>
