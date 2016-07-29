@@ -97,13 +97,15 @@
             {
                 <div>
                     <p class="project-voting-text">Cast your vote for or against the competition. Do you think this is the project that Lykke City needs?</p>
-                    <button type="button" class="btn btn-sm btn-primary alert-success">
-                        <span class="glyphicon glyphicon-thumbs-up"></span>
-                    </button>
-                    <button type="button" class="btn btn-sm btn-primary alert-danger">
-                        <span class="glyphicon glyphicon-thumbs-down"></span>
-                    </button>
-                    <p class="inline">@(Model.VotesFor + Model.VotesAgainst) Votes</p>
+                    <div class="project-voting-buttons">
+                        <button type="button" class="btn btn-sm btn-primary alert-success">
+                            <span class="glyphicon glyphicon-thumbs-up"></span>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-primary alert-danger">
+                            <span class="glyphicon glyphicon-thumbs-down"></span>
+                        </button>
+                        <p class="inline">@(Model.VotesFor + Model.VotesAgainst) Votes</p>
+                    </div>
                 </div>
             }
             <div>

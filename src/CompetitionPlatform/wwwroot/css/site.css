@@ -154,6 +154,11 @@ textarea {
     margin-top: 30px;
 }
 
+.project-voting-buttons {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
 .project-voting-text {
     font-size: 16px;
     color: grey;
