@@ -6,113 +6,123 @@
 }
 
 <a asp-area="" asp-controller="Home" asp-action="Index" class="btn btn-sm btn-info project-details-back"><span class="glyphicon glyphicon-menu-left"></span> Back to Projects</a>
+<div class="container">
+    <h2>@Model.Name</h2>
+    <div class="row">
+        <div class="col-md-9">
 
-<h2>@Model.Name</h2>
-
-<div class="project-details-budget inline">
-    <span class="h2">$@Model.BudgetFirstPlace</span>
-    <div>1st PLACE</div>
-</div>
+            <div class="project-details-budget inline">
+                <span class="h2">$@Model.BudgetFirstPlace</span>
+                <div>1st PLACE</div>
+            </div>
 
 
-@if (Model.BudgetSecondPlace != null)
-{
-    <div class="project-details-budget inline">
-        <span class="h2">$@Model.BudgetSecondPlace</span>
-        <div>2nd PLACE</div>
-    </div>
-}
-@if (Model.BudgetThirdPlace != null)
-{
-    <div class="project-details-budget inline">
-        <span class="h2">$@Model.BudgetThirdPlace</span>
-        <div>3rd PLACE</div>
-    </div>
-}
-
-<div class="progress">
-    @{ int completion;}
-
-    @switch (Model.Status)
-    {
-        case Status.Initiative:
-            completion = 20;
-            break;
-        case Status.CompetitionRegistration:
-            completion = 40;
-            break;
-        case Status.Implementation:
-            completion = 60;
-            break;
-        case Status.Voting:
-            completion = 80;
-            break;
-        case Status.Archive:
-            completion = 100;
-            break;
-        default:
-            completion = 0;
-            break;
-    }
-
-    <div class="progress-bar" role="progressbar" aria-valuenow="@completion" aria-valuemin="0" aria-valuemax="100" style="width: @completion%;">
-        @Model.Status
-    </div>
-</div>
-
-<div class="project-details-tags inline">
-    <h4>Tags</h4>
-    <div>
-        @if (Model.Categories != null)
-        {
-            foreach (var category in Model.Categories)
+            @if (Model.BudgetSecondPlace != null)
             {
-                <span class="label label-default">@category</span>
-            }
-        }
-    </div>
-</div>
-
-<div class="inline pull-right">
-    <h4>Category</h4>
-    <div>
-        <span class="label label-info">@Model.Category</span>
-    </div>
-</div>
-
-<div class="inline pull-right">
-    <h4>Created</h4>
-    <div>
-        <span class="label label-info">@Model.Created.ToString("MMMM dd, yyyy")</span>
-    </div>
-</div>
-
-<ul class="nav nav-tabs" role="tablist">
-    <li role="presentation" class="active"><a href="#Info" aria-controls="Info" role="tab" data-toggle="tab">Info</a></li>
-    <li role="presentation"><a href="#Participants" aria-controls="Participants" role="tab" data-toggle="tab">Participants</a></li>
-    <li role="presentation"><a href="#Comments" aria-controls="Comments" role="tab" data-toggle="tab">Comments <span class="badge">@Model.CommentsPartial.Comments.Count()</span></a></li>
-    <li role="presentation"><a href="#Results" aria-controls="Results" role="tab" data-toggle="tab">Results</a></li>
-</ul>
-
-<div class="tab-content project-details-tabs">
-    <div role="tabpanel" class="tab-pane active" id="Info">
-        @Model.Description
-        @if (Model.FileInfo != null)
-        {
-            <div class="project-file">
-                <div class="inline">
-                    <span class="glyphicon glyphicon-file inline project-file-icon"></span>
+                <div class="project-details-budget inline">
+                    <span class="h2">$@Model.BudgetSecondPlace</span>
+                    <div>2nd PLACE</div>
                 </div>
-                <div class="inline">
-                    <div class="bold-text">@Model.FileInfo.FileName</div>
-                    <a asp-area="" asp-controller="ProjectDetails" asp-action="DownloadProjectFile" asp-route-id="@Model.Id">Download</a>
+            }
+            @if (Model.BudgetThirdPlace != null)
+            {
+                <div class="project-details-budget inline">
+                    <span class="h2">$@Model.BudgetThirdPlace</span>
+                    <div>3rd PLACE</div>
+                </div>
+            }
+
+            <div class="progress">
+                @{ int completion;}
+
+                @switch (Model.Status)
+                {
+                    case Status.Initiative:
+                        completion = 20;
+                        break;
+                    case Status.CompetitionRegistration:
+                        completion = 40;
+                        break;
+                    case Status.Implementation:
+                        completion = 60;
+                        break;
+                    case Status.Voting:
+                        completion = 80;
+                        break;
+                    case Status.Archive:
+                        completion = 100;
+                        break;
+                    default:
+                        completion = 0;
+                        break;
+                }
+
+                <div class="progress-bar" role="progressbar" aria-valuenow="@completion" aria-valuemin="0" aria-valuemax="100" style="width: @completion%;">
+                    @Model.Status
                 </div>
             </div>
-        }
+
+            <div class="project-details-tags inline">
+                <h4>Tags</h4>
+                <div>
+                    @if (Model.Categories != null)
+                    {
+                        foreach (var category in Model.Categories)
+                        {
+                            <span class="label label-default">@category</span>
+                        }
+                    }
+                </div>
+            </div>
+
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#Info" aria-controls="Info" role="tab" data-toggle="tab">Info</a></li>
+                <li role="presentation"><a href="#Participants" aria-controls="Participants" role="tab" data-toggle="tab">Participants</a></li>
+                <li role="presentation"><a href="#Comments" aria-controls="Comments" role="tab" data-toggle="tab">Comments <span class="badge">@Model.CommentsPartial.Comments.Count()</span></a></li>
+                <li role="presentation"><a href="#Results" aria-controls="Results" role="tab" data-toggle="tab">Results</a></li>
+            </ul>
+
+            <div class="tab-content project-details-tabs">
+                <div role="tabpanel" class="tab-pane active" id="Info">
+                    @Model.Description
+                    @if (Model.FileInfo != null)
+                    {
+                        <div class="project-file">
+                            <div class="inline">
+                                <span class="glyphicon glyphicon-file inline project-file-icon"></span>
+                            </div>
+                            <div class="inline">
+                                <div class="bold-text">@Model.FileInfo.FileName</div>
+                                <a asp-area="" asp-controller="ProjectDetails" asp-action="DownloadProjectFile" asp-route-id="@Model.Id">Download</a>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div role="tabpanel" class="tab-pane" id="Participants">....</div>
+                <div role="tabpanel" class="tab-pane" id="Comments">
+                    @await Html.PartialAsync("CommentsPartial", Model.CommentsPartial)
+                </div>
+                <div role="tabpanel" class="tab-pane" id="Results">....</div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="pull-right">
+                <p>
+                    Category: <span class="label label-info">@Model.Category</span>
+                </p>
+            </div>
+
+            <div class="pull-right">
+                <p>
+                    Created: @Model.Created.ToString("MMMM dd, yyyy")
+                </p>
+                
+                @*<div>
+                    <span class="label label-info">@Model.Created.ToString("MMMM dd, yyyy")</span>
+                </div>*@
+            </div>
+        </div>
     </div>
-    <div role="tabpanel" class="tab-pane" id="Participants">....</div>
-    <div role="tabpanel" class="tab-pane" id="Comments">
-        @await Html.PartialAsync("CommentsPartial", Model.CommentsPartial)
-    </div>
-    <div role="tabpanel" class="tab-pane" id="Results">....</div>
 </div>
+
