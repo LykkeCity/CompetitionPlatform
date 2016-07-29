@@ -61,19 +61,6 @@
                 </div>
             </div>
 
-            <div class="project-details-tags inline">
-                <h4>Tags</h4>
-                <div>
-                    @if (Model.Categories != null)
-                    {
-                        foreach (var category in Model.Categories)
-                        {
-                            <span class="label label-default">@category</span>
-                        }
-                    }
-                </div>
-            </div>
-
             <ul class="nav nav-tabs" role="tablist">
                 <li role="presentation" class="active"><a href="#Info" aria-controls="Info" role="tab" data-toggle="tab">Info</a></li>
                 <li role="presentation"><a href="#Participants" aria-controls="Participants" role="tab" data-toggle="tab">Participants</a></li>
@@ -129,6 +116,20 @@
                 <p>
                     Created: @Model.Created.ToString("MMMM dd, yyyy")
                 </p>
+            </div>
+
+            <div class="project-details-tags">
+                <h3 class="bold-text">Tags</h3>
+                <hr />
+                <div>
+                    @if (Model.Categories != null)
+                    {
+                        foreach (var category in Model.Categories)
+                        {
+                            <span class="label label-default">@category</span>
+                        }
+                    }
+                </div>
             </div>
         </div>
     </div>
