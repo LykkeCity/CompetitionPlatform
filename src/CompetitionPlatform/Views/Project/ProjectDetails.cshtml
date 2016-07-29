@@ -120,16 +120,28 @@
 
             <div class="project-details-tags">
                 <h3 class="bold-text">Tags</h3>
-                <hr />
+                <hr/>
                 <div>
                     @if (Model.Categories != null)
                     {
                         foreach (var category in Model.Categories)
                         {
-                            <span class="label label-default">@category</span>
+                            <div class="project-details-tag inline">
+                                <span class="label label-default">@category</span>
+                            </div>
                         }
                     }
                 </div>
+            </div>
+
+            <div>
+                <h3 class="bold-text">Share</h3>
+                <hr/>
+            </div>
+
+            <div>
+                <h3 class="bold-text">Other Projects</h3>
+                <hr />
             </div>
         </div>
     </div>
