@@ -16,7 +16,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Result
 
         public static string GenerateRowKey()
         {
-            return Guid.NewGuid().ToString();
+            return Guid.NewGuid().ToString("N");
         }
 
         public string Id => RowKey;
