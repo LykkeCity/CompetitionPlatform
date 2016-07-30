@@ -98,17 +98,12 @@
                 <div>
                     <p class="project-voting-text">Cast your vote for or against the competition. Do you think this is the project that Lykke City needs?</p>
                     <div class="project-voting-buttons">
-                        @*<button type="button" class="btn btn-sm btn-primary alert-success">
-                            <span class="glyphicon glyphicon-thumbs-up"></span>
-                        </button>
-                        <button type="button" class="btn btn-sm btn-primary alert-danger">
-                            <span class="glyphicon glyphicon-thumbs-down"></span>
-                        </button>*@
-                        <a asp-area="" asp-controller="ProjectDetails" asp-action="VoteFor" asp-route-id="@Model.Id" type="button" class="btn btn-sm btn-primary alert-success">
+
+                        <a asp-area="" asp-controller="ProjectDetails" asp-action="VoteFor" asp-route-id="@Model.Id" type="button" id="voteForButton" class="btn btn-sm btn-primary alert-success">
                             <span class="glyphicon glyphicon-thumbs-up"></span>
                         </a>
 
-                        <a asp-area="" asp-controller="ProjectDetails" asp-action="VoteAgainst" asp-route-id="@Model.Id" type="button" class="btn btn-sm btn-primary alert-danger">
+                        <a asp-area="" asp-controller="ProjectDetails" asp-action="VoteAgainst" asp-route-id="@Model.Id" type="button" id="voteAgainstButton" class="btn btn-sm btn-primary alert-danger">
                             <span class="glyphicon glyphicon-thumbs-up"></span>
                         </a>
 
