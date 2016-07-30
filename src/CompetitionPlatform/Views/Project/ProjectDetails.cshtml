@@ -1,4 +1,5 @@
 @using System.Threading.Tasks
+@using CompetitionPlatform.Models.ProjectViewModels
 @model CompetitionPlatform.Models.ProjectViewModels.ProjectViewModel
 
 @{
@@ -107,7 +108,13 @@
                             <span class="glyphicon glyphicon-thumbs-up"></span>
                         </a>
 
+                        <input asp-for="@Model.VotesFor" type="hidden"/>
+                        <input asp-for="@Model.VotesAgainst" type="hidden" />
+
                         <p class="inline">@(Model.VotesFor + Model.VotesAgainst) Votes</p>
+                        @*@await Html.PartialAsync("VotePartial", new ProjectVoteViewModel { VotesFor = Model.VotesFor, VotesAgainst = Model.VotesAgainst });*@
+                        <div id="projectVoteResults">
+                        </div>
                     </div>
                 </div>
             }

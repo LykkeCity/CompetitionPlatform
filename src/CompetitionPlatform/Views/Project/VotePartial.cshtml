@@ -1,0 +1,16 @@
+@model CompetitionPlatform.Models.ProjectViewModels.ProjectVoteViewModel
+
+@{
+    var totalVotes = Model.VotesFor + Model.VotesAgainst;
+}
+<div class="progress">
+    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="@Model.VotesFor" aria-valuemin="0" aria-valuemax="@totalVotes" style="width: @Model.VotesFor%">
+        <span class="sr-only">@Model.VotesFor</span>
+    </div>
+</div>
+
+<div class="progress">
+    <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="@Model.VotesAgainst" aria-valuemin="0" aria-valuemax="@totalVotes" style="width: @Model.VotesAgainst%">
+        <span class="sr-only">@Model.VotesAgainst</span>
+    </div>
+</div>
