@@ -22,14 +22,18 @@ $(function () {
         });
 
     $('#voteForButton')
-        .click(function() {
+        .click(function () {
             var $this = $(this);
-            $this.text('Yes');
+
+            $this.append('Yes');
+
+            $('#projectVoteResults').load('ProjectDetails/GetProjectVotesResults?votesFor=' + $('#VotesFor').val()
+                 + '&votesAgainst=' + $('#VotesAgainst').val());
         });
 
     $('#voteAgainstButton')
         .click(function () {
             var $this = $(this);
-            $this.text('No');
+            $this.append('No');
         });
 });
