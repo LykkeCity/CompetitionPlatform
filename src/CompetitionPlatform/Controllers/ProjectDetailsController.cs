@@ -1,8 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using CompetitionPlatform.Data.AzureRepositories.Project;
+using CompetitionPlatform.Data.AzureRepositories.Vote;
 using CompetitionPlatform.Models.ProjectViewModels;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,13 +12,18 @@ namespace CompetitionPlatform.Controllers
         private readonly IProjectCommentsRepository _projectCommentsRepository;
         private readonly IProjectFileRepository _projectFileRepository;
         private readonly IProjectFileInfoRepository _projectFileInfoRepository;
+        private readonly IProjectVoteRepository _projectVoteRepository;
+        private readonly IProjectRepository _projectRepository;
 
         public ProjectDetailsController(IProjectCommentsRepository projectCommentsRepository, IProjectFileRepository projectFileRepository,
-            IProjectFileInfoRepository projectFileInfoRepository)
+            IProjectFileInfoRepository projectFileInfoRepository, IProjectVoteRepository projectVoteRepository,
+            IProjectRepository projectRepository)
         {
             _projectCommentsRepository = projectCommentsRepository;
             _projectFileRepository = projectFileRepository;
             _projectFileInfoRepository = projectFileInfoRepository;
+            _projectVoteRepository = projectVoteRepository;
+            _projectRepository = projectRepository;
         }
 
         public IActionResult AddComment(ProjectCommentPartialViewModel model)
@@ -40,14 +44,48 @@ namespace CompetitionPlatform.Controllers
             return File(fileStream, fileInfo.ContentType, fileInfo.FileName);
         }
 
-        public async Task VoteFor(string id)
+        public async Task<IActionResult> VoteFor(string id)
         {
-            throw new NotImplementedException();
+            var user = "User1";
+
+            var result = new ProjectVoteEntity
+            {
+                ProjectId = id,
+                VoterUserId = user,
+                ForAgainst = 1,
+            };
+
+            await _projectVoteRepository.SaveAsync(result);
+
+            var project = await _projectRepository.GetAsync(id);
+
+            project.VotesFor += 1;
+
+            await _projectRepository.UpdateAsync(project);
+
+            return RedirectToAction("ProjectDetails", "Project", new { id = id });
         }
 
-        public async Task VoteAgainst(string id)
+        public async Task<IActionResult> VoteAgainst(string id)
         {
-            throw new NotImplementedException();
+            var user = "User1";
+
+            var result = new ProjectVoteEntity
+            {
+                ProjectId = id,
+                VoterUserId = user,
+                ForAgainst = -1
+            };
+
+            await _projectVoteRepository.SaveAsync(result);
+
+            var project = await _projectRepository.GetAsync(id);
+
+            project.VotesAgainst += 1;
+
+            await _projectRepository.UpdateAsync(project);
+
+            return RedirectToAction("ProjectDetails", "Project", new { id = id });
         }
     }
 }
