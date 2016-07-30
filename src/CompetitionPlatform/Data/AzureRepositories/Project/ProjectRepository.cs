@@ -43,6 +43,8 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
             CompetitionRegistrationDeadline = src.CompetitionRegistrationDeadline;
             ImplementationDeadline = src.ImplementationDeadline;
             VotingDeadline = src.VotingDeadline;
+            VotesFor = src.VotesFor;
+            VotesAgainst = src.VotesAgainst;
         }
 
         public static ProjectEntity Create(IProjectData src)
