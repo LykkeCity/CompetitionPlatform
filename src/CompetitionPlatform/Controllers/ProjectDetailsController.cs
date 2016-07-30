@@ -70,6 +70,15 @@ namespace CompetitionPlatform.Controllers
             else
             {
                 await _projectVoteRepository.UpdateAsync(result);
+                if (vote.ForAgainst == -1)
+                {
+                    var project = await _projectRepository.GetAsync(id);
+
+                    project.VotesFor += 1;
+                    project.VotesAgainst -= 1;
+
+                    await _projectRepository.UpdateAsync(project);
+                }
             }
 
             return RedirectToAction("ProjectDetails", "Project", new { id = id });
@@ -101,6 +110,15 @@ namespace CompetitionPlatform.Controllers
             else
             {
                 await _projectVoteRepository.UpdateAsync(result);
+                if (vote.ForAgainst == 1)
+                {
+                    var project = await _projectRepository.GetAsync(id);
+
+                    project.VotesAgainst += 1;
+                    project.VotesFor -= 1;
+
+                    await _projectRepository.UpdateAsync(project);
+                }
             }
 
             return RedirectToAction("ProjectDetails", "Project", new { id = id });
