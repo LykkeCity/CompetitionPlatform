@@ -7,17 +7,29 @@ $(function () {
         $(this).datepicker('hide');
     });
 
-    $("#projectStatusFilter")
+    $('#projectStatusFilter')
         .change(function () {
-            $("#projectListResults").load('Home/GetProjectList?projectStatusFilter=' +
+            $('#projectListResults').load('Home/GetProjectList?projectStatusFilter=' +
                 $('#projectStatusFilter').val() + '&projectCategoryFilter=' +
                 $('#projectCategoryFilter').val());
         });
 
-    $("#projectCategoryFilter")
+    $('#projectCategoryFilter')
         .change(function () {
-            $("#projectListResults").load('Home/GetProjectList?projectStatusFilter=' +
+            $('#projectListResults').load('Home/GetProjectList?projectStatusFilter=' +
                 $('#projectStatusFilter :selected').val() + '&projectCategoryFilter=' +
                 $('#projectCategoryFilter :selected').val());
+        });
+
+    $('#voteForButton')
+        .click(function() {
+            var $this = $(this);
+            $this.text('Yes');
+        });
+
+    $('#voteAgainstButton')
+        .click(function () {
+            var $this = $(this);
+            $this.text('No');
         });
 });
