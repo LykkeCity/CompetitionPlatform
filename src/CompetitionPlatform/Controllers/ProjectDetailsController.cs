@@ -55,13 +55,22 @@ namespace CompetitionPlatform.Controllers
                 ForAgainst = 1,
             };
 
-            await _projectVoteRepository.SaveAsync(result);
+            var vote = await _projectVoteRepository.GetAsync(id, user);
 
-            var project = await _projectRepository.GetAsync(id);
+            if (vote == null)
+            {
+                await _projectVoteRepository.SaveAsync(result);
 
-            project.VotesFor += 1;
+                var project = await _projectRepository.GetAsync(id);
 
-            await _projectRepository.UpdateAsync(project);
+                project.VotesFor += 1;
+
+                await _projectRepository.UpdateAsync(project);
+            }
+            else
+            {
+                await _projectVoteRepository.UpdateAsync(result);
+            }
 
             return RedirectToAction("ProjectDetails", "Project", new { id = id });
         }
@@ -77,15 +86,35 @@ namespace CompetitionPlatform.Controllers
                 ForAgainst = -1
             };
 
-            await _projectVoteRepository.SaveAsync(result);
+            var vote = await _projectVoteRepository.GetAsync(id, user);
 
-            var project = await _projectRepository.GetAsync(id);
+            if (vote == null)
+            {
+                await _projectVoteRepository.SaveAsync(result);
 
-            project.VotesAgainst += 1;
+                var project = await _projectRepository.GetAsync(id);
 
-            await _projectRepository.UpdateAsync(project);
+                project.VotesAgainst += 1;
+
+                await _projectRepository.UpdateAsync(project);
+            }
+            else
+            {
+                await _projectVoteRepository.UpdateAsync(result);
+            }
 
             return RedirectToAction("ProjectDetails", "Project", new { id = id });
+        }
+
+        public IActionResult GetProjectVotesResults(int votesFor, int votesAgainst)
+        {
+            var viewModel = new ProjectVoteViewModel
+            {
+                VotesFor = votesFor,
+                VotesAgainst = votesAgainst
+            };
+
+            return PartialView("~/Views/Project/VotePartial.cshtml", viewModel);
         }
     }
 }
