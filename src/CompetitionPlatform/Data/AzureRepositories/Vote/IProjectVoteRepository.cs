@@ -13,6 +13,8 @@ namespace CompetitionPlatform.Data.AzureRepositories.Vote
     public interface IProjectVoteRepository
     {
         Task SaveAsync(IProjectVoteData projectVoteData);
+        Task<IProjectVoteData> GetAsync(string projectId, string user);
         Task<IEnumerable<IProjectVoteData>> GetProjectVotesAsync(string projectId);
+        Task UpdateAsync(IProjectVoteData projectVoteData);
     }
 }

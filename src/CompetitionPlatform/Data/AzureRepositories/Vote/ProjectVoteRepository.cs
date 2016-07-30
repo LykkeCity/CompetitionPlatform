@@ -54,6 +54,14 @@ namespace CompetitionPlatform.Data.AzureRepositories.Vote
             await _projectVoteTableStorage.InsertAsync(newEntity);
         }
 
+        public async Task<IProjectVoteData> GetAsync(string projectId, string user)
+        {
+            var partitionKey = ProjectVoteEntity.GeneratePartitionKey(projectId);
+            var rowKey = ProjectVoteEntity.GenerateRowKey(user);
+
+            return await _projectVoteTableStorage.GetDataAsync(partitionKey, rowKey);
+        }
+
         public async Task<IEnumerable<IProjectVoteData>> GetProjectVotesAsync(string projectId)
         {
             var partitionKey = ProjectVoteEntity.GeneratePartitionKey(projectId);
