@@ -9,6 +9,7 @@ using Common.Log;
 using CompetitionPlatform.Services;
 using AzureStorage.Tables;
 using AzureStorage.Blobs;
+using CompetitionPlatform.Data.AzureRepositories.Vote;
 
 namespace CompetitionPlatform
 {
@@ -31,11 +32,15 @@ namespace CompetitionPlatform
             services.AddSingleton<IAzureTableStorage<ProjectFileInfoEntity>>(
                 new AzureTableStorage<ProjectFileInfoEntity>(connstionString, "ProjectFilesInfo", log));
 
+            services.AddSingleton<IAzureTableStorage<ProjectVoteEntity>>(
+                new AzureTableStorage<ProjectVoteEntity>(connstionString, "ProjectVotes", log));
+
             services.AddTransient<IProjectRepository, ProjectRepository>();
             services.AddTransient<IProjectFileRepository, ProjectFileRepository>();
             services.AddTransient<IUsersRepository, UsersRepository>();
             services.AddTransient<IProjectCommentsRepository, ProjectCommentsRepository>();
             services.AddTransient<IProjectFileInfoRepository, ProjectFileInfoRepository>();
+            services.AddTransient<IProjectVoteRepository, ProjectVoteRepository>();
         }
 
         public static void RegisterLyykeServices(this IServiceCollection services)
