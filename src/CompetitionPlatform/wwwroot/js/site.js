@@ -35,5 +35,8 @@ $(function () {
         .click(function () {
             var $this = $(this);
             $this.append('No');
+
+            $('#projectVoteResults').load('/ProjectDetails/GetProjectVotesResults?votesFor=' + $('#VotesFor').val()
+                 + '&votesAgainst=' + $('#VotesAgainst').val());
         });
 });
