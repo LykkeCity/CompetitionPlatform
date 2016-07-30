@@ -27,7 +27,7 @@ $(function () {
 
             $this.append('Yes');
 
-            $('#projectVoteResults').load('ProjectDetails/GetProjectVotesResults?votesFor=' + $('#VotesFor').val()
+            $('#projectVoteResults').load('/ProjectDetails/GetProjectVotesResults?votesFor=' + $('#VotesFor').val()
                  + '&votesAgainst=' + $('#VotesAgainst').val());
         });
 
