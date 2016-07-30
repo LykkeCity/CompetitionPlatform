@@ -42,10 +42,8 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         [Display(Name = "1ST place")]
         public double BudgetFirstPlace { get; set; }
 
-
         [Display(Name = "2ND place")]
         public double? BudgetSecondPlace { get; set; }
-
 
         [Display(Name = "3D place")]
         public double? BudgetThirdPlace { get; set; }
@@ -84,5 +82,11 @@ namespace CompetitionPlatform.Models.ProjectViewModels
     public class ProjectListIndexViewModel
     {
         public IEnumerable<ProjectCompactViewModel> Projects { get; set; }
+    }
+
+    public class ProjectVoteViewModel
+    {
+        public int VotesFor { get; set; }
+        public int VotesAgainst { get; set; }
     }
 }
