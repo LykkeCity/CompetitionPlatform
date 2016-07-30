@@ -17,6 +17,11 @@ namespace CompetitionPlatform.Data.AzureRepositories.Vote
             return userId;
         }
 
+        internal void Update(IProjectVoteData src)
+        {
+            ForAgainst = src.ForAgainst;
+        }
+
         public static ProjectVoteEntity Create(IProjectVoteData src)
         {
             var result = new ProjectVoteEntity
@@ -53,6 +58,18 @@ namespace CompetitionPlatform.Data.AzureRepositories.Vote
         {
             var partitionKey = ProjectVoteEntity.GeneratePartitionKey(projectId);
             return await _projectVoteTableStorage.GetDataAsync(partitionKey);
+        }
+
+        public Task UpdateAsync(IProjectVoteData projectVoteData)
+        {
+            var partitionKey = ProjectVoteEntity.GeneratePartitionKey(projectVoteData.ProjectId);
+            var rowKey = ProjectVoteEntity.GenerateRowKey(projectVoteData.VoterUserId);
+
+            return _projectVoteTableStorage.ReplaceAsync(partitionKey, rowKey, itm =>
+            {
+                itm.Update(projectVoteData);
+                return itm;
+            });
         }
     }
 }
