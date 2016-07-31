@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CompetitionPlatform.Data.AzureRepositories.Project;
+using CompetitionPlatform.Models;
 using Microsoft.AspNetCore.Mvc;
 using CompetitionPlatform.Models.ProjectViewModels;
 
@@ -34,7 +36,7 @@ namespace CompetitionPlatform.Controllers
         {
             var projects = await _projectRepository.GetProjectsAsync();
 
-            if(!string.IsNullOrEmpty(projectStatusFilter))
+            if (!string.IsNullOrEmpty(projectStatusFilter))
                 projects = projects.Where(x => x.Status.ToString() == projectStatusFilter);
 
             if (!string.IsNullOrEmpty(projectCategoryFilter))
@@ -51,7 +53,7 @@ namespace CompetitionPlatform.Controllers
                     Id = project.Id,
                     Name = project.Name.Length > 43 ? project.Name.Substring(0, 40) + "..." : project.Name,
                     Description = project.Description.Length > 500 ? project.Description.Substring(0, 497) + "..." : project.Description,
-                    Status = project.Status,
+                    Status = (Status)Enum.Parse(typeof(Status), project.ProjectStatus, true),
                     BudgetFirstPlace = project.BudgetFirstPlace,
                     VotesFor = project.VotesFor,
                     VotesAgainst = project.VotesAgainst,
