@@ -1,11 +1,11 @@
 ﻿// Write your Javascript code.
 
 $(function () {
-    $('.datepicker').datepicker();
+    //$('.datepicker').datepicker();
 
-    $('.datepicker').on('changeDate', function () {
-        $(this).datepicker('hide');
-    });
+    //$('.datepicker').on('changeDate', function () {
+    //    $(this).datepicker('hide');
+    //});
 
     $('#projectStatusFilter')
         .change(function () {

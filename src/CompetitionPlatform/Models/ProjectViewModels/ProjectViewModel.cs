@@ -29,14 +29,17 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public string Tags { get; set; }
 
         [Required]
+        [DataType(DataType.Date)]
         [Display(Name = "Competition Registration")]
         public DateTime CompetitionRegistrationDeadline { get; set; }
 
         [Required]
+        [DataType(DataType.Date)]
         [Display(Name = "Implementation")]
         public DateTime ImplementationDeadline { get; set; }
 
         [Required]
+        [DataType(DataType.Date)]
         [Display(Name = "Voting")]
         public DateTime VotingDeadline { get; set; }
 
