@@ -67,12 +67,5 @@ namespace CompetitionPlatform.Controllers
 
             return principalIdentity;
         }
-
-
-
-        public IActionResult Index()
-        {
-            return View();
-        }
     }
 }
