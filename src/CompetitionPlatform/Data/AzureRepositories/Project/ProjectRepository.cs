@@ -23,6 +23,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
         public string Name { get; set; }
         public string Description { get; set; }
         public Status Status { get; set; }
+        public string ProjectStatus { get; set; }
         public string Category { get; set; }
         public string Tags { get; set; }
         public DateTime CompetitionRegistrationDeadline { get; set; }
@@ -39,7 +40,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
         {
             Name = src.Name;
             Description = src.Description;
-            Status = src.Status;
+            ProjectStatus = src.Status.ToString();
             CompetitionRegistrationDeadline = src.CompetitionRegistrationDeadline;
             ImplementationDeadline = src.ImplementationDeadline;
             VotingDeadline = src.VotingDeadline;
@@ -55,7 +56,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
                 PartitionKey = GeneratePartitionKey(),
                 Name = src.Name,
                 Description = src.Description,
-                Status = Status.Initiative,
+                ProjectStatus = Status.Initiative.ToString(),
                 Category = src.Category,
                 Tags = src.Tags,
                 CompetitionRegistrationDeadline = src.CompetitionRegistrationDeadline,
@@ -99,7 +100,6 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
             var newEntity = ProjectEntity.Create(projectData);
             await _projectsTableStorage.InsertAsync(newEntity);
             return newEntity.Id;
-
         }
 
         public Task UpdateAsync(IProjectData projectData)

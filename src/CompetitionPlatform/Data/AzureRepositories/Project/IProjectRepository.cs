@@ -11,6 +11,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
         string Name { get; set; }
         string Description { get; set; }
         Status Status { get; set; }
+        string ProjectStatus { get; set; }
         string Category { get; set; }
         string Tags { get; set; }
         DateTime CompetitionRegistrationDeadline { get; set; }

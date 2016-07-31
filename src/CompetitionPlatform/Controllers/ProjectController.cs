@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CompetitionPlatform.Data.AzureRepositories.Project;
+using CompetitionPlatform.Models;
 using CompetitionPlatform.Models.ProjectViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -38,6 +39,8 @@ namespace CompetitionPlatform.Controllers
 
             projectViewModel.Created = DateTime.UtcNow;
 
+            projectViewModel.ProjectStatus = projectViewModel.Status.ToString();
+
             var newProjectId = await _projectRepository.SaveAsync(projectViewModel);
 
             await SaveProjectFile(projectViewModel.File, newProjectId);
@@ -71,13 +74,16 @@ namespace CompetitionPlatform.Controllers
                 Name = project.Name,
                 Description = project.Description,
                 Category = project.Category,
-                Status = project.Status,
+                Status = (Status)Enum.Parse(typeof(Status), project.ProjectStatus, true),
                 BudgetFirstPlace = project.BudgetFirstPlace,
                 BudgetSecondPlace = project.BudgetSecondPlace,
                 BudgetThirdPlace = project.BudgetThirdPlace,
                 VotesFor = project.VotesFor,
                 VotesAgainst = project.VotesAgainst,
                 Created = project.Created,
+                CompetitionRegistrationDeadline = project.CompetitionRegistrationDeadline,
+                ImplementationDeadline = project.ImplementationDeadline,
+                VotingDeadline = project.VotingDeadline,
                 CommentsPartial = commentsPartial
             };
 
