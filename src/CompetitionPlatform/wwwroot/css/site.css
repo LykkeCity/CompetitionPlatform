@@ -80,7 +80,7 @@ textarea {
 }
 
 .project-details-tag {
-     margin-bottom: 4px;
+    margin-bottom: 4px;
 }
 
 .project-index-budget {
@@ -162,4 +162,14 @@ textarea {
 .project-voting-text {
     font-size: 16px;
     color: grey;
+}
+
+.project-status-progress {
+    height: 100px !important;
+}
+
+.project-details-status-button {
+    width: 100%;
+    margin-bottom: 10px;
+    font-size: 17px;
 }
