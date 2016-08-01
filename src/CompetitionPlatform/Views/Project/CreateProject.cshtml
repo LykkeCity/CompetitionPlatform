@@ -61,16 +61,19 @@
             <div class="col-md-3">
                 <label asp-for="CompetitionRegistrationDeadline" class="control-label"></label>
                 <input asp-for="CompetitionRegistrationDeadline" class="form-control datepicker" />
+                @*<input class="form-control datepicker" type="text" id="CompetitionRegistrationDeadline" name="CompetitionRegistrationDeadline">*@
                 <span asp-validation-for="CompetitionRegistrationDeadline" class="text-danger" />
             </div>
             <div class="col-md-3">
                 <label asp-for="ImplementationDeadline" class="control-label"></label>
                 <input asp-for="ImplementationDeadline" class="form-control datepicker" />
+                @*<input class="form-control datepicker" type="text" id="ImplementationDeadline" name="ImplementationDeadline">*@
                 <span asp-validation-for="ImplementationDeadline" class="text-danger" />
             </div>
             <div class="col-md-3">
                 <label asp-for="VotingDeadline" class="control-label"></label>
                 <input asp-for="VotingDeadline" class="form-control datepicker" />
+                @*<input class="form-control datepicker" type="text" id="VotingDeadline" name="VotingDeadline">*@
                 <span asp-validation-for="VotingDeadline" class="text-danger" />
             </div>
         </div>
@@ -84,7 +87,7 @@
                     <span class="input-group-addon">
                         <i class="glyphicon glyphicon-usd"></i>
                     </span>
-                    <input asp-for="BudgetFirstPlace" class="form-control"/>
+                    <input asp-for="BudgetFirstPlace" class="form-control" />
                 </div>
                 <span asp-validation-for="BudgetFirstPlace" class="text-danger" />
             </div>
@@ -97,7 +100,7 @@
                     <span class="input-group-addon">
                         <i class="glyphicon glyphicon-usd"></i>
                     </span>
-                    <input asp-for="BudgetSecondPlace" class="form-control"/>
+                    <input asp-for="BudgetSecondPlace" class="form-control" />
                 </div>
                 <span asp-validation-for="BudgetSecondPlace" class="text-danger" />
             </div>
@@ -110,7 +113,7 @@
                     <span class="input-group-addon">
                         <i class="glyphicon glyphicon-usd"></i>
                     </span>
-                    <input asp-for="BudgetThirdPlace" class="form-control"/>
+                    <input asp-for="BudgetThirdPlace" class="form-control" />
                 </div>
                 <span asp-validation-for="BudgetThirdPlace" class="text-danger" />
             </div>
