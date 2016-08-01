@@ -12,10 +12,16 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-3">
-                <div class="btn btn-xs btn-info project-status">
+            <div class="col-md-6">
+                <div class="btn btn-xs btn-info project-status inline">
                     @project.Status
                 </div>
+                @if (@project.Status == Status.Initiative)
+                {
+                    <p class="text-muted inline project-voting-text project-status-votes">
+                        @(project.VotesFor + project.VotesAgainst) Votes
+                    </p>
+                }
             </div>
         </div>
         <div class="project-description">@project.Description</div>
