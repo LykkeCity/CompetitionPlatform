@@ -95,7 +95,7 @@ namespace CompetitionPlatform.Controllers
 
         public string Version()
         {
-            return Microsoft.Extensions.PlatformAbstractions.PlatformServices.Default.Application.ApplicationVersion;
+            return typeof(HomeController).GetTypeInfo().Assembly.GetName().Version.ToString();
         }
     }
 }
