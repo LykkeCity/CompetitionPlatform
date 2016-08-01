@@ -93,7 +93,7 @@ namespace CompetitionPlatform.Controllers
 
         public string Version()
         {
-            return Assembly.GetEntryAssembly().GetName().Version.ToString();
+            return Microsoft.Extensions.PlatformAbstractions.PlatformServices.Default.Application.ApplicationVersion;
         }
     }
 }
