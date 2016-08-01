@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using CompetitionPlatform.Data.AzureRepositories.Project;
 using CompetitionPlatform.Models;
@@ -88,6 +89,11 @@ namespace CompetitionPlatform.Controllers
         public IActionResult Error()
         {
             return View();
+        }
+
+        public string Version()
+        {
+            return Assembly.GetEntryAssembly().GetName().Version.ToString();
         }
     }
 }
