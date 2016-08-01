@@ -54,12 +54,14 @@ namespace CompetitionPlatform.Controllers
                     Id = project.Id,
                     Name = project.Name.Length > 43 ? project.Name.Substring(0, 40) + "..." : project.Name,
                     Description = project.Description.Length > 500 ? project.Description.Substring(0, 497) + "..." : project.Description,
-                    Status = (Status)Enum.Parse(typeof(Status), project.ProjectStatus, true),
                     BudgetFirstPlace = project.BudgetFirstPlace,
                     VotesFor = project.VotesFor,
                     VotesAgainst = project.VotesAgainst,
                     CommentsCount = projectCommentsCount
                 };
+
+                if (!string.IsNullOrEmpty(project.ProjectStatus))
+                    compactModel.Status = (Status)Enum.Parse(typeof(Status), project.ProjectStatus, true);
 
                 compactModels.Add(compactModel);
             }
