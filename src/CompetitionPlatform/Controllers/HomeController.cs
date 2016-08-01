@@ -38,7 +38,7 @@ namespace CompetitionPlatform.Controllers
             var projects = await _projectRepository.GetProjectsAsync();
 
             if (!string.IsNullOrEmpty(projectStatusFilter))
-                projects = projects.Where(x => x.Status.ToString() == projectStatusFilter);
+                projects = projects.Where(x => x.ProjectStatus == projectStatusFilter);
 
             if (!string.IsNullOrEmpty(projectCategoryFilter))
                 projects = projects.Where(x => x.Category == projectCategoryFilter);
