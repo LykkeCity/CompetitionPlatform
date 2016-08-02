@@ -154,6 +154,16 @@ textarea {
     margin-top: 30px;
 }
 
+.btn-circle {
+  width: 49px;
+  height: 49px;
+  text-align: center;
+  padding: 5px 0;
+  font-size: 21px;
+  line-height: 2.00;
+  border-radius: 30px;
+}
+
 .project-voting-buttons {
     margin-top: 15px;
     margin-bottom: 15px;
