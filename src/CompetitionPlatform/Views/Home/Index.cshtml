@@ -4,14 +4,14 @@
     ViewData["Title"] = "Projects";
 }
 
-<div class="row projects-filter-buttons">
+<div class="projects-filter-buttons">
     <div class="col-md-12">
         <button type="button" class="btn  btn-primary btn-sm">All Projects</button>
         <button type="button" class="btn  btn-info btn-sm">My Projects</button>
         <button type="button" class="btn  btn-info btn-sm">Following</button>
     </div>
 </div>
-<div class="row col-md-12">
+<div class="col-md-12">
     <div class="row col-md-3 project-filter">
         <select id="projectStatusFilter" name="projectStatusFilter" class="form-control" value="Create">
             <option value="">Status : All</option>
@@ -22,7 +22,7 @@
         </select>
     </div>
 
-    <div class="row col-md-3">
+    <div class="row col-md-3 project-filter">
         <select id="projectCategoryFilter" name="projectCategoryFilter" class="form-control" value="Create">
             <option value="">Category: All</option>
             <option value="Finance">Finance</option>
@@ -32,8 +32,10 @@
         </select>
     </div>
 </div>
-
-<div id="projectListResults">
-    @await Html.PartialAsync("ProjectListPartial", Model)
+<div class="">
+    <div id="projectListResults">
+        @await Html.PartialAsync("ProjectListPartial", Model)
+    </div>
 </div>
+
 
