@@ -64,7 +64,6 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
                 VotingDeadline = src.VotingDeadline,
                 BudgetFirstPlace = src.BudgetFirstPlace,
                 BudgetSecondPlace = src.BudgetSecondPlace,
-                BudgetThirdPlace = src.BudgetThirdPlace,
                 Created = src.Created
             };
 

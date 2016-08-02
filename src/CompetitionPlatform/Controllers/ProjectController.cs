@@ -77,7 +77,6 @@ namespace CompetitionPlatform.Controllers
                 Status = (Status)Enum.Parse(typeof(Status), project.ProjectStatus, true),
                 BudgetFirstPlace = project.BudgetFirstPlace,
                 BudgetSecondPlace = project.BudgetSecondPlace,
-                BudgetThirdPlace = project.BudgetThirdPlace,
                 VotesFor = project.VotesFor,
                 VotesAgainst = project.VotesAgainst,
                 Created = project.Created,

@@ -47,11 +47,8 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         [Display(Name = "1ST place")]
         public double BudgetFirstPlace { get; set; }
 
-        [Display(Name = "2ND place")]
+        [Display(Name = "3x2ND place")]
         public double? BudgetSecondPlace { get; set; }
-
-        [Display(Name = "3D place")]
-        public double? BudgetThirdPlace { get; set; }
 
         public int VotesFor { get; set; }
 
