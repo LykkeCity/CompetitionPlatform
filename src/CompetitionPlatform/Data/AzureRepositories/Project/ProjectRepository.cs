@@ -31,7 +31,6 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
         public DateTime VotingDeadline { get; set; }
         public double BudgetFirstPlace { get; set; }
         public double? BudgetSecondPlace { get; set; }
-        public double? BudgetThirdPlace { get; set; }
         public int VotesFor { get; set; }
         public int VotesAgainst { get; set; }
         public DateTime Created { get; set; }
