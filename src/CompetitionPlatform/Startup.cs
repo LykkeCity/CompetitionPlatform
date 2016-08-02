@@ -80,6 +80,9 @@ namespace CompetitionPlatform
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+            var configurationSection = Configuration.GetSection("Authentication");
+            var clientId = configurationSection.GetValue("ClientId", "");
+            var clientSecret = configurationSection.GetValue("ClientSecret", "");
 
             //app.UseCookieAuthentication(new CookieAuthenticationOptions
             //{
