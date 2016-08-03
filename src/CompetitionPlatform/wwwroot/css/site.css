@@ -57,9 +57,35 @@ textarea {
     margin-bottom: 20px;
 }
 
+.project-status-initiative {
+    border-color: #0da7fc;
+    color: #0da7fc;
+}
+
+.project-status-competitionregistration {
+    border-color: #13b72a;
+    color: #13b72a;
+}
+
+.project-status-implementation {
+    border-color: #ff3e2e;
+    color: #ff3e2e;
+}
+
+.project-status-voting {
+    border-color: #ffae2c;
+    color: #ffae2c;
+}
+
+.project-status-archive {
+    border-color: #3f4d60;
+    color: #3f4d60;
+}
+
 .project-tile {
     min-height: 300px;
     max-height: 300px;
+    margin-bottom: 40px;
 }
 
 .project-details-tabs {

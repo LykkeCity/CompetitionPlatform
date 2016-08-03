@@ -5,7 +5,7 @@
     <div class="col-md-6 project-tile">
         <div class="row">
             <div class="col-md-12">
-                <a class="inline h3" asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.Id">@project.Name</a>
+                <a class="inline h2" asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.Id">@project.Name</a>
                 <div class="pull-right">
                     <div class="project-index-budget">$@project.BudgetFirstPlace</div>
                 </div>
@@ -13,15 +13,35 @@
         </div>
         <div class="row">
             <div class="col-md-6">
-                <div class="btn btn-xs btn-info project-status inline">
-                    @project.Status
-                </div>
-                @if (@project.Status == Status.Initiative)
+                @{ var statusColor = "";}
+
+                @if (project.Status == Status.Initiative)
                 {
-                    <p class="text-muted inline project-voting-text project-status-votes">
-                        @(project.VotesFor + project.VotesAgainst) Votes
-                    </p>
+                    statusColor = "project-status-initiative";
                 }
+                @if (project.Status == Status.CompetitionRegistration)
+                {
+                    statusColor = "project-status-competitionregistration";
+                }
+                @if (project.Status == Status.Implementation)
+                {
+                    statusColor = "project-status-implementation";
+                }
+                @if (project.Status == Status.Voting)
+                {
+                    statusColor = "project-status-voting";
+                }
+                @if (project.Status == Status.Archive)
+                {
+                    statusColor = "project-status-archive";
+                }
+
+                <div class="btn btn-xs btn-info project-status @statusColor inline">
+                    @project.Status.ToString().ToUpper()
+                </div>
+                <p class="text-muted inline project-voting-text project-status-votes">
+                    @(project.VotesFor + project.VotesAgainst) Votes
+                </p>
             </div>
         </div>
         <div class="project-description">@project.Description</div>
@@ -36,6 +56,4 @@
         </div>
         <hr />
     </div>
-}
-
-
+                    }
