@@ -142,28 +142,29 @@ textarea {
 }
 
 .menu-top-panel {
-    background-color: #eaedef;
-    margin: 0 auto;
     width: 100%;
 }
 
     .menu-top-panel a {
-        margin-left: 15px;
-        margin-bottom: 35px;
+        margin-left: 30px;
     }
 
-.new-project-button {
+.menu-top-panel-link {
     margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+.new-project-button {
 }
 
 .btn-circle {
-  width: 49px;
-  height: 49px;
-  text-align: center;
-  padding: 5px 0;
-  font-size: 21px;
-  line-height: 2.00;
-  border-radius: 30px;
+    width: 49px;
+    height: 49px;
+    text-align: center;
+    padding: 5px 0;
+    font-size: 21px;
+    line-height: 2.00;
+    border-radius: 30px;
 }
 
 .project-voting-buttons {
