@@ -52,7 +52,7 @@ namespace CompetitionPlatform.Controllers
                 var compactModel = new ProjectCompactViewModel
                 {
                     Id = project.Id,
-                    Name = project.Name.Length > 43 ? project.Name.Substring(0, 40) + "..." : project.Name,
+                    Name = project.Name.Length > 36 ? project.Name.Substring(0, 33) + "..." : project.Name,
                     Description = project.Description.Length > 500 ? project.Description.Substring(0, 497) + "..." : project.Description,
                     BudgetFirstPlace = project.BudgetFirstPlace,
                     VotesFor = project.VotesFor,
