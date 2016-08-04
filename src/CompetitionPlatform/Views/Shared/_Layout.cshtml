@@ -19,22 +19,33 @@
     </environment>
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
+    @*<div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Home</a>
+                    <a asp-area="" asp-controller="Home" asp-action="About" class="navbar-brand">About</a>
+                    <a asp-area="" asp-controller="Home" asp-action="Contact" class="navbar-brand">Contact</a>
+                    @await Html.PartialAsync("_LoginPartial")
+                </div>
             </div>
-            <div class="navbar-collapse collapse">
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Home</a>
-                <a asp-area="" asp-controller="Home" asp-action="About" class="navbar-brand">About</a>
-                <a asp-area="" asp-controller="Home" asp-action="Contact" class="navbar-brand">Contact</a>
-                @await Html.PartialAsync("_LoginPartial")
+        </div>*@
+    <div class="navbar text-center">
+        <div class="menu-top-panel col-md-12">
+            <div class="">
+                <a class="h4 bold-text">Wallet</a>
+                <a class="h4 bold-text">Exchange</a>
+                <a class="h4 bold-text">City</a>
+                <a class="h4 bold-text">Corp</a>
             </div>
+            <hr />
         </div>
     </div>
     <div class="navbar text-center">
