@@ -176,8 +176,16 @@ textarea {
     }
 
 .menu-top-panel-link {
-    margin-top: 30px;
     margin-bottom: 20px;
+}
+
+.menu-navigation-panel {
+    height: 5px;
+}
+
+.menu-navigation-panel a {
+    font-weight: bold;
+    margin-left: 30px;
 }
 
 .new-project-button {
@@ -217,4 +225,8 @@ textarea {
     margin-left: 10px;
     margin-bottom: 17px;
     vertical-align: middle;
+}
+
+.page-footer {
+    height: 30px;
 }
