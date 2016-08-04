@@ -82,6 +82,10 @@ textarea {
     color: #3f4d60;
 }
 
+.primary-color {
+    color: #ab00ff;
+}
+
 .project-tile {
     min-height: 300px;
     max-height: 300px;
