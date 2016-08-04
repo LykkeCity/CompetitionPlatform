@@ -176,7 +176,7 @@ textarea {
 }
 
     .menu-top-panel a {
-        margin-left: 30px;
+        margin-left: 50px;
     }
 
 .menu-top-panel-link {
@@ -189,10 +189,11 @@ textarea {
 
 .menu-navigation-panel a {
     font-weight: bold;
-    margin-left: 30px;
+    margin-left: 50px;
 }
 
 .new-project-button {
+    margin-top: -15px;
 }
 
 .btn-circle {
