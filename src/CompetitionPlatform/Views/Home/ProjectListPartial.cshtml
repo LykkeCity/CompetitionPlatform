@@ -15,25 +15,23 @@
             <div class="col-md-6">
                 @{ var statusColor = "";}
 
-                @if (project.Status == Status.Initiative)
+                @switch (project.Status)
                 {
-                    statusColor = "project-status-initiative";
-                }
-                @if (project.Status == Status.CompetitionRegistration)
-                {
-                    statusColor = "project-status-competitionregistration";
-                }
-                @if (project.Status == Status.Implementation)
-                {
-                    statusColor = "project-status-implementation";
-                }
-                @if (project.Status == Status.Voting)
-                {
-                    statusColor = "project-status-voting";
-                }
-                @if (project.Status == Status.Archive)
-                {
-                    statusColor = "project-status-archive";
+                    case Status.Initiative:
+                        statusColor = "project-status-initiative";
+                        break;
+                    case Status.CompetitionRegistration:
+                        statusColor = "project-status-competitionregistration";
+                        break;
+                    case Status.Implementation:
+                        statusColor = "project-status-implementation";
+                        break;
+                    case Status.Voting:
+                        statusColor = "project-status-voting";
+                        break;
+                    case Status.Archive:
+                        statusColor = "project-status-archive";
+                        break;
                 }
 
                 <div class="btn btn-xs btn-info project-status @statusColor inline">
