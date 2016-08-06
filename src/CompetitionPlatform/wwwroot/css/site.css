@@ -187,13 +187,17 @@ textarea {
     height: 5px;
 }
 
-.menu-navigation-panel a {
-    font-weight: bold;
-    margin-left: 50px;
-}
+    .menu-navigation-panel a {
+        font-weight: bold;
+        margin-left: 50px;
+    }
 
 .new-project-button {
     margin-top: -15px;
+}
+
+.edit-project-button {
+    color: black;
 }
 
 .btn-circle {

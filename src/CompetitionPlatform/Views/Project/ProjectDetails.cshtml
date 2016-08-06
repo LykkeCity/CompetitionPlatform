@@ -5,7 +5,11 @@
     ViewData["Title"] = "Project Details";
 }
 
-<a asp-area="" asp-controller="Home" asp-action="Index" class="btn btn-sm btn-info project-details-back"><span class="glyphicon glyphicon-menu-left"></span> Back to Projects</a>
+<div class="col-md-12">
+    <a asp-area="" asp-controller="Home" asp-action="Index" class="btn btn-sm btn-info project-details-back"><span class="glyphicon glyphicon-menu-left"></span> Back to Projects</a>
+    <a asp-area="" asp-controller="Project" asp-action="Edit" asp-route-id="@Model.Id" class="pull-right edit-project-button"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
+</div>
+
 <div class="container">
     <div class="row">
         <div class="col-md-9">

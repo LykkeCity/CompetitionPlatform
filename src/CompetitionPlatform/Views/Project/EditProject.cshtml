@@ -1,18 +1,21 @@
 @model CompetitionPlatform.Models.ProjectViewModels.ProjectViewModel
 
 @{
-    ViewData["Title"] = "Create a Project";
+    ViewData["Title"] = "Edit Project";
 }
 
 <a asp-area="" asp-controller="Home" asp-action="Index" class="btn btn-sm btn-info project-details-back"><span class="glyphicon glyphicon-menu-left"></span> Back to Projects</a>
 
-<h2>Create a Project</h2>
+<h2>Edit Project</h2>
 
 <form asp-action="SaveProject" enctype="multipart/form-data">
     <div class="form-horizontal">
         <h4>Basic Info</h4>
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input asp-for="@Model.Id" type="hidden"/>
+        <input asp-for="@Model.VotesFor" type="hidden" />
+        <input asp-for="@Model.VotesAgainst" type="hidden" />
         <div class="form-group">
             <div class="col-md-9">
                 <label asp-for="Name" class="control-label"></label>
@@ -63,19 +66,16 @@
             <div class="col-md-3">
                 <label asp-for="CompetitionRegistrationDeadline" class="control-label"></label>
                 <input asp-for="CompetitionRegistrationDeadline" class="form-control datepicker" />
-                @*<input class="form-control datepicker" type="text" id="CompetitionRegistrationDeadline" name="CompetitionRegistrationDeadline">*@
                 <span asp-validation-for="CompetitionRegistrationDeadline" class="text-danger" />
             </div>
             <div class="col-md-3">
                 <label asp-for="ImplementationDeadline" class="control-label"></label>
                 <input asp-for="ImplementationDeadline" class="form-control datepicker" />
-                @*<input class="form-control datepicker" type="text" id="ImplementationDeadline" name="ImplementationDeadline">*@
                 <span asp-validation-for="ImplementationDeadline" class="text-danger" />
             </div>
             <div class="col-md-3">
                 <label asp-for="VotingDeadline" class="control-label"></label>
                 <input asp-for="VotingDeadline" class="form-control datepicker" />
-                @*<input class="form-control datepicker" type="text" id="VotingDeadline" name="VotingDeadline">*@
                 <span asp-validation-for="VotingDeadline" class="text-danger" />
             </div>
         </div>
