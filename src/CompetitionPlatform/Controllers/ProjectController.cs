@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using CompetitionPlatform.Data.AzureRepositories.Project;
 using CompetitionPlatform.Models;
@@ -32,18 +33,37 @@ namespace CompetitionPlatform.Controllers
             return View("CreateProject");
         }
 
+        public async Task<IActionResult> Edit(string id)
+        {
+            var viewModel = await GetProjectViewModel(id);
+            return View("EditProject", viewModel);
+        }
+
         [HttpPost]
-        public async Task<IActionResult> CreateProject(ProjectViewModel projectViewModel)
+        public async Task<IActionResult> SaveProject(ProjectViewModel projectViewModel)
         {
             projectViewModel.Tags = TrimAndSerializeTags(projectViewModel.Tags);
 
-            projectViewModel.Created = DateTime.UtcNow;
-
             projectViewModel.ProjectStatus = projectViewModel.Status.ToString();
 
-            var newProjectId = await _projectRepository.SaveAsync(projectViewModel);
+            string projectId;
 
-            await SaveProjectFile(projectViewModel.File, newProjectId);
+            if (projectViewModel.Id == null)
+            {
+                projectViewModel.Created = DateTime.UtcNow;
+
+                projectId = await _projectRepository.SaveAsync(projectViewModel);
+            }
+            else
+            {
+                projectViewModel.LastModified = DateTime.UtcNow;
+
+                projectId = projectViewModel.Id;
+
+                await _projectRepository.UpdateAsync(projectViewModel);
+            }
+
+            await SaveProjectFile(projectViewModel.File, projectId);
 
             return RedirectToAction("Index", "Home");
         }
@@ -87,7 +107,17 @@ namespace CompetitionPlatform.Controllers
             };
 
             if (!string.IsNullOrEmpty(project.Tags))
+            {
                 projectViewModel.Categories = JsonConvert.DeserializeObject<List<string>>(project.Tags);
+
+                StringBuilder builder = new StringBuilder();
+                foreach (string tag in projectViewModel.Categories)
+                {
+                    builder.Append(tag).Append(", ");
+                }
+                projectViewModel.Tags = builder.ToString();
+            }
+
 
             var fileInfo = await _projectFileInfoRepository.GetAsync(id);
 
