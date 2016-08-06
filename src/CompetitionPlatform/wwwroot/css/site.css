@@ -137,7 +137,7 @@ textarea {
 
 .comments-count {
     margin-right: 15px;
-    margin-left: 15px;
+    margin-left: 20px;
 }
 
 .project-file {
@@ -146,7 +146,7 @@ textarea {
 
 .index-comments-icon {
     top: 4px;
-    margin-right: 6px;
+    margin-right: 1px;
 }
 
 .project-tile-bottom {
@@ -240,3 +240,4 @@ textarea {
 .page-footer {
     height: 30px;
 }
+
