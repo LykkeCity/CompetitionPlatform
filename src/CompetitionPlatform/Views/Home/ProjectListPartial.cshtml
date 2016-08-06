@@ -15,7 +15,6 @@
             <div class="col-md-6">
                 @{
                     var statusColor = "";
-                    var deadlineDate = "";
                 }
 
                 @switch (project.Status)
@@ -47,7 +46,9 @@
         </div>
         <div class="project-description">@project.Description</div>
         <div class="row project-tile-bottom">
-            <a asp-area="" asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.Id" class="btn btn-xs btn-info pull-right inline">...</a>
+            <a asp-area="" asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.Id" class="pull-right inline project-details-button nohover">
+                <span class="glyphicon glyphicon-option-horizontal"></span>
+            </a>
             <div class="inline navbar-right comments-count">
                 <span class="glyphicon glyphicon-comment index-comments-icon"></span>
                 <div class="inline">
