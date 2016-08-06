@@ -15,6 +15,7 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public string Name { get; set; }
 
         [Required]
+        [DataType(DataType.MultilineText)]
         [Display(Name = "Describe the project")]
         public string Description { get; set; }
 
@@ -57,6 +58,8 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public IFormFile File { set; get; }
 
         public DateTime Created { get; set; }
+
+        public DateTime LastModified { get; set; }
 
         public ProjectCommentPartialViewModel CommentsPartial { get; set; }
 

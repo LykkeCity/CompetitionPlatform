@@ -34,6 +34,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
         public int VotesFor { get; set; }
         public int VotesAgainst { get; set; }
         public DateTime Created { get; set; }
+        public DateTime LastModified { get; set; }
 
         internal void Update(IProjectData src)
         {
@@ -43,8 +44,11 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
             CompetitionRegistrationDeadline = src.CompetitionRegistrationDeadline;
             ImplementationDeadline = src.ImplementationDeadline;
             VotingDeadline = src.VotingDeadline;
+            BudgetFirstPlace = src.BudgetFirstPlace;
+            BudgetSecondPlace = src.BudgetSecondPlace;
             VotesFor = src.VotesFor;
             VotesAgainst = src.VotesAgainst;
+            LastModified = src.LastModified;
         }
 
         public static ProjectEntity Create(IProjectData src)
@@ -63,7 +67,8 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
                 VotingDeadline = src.VotingDeadline,
                 BudgetFirstPlace = src.BudgetFirstPlace,
                 BudgetSecondPlace = src.BudgetSecondPlace,
-                Created = src.Created
+                Created = src.Created,
+                LastModified = src.Created
             };
 
             return result;

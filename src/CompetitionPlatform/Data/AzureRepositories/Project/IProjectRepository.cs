@@ -22,6 +22,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
         int VotesFor { get; set; }
         int VotesAgainst { get; set; }
         DateTime Created { get; set; }
+        DateTime LastModified { get; set; }
     }
 
     public interface IProjectRepository
