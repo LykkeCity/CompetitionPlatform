@@ -54,7 +54,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
         public async Task SaveAsync(IProjectFileInfoData fileInfoData)
         {
             var newEntity = ProjectFileInfoEntity.Create(fileInfoData);
-            await _projectFileInfoTableStorage.InsertAsync(newEntity);
+            await _projectFileInfoTableStorage.InsertOrReplaceAsync(newEntity);
         }
     }
 }
