@@ -136,7 +136,6 @@ textarea {
 }
 
 .comments-count {
-    color: grey;
     margin-right: 15px;
     margin-left: 20px;
 }
@@ -245,7 +244,6 @@ textarea {
 .project-details-button {
     margin-top: 3px;
     margin-right: 20px;
-    color: grey;
     border: 0;
 }
 
@@ -254,5 +252,4 @@ textarea {
 }
 
 .project-deadline {
-    color: grey;
 }

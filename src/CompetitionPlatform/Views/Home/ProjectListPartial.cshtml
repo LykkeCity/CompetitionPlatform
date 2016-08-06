@@ -46,17 +46,17 @@
         </div>
         <div class="project-description">@project.Description</div>
         <div class="row project-tile-bottom">
-            <a asp-area="" asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.Id" class="pull-right inline project-details-button nohover">
+            <a asp-area="" asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.Id" class="pull-right inline project-details-button nohover text-muted">
                 <span class="glyphicon glyphicon-option-horizontal"></span>
             </a>
-            <div class="inline navbar-right comments-count">
+            <div class="inline navbar-right comments-count text-muted">
                 <span class="glyphicon glyphicon-comment index-comments-icon"></span>
                 <div class="inline">
                     @project.CommentsCount
                 </div>
             </div>
 
-            <div class="inline pull-right project-deadline">
+            <div class="inline pull-right project-deadline text-muted">
                 @if (project.Status == Status.CompetitionRegistration)
                 {
                     <span class="glyphicon glyphicon-fire" aria-hidden="true"></span> @project.CompetitionRegistrationDeadline.ToString("dd.MM.yy")
