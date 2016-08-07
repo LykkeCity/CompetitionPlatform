@@ -13,9 +13,21 @@
         <h4>Basic Info</h4>
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <input asp-for="@Model.Id" type="hidden"/>
+        <input asp-for="@Model.Id" type="hidden" />
         <input asp-for="@Model.VotesFor" type="hidden" />
         <input asp-for="@Model.VotesAgainst" type="hidden" />
+
+        <div class="form-group">
+            <div class="col-md-4">
+                <select asp-for="@Model.Status" class="form-control">
+                    @foreach (var status in Enum.GetValues(typeof(Status)))
+                    {
+                        <option value=@status>Status: @status</option>
+                    }
+                </select>
+            </div>
+        </div>
+
         <div class="form-group">
             <div class="col-md-9">
                 <label asp-for="Name" class="control-label"></label>
