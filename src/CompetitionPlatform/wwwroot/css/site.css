@@ -170,6 +170,11 @@ textarea {
 
 .project-details-back {
     margin-top: 20px;
+    border: 0 !important;
+}
+
+.project-details-back p {
+    font-size: 15px;
 }
 
 .menu-top-panel {
