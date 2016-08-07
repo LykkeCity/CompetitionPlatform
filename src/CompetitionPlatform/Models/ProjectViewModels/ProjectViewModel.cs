@@ -15,6 +15,7 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public string Name { get; set; }
 
         [Required]
+        [StringLength(5000)]
         [DataType(DataType.MultilineText)]
         [Display(Name = "Describe the project")]
         public string Description { get; set; }
