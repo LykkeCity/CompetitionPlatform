@@ -15,6 +15,7 @@
             <div class="col-md-6">
                 @{
                     var statusColor = "";
+                    var projectStatus = project.Status.ToString().ToUpper();
                 }
 
                 @switch (project.Status)
@@ -24,6 +25,7 @@
                         break;
                     case Status.CompetitionRegistration:
                         statusColor = "project-status-competitionregistration";
+                        projectStatus = "COMPETITION REGISTRATION";
                         break;
                     case Status.Implementation:
                         statusColor = "project-status-implementation";
@@ -37,7 +39,7 @@
                 }
 
                 <div class="btn btn-xs btn-info project-status @statusColor inline">
-                    @project.Status.ToString().ToUpper()
+                    @projectStatus
                 </div>
                 <p class="text-muted inline project-voting-text project-status-votes">
                     @(project.VotesFor + project.VotesAgainst) Votes
