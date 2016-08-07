@@ -203,6 +203,7 @@ textarea {
 }
 
 .edit-project-button {
+    margin-top: 20px;
     color: black;
 }
 
@@ -257,4 +258,8 @@ textarea {
 }
 
 .project-deadline {
+}
+
+.project-details-right-panel {
+    margin-top: 30px;
 }
