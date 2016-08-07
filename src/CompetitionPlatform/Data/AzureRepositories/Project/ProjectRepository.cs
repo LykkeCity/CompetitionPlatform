@@ -40,6 +40,8 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
         {
             Name = src.Name;
             Description = src.Description;
+            Category = src.Category;
+            Tags = src.Tags;
             ProjectStatus = src.Status.ToString();
             CompetitionRegistrationDeadline = src.CompetitionRegistrationDeadline;
             ImplementationDeadline = src.ImplementationDeadline;
