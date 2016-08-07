@@ -100,6 +100,7 @@ namespace CompetitionPlatform.Controllers
                 VotesFor = project.VotesFor,
                 VotesAgainst = project.VotesAgainst,
                 Created = project.Created,
+                LastModified = project.LastModified,
                 CompetitionRegistrationDeadline = project.CompetitionRegistrationDeadline,
                 ImplementationDeadline = project.ImplementationDeadline,
                 VotingDeadline = project.VotingDeadline,
