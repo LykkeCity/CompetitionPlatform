@@ -57,6 +57,9 @@ namespace CompetitionPlatform.Controllers
                     BudgetFirstPlace = project.BudgetFirstPlace,
                     VotesFor = project.VotesFor,
                     VotesAgainst = project.VotesAgainst,
+                    CompetitionRegistrationDeadline = project.CompetitionRegistrationDeadline,
+                    ImplementationDeadline = project.ImplementationDeadline,
+                    VotingDeadline = project.VotingDeadline,
                     CommentsCount = projectCommentsCount
                 };
 
