@@ -1,5 +1,4 @@
 @using System.Threading.Tasks
-@using CompetitionPlatform.Models.ProjectViewModels
 @model CompetitionPlatform.Models.ProjectViewModels.ProjectEditStatusDisplayViewModel
 
 <div class="container project-edit-status-display col-md-12">
@@ -93,20 +92,29 @@
                     <div class="col-md-3">
                         <p class="bold-text">@totalVotes VOTES</p>
                         <hr />
-                        <div>
-                            <div class="progress vote-progress-bar">
-                                <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="@forPercent" aria-valuemin="0" aria-valuemax="100" style="width: @forPercent%"></div>
+                        <div class="row">
+                            <div class="col-md-10">
+                                <div class="progress vote-progress-bar">
+                                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="@forPercent" aria-valuemin="0" aria-valuemax="100" style="width: @forPercent%"></div>
+                                </div>
                             </div>
-                            @*<p class="col-md-2">Yes</p>*@
+                            <div class="col-md-2">
+                                <p class="text-success bold-text vote-progress-bar-text">@Model.VotesFor</p>
+                            </div>
                         </div>
 
-                        <div>
-                            <div class="progress vote-progress-bar">
-                                <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="@againstPercent" aria-valuemin="0" aria-valuemax="100" style="width: @againstPercent%"></div>
+                        <div class="row">
+                            <div class="col-md-10">
+                                <div class="progress vote-progress-bar">
+                                    <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="@againstPercent" aria-valuemin="0" aria-valuemax="100" style="width: @againstPercent%"></div>
+                                </div>
                             </div>
-                            @*<p class="col-md-2">No</p>*@
+                            <div class="col-md-2">
+                                <p class="text-danger bold-text vote-progress-bar-text">@Model.VotesAgainst</p>
+                                
+                            </div>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>

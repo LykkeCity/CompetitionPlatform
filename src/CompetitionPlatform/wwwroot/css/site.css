@@ -92,7 +92,7 @@ textarea {
     /*background-color: #eaedef;*/
 }
 
-    .project-edit-status-display hr {
+    .project-edit-status-circles hr {
         border: 1px dashed #3f4d60;
     }
 
@@ -327,4 +327,9 @@ textarea {
 
 .vote-progress-bar {
     height: 7px;
+}
+
+.vote-progress-bar-text {
+    margin-top: -10px;
+    font-size: 18px;
 }
