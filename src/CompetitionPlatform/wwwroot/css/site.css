@@ -86,15 +86,19 @@ textarea {
     color: #ab00ff;
 }
 
-.project-edit-status-circles {
+.project-edit-status-display {
     margin-top: 50px;
     margin-bottom: 50px;
     /*background-color: #eaedef;*/
 }
 
-    .project-edit-status-circles hr {
+    .project-edit-status-display hr {
         border: 1px dashed #3f4d60;
     }
+
+.project-edit-status-circles {
+    margin-bottom: 100px;
+}
 
 .project-edit-status-initiative {
     background-color: #0da7fc;
@@ -319,4 +323,8 @@ textarea {
 
 .project-edit-last-updated {
     margin-top: 30px;
+}
+
+.vote-progress-bar {
+    height: 7px;
 }
