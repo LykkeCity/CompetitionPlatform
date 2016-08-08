@@ -1,0 +1,72 @@
+@model Status
+
+<div class="container project-edit-status-circles col-md-12">
+    <div class="row">
+        @{
+            var projectStatusCircleColorInitiative = "";
+            var projectStatusCircleColorCompetitionRegistration = "";
+            var projectStatusCircleColorImplementation = "";
+            var projectStatusCircleColorVoting = "";
+            var projectStatusCircleColorArchive = "";
+        }
+        @if (Model == Status.Initiative)
+            {
+                projectStatusCircleColorInitiative = "project-edit-status-initiative";
+            }
+        @if (Model == Status.CompetitionRegistration)
+            {
+                projectStatusCircleColorInitiative = "project-edit-status-initiative";
+                projectStatusCircleColorCompetitionRegistration = "project-edit-status-competitionregistration";
+            }
+        @if (Model == Status.Implementation)
+            {
+                projectStatusCircleColorInitiative = "project-edit-status-initiative";
+                projectStatusCircleColorCompetitionRegistration = "project-edit-status-competitionregistration";
+                projectStatusCircleColorImplementation = "project-edit-status-implementation";
+            }
+        @if (Model == Status.Voting)
+            {
+                projectStatusCircleColorInitiative = "project-edit-status-initiative";
+                projectStatusCircleColorCompetitionRegistration = "project-edit-status-competitionregistration";
+                projectStatusCircleColorImplementation = "project-edit-status-implementation";
+                projectStatusCircleColorVoting = "project-edit-status-voting";
+            }
+        @if (Model == Status.Archive)
+            {
+                projectStatusCircleColorInitiative = "project-edit-status-initiative";
+                projectStatusCircleColorCompetitionRegistration = "project-edit-status-competitionregistration";
+                projectStatusCircleColorImplementation = "project-edit-status-implementation";
+                projectStatusCircleColorVoting = "project-edit-status-voting";
+                projectStatusCircleColorArchive = "project-edit-status-archive";
+            }
+
+        <div class="">
+            <span class="btn project-edit-status @projectStatusCircleColorInitiative">1</span>
+            <div class="inline col-md-2">
+                <hr />
+            </div>
+        </div>
+        <div class="">
+            <span class="btn project-edit-status @projectStatusCircleColorCompetitionRegistration">2</span>
+            <div class="inline col-md-2">
+                <hr />
+            </div>
+        </div>
+        <div class="">
+            <span class="btn project-edit-status @projectStatusCircleColorImplementation">3</span>
+            <div class="inline col-md-2">
+                <hr />
+            </div>
+        </div>
+        <div class="">
+            <span class="btn project-edit-status @projectStatusCircleColorVoting">4</span>
+            <div class="inline col-md-2">
+                <hr />
+            </div>
+        </div>
+        <div class="">
+            <span class="btn project-edit-status @projectStatusCircleColorArchive">5</span>
+        </div>
+        @*<p class="text-muted">The project must go through several stages before the competition starts. At Initiative stage the project must collect a minimum of 40 votes for a competition to start. Once this amount is collected, the project can be transfered to the status of competition registration.</p>*@
+    </div>
+</div>

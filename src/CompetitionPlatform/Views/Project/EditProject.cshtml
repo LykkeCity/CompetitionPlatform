@@ -14,75 +14,7 @@
     <p class="navbar-right project-edit-last-updated"><span class="text-muted">Last Updated </span> @Model.LastModified.ToString("MMMM dd, yyyy")</p>
 </div>
 
-<div class="container project-edit-status-circles col-md-12">
-    <div class="row">
-        @{
-            var projectStatusCircleColorInitiative = "";
-            var projectStatusCircleColorCompetitionRegistration = "";
-            var projectStatusCircleColorImplementation = "";
-            var projectStatusCircleColorVoting = "";
-            var projectStatusCircleColorArchive = "";
-        }
-        @if (Model.Status == Status.Initiative)
-            {
-                projectStatusCircleColorInitiative = "project-edit-status-initiative";
-            }
-        @if (Model.Status == Status.CompetitionRegistration)
-            {
-                projectStatusCircleColorInitiative = "project-edit-status-initiative";
-                projectStatusCircleColorCompetitionRegistration = "project-edit-status-competitionregistration";
-            }
-        @if (Model.Status == Status.Implementation)
-            {
-                projectStatusCircleColorInitiative = "project-edit-status-initiative";
-                projectStatusCircleColorCompetitionRegistration = "project-edit-status-competitionregistration";
-                projectStatusCircleColorImplementation = "project-edit-status-implementation";
-            }
-        @if (Model.Status == Status.Voting)
-            {
-                projectStatusCircleColorInitiative = "project-edit-status-initiative";
-                projectStatusCircleColorCompetitionRegistration = "project-edit-status-competitionregistration";
-                projectStatusCircleColorImplementation = "project-edit-status-implementation";
-                projectStatusCircleColorVoting = "project-edit-status-voting";
-            }
-        @if (Model.Status == Status.Archive)
-            {
-                projectStatusCircleColorInitiative = "project-edit-status-initiative";
-                projectStatusCircleColorCompetitionRegistration = "project-edit-status-competitionregistration";
-                projectStatusCircleColorImplementation = "project-edit-status-implementation";
-                projectStatusCircleColorVoting = "project-edit-status-voting";
-                projectStatusCircleColorArchive = "project-edit-status-archive";
-            }
-
-        <div class="">
-            <span class="btn project-edit-status @projectStatusCircleColorInitiative">1</span>
-            <div class="inline col-md-2">
-                <hr />
-            </div>
-        </div>
-        <div class="">
-            <span class="btn project-edit-status @projectStatusCircleColorCompetitionRegistration">2</span>
-            <div class="inline col-md-2">
-                <hr />
-            </div>
-        </div>
-        <div class="">
-            <span class="btn project-edit-status @projectStatusCircleColorImplementation">3</span>
-            <div class="inline col-md-2">
-                <hr />
-            </div>
-        </div>
-        <div class="">
-            <span class="btn project-edit-status @projectStatusCircleColorVoting">4</span>
-            <div class="inline col-md-2">
-                <hr />
-            </div>
-        </div>
-        <div class="">
-            <span class="btn project-edit-status @projectStatusCircleColorArchive">5</span>
-        </div>
-    </div>
-</div>
+@await Html.PartialAsync("EditProjectStatusDisplayPartial", Model.Status)
 
 <form asp-action="SaveProject" enctype="multipart/form-data">
     <div class="form-horizontal">
