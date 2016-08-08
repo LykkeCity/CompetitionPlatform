@@ -314,3 +314,7 @@ textarea {
     font-size: 17px;
     float: left;
 }
+
+.project-edit-last-updated {
+    margin-top: 35px;
+}
