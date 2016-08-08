@@ -105,4 +105,15 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public int VotesFor { get; set; }
         public int VotesAgainst { get; set; }
     }
+
+    public class ProjectDetailsStatusViewModel
+    {
+        public string ProjectId { get; set; }
+        public Status Status { get; set; }
+        public int VotesFor { get; set; }
+        public int VotesAgainst { get; set; }
+        public DateTime CompetitionRegistrationDeadline { get; set; }
+        public DateTime ImplementationDeadline { get; set; }
+        public DateTime VotingDeadline { get; set; }
+    }
 }

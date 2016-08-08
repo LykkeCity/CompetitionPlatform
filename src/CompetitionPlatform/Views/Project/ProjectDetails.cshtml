@@ -1,4 +1,5 @@
 @using System.Threading.Tasks
+@using CompetitionPlatform.Models.ProjectViewModels
 @model CompetitionPlatform.Models.ProjectViewModels.ProjectViewModel
 
 @{
@@ -98,57 +99,16 @@
         </div>
 
         <div class="col-md-3 project-details-right-panel">
-            @if (Model.Status == Status.Initiative)
+            @await Html.PartialAsync("ProjectDetailsStatusPartial", new ProjectDetailsStatusViewModel
             {
-                <div>
-                    <p class="project-voting-text">Cast your vote for or against the competition. Do you think this is the project that Lykke City needs?</p>
-                    <div class="project-voting-buttons">
-
-                        <a asp-area="" asp-controller="ProjectDetails" asp-action="VoteFor" asp-route-id="@Model.Id" type="button" id="voteForButton" class="btn btn-sm btn-primary alert-success">
-                            <span class="glyphicon glyphicon-thumbs-up"></span>
-                        </a>
-
-                        <a asp-area="" asp-controller="ProjectDetails" asp-action="VoteAgainst" asp-route-id="@Model.Id" type="button" id="voteAgainstButton" class="btn btn-sm btn-primary alert-danger">
-                            <span class="glyphicon glyphicon-thumbs-up"></span>
-                        </a>
-
-                        <input asp-for="@Model.VotesFor" type="hidden" />
-                        <input asp-for="@Model.VotesAgainst" type="hidden" />
-
-                        <p class="inline">@(Model.VotesFor + Model.VotesAgainst) Votes</p>
-                        <div id="projectVoteResults">
-                        </div>
-                    </div>
-                </div>
-            }
-            @if (Model.Status == Status.CompetitionRegistration)
-            {
-                <div>
-                    <p class="project-voting-text">To participate in the contest with the prize, you must be registered in the competition. Registration can be completed any time.</p>
-                    <button class="btn btn-primary project-details-status-button">
-                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Participate
-                    </button>
-                </div>
-            }
-            @if (Model.Status == Status.Implementation)
-            {
-                <p class="project-voting-text">The contest began. You can no longer participate, but will be able to evaluate the results of the competition after @Model.ImplementationDeadline.ToString("MMMM d").</p>
-            }
-            @if (Model.Status == Status.Voting)
-            {
-                <div>
-                    <p class="project-voting-text">The contest is finished You can help us determine the winners. Voting ends on @Model.VotingDeadline.ToString("MMMM d").</p>
-                    <button class="btn btn-primary project-details-status-button">
-                        <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> Vote/Test
-                    </button>
-                </div>
-            }
-            @if (Model.Status == Status.Archive)
-            {
-                <div>
-                    <p class="project-voting-text">The competition and voting have completed. Winners were determined by the citizens of Lykke City.</p>
-                </div>
-            }
+                ProjectId = Model.Id,
+                Status = Model.Status,
+                VotesFor = Model.VotesFor,
+                VotesAgainst = Model.VotesAgainst,
+                CompetitionRegistrationDeadline = Model.CompetitionRegistrationDeadline,
+                ImplementationDeadline = Model.ImplementationDeadline,
+                VotingDeadline = Model.VotingDeadline
+           })
             <div>
                 <p>
                     Category: <span class="label label-info">@Model.Category</span>
