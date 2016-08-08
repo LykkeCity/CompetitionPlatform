@@ -86,6 +86,44 @@ textarea {
     color: #ab00ff;
 }
 
+.project-edit-status-circles {
+    /*background-color: #eaedef;*/
+}
+
+    .project-edit-status-circles hr {
+        border: 1px dashed #3f4d60;
+    }
+
+.project-edit-status-initiative {
+    background-color: #0da7fc;
+    color: white !important;
+    border: 0;
+}
+
+.project-edit-status-competitionregistration {
+    background-color: #13b72a;
+    color: white !important;
+    border: 0;
+}
+
+.project-edit-status-implementation {
+    background-color: #ff3e2e;
+    color: white !important;
+    border: 0;
+}
+
+.project-edit-status-voting {
+    background-color: #ffae2c;
+    color: white !important;
+    border: 0;
+}
+
+.project-edit-status-archive {
+    background-color: #3f4d60;
+    color: white !important;
+    border: 0;
+}
+
 .project-tile {
     min-height: 300px;
     max-height: 300px;
@@ -173,9 +211,9 @@ textarea {
     border: 0 !important;
 }
 
-.project-details-back p {
-    font-size: 15px;
-}
+    .project-details-back p {
+        font-size: 15px;
+    }
 
 .menu-top-panel {
     width: 100%;
@@ -262,4 +300,17 @@ textarea {
 
 .project-details-right-panel {
     margin-top: 30px;
+}
+
+.project-edit-status {
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    padding: 5px 0;
+    line-height: 1.70;
+    border-radius: 30px;
+    color: #3f4d60;
+    border-color: #3f4d60;
+    font-size: 17px;
+    float: left;
 }
