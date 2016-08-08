@@ -1,3 +1,5 @@
+@using System.Threading.Tasks
+@using CompetitionPlatform.Models.ProjectViewModels
 @model CompetitionPlatform.Models.ProjectViewModels.ProjectViewModel
 
 @{
@@ -14,7 +16,12 @@
     <p class="navbar-right project-edit-last-updated"><span class="text-muted">Last Updated </span> @Model.LastModified.ToString("MMMM dd, yyyy")</p>
 </div>
 
-@await Html.PartialAsync("EditProjectStatusDisplayPartial", Model.Status)
+@await Html.PartialAsync("EditProjectStatusDisplayPartial", new ProjectEditStatusDisplayViewModel
+{
+    Status = Model.Status,
+    VotesFor = Model.VotesFor,
+    VotesAgainst = Model.VotesAgainst
+})
 
 <form asp-action="SaveProject" enctype="multipart/form-data">
     <div class="form-horizontal">
