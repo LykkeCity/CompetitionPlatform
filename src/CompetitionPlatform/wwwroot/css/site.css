@@ -87,6 +87,8 @@ textarea {
 }
 
 .project-edit-status-circles {
+    margin-top: 50px;
+    margin-bottom: 50px;
     /*background-color: #eaedef;*/
 }
 
@@ -316,5 +318,5 @@ textarea {
 }
 
 .project-edit-last-updated {
-    margin-top: 35px;
+    margin-top: 30px;
 }
