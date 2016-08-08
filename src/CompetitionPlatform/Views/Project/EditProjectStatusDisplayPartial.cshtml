@@ -1,4 +1,5 @@
 @using System.Threading.Tasks
+@using CompetitionPlatform.Models.ProjectViewModels
 @model CompetitionPlatform.Models.ProjectViewModels.ProjectEditStatusDisplayViewModel
 
 <div class="container project-edit-status-display col-md-12">
@@ -9,18 +10,6 @@
             var projectStatusCircleColorImplementation = "";
             var projectStatusCircleColorVoting = "";
             var projectStatusCircleColorArchive = "";
-
-            var forPercent = 0;
-            var againstPercent = 0;
-
-            var totalVotes = Model.VotesFor + Model.VotesAgainst;
-            if (totalVotes != 0)
-            {
-                forPercent = Model.VotesFor * 100 / totalVotes;
-                againstPercent = Model.VotesAgainst * 100 / totalVotes;
-            }
-
-
         }
         @if (Model.Status == Status.Initiative)
             {
@@ -90,31 +79,13 @@
                         <p class="text-muted">The project must go through several stages before the competition starts. At Initiative stage the project must collect a minimum of 40 votes for a competition to start. Once this amount is collected, the project can be transfered to the status of competition registration.</p>
                     </div>
                     <div class="col-md-3">
-                        <p class="bold-text">@totalVotes VOTES</p>
+                        <p class="bold-text">@(Model.VotesFor + Model.VotesAgainst) VOTES</p>
                         <hr />
-                        <div class="row">
-                            <div class="col-md-10">
-                                <div class="progress vote-progress-bar">
-                                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="@forPercent" aria-valuemin="0" aria-valuemax="100" style="width: @forPercent%"></div>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <p class="text-success bold-text vote-progress-bar-text">@Model.VotesFor</p>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-10">
-                                <div class="progress vote-progress-bar">
-                                    <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="@againstPercent" aria-valuemin="0" aria-valuemax="100" style="width: @againstPercent%"></div>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <p class="text-danger bold-text vote-progress-bar-text">@Model.VotesAgainst</p>
-                                
-                            </div>
-                        </div>
-
+                        @await Html.PartialAsync("VotingBarsPartial", new ProjectVoteViewModel
+                   {
+                       VotesFor = Model.VotesFor,
+                       VotesAgainst = Model.VotesAgainst
+                   })
                     </div>
                 </div>
             </div>

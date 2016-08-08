@@ -1,0 +1,35 @@
+@model CompetitionPlatform.Models.ProjectViewModels.ProjectVoteViewModel
+
+@{
+    var totalVotes = Model.VotesFor + Model.VotesAgainst;
+    var forPercent = 0;
+    var againstPercent = 0;
+
+    if (totalVotes != 0)
+    {
+        forPercent = Model.VotesFor * 100 / totalVotes;
+        againstPercent = Model.VotesAgainst * 100 / totalVotes;
+    }
+}
+
+<div class="row">
+    <div class="col-md-10">
+        <div class="progress vote-progress-bar">
+            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="@forPercent" aria-valuemin="0" aria-valuemax="100" style="width: @forPercent%"></div>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <p class="text-success bold-text vote-progress-bar-text">@Model.VotesFor</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-10">
+        <div class="progress vote-progress-bar">
+            <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="@againstPercent" aria-valuemin="0" aria-valuemax="100" style="width: @againstPercent%"></div>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <p class="text-danger bold-text vote-progress-bar-text">@Model.VotesAgainst</p>
+    </div>
+</div>

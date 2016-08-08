@@ -132,7 +132,7 @@ namespace CompetitionPlatform.Controllers
                 VotesAgainst = votesAgainst
             };
 
-            return PartialView("~/Views/Project/VotePartial.cshtml", viewModel);
+            return PartialView("~/Views/Project/VotingBarsPartial.cshtml", viewModel);
         }
     }
 }
