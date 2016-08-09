@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AzureStorage.Tables;
-using CompetitionPlatform.Data.Migrations;
 using Microsoft.WindowsAzure.Storage.Table;
 
 namespace CompetitionPlatform.Data.AzureRepositories.Users
