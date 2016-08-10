@@ -12,5 +12,3 @@ AzureStorage is a main connection string that is used to store information about
 
 AzureStorageLog points to a storage that is used for logging.
 
-Authentication contains ClientId and ClientSecret.
-
