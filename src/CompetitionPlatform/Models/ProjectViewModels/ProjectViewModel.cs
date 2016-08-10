@@ -65,6 +65,10 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public ProjectCommentPartialViewModel CommentsPartial { get; set; }
 
         public ProjectFileInfoViewModel FileInfo { get; set; }
+
+        public string AuthorId { get; set; }
+
+        public string AuthorFullName { get; set; }
     }
 
     public class ProjectCompactViewModel
@@ -80,6 +84,7 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public DateTime CompetitionRegistrationDeadline { get; set; }
         public DateTime ImplementationDeadline { get; set; }
         public DateTime VotingDeadline { get; set; }
+        public string AuthorFullName { get; set; }
     }
 
     public class ProjectFileInfoViewModel

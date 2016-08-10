@@ -48,6 +48,14 @@
         </div>
         <div class="project-description">@project.Description</div>
         <div class="row project-tile-bottom">
+            <div class="row project-index-author">
+                <div class="inline">
+                    <img src="~/images/avatar.png"
+                         alt="@project.AuthorFullName"
+                         asp-append-version="true" />
+                </div>
+                <p class="project-index-author-text bold-text inline">@project.AuthorFullName</p>
+            </div>
             <a asp-area="" asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.Id" class="pull-right inline project-details-button nohover text-muted">
                 <span class="glyphicon glyphicon-option-horizontal"></span>
             </a>
@@ -61,15 +69,18 @@
             <div class="inline pull-right project-deadline text-muted">
                 @if (project.Status == Status.CompetitionRegistration)
                 {
-                    <span class="glyphicon glyphicon-fire" aria-hidden="true"></span> @project.CompetitionRegistrationDeadline.ToString("dd.MM.yy")
+                    <span class="glyphicon glyphicon-fire" aria-hidden="true"></span>
+                    @project.CompetitionRegistrationDeadline.ToString("dd.MM.yy")
                 }
                 @if (project.Status == Status.Implementation)
                 {
-                    <span class="glyphicon glyphicon-fire" aria-hidden="true"></span> @project.ImplementationDeadline.ToString("dd.MM.yy")
+                    <span class="glyphicon glyphicon-fire" aria-hidden="true"></span>
+                    @project.ImplementationDeadline.ToString("dd.MM.yy")
                 }
                 @if (project.Status == Status.Voting)
                 {
-                    <span class="glyphicon glyphicon-fire" aria-hidden="true"></span> @project.VotingDeadline.ToString("dd.MM.yy")
+                    <span class="glyphicon glyphicon-fire" aria-hidden="true"></span>
+                    @project.VotingDeadline.ToString("dd.MM.yy")
                 }
             </div>
         </div>

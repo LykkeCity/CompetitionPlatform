@@ -203,6 +203,21 @@ textarea {
     margin-top: 10px;
 }
 
+.project-tile-bottom img {
+    width: 35px;
+    height: auto;
+}
+
+.project-index-author {
+    margin-left: 15px;  
+    margin-bottom: -30px;
+}
+
+.project-index-author-text {
+    margin-left: 10px;
+    font-size: 16px;
+}
+
 .projects-filter-buttons {
     margin-top: 25px;
     margin-bottom: 25px;

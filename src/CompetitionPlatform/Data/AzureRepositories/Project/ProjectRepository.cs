@@ -35,6 +35,8 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
         public int VotesAgainst { get; set; }
         public DateTime Created { get; set; }
         public DateTime LastModified { get; set; }
+        public string AuthorId { get; set; }
+        public string AuthorFullName { get; set; }
 
         internal void Update(IProjectData src)
         {
@@ -70,7 +72,9 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
                 BudgetFirstPlace = src.BudgetFirstPlace,
                 BudgetSecondPlace = src.BudgetSecondPlace,
                 Created = src.Created,
-                LastModified = src.Created
+                LastModified = src.Created,
+                AuthorId = src.AuthorId,
+                AuthorFullName = src.AuthorFullName
             };
 
             return result;

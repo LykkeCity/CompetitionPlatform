@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CompetitionPlatform.Data.AzureRepositories.Project;
+using CompetitionPlatform.Helpers;
 using CompetitionPlatform.Models;
 using CompetitionPlatform.Models.ProjectViewModels;
 using Microsoft.AspNetCore.Http;
@@ -50,6 +51,11 @@ namespace CompetitionPlatform.Controllers
 
             if (projectViewModel.Id == null)
             {
+                var user = GetAuthenticatedUser();
+
+                projectViewModel.AuthorId = user.Email;
+                projectViewModel.AuthorFullName = user.GetFullName();
+
                 projectViewModel.Created = DateTime.UtcNow;
 
                 projectId = await _projectRepository.SaveAsync(projectViewModel);
@@ -104,7 +110,9 @@ namespace CompetitionPlatform.Controllers
                 CompetitionRegistrationDeadline = project.CompetitionRegistrationDeadline,
                 ImplementationDeadline = project.ImplementationDeadline,
                 VotingDeadline = project.VotingDeadline,
-                CommentsPartial = commentsPartial
+                CommentsPartial = commentsPartial,
+                AuthorId = project.AuthorId,
+                AuthorFullName = project.AuthorFullName
             };
 
             if (!string.IsNullOrEmpty(project.Tags))
@@ -165,6 +173,11 @@ namespace CompetitionPlatform.Controllers
 
                 await _projectFileInfoRepository.SaveAsync(fileInfo);
             }
+        }
+
+        private CompetitionPlatformUser GetAuthenticatedUser()
+        {
+            return ClaimsHelper.GetUser(User.Identity);
         }
     }
 }
