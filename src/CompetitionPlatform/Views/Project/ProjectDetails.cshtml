@@ -76,7 +76,9 @@
 
             <div class="tab-content project-details-tabs">
                 <div role="tabpanel" class="tab-pane active" id="Info">
-                    @Model.Description
+                    <div class="project-details-description">
+                        @Model.Description
+                    </div>
                     @if (Model.FileInfo != null)
                     {
                         <div class="project-file">
@@ -108,7 +110,7 @@
                 CompetitionRegistrationDeadline = Model.CompetitionRegistrationDeadline,
                 ImplementationDeadline = Model.ImplementationDeadline,
                 VotingDeadline = Model.VotingDeadline
-           })
+            })
             <div>
                 <p>
                     Category: <span class="label label-info">@Model.Category</span>
@@ -155,4 +157,3 @@
         </div>
     </div>
 </div>
-

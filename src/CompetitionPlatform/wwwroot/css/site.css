@@ -333,3 +333,7 @@ textarea {
     margin-top: -10px;
     font-size: 18px;
 }
+
+.project-details-description {
+    white-space: pre-line;
+}
