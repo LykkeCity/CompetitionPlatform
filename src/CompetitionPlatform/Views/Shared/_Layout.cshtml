@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using System.Security.Claims
+@using CompetitionPlatform.Helpers
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -42,6 +44,12 @@
         <a class="h4">Exchange</a>
         <a class="h4 primary-color">City</a>
         <a class="h4">Corp</a>
+        <a class="h4 pull-right">
+            @if (User.Identity.IsAuthenticated)
+            {
+                <span>@ClaimsHelper.GetUser(User.Identity).GetFullName()</span>
+            }
+        </a>
         <hr />
     </div>
     <div class="navbar text-center menu-top-panel">
