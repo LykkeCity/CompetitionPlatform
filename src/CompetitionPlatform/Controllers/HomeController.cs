@@ -2,11 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using CompetitionPlatform.Data.AzureRepositories.Project;
+using CompetitionPlatform.Helpers;
 using CompetitionPlatform.Models;
 using Microsoft.AspNetCore.Mvc;
 using CompetitionPlatform.Models.ProjectViewModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace CompetitionPlatform.Controllers
 {
@@ -21,6 +26,7 @@ namespace CompetitionPlatform.Controllers
             _projectCommentsRepository = projectCommentsRepository;
         }
 
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             var viewModel = await GetProjectListViewModel();
@@ -99,6 +105,13 @@ namespace CompetitionPlatform.Controllers
         public string Version()
         {
             return typeof(HomeController).GetTypeInfo().Assembly.GetName().Version.ToString();
+        }
+
+        public string LoggedInUser()
+        {
+            var user = ClaimsHelper.GetUser(User.Identity);
+
+            return user.Email + user.FirstName + user.LastName;
         }
     }
 }

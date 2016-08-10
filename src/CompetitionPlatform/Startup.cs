@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -9,7 +10,10 @@ using CompetitionPlatform.Data;
 using CompetitionPlatform.Data.AzureRepositories.Log;
 using CompetitionPlatform.Models;
 using AzureStorage.Tables;
+using CompetitionPlatform.Data.AzureRepositories.Settings;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 
 namespace CompetitionPlatform
 {
@@ -26,30 +30,30 @@ namespace CompetitionPlatform
             if (env.IsDevelopment())
             {
                 // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
-               // builder.AddUserSecrets();
+                // builder.AddUserSecrets();
             }
 
             Configuration = builder.Build();
         }
 
         public IConfigurationRoot Configuration { get; }
-
-
+        private BaseSettings Settings { get; set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             var connectionString = Configuration.GetConnectionString("AzureStorage");
             var connectionStringLogs = Configuration.GetConnectionString("AzureStorageLog");
+
+            Settings = GeneralSettingsReader.ReadGeneralSettings<BaseSettings>(connectionString);
 
             // Add framework services.
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
+            //services.AddIdentity<ApplicationUser, IdentityRole>()
+            //    .AddEntityFrameworkStores<ApplicationDbContext>()
+            //    .AddDefaultTokenProviders();
 
             services.AddAuthentication(
                 options => { options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme; });
@@ -60,7 +64,7 @@ namespace CompetitionPlatform
 
             var log = new LogToTable(new AzureTableStorage<LogEntity>(connectionStringLogs, "LogCompPlatform", null));
 
-          services.RegisterRepositories(connectionString, log);
+            services.RegisterRepositories(connectionString, log);
 
         }
 
@@ -80,55 +84,45 @@ namespace CompetitionPlatform
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-            var configurationSection = Configuration.GetSection("Authentication");
-            var clientId = configurationSection.GetValue("ClientId", "");
-            var clientSecret = configurationSection.GetValue("ClientSecret", "");
 
-            //app.UseCookieAuthentication(new CookieAuthenticationOptions
-            //{
-            //    AutomaticAuthenticate = true,
-            //    AutomaticChallenge = true,
-            //    ExpireTimeSpan = TimeSpan.FromMinutes(5),
-            //    LoginPath = new PathString("/signin"),
-            //    AccessDeniedPath = "/Home/Forbidden"
-            //});
+            app.UseCookieAuthentication(new CookieAuthenticationOptions
+            {
+                AutomaticAuthenticate = true,
+                AutomaticChallenge = true,
+                ExpireTimeSpan = TimeSpan.FromMinutes(5),
+                LoginPath = new PathString("/signin"),
+                AccessDeniedPath = "/Home/Error"
+            });
 
-            //app.UseOpenIdConnectAuthentication(new OpenIdConnectOptions
-            //{
-            //    RequireHttpsMetadata = false,
-            //    SaveTokens = true,
+            app.UseOpenIdConnectAuthentication(new OpenIdConnectOptions
+            {
+                RequireHttpsMetadata = false,
+                SaveTokens = true,
 
-            //    // Note: these settings must match the application details
-            //    // inserted in the database at the server level.
-            //    ClientId = "myClient",
-            //    ClientSecret = "secret_secret_secret",
-            //    PostLogoutRedirectUri = "https://lykke-auth-dev.azurewebsites.net/",
-            //    CallbackPath = "/auth",
+                // Note: these settings must match the application details
+                // inserted in the database at the server level.
+                ClientId = Settings.Authentication.ClientId,
+                ClientSecret = Settings.Authentication.ClientSecret,
+                PostLogoutRedirectUri = Settings.Authentication.PostLogoutRedirectUri,
+                CallbackPath = "/auth",
 
-            //    // Use the authorization code flow.
-            //    ResponseType = OpenIdConnectResponseType.Code,
-            //    //Events = new TerminalAuthenticationEvents(),
+                // Use the authorization code flow.
+                ResponseType = OpenIdConnectResponseType.Code,
+                //Events = new TerminalAuthenticationEvents(),
 
-            //    // Note: setting the Authority allows the OIDC client middleware to automatically
-            //    // retrieve the identity provider's configuration and spare you from setting
-            //    // the different endpoints URIs or the token validation parameters explicitly.
-            //    Authority = "https://lykke-auth-dev.azurewebsites.net",
-            //    Scope = { "email" }
-            //});
+                // Note: setting the Authority allows the OIDC client middleware to automatically
+                // retrieve the identity provider's configuration and spare you from setting
+                // the different endpoints URIs or the token validation parameters explicitly.
+                Authority = Settings.Authentication.Authority,
+                Scope = { "email" }
+            });
 
             app.UseStaticFiles();
 
-            app.UseIdentity();
+            //app.UseIdentity();
 
             // Add external authentication middleware below. To configure them please see http://go.microsoft.com/fwlink/?LinkID=532715
 
-            /*
-            app.Run(async (context) =>
-            {
-                await context.Response.WriteAsync(connStirng ?? "NULL");
-            });
-            */
-            
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
