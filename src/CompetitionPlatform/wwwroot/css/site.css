@@ -89,7 +89,6 @@ textarea {
 .project-edit-status-display {
     margin-top: 50px;
     margin-bottom: 50px;
-    /*background-color: #eaedef;*/
 }
 
     .project-edit-status-circles hr {
@@ -171,6 +170,13 @@ textarea {
 
 .project-comment {
     margin-bottom: 30px;
+    margin-left: 20px;
+}
+
+.project-comment-text {
+    font-size: 16px;
+    white-space: pre-line;
+    padding-right: 30px;
 }
 
 .project-filter {
@@ -336,4 +342,13 @@ textarea {
 
 .project-details-description {
     white-space: pre-line;
+}
+
+.project-comments-avatar img {
+    width: 35px;
+    height: auto;
+}
+
+.project-comment-author {
+    margin-left: 10px;
 }
