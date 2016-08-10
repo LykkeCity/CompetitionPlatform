@@ -6,7 +6,6 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using CompetitionPlatform.Data.AzureRepositories.Project;
-using CompetitionPlatform.Helpers;
 using CompetitionPlatform.Models;
 using Microsoft.AspNetCore.Mvc;
 using CompetitionPlatform.Models.ProjectViewModels;
@@ -105,13 +104,6 @@ namespace CompetitionPlatform.Controllers
         public string Version()
         {
             return typeof(HomeController).GetTypeInfo().Assembly.GetName().Version.ToString();
-        }
-
-        public string LoggedInUser()
-        {
-            var user = ClaimsHelper.GetUser(User.Identity);
-
-            return user.Email + user.FirstName + user.LastName;
         }
     }
 }
