@@ -19,7 +19,8 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
             return (DateTime.MaxValue.Ticks - DateTime.UtcNow.Ticks).ToString("d19");
         }
 
-        public string User { get; set; }
+        public string UserId { get; set; }
+        public string FullName { get; set; }
         public string ProjectId { get; set; }
         public string Comment { get; set; }
         public DateTime Created { get; set; }
@@ -32,7 +33,8 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
                 RowKey = GenerateRowKey(),
                 PartitionKey = GeneratePartitionKey(src.ProjectId),
                 Comment = src.Comment,
-                User = src.User,
+                UserId = src.UserId,
+                FullName = src.FullName,
                 Created = src.Created,
                 LastModified = src.LastModified
             };
@@ -43,6 +45,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
         internal void Update(ICommentData src)
         {
             Comment = src.Comment;
+            LastModified = DateTime.UtcNow;
         }
     }
 

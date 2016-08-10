@@ -7,7 +7,8 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
     public interface ICommentData
     {
         string ProjectId { get; set; }
-        string User { get; }
+        string UserId { get; set; }
+        string FullName { get; set; }
         string Comment { get; set; }
         DateTime Created { get; set; }
         DateTime LastModified { get; set; }

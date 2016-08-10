@@ -2,6 +2,8 @@ using System;
 using System.Threading.Tasks;
 using CompetitionPlatform.Data.AzureRepositories.Project;
 using CompetitionPlatform.Data.AzureRepositories.Vote;
+using CompetitionPlatform.Helpers;
+using CompetitionPlatform.Models;
 using CompetitionPlatform.Models.ProjectViewModels;
 using Microsoft.AspNetCore.Mvc;
 
@@ -28,7 +30,9 @@ namespace CompetitionPlatform.Controllers
 
         public IActionResult AddComment(ProjectCommentPartialViewModel model)
         {
-            model.User = "User1";
+            var user = GetAuthenticatedUser();
+            model.UserId = user.Email;
+            model.FullName = user.GetFullName();
             model.Created = DateTime.UtcNow;
             model.LastModified = model.Created;
 
@@ -46,16 +50,16 @@ namespace CompetitionPlatform.Controllers
 
         public async Task<IActionResult> VoteFor(string id)
         {
-            var user = "User1";
+            var user = GetAuthenticatedUser();
 
             var result = new ProjectVoteEntity
             {
                 ProjectId = id,
-                VoterUserId = user,
+                VoterUserId = user.Email,
                 ForAgainst = 1,
             };
 
-            var vote = await _projectVoteRepository.GetAsync(id, user);
+            var vote = await _projectVoteRepository.GetAsync(id, user.Email);
 
             if (vote == null)
             {
@@ -86,16 +90,16 @@ namespace CompetitionPlatform.Controllers
 
         public async Task<IActionResult> VoteAgainst(string id)
         {
-            var user = "User1";
+            var user = GetAuthenticatedUser();
 
             var result = new ProjectVoteEntity
             {
                 ProjectId = id,
-                VoterUserId = user,
+                VoterUserId = user.Email,
                 ForAgainst = -1
             };
 
-            var vote = await _projectVoteRepository.GetAsync(id, user);
+            var vote = await _projectVoteRepository.GetAsync(id, user.Email);
 
             if (vote == null)
             {
@@ -133,6 +137,11 @@ namespace CompetitionPlatform.Controllers
             };
 
             return PartialView("~/Views/Project/VotingBarsPartial.cshtml", viewModel);
+        }
+
+        private CompetitionPlatformUser GetAuthenticatedUser()
+        {
+            return ClaimsHelper.GetUser(User.Identity);
         }
     }
 }
