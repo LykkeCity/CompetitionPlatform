@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using CompetitionPlatform.Data.AzureRepositories.Project;
+using CompetitionPlatform.Data.AzureRepositories.Users;
 using Microsoft.AspNetCore.Http;
 
 namespace CompetitionPlatform.Models.ProjectViewModels
@@ -64,6 +65,8 @@ namespace CompetitionPlatform.Models.ProjectViewModels
 
         public ProjectCommentPartialViewModel CommentsPartial { get; set; }
 
+        public ProjectParticipantsPartialViewModel ParticipantsPartial { get; set; }
+
         public ProjectFileInfoViewModel FileInfo { get; set; }
 
         public string AuthorId { get; set; }
@@ -109,16 +112,5 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public Status Status { get; set; }
         public int VotesFor { get; set; }
         public int VotesAgainst { get; set; }
-    }
-
-    public class ProjectDetailsStatusViewModel
-    {
-        public string ProjectId { get; set; }
-        public Status Status { get; set; }
-        public int VotesFor { get; set; }
-        public int VotesAgainst { get; set; }
-        public DateTime CompetitionRegistrationDeadline { get; set; }
-        public DateTime ImplementationDeadline { get; set; }
-        public DateTime VotingDeadline { get; set; }
     }
 }
