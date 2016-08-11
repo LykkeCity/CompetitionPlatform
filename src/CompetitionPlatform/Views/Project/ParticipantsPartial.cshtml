@@ -1,0 +1,31 @@
+@model CompetitionPlatform.Models.ProjectViewModels.ProjectParticipantsPartialViewModel
+
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>USERNAME</th>
+                <th>REGISTRATION DATE</th>
+                <th>RESULT</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var participant in Model.Participants)
+            {
+                <tr>
+                    <td>
+                        <div class="project-participant">
+                            <img src="~/images/avatar.svg"
+                                 alt="@participant.FullName"
+                                 asp-append-version="true" />
+                            @participant.FullName
+                        </div>
+                    </td>
+                    <td>@participant.Registered.ToString("MMMM dd, yyyy hh:mm")</td>
+                    <td>@participant.Result</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>

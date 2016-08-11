@@ -92,7 +92,9 @@
                         </div>
                     }
                 </div>
-                <div role="tabpanel" class="tab-pane" id="Participants">....</div>
+                <div role="tabpanel" class="tab-pane" id="Participants">
+                    @await Html.PartialAsync("ParticipantsPartial", Model.ParticipantsPartial)
+                </div>
                 <div role="tabpanel" class="tab-pane" id="Comments">
                     @await Html.PartialAsync("CommentsPartial", Model.CommentsPartial)
                 </div>
@@ -102,15 +104,15 @@
 
         <div class="col-md-3 project-details-right-panel">
             @await Html.PartialAsync("ProjectDetailsStatusPartial", new ProjectDetailsStatusViewModel
-            {
-                ProjectId = Model.Id,
-                Status = Model.Status,
-                VotesFor = Model.VotesFor,
-                VotesAgainst = Model.VotesAgainst,
-                CompetitionRegistrationDeadline = Model.CompetitionRegistrationDeadline,
-                ImplementationDeadline = Model.ImplementationDeadline,
-                VotingDeadline = Model.VotingDeadline
-            })
+       {
+           ProjectId = Model.Id,
+           Status = Model.Status,
+           VotesFor = Model.VotesFor,
+           VotesAgainst = Model.VotesAgainst,
+           CompetitionRegistrationDeadline = Model.CompetitionRegistrationDeadline,
+           ImplementationDeadline = Model.ImplementationDeadline,
+           VotingDeadline = Model.VotingDeadline
+       })
             <div>
                 <p>
                     Category: <span class="label label-info">@Model.Category</span>

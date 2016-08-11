@@ -363,6 +363,12 @@ textarea {
     height: auto;
 }
 
+.project-participant img {
+    width: 35px;
+    height: auto;
+    margin-right: 10px;
+}
+
 .project-comment-author {
     margin-left: 10px;
 }
