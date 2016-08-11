@@ -7,15 +7,18 @@ namespace CompetitionPlatform.Data.AzureRepositories.Users
 {
     public interface IProjectParticipateData
     {
-        string UserId { get; set; }
         string ProjectId { get; set; }
+        string UserId { get; set; }
+        string FullName { get; set; }
+        DateTime Registered { get; set; }
+        bool Result { get; set; } 
     }
 
-    public interface IProjectParticipateRepository
+    public interface IProjectParticipantsRepository
     {
         Task SaveAsync(IProjectParticipateData projectParticipateData);
         Task<IProjectParticipateData> GetAsync(string projectId, string userId);
         Task<IEnumerable<IProjectParticipateData>> GetProjectParticipants(string projectId);
-        Task<IProjectParticipateData> DeleteAsync(string userId, string projectId);
+        Task<IProjectParticipateData> DeleteAsync(string projectId, string userId);
     }
 }

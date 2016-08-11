@@ -24,20 +24,31 @@ namespace CompetitionPlatform.Data.AzureRepositories.Users
             var result = new ProjectParticipateEntity
             {
                 PartitionKey = GeneratePartitionKey(src.ProjectId),
-                RowKey = GenerateRowKey(src.UserId)
+                RowKey = GenerateRowKey(src.UserId),
+                FullName = src.FullName,
+                Registered = src.Registered,
+                Result = src.Result
             };
 
             return result;
         }
 
-        public string UserId { get; set; }
+        internal void Update(IProjectParticipateData src)
+        {
+            Result = src.Result;
+        }
+
         public string ProjectId { get; set; }
+        public string UserId { get; set; }
+        public string FullName { get; set; }
+        public DateTime Registered { get; set; }
+        public bool Result { get; set; }
     }
-    public class ProjectParticipateRepository : IProjectParticipateRepository
+    public class ProjectParticipantsRepository : IProjectParticipantsRepository
     {
         private readonly IAzureTableStorage<ProjectParticipateEntity> _projectParticipateTableStorage;
 
-        public ProjectParticipateRepository(IAzureTableStorage<ProjectParticipateEntity> projectParticipateTableStorage)
+        public ProjectParticipantsRepository(IAzureTableStorage<ProjectParticipateEntity> projectParticipateTableStorage)
         {
             _projectParticipateTableStorage = projectParticipateTableStorage;
         }
@@ -63,7 +74,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Users
             return await _projectParticipateTableStorage.GetDataAsync(partitionKey);
         }
 
-        public async Task<IProjectParticipateData> DeleteAsync(string userId, string projectId)
+        public async Task<IProjectParticipateData> DeleteAsync(string projectId, string userId)
         {
             var partitionKey = ProjectParticipateEntity.GeneratePartitionKey(projectId);
             var rowKey = ProjectParticipateEntity.GenerateRowKey(userId);
