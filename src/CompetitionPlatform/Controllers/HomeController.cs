@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CompetitionPlatform.Data.AzureRepositories.Project;
 using CompetitionPlatform.Data.ProjectCategory;
+using CompetitionPlatform.Helpers;
 using CompetitionPlatform.Models;
 using Microsoft.AspNetCore.Mvc;
 using CompetitionPlatform.Models.ProjectViewModels;
@@ -42,7 +43,7 @@ namespace CompetitionPlatform.Controllers
             return PartialView("ProjectListPartial", viewModel);
         }
 
-        private async Task<ProjectListIndexViewModel> GetProjectListViewModel(string projectStatusFilter = null, string projectCategoryFilter = null)
+        private async Task<ProjectListIndexViewModel> GetProjectListViewModel(string projectStatusFilter = null, string projectCategoryFilter = null, string projectAuthorId = null)
         {
             var projects = await _projectRepository.GetProjectsAsync();
 
@@ -53,6 +54,9 @@ namespace CompetitionPlatform.Controllers
 
             if (!string.IsNullOrEmpty(projectCategoryFilter))
                 projects = projects.Where(x => x.Category == projectCategoryFilter);
+
+            if (!string.IsNullOrEmpty(projectAuthorId))
+                projects = projects.Where(x => x.AuthorId == projectAuthorId);
 
             var compactModels = new List<ProjectCompactViewModel>();
 
@@ -90,6 +94,14 @@ namespace CompetitionPlatform.Controllers
             return viewModel;
         }
 
+        public async Task<IActionResult> FilterMyProjects()
+        {
+            var user = GetAuthenticatedUser();
+            var viewModel = await GetProjectListViewModel(projectAuthorId: user.Email);
+
+            return View("~/Views/Home/Index.cshtml", viewModel);
+        }
+
         public IActionResult About()
         {
             ViewData["Message"] = "Your application description page.";
@@ -107,6 +119,11 @@ namespace CompetitionPlatform.Controllers
         public IActionResult Error()
         {
             return View();
+        }
+
+        private CompetitionPlatformUser GetAuthenticatedUser()
+        {
+            return ClaimsHelper.GetUser(User.Identity);
         }
 
         public string Version()

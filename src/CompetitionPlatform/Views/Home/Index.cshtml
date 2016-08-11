@@ -6,8 +6,8 @@
 
 <div class="projects-filter-buttons">
     <div class="col-md-12">
-        <button type="button" class="btn  btn-primary btn-sm">All Projects</button>
-        <button type="button" class="btn  btn-info btn-sm">My Projects</button>
+        <a asp-area="" asp-controller="Home" asp-action="Index" class="btn btn-primary btn-sm">All Projects</a>
+        <a asp-area="" asp-controller="Home" asp-action="FilterMyProjects" class="btn  btn-info btn-sm">My Projects</a>
         <button type="button" class="btn  btn-info btn-sm">Following</button>
     </div>
 </div>
