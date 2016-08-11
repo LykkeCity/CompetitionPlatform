@@ -25,10 +25,10 @@
     <div class="row col-md-3 project-filter">
         <select id="projectCategoryFilter" name="projectCategoryFilter" class="form-control" value="Create">
             <option value="">Category: All</option>
-            <option value="Finance">Finance</option>
-            <option value="Technology">Technology</option>
-            <option value="Bitcoin">Bitcoin</option>
-            <option value="Mobile">Mobile</option>
+            @foreach (var category in Model.ProjectCategories)
+            {
+                <option value="@category">@category</option>
+            }
         </select>
     </div>
 </div>

@@ -25,11 +25,13 @@ namespace CompetitionPlatform.Models.ProjectViewModels
 
         public string ProjectStatus { get; set; }
 
-        public List<string> Categories { get; set; }
-
         public string Category { get; set; }
 
+        public List<string> ProjectCategories { get; set; }
+
         public string Tags { get; set; }
+
+        public List<string> TagsList { get; set; }
 
         [Required]
         [DataType(DataType.Date)]
@@ -98,6 +100,7 @@ namespace CompetitionPlatform.Models.ProjectViewModels
 
     public class ProjectListIndexViewModel
     {
+        public List<string> ProjectCategories { get; set; }
         public IEnumerable<ProjectCompactViewModel> Projects { get; set; }
     }
 

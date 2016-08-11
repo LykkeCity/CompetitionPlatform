@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CompetitionPlatform.Data.AzureRepositories.Project;
 using CompetitionPlatform.Data.AzureRepositories.Users;
+using CompetitionPlatform.Data.ProjectCategory;
 using CompetitionPlatform.Helpers;
 using CompetitionPlatform.Models;
 using CompetitionPlatform.Models.ProjectViewModels;
@@ -21,21 +22,28 @@ namespace CompetitionPlatform.Controllers
         private readonly IProjectFileRepository _projectFileRepository;
         private readonly IProjectFileInfoRepository _projectFileInfoRepository;
         private readonly IProjectParticipantsRepository _projectParticipantsRepository;
+        private readonly IProjectCategoriesRepository _projectCategoriesRepository;
 
         public ProjectController(IProjectRepository projectRepository, IProjectCommentsRepository projectCommentsRepository,
             IProjectFileRepository projectFileRepository, IProjectFileInfoRepository projectFileInfoRepository,
-            IProjectParticipantsRepository projectParticipantsRepository)
+            IProjectParticipantsRepository projectParticipantsRepository, IProjectCategoriesRepository projectCategoriesRepository)
         {
             _projectRepository = projectRepository;
             _projectCommentsRepository = projectCommentsRepository;
             _projectFileRepository = projectFileRepository;
             _projectFileInfoRepository = projectFileInfoRepository;
             _projectParticipantsRepository = projectParticipantsRepository;
+            _projectCategoriesRepository = projectCategoriesRepository;
         }
 
         public IActionResult Create()
         {
-            return View("CreateProject");
+            var viewModel = new ProjectViewModel
+            {
+                ProjectCategories = _projectCategoriesRepository.GetCategories()
+            };
+
+            return View("CreateProject", viewModel);
         }
 
         public async Task<IActionResult> Edit(string id)
@@ -86,6 +94,8 @@ namespace CompetitionPlatform.Controllers
 
         private async Task<ProjectViewModel> GetProjectViewModel(string id)
         {
+            var projectCategories = _projectCategoriesRepository.GetCategories();
+
             var project = await _projectRepository.GetAsync(id);
 
             var comments = await _projectCommentsRepository.GetProjectCommentsAsync(id);
@@ -110,6 +120,7 @@ namespace CompetitionPlatform.Controllers
                 Id = project.Id,
                 Name = project.Name,
                 Description = project.Description,
+                ProjectCategories = projectCategories,
                 Category = project.Category,
                 Status = (Status)Enum.Parse(typeof(Status), project.ProjectStatus, true),
                 BudgetFirstPlace = project.BudgetFirstPlace,
@@ -129,10 +140,10 @@ namespace CompetitionPlatform.Controllers
 
             if (!string.IsNullOrEmpty(project.Tags))
             {
-                projectViewModel.Categories = JsonConvert.DeserializeObject<List<string>>(project.Tags);
+                projectViewModel.TagsList = JsonConvert.DeserializeObject<List<string>>(project.Tags);
 
                 StringBuilder builder = new StringBuilder();
-                foreach (string tag in projectViewModel.Categories)
+                foreach (string tag in projectViewModel.TagsList)
                 {
                     builder.Append(tag).Append(", ");
                 }

@@ -45,10 +45,10 @@
             <div class="col-md-4">
                 <label class="control-label">Category</label>
                 <select asp-for="@Model.Category" class="form-control">
-                    <option>Finance</option>
-                    <option>Technology</option>
-                    <option>Bitcoin</option>
-                    <option>Mobile</option>
+                    @foreach (var category in Model.ProjectCategories)
+                    {
+                        <option>@category</option>
+                    }
                 </select>
             </div>
             <div class="col-md-4">

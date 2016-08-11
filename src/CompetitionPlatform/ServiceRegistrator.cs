@@ -10,6 +10,7 @@ using CompetitionPlatform.Services;
 using AzureStorage.Tables;
 using AzureStorage.Blobs;
 using CompetitionPlatform.Data.AzureRepositories.Vote;
+using CompetitionPlatform.Data.ProjectCategory;
 
 namespace CompetitionPlatform
 {
@@ -45,6 +46,7 @@ namespace CompetitionPlatform
             services.AddTransient<IProjectFileInfoRepository, ProjectFileInfoRepository>();
             services.AddTransient<IProjectVoteRepository, ProjectVoteRepository>();
             services.AddTransient<IProjectParticipantsRepository, ProjectParticipantsRepository>();
+            services.AddTransient<IProjectCategoriesRepository, ProjectCategoriesRepository>();
         }
 
         public static void RegisterLyykeServices(this IServiceCollection services)

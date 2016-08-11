@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using CompetitionPlatform.Data.AzureRepositories.Project;
+using CompetitionPlatform.Data.ProjectCategory;
 using CompetitionPlatform.Models;
 using Microsoft.AspNetCore.Mvc;
 using CompetitionPlatform.Models.ProjectViewModels;
@@ -18,11 +19,14 @@ namespace CompetitionPlatform.Controllers
     {
         private readonly IProjectRepository _projectRepository;
         private readonly IProjectCommentsRepository _projectCommentsRepository;
+        private readonly IProjectCategoriesRepository _projectCategoriesRepository;
 
-        public HomeController(IProjectRepository projectRepository, IProjectCommentsRepository projectCommentsRepository)
+        public HomeController(IProjectRepository projectRepository, IProjectCommentsRepository projectCommentsRepository,
+            IProjectCategoriesRepository projectCategoriesRepository)
         {
             _projectRepository = projectRepository;
             _projectCommentsRepository = projectCommentsRepository;
+            _projectCategoriesRepository = projectCategoriesRepository;
         }
 
         [Authorize]
@@ -41,6 +45,8 @@ namespace CompetitionPlatform.Controllers
         private async Task<ProjectListIndexViewModel> GetProjectListViewModel(string projectStatusFilter = null, string projectCategoryFilter = null)
         {
             var projects = await _projectRepository.GetProjectsAsync();
+
+            var projectCategories = _projectCategoriesRepository.GetCategories();
 
             if (!string.IsNullOrEmpty(projectStatusFilter))
                 projects = projects.Where(x => x.ProjectStatus == projectStatusFilter);
@@ -77,6 +83,7 @@ namespace CompetitionPlatform.Controllers
 
             var viewModel = new ProjectListIndexViewModel
             {
+                ProjectCategories = projectCategories,
                 Projects = compactModels
             };
 

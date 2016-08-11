@@ -135,9 +135,9 @@
                 <h3 class="bold-text">Tags</h3>
                 <hr />
                 <div>
-                    @if (Model.Categories != null)
+                    @if (Model.TagsList != null)
                     {
-                        foreach (var category in Model.Categories)
+                        foreach (var category in Model.TagsList)
                         {
                             <div class="project-details-tag inline">
                                 <span class="label label-default">@category</span>
