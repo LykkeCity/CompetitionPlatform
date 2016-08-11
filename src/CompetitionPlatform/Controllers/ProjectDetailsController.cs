@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using CompetitionPlatform.Data.AzureRepositories.Project;
+using CompetitionPlatform.Data.AzureRepositories.Users;
 using CompetitionPlatform.Data.AzureRepositories.Vote;
 using CompetitionPlatform.Helpers;
 using CompetitionPlatform.Models;
@@ -16,16 +17,18 @@ namespace CompetitionPlatform.Controllers
         private readonly IProjectFileInfoRepository _projectFileInfoRepository;
         private readonly IProjectVoteRepository _projectVoteRepository;
         private readonly IProjectRepository _projectRepository;
+        private readonly IProjectParticipantsRepository _projectParticipantsRepository;
 
         public ProjectDetailsController(IProjectCommentsRepository projectCommentsRepository, IProjectFileRepository projectFileRepository,
             IProjectFileInfoRepository projectFileInfoRepository, IProjectVoteRepository projectVoteRepository,
-            IProjectRepository projectRepository)
+            IProjectRepository projectRepository, IProjectParticipantsRepository projectParticipantsRepository)
         {
             _projectCommentsRepository = projectCommentsRepository;
             _projectFileRepository = projectFileRepository;
             _projectFileInfoRepository = projectFileInfoRepository;
             _projectVoteRepository = projectVoteRepository;
             _projectRepository = projectRepository;
+            _projectParticipantsRepository = projectParticipantsRepository;
         }
 
         public IActionResult AddComment(ProjectCommentPartialViewModel model)
@@ -137,6 +140,29 @@ namespace CompetitionPlatform.Controllers
             };
 
             return PartialView("~/Views/Project/VotingBarsPartial.cshtml", viewModel);
+        }
+
+        public async Task<IActionResult> AddParticipant(string id)
+        {
+            var user = GetAuthenticatedUser();
+
+            var participant = await _projectParticipantsRepository.GetAsync(id, user.Email);
+
+            if (participant == null)
+            {
+                var viewModel = new ProjectParticipateViewModel
+                {
+                    ProjectId = id,
+                    UserId = user.Email,
+                    FullName = user.GetFullName(),
+                    Registered = DateTime.UtcNow,
+                    Result = false
+                };
+
+                await _projectParticipantsRepository.SaveAsync(viewModel);
+            }
+
+            return RedirectToAction("ProjectDetails", "Project", new { id = id });
         }
 
         private CompetitionPlatformUser GetAuthenticatedUser()
