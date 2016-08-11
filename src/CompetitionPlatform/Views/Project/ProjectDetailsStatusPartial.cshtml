@@ -27,10 +27,10 @@
 @if (Model.Status == Status.CompetitionRegistration)
 {
     <div>
-        <p class="project-voting-text">To participate in the contest with the prize, you must be registered in the competition. Registration can be completed any time.</p>
-        <button class="btn btn-primary project-details-status-button">
+        <p class="project-voting-text text-muted">To participate in the contest with the prize, you must be registered in the competition. Registration can be completed any time.</p>
+        <a asp-area="" asp-controller="ProjectDetails" asp-action="AddParticipant" asp-route-id="@Model.ProjectId" type="button" class="btn btn-primary project-details-status-button">
             <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Participate
-        </button>
+        </a>
     </div>
 }
 @if (Model.Status == Status.Implementation)
