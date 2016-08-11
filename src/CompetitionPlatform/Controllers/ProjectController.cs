@@ -38,12 +38,8 @@ namespace CompetitionPlatform.Controllers
 
         public IActionResult Create()
         {
-            var viewModel = new ProjectViewModel
-            {
-                ProjectCategories = _projectCategoriesRepository.GetCategories()
-            };
-
-            return View("CreateProject", viewModel);
+            ViewBag.ProjectCategories = _projectCategoriesRepository.GetCategories();
+            return View("CreateProject");
         }
 
         public async Task<IActionResult> Edit(string id)

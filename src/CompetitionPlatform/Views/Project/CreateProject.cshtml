@@ -45,7 +45,7 @@
             <div class="col-md-4">
                 <label class="control-label">Category</label>
                 <select asp-for="@Model.Category" class="form-control">
-                    @foreach (var category in Model.ProjectCategories)
+                    @foreach (var category in ViewBag.ProjectCategories)
                     {
                         <option>@category</option>
                     }
