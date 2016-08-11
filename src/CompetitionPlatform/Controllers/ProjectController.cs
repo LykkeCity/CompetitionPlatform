@@ -100,7 +100,7 @@ namespace CompetitionPlatform.Controllers
                 Comments = comments
             };
 
-            var participantsPartial = new ProjectParticipantsPartialViewModel()
+            var participantsPartial = new ProjectParticipantsPartialViewModel
             {
                 Participants = participants
             };

@@ -28,7 +28,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
 
         public static CommentEntity Create(ICommentData src)
         {
-            var result = new CommentEntity()
+            var result = new CommentEntity
             {
                 RowKey = GenerateRowKey(),
                 PartitionKey = GeneratePartitionKey(src.ProjectId),
