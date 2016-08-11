@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CompetitionPlatform.Data.AzureRepositories.Project;
+using CompetitionPlatform.Data.AzureRepositories.Users;
 using CompetitionPlatform.Helpers;
 using CompetitionPlatform.Models;
 using CompetitionPlatform.Models.ProjectViewModels;
@@ -19,14 +20,17 @@ namespace CompetitionPlatform.Controllers
         private readonly IProjectCommentsRepository _projectCommentsRepository;
         private readonly IProjectFileRepository _projectFileRepository;
         private readonly IProjectFileInfoRepository _projectFileInfoRepository;
+        private readonly IProjectParticipantsRepository _projectParticipantsRepository;
 
         public ProjectController(IProjectRepository projectRepository, IProjectCommentsRepository projectCommentsRepository,
-            IProjectFileRepository projectFileRepository, IProjectFileInfoRepository projectFileInfoRepository)
+            IProjectFileRepository projectFileRepository, IProjectFileInfoRepository projectFileInfoRepository,
+            IProjectParticipantsRepository projectParticipantsRepository)
         {
             _projectRepository = projectRepository;
             _projectCommentsRepository = projectCommentsRepository;
             _projectFileRepository = projectFileRepository;
             _projectFileInfoRepository = projectFileInfoRepository;
+            _projectParticipantsRepository = projectParticipantsRepository;
         }
 
         public IActionResult Create()
@@ -86,12 +90,19 @@ namespace CompetitionPlatform.Controllers
 
             var comments = await _projectCommentsRepository.GetProjectCommentsAsync(id);
 
+            var participants = await _projectParticipantsRepository.GetProjectParticipants(id);
+
             comments = comments.OrderBy(c => c.Created).Reverse().ToList();
 
             var commentsPartial = new ProjectCommentPartialViewModel
             {
                 ProjectId = project.Id,
                 Comments = comments
+            };
+
+            var participantsPartial = new ProjectParticipantsPartialViewModel()
+            {
+                Participants = participants
             };
 
             var projectViewModel = new ProjectViewModel
@@ -111,6 +122,7 @@ namespace CompetitionPlatform.Controllers
                 ImplementationDeadline = project.ImplementationDeadline,
                 VotingDeadline = project.VotingDeadline,
                 CommentsPartial = commentsPartial,
+                ParticipantsPartial = participantsPartial,
                 AuthorId = project.AuthorId,
                 AuthorFullName = project.AuthorFullName
             };
