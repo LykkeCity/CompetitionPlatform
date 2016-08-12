@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using CompetitionPlatform.Data.AzureRepositories.Project;
+﻿using CompetitionPlatform.Data.AzureRepositories.Project;
 using CompetitionPlatform.Data.AzureRepositories.Users;
 using Microsoft.Extensions.DependencyInjection;
 using Common.Log;

@@ -1,14 +1,12 @@
 ﻿using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using CompetitionPlatform.Data;
 using CompetitionPlatform.Data.AzureRepositories.Log;
-using CompetitionPlatform.Models;
 using AzureStorage.Tables;
 using CompetitionPlatform.Data.AzureRepositories.Settings;
 using Microsoft.AspNetCore.Authentication.Cookies;

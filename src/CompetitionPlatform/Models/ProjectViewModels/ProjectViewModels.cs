@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using CompetitionPlatform.Data.AzureRepositories.Project;
-using CompetitionPlatform.Data.AzureRepositories.Users;
 using Microsoft.AspNetCore.Http;
 
 namespace CompetitionPlatform.Models.ProjectViewModels
