@@ -67,7 +67,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Users
             return await _projectParticipateTableStorage.GetDataAsync(partitionKey, rowKey);
         }
 
-        public async Task<IEnumerable<IProjectParticipateData>> GetProjectParticipants(string projectId)
+        public async Task<IEnumerable<IProjectParticipateData>> GetProjectParticipantsAsync(string projectId)
         {
             var partitionKey = ProjectParticipateEntity.GeneratePartitionKey(projectId);
 
@@ -80,6 +80,12 @@ namespace CompetitionPlatform.Data.AzureRepositories.Users
             var rowKey = ProjectParticipateEntity.GenerateRowKey(userId);
 
             return await _projectParticipateTableStorage.DeleteAsync(partitionKey, rowKey);
+        }
+
+        public async Task<int> GetProjectParticipantsCountAsync(string projectId)
+        {
+            var participants = await GetProjectParticipantsAsync(projectId);
+            return participants.ToList().Count;
         }
     }
 }
