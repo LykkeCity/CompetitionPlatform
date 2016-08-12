@@ -49,10 +49,6 @@ namespace CompetitionPlatform
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            //services.AddIdentity<ApplicationUser, IdentityRole>()
-            //    .AddEntityFrameworkStores<ApplicationDbContext>()
-            //    .AddDefaultTokenProviders();
-
             services.AddAuthentication(
                 options => { options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme; });
 
@@ -116,8 +112,6 @@ namespace CompetitionPlatform
             });
 
             app.UseStaticFiles();
-
-            //app.UseIdentity();
 
             // Add external authentication middleware below. To configure them please see http://go.microsoft.com/fwlink/?LinkID=532715
 
