@@ -85,6 +85,7 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public int VotesFor { get; set; }
         public int VotesAgainst { get; set; }
         public int CommentsCount { get; set; }
+        public int ParticipantsCount { get; set; }
         public DateTime CompetitionRegistrationDeadline { get; set; }
         public DateTime ImplementationDeadline { get; set; }
         public DateTime VotingDeadline { get; set; }

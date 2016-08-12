@@ -301,12 +301,6 @@ textarea {
     font-size: 17px;
 }
 
-.project-status-votes {
-    margin-left: 10px;
-    margin-bottom: 17px;
-    vertical-align: middle;
-}
-
 .page-footer {
     height: 30px;
 }
@@ -319,9 +313,6 @@ textarea {
 
 .btn.nohover:hover {
     border: 0;
-}
-
-.project-deadline {
 }
 
 .project-details-right-panel {
@@ -371,4 +362,11 @@ textarea {
 
 .project-comment-author {
     margin-left: 10px;
+}
+
+.project-status-count p {
+    font-size: 13px;
+    margin-left: 10px;
+    margin-bottom: 20px;
+    vertical-align: middle;
 }

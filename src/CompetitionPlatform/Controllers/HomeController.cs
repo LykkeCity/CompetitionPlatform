@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using CompetitionPlatform.Data.AzureRepositories.Project;
+using CompetitionPlatform.Data.AzureRepositories.Users;
 using CompetitionPlatform.Data.ProjectCategory;
 using CompetitionPlatform.Helpers;
 using CompetitionPlatform.Models;
@@ -18,13 +19,15 @@ namespace CompetitionPlatform.Controllers
         private readonly IProjectRepository _projectRepository;
         private readonly IProjectCommentsRepository _projectCommentsRepository;
         private readonly IProjectCategoriesRepository _projectCategoriesRepository;
+        private readonly IProjectParticipantsRepository _projectParticipantsRepository;
 
         public HomeController(IProjectRepository projectRepository, IProjectCommentsRepository projectCommentsRepository,
-            IProjectCategoriesRepository projectCategoriesRepository)
+            IProjectCategoriesRepository projectCategoriesRepository, IProjectParticipantsRepository projectParticipantsRepository)
         {
             _projectRepository = projectRepository;
             _projectCommentsRepository = projectCommentsRepository;
             _projectCategoriesRepository = projectCategoriesRepository;
+            _projectParticipantsRepository = projectParticipantsRepository;
         }
 
         [Authorize]
@@ -60,6 +63,7 @@ namespace CompetitionPlatform.Controllers
             foreach (var project in projects)
             {
                 var projectCommentsCount = await _projectCommentsRepository.GetProjectCommentsCountAsync(project.Id);
+                var participantsCount = await _projectParticipantsRepository.GetProjectParticipantsCountAsync(project.Id);
 
                 var compactModel = new ProjectCompactViewModel
                 {
@@ -73,6 +77,7 @@ namespace CompetitionPlatform.Controllers
                     ImplementationDeadline = project.ImplementationDeadline,
                     VotingDeadline = project.VotingDeadline,
                     CommentsCount = projectCommentsCount,
+                    ParticipantsCount = participantsCount,
                     AuthorFullName = project.AuthorFullName
                 };
 

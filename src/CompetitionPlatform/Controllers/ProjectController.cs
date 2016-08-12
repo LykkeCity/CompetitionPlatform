@@ -96,7 +96,7 @@ namespace CompetitionPlatform.Controllers
 
             var comments = await _projectCommentsRepository.GetProjectCommentsAsync(id);
 
-            var participants = await _projectParticipantsRepository.GetProjectParticipants(id);
+            var participants = await _projectParticipantsRepository.GetProjectParticipantsAsync(id);
 
             comments = comments.OrderBy(c => c.Created).Reverse().ToList();
 

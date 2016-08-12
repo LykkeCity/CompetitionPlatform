@@ -16,16 +16,20 @@
                 @{
                     var statusColor = "";
                     var projectStatus = project.Status.ToString().ToUpper();
+                    var projectCount = "";
+                    var votesCount = project.VotesFor + project.VotesAgainst;
                 }
 
                 @switch (project.Status)
                 {
                     case Status.Initiative:
                         statusColor = "project-status-initiative";
+                        projectCount = (votesCount == 1) ? votesCount + " VOTE" : votesCount + " VOTES";
                         break;
                     case Status.CompetitionRegistration:
                         statusColor = "project-status-competitionregistration";
                         projectStatus = "COMPETITION REGISTRATION";
+                        projectCount = (project.ParticipantsCount == 1) ? project.ParticipantsCount + " PARTICIPANT" : project.ParticipantsCount + " PARTICIPANTS";
                         break;
                     case Status.Implementation:
                         statusColor = "project-status-implementation";
@@ -41,9 +45,11 @@
                 <div class="btn btn-xs btn-info project-status @statusColor inline">
                     @projectStatus
                 </div>
-                <p class="text-muted inline project-voting-text project-status-votes">
-                    @(project.VotesFor + project.VotesAgainst) Votes
-                </p>
+                <div class="inline project-status-count">
+                    <p class="text-muted inline">
+                        @projectCount
+                    </p>
+                </div>
             </div>
         </div>
         <div class="project-description">@project.Description</div>
