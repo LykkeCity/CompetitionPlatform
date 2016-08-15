@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using CompetitionPlatform.Data.AzureRepositories.Project;
+using CompetitionPlatform.Data.AzureRepositories.Result;
 using CompetitionPlatform.Data.AzureRepositories.Users;
+using Newtonsoft.Json;
 
 namespace CompetitionPlatform.Models.ProjectViewModels
 {
@@ -39,5 +42,19 @@ namespace CompetitionPlatform.Models.ProjectViewModels
     public class ProjectParticipantsPartialViewModel
     {
         public IEnumerable<IProjectParticipateData> Participants { get; set; }
+    }
+
+    public class AddResultViewModel : IProjectResultData
+    {
+        public string ProjectId { get; set; }
+        public string ParticipantId { get; set; }
+
+        [Required]
+        [Url]
+        public string Link { get; set; }
+
+        public string ParticipantFullName { get; set; }
+        public DateTime Submitted { get; set; }
+        public int Score { get; set; }
     }
 }

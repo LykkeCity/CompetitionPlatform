@@ -91,9 +91,9 @@ textarea {
     margin-bottom: 50px;
 }
 
-    .project-edit-status-circles hr {
-        border: 1px dashed #3f4d60;
-    }
+.project-edit-status-circles hr {
+    border: 1px dashed #3f4d60;
+}
 
 .project-edit-status-circles {
     margin-bottom: 100px;
@@ -203,13 +203,13 @@ textarea {
     margin-top: 10px;
 }
 
-.project-tile-bottom img {
-    width: 35px;
-    height: auto;
-}
+    .project-tile-bottom img {
+        width: 35px;
+        height: auto;
+    }
 
 .project-index-author {
-    margin-left: 15px;  
+    margin-left: 15px;
     margin-bottom: -30px;
 }
 
@@ -369,4 +369,8 @@ textarea {
     margin-left: 10px;
     margin-bottom: 20px;
     vertical-align: middle;
+}
+
+.add-result-button {
+    margin-bottom: 15px;
 }

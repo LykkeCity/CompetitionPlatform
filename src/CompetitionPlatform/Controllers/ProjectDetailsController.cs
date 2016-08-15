@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using CompetitionPlatform.Data.AzureRepositories.Project;
+using CompetitionPlatform.Data.AzureRepositories.Result;
 using CompetitionPlatform.Data.AzureRepositories.Users;
 using CompetitionPlatform.Data.AzureRepositories.Vote;
 using CompetitionPlatform.Helpers;
@@ -18,10 +19,12 @@ namespace CompetitionPlatform.Controllers
         private readonly IProjectVoteRepository _projectVoteRepository;
         private readonly IProjectRepository _projectRepository;
         private readonly IProjectParticipantsRepository _projectParticipantsRepository;
+        private readonly IProjectResultRepository _projectResultRepository;
 
         public ProjectDetailsController(IProjectCommentsRepository projectCommentsRepository, IProjectFileRepository projectFileRepository,
             IProjectFileInfoRepository projectFileInfoRepository, IProjectVoteRepository projectVoteRepository,
-            IProjectRepository projectRepository, IProjectParticipantsRepository projectParticipantsRepository)
+            IProjectRepository projectRepository, IProjectParticipantsRepository projectParticipantsRepository,
+            IProjectResultRepository projectResultRepository)
         {
             _projectCommentsRepository = projectCommentsRepository;
             _projectFileRepository = projectFileRepository;
@@ -29,6 +32,7 @@ namespace CompetitionPlatform.Controllers
             _projectVoteRepository = projectVoteRepository;
             _projectRepository = projectRepository;
             _projectParticipantsRepository = projectParticipantsRepository;
+            _projectResultRepository = projectResultRepository;
         }
 
         public IActionResult AddComment(ProjectCommentPartialViewModel model)
@@ -163,6 +167,36 @@ namespace CompetitionPlatform.Controllers
             }
 
             return RedirectToAction("ProjectDetails", "Project", new { id = id });
+        }
+
+        public IActionResult AddResult(string id)
+        {
+            var viewModel = new AddResultViewModel
+            {
+                ProjectId = id,
+                ParticipantId = GetAuthenticatedUser().Email
+            };
+            return View("~/Views/Project/AddResult.cshtml", viewModel);
+        }
+
+        public async Task<IActionResult> SaveResult(AddResultViewModel model)
+        {
+            //if (ModelState.IsValid)
+            //{
+            var participant = await _projectParticipantsRepository.GetAsync(model.ProjectId, model.ParticipantId);
+
+            model.ParticipantFullName = participant.FullName;
+            model.Score = 0;
+            model.Submitted = DateTime.UtcNow;
+
+            await _projectResultRepository.SaveAsync(model);
+
+            participant.Result = true;
+
+            await _projectParticipantsRepository.UpdateAsync(participant);
+            //}
+
+            return RedirectToAction("ProjectDetails", "Project", new { id = model.ProjectId });
         }
 
         private CompetitionPlatformUser GetAuthenticatedUser()

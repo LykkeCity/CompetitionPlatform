@@ -64,15 +64,19 @@ namespace CompetitionPlatform.Models.ProjectViewModels
 
         public DateTime LastModified { get; set; }
 
+        public string AuthorId { get; set; }
+
+        public string AuthorFullName { get; set; }
+
         public ProjectCommentPartialViewModel CommentsPartial { get; set; }
 
         public ProjectParticipantsPartialViewModel ParticipantsPartial { get; set; }
 
         public ProjectFileInfoViewModel FileInfo { get; set; }
 
-        public string AuthorId { get; set; }
+        public bool IsParticipant { get; set; }
 
-        public string AuthorFullName { get; set; }
+        public string ParticipantId { get; set; }
     }
 
     public class ProjectCompactViewModel
@@ -117,3 +121,4 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public int VotesAgainst { get; set; }
     }
 }
+

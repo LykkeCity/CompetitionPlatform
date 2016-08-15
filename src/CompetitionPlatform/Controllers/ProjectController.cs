@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using CompetitionPlatform.Data.AzureRepositories.Project;
@@ -98,6 +99,19 @@ namespace CompetitionPlatform.Controllers
 
             var participants = await _projectParticipantsRepository.GetProjectParticipantsAsync(id);
 
+            var user = GetAuthenticatedUser();
+
+            var participant = await _projectParticipantsRepository.GetAsync(id, user.Email);
+
+            string participantId = "";
+            bool isParticipant = false;
+
+            if (participant != null)
+            {
+                participantId = user.Email;
+                isParticipant = true;
+            }
+
             comments = comments.OrderBy(c => c.Created).Reverse().ToList();
 
             var commentsPartial = new ProjectCommentPartialViewModel
@@ -131,7 +145,9 @@ namespace CompetitionPlatform.Controllers
                 CommentsPartial = commentsPartial,
                 ParticipantsPartial = participantsPartial,
                 AuthorId = project.AuthorId,
-                AuthorFullName = project.AuthorFullName
+                AuthorFullName = project.AuthorFullName,
+                ParticipantId = participantId,
+                IsParticipant = isParticipant
             };
 
             if (!string.IsNullOrEmpty(project.Tags))

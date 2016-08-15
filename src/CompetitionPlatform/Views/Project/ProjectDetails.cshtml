@@ -93,6 +93,12 @@
                     }
                 </div>
                 <div role="tabpanel" class="tab-pane" id="Participants">
+                    @if (Model.IsParticipant)
+                    {
+                        <a asp-area="" asp-controller="ProjectDetails" asp-action="AddResult" asp-route-id="@Model.Id" class="btn btn-primary add-result-button">
+                            <span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span> Add Result
+                        </a>
+                    }
                     @await Html.PartialAsync("ParticipantsPartial", Model.ParticipantsPartial)
                 </div>
                 <div role="tabpanel" class="tab-pane" id="Comments">

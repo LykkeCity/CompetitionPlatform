@@ -5,6 +5,7 @@ using Common.Log;
 using CompetitionPlatform.Services;
 using AzureStorage.Tables;
 using AzureStorage.Blobs;
+using CompetitionPlatform.Data.AzureRepositories.Result;
 using CompetitionPlatform.Data.AzureRepositories.Vote;
 using CompetitionPlatform.Data.ProjectCategory;
 
@@ -35,6 +36,9 @@ namespace CompetitionPlatform
             services.AddSingleton<IAzureTableStorage<ProjectParticipateEntity>>(
                 new AzureTableStorage<ProjectParticipateEntity>(connstionString, "ProjectParticipants", log));
 
+            services.AddSingleton<IAzureTableStorage<ProjectResultEntity>>(
+                new AzureTableStorage<ProjectResultEntity>(connstionString, "ProjectResults", log));
+
             services.AddTransient<IProjectRepository, ProjectRepository>();
             services.AddTransient<IProjectFileRepository, ProjectFileRepository>();
             services.AddTransient<IUsersRepository, UsersRepository>();
@@ -43,6 +47,7 @@ namespace CompetitionPlatform
             services.AddTransient<IProjectVoteRepository, ProjectVoteRepository>();
             services.AddTransient<IProjectParticipantsRepository, ProjectParticipantsRepository>();
             services.AddTransient<IProjectCategoriesRepository, ProjectCategoriesRepository>();
+            services.AddTransient<IProjectResultRepository, ProjectResultRepository>();
         }
 
         public static void RegisterLyykeServices(this IServiceCollection services)
