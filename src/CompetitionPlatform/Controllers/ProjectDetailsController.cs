@@ -181,8 +181,6 @@ namespace CompetitionPlatform.Controllers
 
         public async Task<IActionResult> SaveResult(AddResultViewModel model)
         {
-            //if (ModelState.IsValid)
-            //{
             var participant = await _projectParticipantsRepository.GetAsync(model.ProjectId, model.ParticipantId);
 
             model.ParticipantFullName = participant.FullName;
@@ -194,7 +192,6 @@ namespace CompetitionPlatform.Controllers
             participant.Result = true;
 
             await _projectParticipantsRepository.UpdateAsync(participant);
-            //}
 
             return RedirectToAction("ProjectDetails", "Project", new { id = model.ProjectId });
         }
