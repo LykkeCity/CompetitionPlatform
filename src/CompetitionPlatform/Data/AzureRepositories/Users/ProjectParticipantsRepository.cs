@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AzureStorage.Tables;
-using CompetitionPlatform.Data.AzureRepositories.Result;
 using Microsoft.WindowsAzure.Storage.Table;
 
 namespace CompetitionPlatform.Data.AzureRepositories.Users
@@ -26,6 +25,8 @@ namespace CompetitionPlatform.Data.AzureRepositories.Users
             {
                 PartitionKey = GeneratePartitionKey(src.ProjectId),
                 RowKey = GenerateRowKey(src.UserId),
+                ProjectId = src.ProjectId,
+                UserId = src.UserId,
                 FullName = src.FullName,
                 Registered = src.Registered,
                 Result = src.Result
