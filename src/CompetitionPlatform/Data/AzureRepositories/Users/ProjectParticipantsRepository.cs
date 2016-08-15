@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AzureStorage.Tables;
+using CompetitionPlatform.Data.AzureRepositories.Result;
 using Microsoft.WindowsAzure.Storage.Table;
 
 namespace CompetitionPlatform.Data.AzureRepositories.Users
@@ -86,6 +87,18 @@ namespace CompetitionPlatform.Data.AzureRepositories.Users
         {
             var participants = await GetProjectParticipantsAsync(projectId);
             return participants.ToList().Count;
+        }
+
+        public Task UpdateAsync(IProjectParticipateData projectParticipantData)
+        {
+            var partitionKey = ProjectParticipateEntity.GeneratePartitionKey(projectParticipantData.ProjectId);
+            var rowKey = ProjectParticipateEntity.GenerateRowKey(projectParticipantData.UserId);
+
+            return _projectParticipateTableStorage.ReplaceAsync(partitionKey, rowKey, itm =>
+            {
+                itm.Update(projectParticipantData);
+                return itm;
+            });
         }
     }
 }

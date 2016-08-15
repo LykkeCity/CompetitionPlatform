@@ -11,7 +11,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Users
         string UserId { get; set; }
         string FullName { get; set; }
         DateTime Registered { get; set; }
-        bool Result { get; set; } 
+        bool Result { get; set; }
     }
 
     public interface IProjectParticipantsRepository
@@ -21,5 +21,6 @@ namespace CompetitionPlatform.Data.AzureRepositories.Users
         Task<IEnumerable<IProjectParticipateData>> GetProjectParticipantsAsync(string projectId);
         Task<IProjectParticipateData> DeleteAsync(string projectId, string userId);
         Task<int> GetProjectParticipantsCountAsync(string projectId);
+        Task UpdateAsync(IProjectParticipateData projectParticipantData);
     }
 }

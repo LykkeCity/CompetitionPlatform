@@ -31,7 +31,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Result
             var result = new ProjectResultEntity
             {
                 PartitionKey = GeneratePartitionKey(src.ProjectId),
-                RowKey = GeneratePartitionKey(src.ParticipantId),
+                RowKey = GenerateRowKey(src.ParticipantId),
                 ParticipantFullName = src.ParticipantFullName,
                 Link = src.Link,
                 Submitted = src.Submitted,
