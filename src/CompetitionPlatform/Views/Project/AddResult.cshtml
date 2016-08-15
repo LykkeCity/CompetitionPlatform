@@ -11,3 +11,7 @@
         <input type="submit" value="Send Result" class="btn btn-primary col-md-2 inline" />
     </div>
 </form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
