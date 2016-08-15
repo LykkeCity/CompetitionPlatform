@@ -5,6 +5,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using CompetitionPlatform.Data.AzureRepositories.Project;
+using CompetitionPlatform.Data.AzureRepositories.Result;
 using CompetitionPlatform.Data.AzureRepositories.Users;
 using CompetitionPlatform.Data.ProjectCategory;
 using CompetitionPlatform.Helpers;
@@ -24,10 +25,12 @@ namespace CompetitionPlatform.Controllers
         private readonly IProjectFileInfoRepository _projectFileInfoRepository;
         private readonly IProjectParticipantsRepository _projectParticipantsRepository;
         private readonly IProjectCategoriesRepository _projectCategoriesRepository;
+        private readonly IProjectResultRepository _projectResultRepository;
 
         public ProjectController(IProjectRepository projectRepository, IProjectCommentsRepository projectCommentsRepository,
             IProjectFileRepository projectFileRepository, IProjectFileInfoRepository projectFileInfoRepository,
-            IProjectParticipantsRepository projectParticipantsRepository, IProjectCategoriesRepository projectCategoriesRepository)
+            IProjectParticipantsRepository projectParticipantsRepository, IProjectCategoriesRepository projectCategoriesRepository,
+            IProjectResultRepository projectResultRepository)
         {
             _projectRepository = projectRepository;
             _projectCommentsRepository = projectCommentsRepository;
@@ -35,6 +38,7 @@ namespace CompetitionPlatform.Controllers
             _projectFileInfoRepository = projectFileInfoRepository;
             _projectParticipantsRepository = projectParticipantsRepository;
             _projectCategoriesRepository = projectCategoriesRepository;
+            _projectResultRepository = projectResultRepository;
         }
 
         public IActionResult Create()
@@ -99,6 +103,8 @@ namespace CompetitionPlatform.Controllers
 
             var participants = await _projectParticipantsRepository.GetProjectParticipantsAsync(id);
 
+            var results = await _projectResultRepository.GetResultsAsync(id);
+
             var user = GetAuthenticatedUser();
 
             var participant = await _projectParticipantsRepository.GetAsync(id, user.Email);
@@ -125,6 +131,12 @@ namespace CompetitionPlatform.Controllers
                 Participants = participants
             };
 
+            var resultsPartial = new ResultsPartialViewModel
+            {
+                Status = project.Status,
+                Results = results
+            };
+
             var projectViewModel = new ProjectViewModel
             {
                 Id = project.Id,
@@ -144,6 +156,7 @@ namespace CompetitionPlatform.Controllers
                 VotingDeadline = project.VotingDeadline,
                 CommentsPartial = commentsPartial,
                 ParticipantsPartial = participantsPartial,
+                ResultsPartial = resultsPartial,
                 AuthorId = project.AuthorId,
                 AuthorFullName = project.AuthorFullName,
                 ParticipantId = participantId,

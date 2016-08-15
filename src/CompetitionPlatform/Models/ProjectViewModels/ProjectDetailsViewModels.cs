@@ -57,4 +57,10 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public DateTime Submitted { get; set; }
         public int Score { get; set; }
     }
+
+    public class ResultsPartialViewModel
+    {
+        public Status Status { get; set; }
+        public IEnumerable<IProjectResultData> Results { get; set; }
+    }
 }

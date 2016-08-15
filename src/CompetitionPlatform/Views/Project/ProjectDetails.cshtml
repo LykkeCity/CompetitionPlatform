@@ -104,7 +104,9 @@
                 <div role="tabpanel" class="tab-pane" id="Comments">
                     @await Html.PartialAsync("CommentsPartial", Model.CommentsPartial)
                 </div>
-                <div role="tabpanel" class="tab-pane" id="Results">....</div>
+                <div role="tabpanel" class="tab-pane" id="Results">
+                    @await Html.PartialAsync("ResultsPartial", Model.ResultsPartial)
+                </div>
             </div>
         </div>
 
