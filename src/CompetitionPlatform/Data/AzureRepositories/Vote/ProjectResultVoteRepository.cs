@@ -12,22 +12,22 @@ namespace CompetitionPlatform.Data.AzureRepositories.Vote
             return projectId;
         }
 
-        public static string GenerateRowKey(string userId)
+        public static string GenerateRowKey(string participantId, string voterId)
         {
-            return userId;
+            return participantId + voterId;
         }
 
         public string ProjectId { get; set; }
         public string VoterUserId { get; set; }
-        public string ParticipantUserId { get; set; }
-        
+        public string ParticipantId { get; set; }
+
         public static ProjectResultVoteEntity Create(IProjectResultVoteData src)
         {
             var result = new ProjectResultVoteEntity
             {
-                RowKey = GenerateRowKey(src.VoterUserId),
+                RowKey = GenerateRowKey(src.ParticipantId, src.VoterUserId),
                 PartitionKey = GeneratePartitionKey(src.ProjectId),
-                ParticipantUserId = src.ParticipantUserId
+                ParticipantId = src.ParticipantId
             };
 
             return result;
@@ -53,6 +53,14 @@ namespace CompetitionPlatform.Data.AzureRepositories.Vote
         {
             var partitionKey = ProjectResultVoteEntity.GeneratePartitionKey(projectId);
             return await _projectResultVoteTableStorage.GetDataAsync(partitionKey);
+        }
+
+        public async Task<IProjectResultVoteData> GetAsync(string projectId, string participantId, string voterId)
+        {
+            var partitionKey = ProjectResultVoteEntity.GeneratePartitionKey(projectId);
+            var rowKey = ProjectResultVoteEntity.GenerateRowKey(participantId, voterId);
+
+            return await _projectResultVoteTableStorage.GetDataAsync(partitionKey, rowKey);
         }
     }
 }

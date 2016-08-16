@@ -7,12 +7,13 @@ namespace CompetitionPlatform.Data.AzureRepositories.Vote
     {
         string ProjectId { get; set; }
         string VoterUserId { get; set; }
-        string ParticipantUserId { get; set; }
+        string ParticipantId { get; set; }
     }
 
     public interface IProjectResultVoteRepository
     {
         Task SaveAsync(IProjectResultVoteData projectResultVoteData);
+        Task<IProjectResultVoteData> GetAsync(string projectId, string participantId, string voterId);
         Task<IEnumerable<IProjectResultVoteData>> GetProjectResultVotesAsync(string projectId);
     }
 }
