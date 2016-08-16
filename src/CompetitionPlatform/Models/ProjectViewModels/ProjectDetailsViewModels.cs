@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using CompetitionPlatform.Data.AzureRepositories.Project;
 using CompetitionPlatform.Data.AzureRepositories.Result;
 using CompetitionPlatform.Data.AzureRepositories.Users;
+using CompetitionPlatform.Data.AzureRepositories.Vote;
 using Newtonsoft.Json;
 
 namespace CompetitionPlatform.Models.ProjectViewModels
@@ -56,11 +57,19 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public string ParticipantFullName { get; set; }
         public DateTime Submitted { get; set; }
         public int Score { get; set; }
+        public int Votes { get; set; }
     }
 
     public class ResultsPartialViewModel
     {
         public Status Status { get; set; }
         public IEnumerable<IProjectResultData> Results { get; set; }
+    }
+
+    public class ResultVoteViewModel : IProjectResultVoteData
+    {
+        public string ProjectId { get; set; }
+        public string ParticipantId { get; set; }
+        public string VoterUserId { get; set; }
     }
 }

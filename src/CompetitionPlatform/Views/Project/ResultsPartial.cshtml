@@ -8,7 +8,7 @@
                 <th>SUBMISSION DATE</th>
                 <th>RESULT</th>
                 <th>SCORE</th>
-                <th>VOTE</th>
+                <th>VOTES</th>
             </tr>
         </thead>
         <tbody>
@@ -28,6 +28,19 @@
                         <a href="@result.Link">View</a>
                     </td>
                     <td>@result.Score/100</td>
+                    <td>
+                        @result.Votes
+                    </td>
+                    @if (Model.Status == Status.Voting)
+                    {
+                        <td>
+                            <form asp-controller="ProjectDetails" asp-action="VoteForResult" enctype="multipart/form-data">
+                                <input type="hidden" name="ProjectId" value="@result.ProjectId">
+                                <input type="hidden" name="ParticipantId" value="@result.ParticipantId">
+                                <input type="submit" value="+1" class="btn project-results-vote btn-default" />
+                            </form>
+                        </td>
+                    }
                 </tr>
             }
         </tbody>

@@ -374,3 +374,18 @@ textarea {
 .add-result-button {
     margin-bottom: 15px;
 }
+
+.project-details-participants span {
+    color: #ab00ff;
+}
+
+.project-results-vote {
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    padding: 5px 0;
+    line-height: 1.00;
+    border-radius: 30px;
+    font-size: 17px;
+    float: left;
+}

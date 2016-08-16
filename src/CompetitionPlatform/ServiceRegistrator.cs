@@ -39,6 +39,9 @@ namespace CompetitionPlatform
             services.AddSingleton<IAzureTableStorage<ProjectResultEntity>>(
                 new AzureTableStorage<ProjectResultEntity>(connstionString, "ProjectResults", log));
 
+            services.AddSingleton<IAzureTableStorage<ProjectResultVoteEntity>>(
+                new AzureTableStorage<ProjectResultVoteEntity>(connstionString, "ProjectResultVotes", log));
+
             services.AddTransient<IProjectRepository, ProjectRepository>();
             services.AddTransient<IProjectFileRepository, ProjectFileRepository>();
             services.AddTransient<IUsersRepository, UsersRepository>();
@@ -48,6 +51,7 @@ namespace CompetitionPlatform
             services.AddTransient<IProjectParticipantsRepository, ProjectParticipantsRepository>();
             services.AddTransient<IProjectCategoriesRepository, ProjectCategoriesRepository>();
             services.AddTransient<IProjectResultRepository, ProjectResultRepository>();
+            services.AddTransient<IProjectResultVoteRepository, ProjectResultVoteRepository>();
         }
 
         public static void RegisterLyykeServices(this IServiceCollection services)

@@ -20,11 +20,12 @@ namespace CompetitionPlatform.Controllers
         private readonly IProjectRepository _projectRepository;
         private readonly IProjectParticipantsRepository _projectParticipantsRepository;
         private readonly IProjectResultRepository _projectResultRepository;
+        private readonly IProjectResultVoteRepository _projectResultVoteRepository;
 
         public ProjectDetailsController(IProjectCommentsRepository projectCommentsRepository, IProjectFileRepository projectFileRepository,
             IProjectFileInfoRepository projectFileInfoRepository, IProjectVoteRepository projectVoteRepository,
             IProjectRepository projectRepository, IProjectParticipantsRepository projectParticipantsRepository,
-            IProjectResultRepository projectResultRepository)
+            IProjectResultRepository projectResultRepository, IProjectResultVoteRepository projectResultVoteRepository)
         {
             _projectCommentsRepository = projectCommentsRepository;
             _projectFileRepository = projectFileRepository;
@@ -33,6 +34,7 @@ namespace CompetitionPlatform.Controllers
             _projectRepository = projectRepository;
             _projectParticipantsRepository = projectParticipantsRepository;
             _projectResultRepository = projectResultRepository;
+            _projectResultVoteRepository = projectResultVoteRepository;
         }
 
         public IActionResult AddComment(ProjectCommentPartialViewModel model)
@@ -183,15 +185,41 @@ namespace CompetitionPlatform.Controllers
         {
             var participant = await _projectParticipantsRepository.GetAsync(model.ProjectId, model.ParticipantId);
 
+            var result = await _projectResultRepository.GetAsync(model.ProjectId, model.ParticipantId);
+
             model.ParticipantFullName = participant.FullName;
             model.Score = 0;
             model.Submitted = DateTime.UtcNow;
 
-            await _projectResultRepository.SaveAsync(model);
+            if (result == null)
+            {
+                await _projectResultRepository.SaveAsync(model);
 
-            participant.Result = true;
+                participant.Result = true;
 
-            await _projectParticipantsRepository.UpdateAsync(participant);
+                await _projectParticipantsRepository.UpdateAsync(participant);
+            }
+
+            return RedirectToAction("ProjectDetails", "Project", new { id = model.ProjectId });
+        }
+
+        public async Task<IActionResult> VoteForResult(ResultVoteViewModel model)
+        {
+            var voterId = GetAuthenticatedUser().Email;
+
+            var vote = await _projectResultVoteRepository.GetAsync(model.ProjectId, model.ParticipantId, voterId);
+
+            if (vote == null)
+            {
+                model.VoterUserId = voterId;
+                await _projectResultVoteRepository.SaveAsync(model);
+
+                var result = await _projectResultRepository.GetAsync(model.ProjectId, model.ParticipantId);
+
+                result.Votes += 1;
+
+                await _projectResultRepository.UpdateAsync(result);
+            }
 
             return RedirectToAction("ProjectDetails", "Project", new { id = model.ProjectId });
         }
