@@ -99,6 +99,8 @@ namespace CompetitionPlatform.Controllers
 
             var project = await _projectRepository.GetAsync(id);
 
+            project.Status = (Status)Enum.Parse(typeof(Status), project.ProjectStatus, true);
+
             var comments = await _projectCommentsRepository.GetProjectCommentsAsync(id);
 
             var participants = await _projectParticipantsRepository.GetProjectParticipantsAsync(id);
@@ -144,7 +146,7 @@ namespace CompetitionPlatform.Controllers
                 Description = project.Description,
                 ProjectCategories = projectCategories,
                 Category = project.Category,
-                Status = (Status)Enum.Parse(typeof(Status), project.ProjectStatus, true),
+                Status = project.Status,
                 BudgetFirstPlace = project.BudgetFirstPlace,
                 BudgetSecondPlace = project.BudgetSecondPlace,
                 VotesFor = project.VotesFor,
