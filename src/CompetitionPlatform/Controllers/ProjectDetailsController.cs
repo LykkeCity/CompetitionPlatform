@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using CompetitionPlatform.Data.AzureRepositories.Project;
 using CompetitionPlatform.Data.AzureRepositories.Result;
@@ -212,16 +213,26 @@ namespace CompetitionPlatform.Controllers
             if (vote == null)
             {
                 model.VoterUserId = voterId;
-                await _projectResultVoteRepository.SaveAsync(model);
 
+                await _projectResultVoteRepository.SaveAsync(model);
+                var votes = await _projectResultVoteRepository.GetProjectResultVotesAsync(model.ProjectId);
+
+                var totalVotes = votes.Count();
                 var result = await _projectResultRepository.GetAsync(model.ProjectId, model.ParticipantId);
 
+
                 result.Votes += 1;
+                result.Score = CalculateScore(totalVotes, result.Votes);
 
                 await _projectResultRepository.UpdateAsync(result);
             }
 
             return RedirectToAction("ProjectDetails", "Project", new { id = model.ProjectId });
+        }
+
+        private int CalculateScore(int totalVotes, int projectVotes)
+        {
+            return projectVotes * 100 / totalVotes;
         }
 
         private CompetitionPlatformUser GetAuthenticatedUser()
