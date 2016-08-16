@@ -25,6 +25,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Result
         public string Link { get; set; }
         public DateTime Submitted { get; set; }
         public int Score { get; set; }
+        public int Votes { get; set; }
 
         public static ProjectResultEntity Create(IProjectResultData src)
         {
@@ -32,6 +33,8 @@ namespace CompetitionPlatform.Data.AzureRepositories.Result
             {
                 PartitionKey = GeneratePartitionKey(src.ProjectId),
                 RowKey = GenerateRowKey(src.ParticipantId),
+                ProjectId = src.ProjectId,
+                ParticipantId = src.ParticipantId,
                 ParticipantFullName = src.ParticipantFullName,
                 Link = src.Link,
                 Submitted = src.Submitted,
@@ -45,6 +48,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Result
         {
             Link = src.Link;
             Score = src.Score;
+            Votes = src.Votes;
         }
     }
 
