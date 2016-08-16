@@ -22,7 +22,12 @@
                         </div>
                     </td>
                     <td>@participant.Registered.ToString("MMMM dd, yyyy hh:mm")</td>
-                    <td>@participant.Result</td>
+                    <td class="project-details-participants">
+                        @if (@participant.Result)
+                        {
+                            <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>
+                        }
+                    </td>
                 </tr>
             }
         </tbody>
