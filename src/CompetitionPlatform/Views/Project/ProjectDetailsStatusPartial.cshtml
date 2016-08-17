@@ -7,16 +7,15 @@
         <p class="project-voting-text">Cast your vote for or against the competition. Do you think this is the project that Lykke City needs?</p>
         <div class="project-voting-buttons">
 
-            <a asp-area="" asp-controller="ProjectDetails" asp-action="VoteFor" asp-route-id="@Model.ProjectId" type="button" id="voteForButton" class="btn btn-sm btn-primary alert-success">
+            <button id="voteForButton" class="btn btn-sm btn-primary alert-success">
                 <span class="glyphicon glyphicon-thumbs-up"></span>
-            </a>
+            </button>
 
-            <a asp-area="" asp-controller="ProjectDetails" asp-action="VoteAgainst" asp-route-id="@Model.ProjectId" type="button" id="voteAgainstButton" class="btn btn-sm btn-primary alert-danger">
-                <span class="glyphicon glyphicon-thumbs-up"></span>
-            </a>
+            <button id="voteAgainstButton" class="btn btn-sm btn-primary alert-danger">
+                <span class="glyphicon glyphicon-thumbs-down"></span>
+            </button>
 
-            <input asp-for="@Model.VotesFor" type="hidden" />
-            <input asp-for="@Model.VotesAgainst" type="hidden" />
+            <input asp-for="@Model.ProjectId" type="hidden" />
 
             <p class="inline">@(Model.VotesFor + Model.VotesAgainst) Votes</p>
             <div id="projectVoteResults">

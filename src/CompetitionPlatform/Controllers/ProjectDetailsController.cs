@@ -58,7 +58,7 @@ namespace CompetitionPlatform.Controllers
             return File(fileStream, fileInfo.ContentType, fileInfo.FileName);
         }
 
-        public async Task<IActionResult> VoteFor(string id)
+        private async Task DoVoteFor(string id)
         {
             var user = GetAuthenticatedUser();
 
@@ -94,11 +94,9 @@ namespace CompetitionPlatform.Controllers
                     await _projectRepository.UpdateAsync(project);
                 }
             }
-
-            return RedirectToAction("ProjectDetails", "Project", new { id = id });
         }
 
-        public async Task<IActionResult> VoteAgainst(string id)
+        private async Task DoVoteAgainst(string id)
         {
             var user = GetAuthenticatedUser();
 
@@ -134,16 +132,29 @@ namespace CompetitionPlatform.Controllers
                     await _projectRepository.UpdateAsync(project);
                 }
             }
-
-            return RedirectToAction("ProjectDetails", "Project", new { id = id });
         }
 
-        public IActionResult GetProjectVotesResults(int votesFor, int votesAgainst)
+        public async Task<IActionResult> VoteFor(string projectId)
         {
+            await DoVoteFor(projectId);
+
+            return await ProjectVotingBarsPartial(projectId);
+        }
+
+        public async Task<IActionResult> VoteAgainst(string projectId)
+        {
+            await DoVoteAgainst(projectId);
+
+            return await ProjectVotingBarsPartial(projectId);
+        }
+
+        private async Task<IActionResult> ProjectVotingBarsPartial(string projectId)
+        {
+            var project = await _projectRepository.GetAsync(projectId);
             var viewModel = new ProjectVoteViewModel
             {
-                VotesFor = votesFor,
-                VotesAgainst = votesAgainst
+                VotesFor = project.VotesFor,
+                VotesAgainst = project.VotesAgainst
             };
 
             return PartialView("~/Views/Project/VotingBarsPartial.cshtml", viewModel);
@@ -219,7 +230,6 @@ namespace CompetitionPlatform.Controllers
 
                 var totalVotes = votes.Count();
                 var result = await _projectResultRepository.GetAsync(model.ProjectId, model.ParticipantId);
-
 
                 result.Votes += 1;
                 result.Score = CalculateScore(totalVotes, result.Votes);

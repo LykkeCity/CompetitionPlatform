@@ -1,6 +1,4 @@
-﻿// Write your Javascript code.
-
-$(function () {
+﻿$(function () {
     //$('.datepicker').datepicker();
 
     //$('.datepicker').on('changeDate', function () {
@@ -25,18 +23,21 @@ $(function () {
         .click(function () {
             var $this = $(this);
 
-            $this.append('Yes');
+            if ($this.text().trim() === '') {
+                $this.append('Yes');
+            }
 
-            $('#projectVoteResults').load('/ProjectDetails/GetProjectVotesResults?votesFor=' + $('#VotesFor').val()
-                 + '&votesAgainst=' + $('#VotesAgainst').val());
+            $('#projectVoteResults').load('/ProjectDetails/VoteFor?projectId=' + $('#ProjectId').val());
         });
 
     $('#voteAgainstButton')
         .click(function () {
             var $this = $(this);
-            $this.append('No');
 
-            $('#projectVoteResults').load('/ProjectDetails/GetProjectVotesResults?votesFor=' + $('#VotesFor').val()
-                 + '&votesAgainst=' + $('#VotesAgainst').val());
+            if ($this.text().trim() === '') {
+                $this.append('No');
+            }
+
+            $('#projectVoteResults').load('/ProjectDetails/VoteAgainst?projectId=' + $('#ProjectId').val());
         });
 });
