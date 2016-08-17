@@ -156,7 +156,7 @@
             </div>
 
             <div class="project-details-tags">
-                <h3 class="bold-text">Tags</h3>
+                <p class="bold-text">TAGS</p>
                 <hr />
                 <div>
                     @if (Model.TagsList != null)
@@ -171,13 +171,17 @@
                 </div>
             </div>
 
-            <div>
-                <h3 class="bold-text">Share</h3>
+            <div class="project-details-share-icons">
+                <p class="bold-text">SHARE</p>
                 <hr />
+                <img src="~/images/facebook-icn.svg"
+                     asp-append-version="true" />
+                <img src="~/images/twitter-icn.svg"
+                     asp-append-version="true" />
             </div>
 
             <div>
-                <h3 class="bold-text">Other Projects</h3>
+                <p class="bold-text">OTHER PROJECTS</p>
                 <hr />
             </div>
         </div>

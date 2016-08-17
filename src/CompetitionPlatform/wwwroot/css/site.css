@@ -389,3 +389,13 @@ textarea {
     font-size: 17px;
     float: left;
 }
+
+.project-details-share-icons {
+    margin-bottom: 25px;
+}
+
+.project-details-share-icons img {
+    margin-right: 5px;
+    width: 40px;
+    height: 40px;
+}
