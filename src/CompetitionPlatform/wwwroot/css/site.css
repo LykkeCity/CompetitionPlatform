@@ -149,6 +149,7 @@ textarea {
 }
 
 .project-details-tags {
+    margin-top: 25px;
     margin-bottom: 25px;
 }
 
@@ -394,8 +395,12 @@ textarea {
     margin-bottom: 25px;
 }
 
-.project-details-share-icons img {
-    margin-right: 5px;
-    width: 40px;
-    height: 40px;
+    .project-details-share-icons img {
+        margin-right: 5px;
+        width: 40px;
+        height: 40px;
+    }
+
+.project-details-header {
+    font-size: 18px;
 }
