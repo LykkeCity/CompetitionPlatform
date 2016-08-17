@@ -405,3 +405,7 @@ textarea {
 .project-details-header {
     font-size: 18px;
 }
+
+.project-details-voting-bars {
+    margin-top: 10px;
+}
