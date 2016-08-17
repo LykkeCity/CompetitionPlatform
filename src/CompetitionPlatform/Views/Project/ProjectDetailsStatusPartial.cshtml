@@ -34,12 +34,12 @@
 }
 @if (Model.Status == Status.Implementation)
 {
-    <p class="project-voting-text">The contest began. You can no longer participate, but will be able to evaluate the results of the competition after @Model.ImplementationDeadline.ToString("MMMM d").</p>
+    <p class="project-voting-text text-muted">The contest began. You can no longer participate, but will be able to evaluate the results of the competition after @Model.ImplementationDeadline.ToString("MMMM d").</p>
 }
 @if (Model.Status == Status.Voting)
 {
     <div>
-        <p class="project-voting-text">The contest is finished You can help us determine the winners. Voting ends on @Model.VotingDeadline.ToString("MMMM d").</p>
+        <p class="project-voting-text text-muted">The contest is finished You can help us determine the winners. Voting ends on @Model.VotingDeadline.ToString("MMMM d").</p>
         <button class="btn btn-primary project-details-status-button">
             <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> Vote/Test
         </button>
@@ -48,6 +48,6 @@
 @if (Model.Status == Status.Archive)
 {
     <div>
-        <p class="project-voting-text">The competition and voting have completed. Winners were determined by the citizens of Lykke City.</p>
+        <p class="project-voting-text text-muted">The competition and voting have completed. Winners were determined by the citizens of Lykke City.</p>
     </div>
 }
