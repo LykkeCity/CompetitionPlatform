@@ -177,7 +177,6 @@ namespace CompetitionPlatform.Controllers
                 projectViewModel.Tags = builder.ToString();
             }
 
-
             var fileInfo = await _projectFileInfoRepository.GetAsync(id);
 
             if (fileInfo != null)
@@ -191,7 +190,46 @@ namespace CompetitionPlatform.Controllers
                 projectViewModel.FileInfo = fileInfoViewModel;
             }
 
+            if (projectViewModel.Status == Status.Archive)
+                projectViewModel = PopulateResultsViewModel(projectViewModel);
+
             return projectViewModel;
+        }
+
+        private ProjectViewModel PopulateResultsViewModel(ProjectViewModel model)
+        {
+            model.ResultsPartial.BudgetFirstPlace = model.BudgetFirstPlace;
+            model.ResultsPartial.BudgetSecondPlace = model.BudgetSecondPlace;
+            model.ResultsPartial.ParticipantCount = model.ParticipantsPartial.Participants.Count();
+            model.ResultsPartial.DaysOfContest = (DateTime.UtcNow - model.Created).Days;
+            model.ResultsPartial.WinnersCount = 0;
+
+            var firstPlacewinner = model.ResultsPartial.Results.OrderByDescending(x => x.Votes).FirstOrDefault();
+            var secondPlacewinners = model.ResultsPartial.Results.OrderByDescending(x => x.Votes).Take(3).Skip(1);
+
+            if (firstPlacewinner.Votes > 0)
+            {
+                model.ResultsPartial.FirstPlaceWinner = firstPlacewinner;
+                model.ResultsPartial.WinnersCount += 1;
+            }
+
+            var winnersList = new List<IProjectResultData>();
+
+            if (model.BudgetSecondPlace != null)
+            {
+                foreach (var winner in secondPlacewinners)
+                {
+                    if (winner.Votes > 0)
+                    {
+                        winnersList.Add(winner);
+                        model.ResultsPartial.WinnersCount += 1;
+                    }
+                }
+            }
+
+            model.ResultsPartial.SecondPlaceWinners = winnersList;
+
+            return model;
         }
 
         private string TrimAndSerializeTags(string tagsString)

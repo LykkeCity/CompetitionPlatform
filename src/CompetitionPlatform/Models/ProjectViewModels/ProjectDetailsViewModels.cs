@@ -64,6 +64,13 @@ namespace CompetitionPlatform.Models.ProjectViewModels
     {
         public Status Status { get; set; }
         public IEnumerable<IProjectResultData> Results { get; set; }
+        public double BudgetFirstPlace { get; set; }
+        public double? BudgetSecondPlace { get; set; }
+        public int ParticipantCount { get; set; }
+        public int WinnersCount { get; set; }
+        public int DaysOfContest { get; set; }
+        public IProjectResultData FirstPlaceWinner { get; set; }
+        public IEnumerable<IProjectResultData> SecondPlaceWinners { get; set; }
     }
 
     public class ResultVoteViewModel : IProjectResultVoteData

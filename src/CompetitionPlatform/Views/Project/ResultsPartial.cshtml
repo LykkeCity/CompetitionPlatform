@@ -1,48 +1,161 @@
 @model CompetitionPlatform.Models.ProjectViewModels.ResultsPartialViewModel
 
-<div>
+@if (Model.Status == Status.Implementation || Model.Status == Status.Voting)
+{
+    <div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>USERNAME</th>
+                    <th>SUBMISSION DATE</th>
+                    <th>RESULT</th>
+                    <th>SCORE</th>
+                    <th>VOTES</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var result in Model.Results)
+                {
+                    <tr>
+                        <td>
+                            <div class="project-participant">
+                                <img src="~/images/avatar.svg"
+                                     alt="@result.ParticipantFullName"
+                                     asp-append-version="true" />
+                                @result.ParticipantFullName
+                            </div>
+                        </td>
+                        <td>@result.Submitted.ToString("MMMM dd, yyyy hh:mm")</td>
+                        <td>
+                            <a href="@result.Link">View</a>
+                        </td>
+                        <td>@result.Score/100</td>
+                        <td>
+                            @result.Votes
+                        </td>
+                        @if (Model.Status == Status.Voting)
+                    {
+                            <td>
+                                <form asp-controller="ProjectDetails" asp-action="VoteForResult" enctype="multipart/form-data">
+                                    <input type="hidden" name="ProjectId" value="@result.ProjectId">
+                                    <input type="hidden" name="ParticipantId" value="@result.ParticipantId">
+                                    <input type="submit" value="+1" class="btn project-results-vote btn-default" />
+                                </form>
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+@if (Model.Status == Status.Archive)
+{
+    <div class="container results-info-panel col-md-12">
+        <div class="row">
+            <div class="inline text-center col-md-2 h4">
+                <div class="results-winners-count-text text-muted">
+                    $ @Model.BudgetFirstPlace
+                </div>
+                <div class="results-winners-text">
+                    Prize Fund
+                </div>
+            </div>
+            <div class="inline text-center col-md-2 h4">
+                <div class="results-winners-count-text text-muted">
+                    @Model.ParticipantCount
+                </div>
+                <div class="results-winners-text">
+                    Participants
+                </div>
+            </div>
+            <div class="inline text-center col-md-2 h4">
+                <div class="results-winners-count-text text-muted">
+                    @Model.DaysOfContest
+                </div>
+                <div class="results-winners-text">
+                    Days of the contest
+                </div>
+            </div>
+            <div class="inline text-center col-md-2 h4">
+                <div class="results-winners-count-text text-muted">
+                    @Model.Results.Count()
+                </div>
+                <div class="results-winners-text">
+                    Results
+                </div>
+            </div>
+            <div class="inline text-center col-md-2 h4">
+                <div class="results-winners-count-text text-muted">
+                    @Model.WinnersCount
+                </div>
+                <div class="results-winners-text">
+                    Winners
+                </div>
+            </div>
+        </div>
+    </div>
+
     <table class="table">
-        <thead>
-            <tr>
-                <th>USERNAME</th>
-                <th>SUBMISSION DATE</th>
-                <th>RESULT</th>
-                <th>SCORE</th>
-                <th>VOTES</th>
-            </tr>
-        </thead>
         <tbody>
-            @foreach (var result in Model.Results)
+            <tr>
+                <td>
+                    <div class="results-winners-place">
+                        1st
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        <img src="~/images/avatar.svg"
+                             alt="@Model.FirstPlaceWinner.ParticipantFullName"
+                             asp-append-version="true" />
+                    </div>
+                </td>
+                <td>
+                    <div class="results-winners-name bold-text">
+                        @Model.FirstPlaceWinner.ParticipantFullName
+                    </div>
+                    <div class="results-winners-scores text-muted">
+                        Score: @Model.FirstPlaceWinner.Score/100 - @Model.FirstPlaceWinner.Votes Votes
+                    </div>
+                </td>
+                <td>
+                    <div class="results-winners-count-text text-muted">
+                        $ @Model.BudgetFirstPlace
+                    </div>
+                </td>
+            </tr>
+
+            @foreach (var winner in Model.SecondPlaceWinners)
             {
                 <tr>
                     <td>
-                        <div class="project-participant">
-                            <img src="~/images/avatar.svg"
-                                 alt="@result.ParticipantFullName"
-                                 asp-append-version="true" />
-                            @result.ParticipantFullName
+                        <div class="results-winners-place">
+                            2nd
                         </div>
                     </td>
-                    <td>@result.Submitted.ToString("MMMM dd, yyyy hh:mm")</td>
                     <td>
-                        <a href="@result.Link">View</a>
+                        <div>
+                            <img src="~/images/avatar.svg"
+                                 alt="@winner.ParticipantFullName"
+                                 asp-append-version="true" />
+                        </div>
                     </td>
-                    <td>@result.Score/100</td>
                     <td>
-                        @result.Votes
+                        <div class="results-winners-name">
+                            @winner.ParticipantFullName
+                        </div>
+                        <div class="results-winners-scores text-muted">
+                            Score: @winner.Score/100 - @winner.Votes Votes
+                        </div>
                     </td>
-                    @if (Model.Status == Status.Voting)
-                    {
-                        <td>
-                            <form asp-controller="ProjectDetails" asp-action="VoteForResult" enctype="multipart/form-data">
-                                <input type="hidden" name="ProjectId" value="@result.ProjectId">
-                                <input type="hidden" name="ParticipantId" value="@result.ParticipantId">
-                                <input type="submit" value="+1" class="btn project-results-vote btn-default" />
-                            </form>
-                        </td>
-                    }
+                    <td>
+                        <div class="results-winners-count-text text-muted">
+                            $ @Model.BudgetSecondPlace
+                        </div>
+                    </td>
                 </tr>
             }
         </tbody>
     </table>
-</div>
+}
