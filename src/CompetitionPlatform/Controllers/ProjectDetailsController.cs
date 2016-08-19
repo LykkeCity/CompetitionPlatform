@@ -38,7 +38,7 @@ namespace CompetitionPlatform.Controllers
             _projectResultVoteRepository = projectResultVoteRepository;
         }
 
-        public IActionResult AddComment(ProjectCommentPartialViewModel model)
+        public async Task<IActionResult> AddComment(ProjectCommentPartialViewModel model)
         {
             var user = GetAuthenticatedUser();
             model.UserId = user.Email;
@@ -46,7 +46,7 @@ namespace CompetitionPlatform.Controllers
             model.Created = DateTime.UtcNow;
             model.LastModified = model.Created;
 
-            _projectCommentsRepository.SaveAsync(model);
+            await _projectCommentsRepository.SaveAsync(model);
             return RedirectToAction("ProjectDetails", "Project", new { id = model.ProjectId });
         }
 
