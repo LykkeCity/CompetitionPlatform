@@ -438,10 +438,6 @@ textarea {
     font-size: 19px;
 }
 
-.results-winners-scores {
-    
-}
-
 .results-winners-place {
-    font-size: 20px !important;
+    font-size: 20px;
 }
