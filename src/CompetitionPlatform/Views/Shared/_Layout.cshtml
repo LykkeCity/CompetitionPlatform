@@ -12,6 +12,7 @@
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-theme-lykke.css" />
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-datepicker.css" />
         <link rel="stylesheet" href="~/css/site.css" />
+        <link rel="stylesheet" href="~/css/header.css" />
     </environment>
     <environment names="Staging,Production">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/css/bootstrap.min.css"
@@ -39,7 +40,7 @@
                 </div>
             </div>
         </div>*@
-    <div class="navbar text-center menu-navigation-panel">
+@*<div class="navbar text-center menu-navigation-panel">
         <a class="h4">Wallet</a>
         <a class="h4">Exchange</a>
         <a class="h4 primary-color">City</a>
@@ -62,7 +63,94 @@
             <a class="h4">Blog</a>
             <a asp-area="" asp-controller="Project" asp-action="Create" type="button" class="btn btn-circle btn-primary new-project-button">+</a>
         </div>
-    </div>
+    </div>*@
+    <header class="header header--new">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-2 col-sm-3"><a href="/" class="logo header__logo"><img src="~/images/lykke_new.svg" height="50" alt="" /></a></div>
+                <div class="col-xs-10 col-sm-6 text-center">
+                    <button type="button" class="navbar-toggle collapsed btn btn--stroke pull-right" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbar-collapse">
+                        <div class="t-simulate">
+                            <div class="t-row">
+                                <div class="t-cell">
+                                    <ul class="nav nav--header">
+                                        <li>
+                                            <a class="dropdown__control" href="https://lykke.com/lykkewallet/">Wallet</a>
+                                            <div class="dropdown__container">
+                                                <ul class="dropdown__nav">
+                                                    <li><a href="https://www.youtube.com/watch?v=h5T2gRGcMso&feature=youtu.be">Watch the video</a></li>
+                                                    <li><a href="https://lykke.com/lykkewallet/privacy_policy.html">Privacy Policy</a></li>
+                                                    <li><a href="https://lykke.com/city/terms_of_use">Terms of Use</a></li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                        <li class="_add_active_exchange">
+                                            <a class="dropdown__control" href="https://lykke.com/exchange.php">Exchange</a>
+                                            <div class="dropdown__container">
+                                                <ul class="dropdown__nav">
+                                                    <li><a href="https://lykke.com/lykkex_rulebook.php">LykkeX Rulebook</a></li>
+                                                    <li><a href="https://lykke.com/term_conditions_colored_coins.php">Term of Issuance</a></li>
+                                                    <li><a href="https://api.lykkex.com/swagger/ui/index#/" target="_blank">LykkeX API</a></li>
+                                                    <li><a href="https://github.com/LykkeCity/" target="_blank">Github</a></li>
+                                                    <li><a href="https://lykke.com/colored_coin_exchange_white_paper.php">White Paper</a></li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown__control" href="https://lykke.com/city/start">City</a>
+                                            <div class="dropdown__container">
+                                                <ul class="dropdown__nav">
+                                                    <li><a href="https://lykke.com/city/start?do=register">Check In</a></li>
+                                                    <li><a href="https://lykke.com/city/yellowpages/registerform">Become a Citizen</a></li>
+                                                    <li><a href="https://lykke.com/city/about/openposition">Open Positions</a></li>
+                                                    <li><a href="https://lykke.com/city/openprojects/index">Projects Board</a></li>
+                                                    <li><a href="https://lykke.com/city/lykketimes">Lykke Times</a></li>
+                                                    <li><a href="https://lykke.com/city/blog/index">Blog</a></li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                        <li class="_add_active">
+                                            <a class="dropdown__control" href="https://www.lykke.com/leadership.php">Corp</a>
+                                            <div class="dropdown__container">
+                                                <ul class="dropdown__nav">
+                                                    <li><a href="https://lykke.com/leadership.php">Leadership</a></li>
+                                                    <li><a href="https://lykke.com/technology.php">Technology </a></li>
+                                                    <li><a href="https://lykke.com/contacts.php">Contacts</a></li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <a href="https://wiki.lykkex.com/start?do=login" class="visible-xs-inline-block visible-sm-inline-block btn">Sign In</a>
+                                </div>
+                            </div>
+                        </div>
+                        <ul class="social social--header visible-xs visible-sm">
+                            <li><a href="https://www.facebook.com/groups/542506412568917/" target="_blank" class="social__item"><i class="icon_img icon_img--fb"></i></a></li>
+                            <li><a href="https://twitter.com/LykkeCity" target="_blank" class="social__item"><i class="icon_img icon_img--tw"></i></a></li>
+                            <li><a href="http://instagram.com/lykkecity" target="_blank" class="social__item"><i class="icon_img icon_img--inst"></i></a></li>
+                            <li><a href="https://www.youtube.com/channel/UCmMYipGdKMF0kzfaE-PXsNQ" target="_blank" class="social__item"><i class="icon_img icon_img--yt"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-3 hidden-xs hidden-sm">
+                    <a class="h4 navbar-right">
+                        @if (User.Identity.IsAuthenticated)
+            {
+                            <span>@ClaimsHelper.GetUser(User.Identity).GetFullName()</span>
+                        }
+                    </a>
+                </div>
+                @*<div class="col-sm-3 hidden-xs hidden-sm">
+                    <a href="https://wiki.lykkex.com/start?do=login" class="btn btn-link pull-right">Sign In</a>
+                </div>*@
+            </div>
+        </div>
+    </header>
     <div class="container body-content">
         @RenderBody()
         <hr />

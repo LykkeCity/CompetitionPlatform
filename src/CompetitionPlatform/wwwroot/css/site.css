@@ -10,6 +10,7 @@ html {
 /* Wrapping element */
 /* Set some basic padding to keep content from hitting the edges */
 .body-content {
+    margin-top: 100px;
     padding-left: 15px;
     padding-right: 15px;
 }
@@ -440,4 +441,8 @@ textarea {
 
 .results-winners-place {
     font-size: 20px;
+}
+
+.nav--header {
+    margin-top: -15px;
 }
