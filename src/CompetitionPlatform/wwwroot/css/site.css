@@ -91,6 +91,10 @@ textarea {
     color: #ab00ff;
 }
 
+.primary-color-important {
+    color: #ab00ff !important;
+}
+
 .project-edit-status-display {
     margin-top: 50px;
     margin-bottom: 50px;
