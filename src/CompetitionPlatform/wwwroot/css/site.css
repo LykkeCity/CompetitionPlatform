@@ -14,7 +14,7 @@ html {
 /* Wrapping element */
 /* Set some basic padding to keep content from hitting the edges */
 .body-content {
-    margin-top: 100px;
+    margin-top: 50px;
     padding-left: 15px;
     padding-right: 15px;
 }
@@ -255,6 +255,7 @@ textarea {
     }
 
 .menu-top-panel {
+    margin-top: 80px;
     width: 100%;
 }
 
