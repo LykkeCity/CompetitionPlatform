@@ -74,6 +74,8 @@ namespace CompetitionPlatform.Models.ProjectViewModels
 
         public ResultsPartialViewModel ResultsPartial { get; set; }
 
+        public ProjectDetailsStatusBarViewModel StatusBarPartial { get; set; }
+
         public ProjectFileInfoViewModel FileInfo { get; set; }
 
         public bool IsParticipant { get; set; }

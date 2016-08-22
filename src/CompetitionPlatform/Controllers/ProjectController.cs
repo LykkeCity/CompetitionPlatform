@@ -122,6 +122,15 @@ namespace CompetitionPlatform.Controllers
 
             comments = comments.OrderBy(c => c.Created).Reverse().ToList();
 
+            var statusBarPartial = new ProjectDetailsStatusBarViewModel
+            {
+                Status = project.Status,
+                ParticipantsCount = participants.Count(),
+                CompetitionRegistrationDeadline = project.CompetitionRegistrationDeadline,
+                ImplementationDeadline = project.ImplementationDeadline,
+                VotingDeadline = project.VotingDeadline
+            };
+
             var commentsPartial = new ProjectCommentPartialViewModel
             {
                 ProjectId = project.Id,
@@ -156,6 +165,7 @@ namespace CompetitionPlatform.Controllers
                 CompetitionRegistrationDeadline = project.CompetitionRegistrationDeadline,
                 ImplementationDeadline = project.ImplementationDeadline,
                 VotingDeadline = project.VotingDeadline,
+                StatusBarPartial = statusBarPartial,
                 CommentsPartial = commentsPartial,
                 ParticipantsPartial = participantsPartial,
                 ResultsPartial = resultsPartial,

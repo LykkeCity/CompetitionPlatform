@@ -79,4 +79,13 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public string ParticipantId { get; set; }
         public string VoterUserId { get; set; }
     }
+
+    public class ProjectDetailsStatusBarViewModel
+    {
+        public Status Status { get; set; }
+        public DateTime CompetitionRegistrationDeadline { get; set; }
+        public DateTime ImplementationDeadline { get; set; }
+        public DateTime VotingDeadline { get; set; }
+        public int ParticipantsCount { get; set; }
+    }
 }
