@@ -21,51 +21,18 @@
             <h2>@Model.Name</h2>
 
             <div class="project-details-budget inline">
-                <span class="h2">$@Model.BudgetFirstPlace</span>
+                <span class="h2 text-muted">$@Model.BudgetFirstPlace</span>
                 <div>1st PLACE</div>
             </div>
 
             @if (Model.BudgetSecondPlace != null)
             {
                 <div class="project-details-budget inline">
-                    <span class="h2">$@Model.BudgetSecondPlace</span>
+                    <span class="h2 text-muted">$@Model.BudgetSecondPlace</span>
                     <div>3x2nd PLACE</div>
                 </div>
             }
-
-            <div class="progress">
-                @{
-                    int completion = 0;
-                    string style = "";
-                }
-
-                @switch (Model.Status)
-                {
-                    case Status.Initiative:
-                        completion = 20;
-                        style = "progress-bar-info";
-                        break;
-                    case Status.CompetitionRegistration:
-                        completion = 40;
-                        style = "progress-bar-success";
-                        break;
-                    case Status.Implementation:
-                        completion = 60;
-                        style = "progress-bar-danger";
-                        break;
-                    case Status.Voting:
-                        completion = 80;
-                        style = "progress-bar-warning";
-                        break;
-                    case Status.Archive:
-                        completion = 100;
-                        break;
-                }
-
-                <div class="project-status-progress progress-bar @style" role="progressbar" aria-valuenow="@completion" aria-valuemin="0" aria-valuemax="100" style="width: @completion%;">
-                    @Model.Status
-                </div>
-            </div>
+            @await Html.PartialAsync("ProjectDetailsStatusBarPartial", Model.StatusBarPartial)
 
             <ul class="nav nav-tabs" role="tablist">
                 <li role="presentation" class="active">
@@ -173,11 +140,16 @@
 
             <div class="project-details-share-icons">
                 <p class="bold-text project-details-header">SHARE</p>
-                <hr />
-                <img src="~/images/facebook-icn.svg"
-                     asp-append-version="true" />
-                <img src="~/images/twitter-icn.svg"
-                     asp-append-version="true" />
+                <hr/>
+                <p class="inline">
+                    <a href="https://www.facebook.com/groups/542506412568917/">
+                        <img src="~/images/facebook-icn.svg" asp-append-version="true" alt="facebook" />
+                    </a>
+                </p>
+                
+                <a href="https://twitter.com/LykkeCity">
+                    <img src="~/images/twitter-icn.svg" asp-append-version="true" alt="twitter"/>
+                </a>
             </div>
 
             <div>
