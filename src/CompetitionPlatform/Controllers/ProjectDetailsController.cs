@@ -232,17 +232,23 @@ namespace CompetitionPlatform.Controllers
                 var result = await _projectResultRepository.GetAsync(model.ProjectId, model.ParticipantId);
 
                 result.Votes += 1;
-                result.Score = CalculateScore(totalVotes, result.Votes);
 
                 await _projectResultRepository.UpdateAsync(result);
+                await CalculateScores(totalVotes, model.ProjectId);
             }
 
             return RedirectToAction("ProjectDetails", "Project", new { id = model.ProjectId });
         }
 
-        private int CalculateScore(int totalVotes, int projectVotes)
+        private async Task CalculateScores(int totalVotes, string projectId)
         {
-            return projectVotes * 100 / totalVotes;
+            var results = await _projectResultRepository.GetResultsAsync(projectId);
+
+            foreach (var result in results)
+            {
+                result.Score = result.Votes * 100 / totalVotes;
+                await _projectResultRepository.UpdateAsync(result);
+            }
         }
 
         private CompetitionPlatformUser GetAuthenticatedUser()
