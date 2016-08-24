@@ -110,6 +110,18 @@
                 </p>
             </div>
 
+            <div class="project-details-author">
+                <div class="inline">
+                    <img src="~/images/avatar.svg"
+                         alt="@Model.AuthorFullName"
+                         asp-append-version="true"/>
+                </div>
+                <div class="inline project-details-author-text">
+                    <div class="bold-text">@Model.AuthorFullName.ToUpper()</div>
+                    <div class="text-muted project-details-author-creator">Creator</div> 
+                </div>
+            </div>
+
             <div>
                 <p>
                     <span class="text-muted">Created</span> @Model.Created.ToString("MMMM dd, yyyy")

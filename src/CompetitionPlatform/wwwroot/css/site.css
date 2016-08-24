@@ -313,8 +313,9 @@ textarea {
 }
 
 .project-details-status-button {
+    margin-top: 10px;
     width: 100%;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     font-size: 17px;
 }
 
@@ -496,4 +497,18 @@ textarea {
 
 .position-static {
     position: static;
+}
+
+.project-details-author {
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+.project-details-author-text {
+    vertical-align: middle;
+    margin-left: 10px;
+}
+
+.project-details-author-creator {
+    font-size: 16px;
 }
