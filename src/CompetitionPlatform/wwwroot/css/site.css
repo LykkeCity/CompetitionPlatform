@@ -493,3 +493,7 @@ textarea {
 
 .progress-fill-text {
 }
+
+.position-static {
+    position: static;
+}
