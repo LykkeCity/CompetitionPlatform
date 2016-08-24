@@ -45,8 +45,16 @@
         var barWidth = $('.progress-bar').width();
         $('.progress-fill-text').css('width', barWidth);
     }
+
     barWidth();
+
     window.onresize = function () {
         barWidth();
     }
+
+    $('#voteTestButton')
+        .click(function(e) {
+            e.preventDefault();
+            $('#projectDetailsTabs a[href="#Results"]').tab('show');
+        });
 });
