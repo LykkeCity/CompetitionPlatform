@@ -76,7 +76,7 @@
   .page_nav__item { margin-right: 25px; }
   .page_nav__inner { border-top: 1px solid #eaedef; } }
 
-.nav-tabs { padding: 0; border-bottom-color: #e1e1e1; margin-right: 0; }
+.nav-tabs { padding: 0 0 0 0 !important; border-bottom-color: #e1e1e1; margin-right: 0; }
 .nav-tabs > li > a { border: 0; border-bottom: 2px solid transparent; font-size: 18px; color: rgba(63, 77, 96, 0.6); padding: 11px 20px; font-weight: 600; }
 @media all and (max-width: 539px) { .nav-tabs { margin-right: -15px !important; width: auto; }
   .nav-tabs > li > a { font-size: 14px; } }
