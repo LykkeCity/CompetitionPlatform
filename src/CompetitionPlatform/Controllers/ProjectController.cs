@@ -304,10 +304,13 @@ namespace CompetitionPlatform.Controllers
         private int CalculateDateProgressPercent(DateTime start, DateTime end)
         {
             var totalDays = (end - start).Days;
+
+            if (totalDays == 0) return 100;
+
             var daysPassed = (DateTime.UtcNow - start).Days;
             var percent = daysPassed * 100 / totalDays;
 
-            return percent;
+            return (percent > 100) ? 100 : percent;
         }
 
         private CompetitionPlatformUser GetAuthenticatedUser()
