@@ -110,8 +110,8 @@ namespace CompetitionPlatform.Controllers
 
             var participant = await _projectParticipantsRepository.GetAsync(id, user.Email);
 
-            string participantId = "";
-            bool isParticipant = false;
+            var participantId = "";
+            var isParticipant = false;
 
             if (participant != null)
             {
@@ -179,8 +179,8 @@ namespace CompetitionPlatform.Controllers
             {
                 projectViewModel.TagsList = JsonConvert.DeserializeObject<List<string>>(project.Tags);
 
-                StringBuilder builder = new StringBuilder();
-                foreach (string tag in projectViewModel.TagsList)
+                var builder = new StringBuilder();
+                foreach (var tag in projectViewModel.TagsList)
                 {
                     builder.Append(tag).Append(", ");
                 }
@@ -275,7 +275,7 @@ namespace CompetitionPlatform.Controllers
 
         private int CalculateStatusCompletionPercent(IProjectData projectData)
         {
-            int completion = 0;
+            var completion = 0;
 
             switch (projectData.Status)
             {
