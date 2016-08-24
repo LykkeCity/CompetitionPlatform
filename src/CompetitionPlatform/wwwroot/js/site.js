@@ -40,4 +40,13 @@
 
             $('#projectVoteResults').load('/ProjectDetails/VoteAgainst?projectId=' + $('#ProjectId').val());
         });
+
+    function barWidth() {
+        var barWidth = $('.progress-bar').width();
+        $('.progress-fill-text').css('width', barWidth);
+    }
+    barWidth();
+    window.onresize = function () {
+        barWidth();
+    }
 });
