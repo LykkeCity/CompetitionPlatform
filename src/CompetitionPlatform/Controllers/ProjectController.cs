@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using CompetitionPlatform.Data.AzureRepositories.Project;
@@ -128,7 +127,8 @@ namespace CompetitionPlatform.Controllers
                 ParticipantsCount = participants.Count(),
                 CompetitionRegistrationDeadline = project.CompetitionRegistrationDeadline,
                 ImplementationDeadline = project.ImplementationDeadline,
-                VotingDeadline = project.VotingDeadline
+                VotingDeadline = project.VotingDeadline,
+                StatusCompletionPercent = CalculateStatusCompletionPercent(project)
             };
 
             var commentsPartial = new ProjectCommentPartialViewModel
@@ -271,6 +271,43 @@ namespace CompetitionPlatform.Controllers
 
                 await _projectFileInfoRepository.SaveAsync(fileInfo);
             }
+        }
+
+        private int CalculateStatusCompletionPercent(IProjectData projectData)
+        {
+            int completion = 0;
+
+            switch (projectData.Status)
+            {
+                case Status.Initiative:
+                    completion = 100;
+                    break;
+                case Status.CompetitionRegistration:
+                    completion = CalculateDateProgressPercent(projectData.Created,
+                        projectData.CompetitionRegistrationDeadline);
+                    break;
+                case Status.Implementation:
+                    completion = CalculateDateProgressPercent(projectData.CompetitionRegistrationDeadline,
+                        projectData.ImplementationDeadline);
+                    break;
+                case Status.Voting:
+                    completion = CalculateDateProgressPercent(projectData.ImplementationDeadline,
+                        projectData.VotingDeadline);
+                    break;
+                case Status.Archive:
+                    completion = 100;
+                    break;
+            }
+            return completion;
+        }
+
+        private int CalculateDateProgressPercent(DateTime start, DateTime end)
+        {
+            var totalDays = (end - start).Days;
+            var daysPassed = (DateTime.UtcNow - start).Days;
+            var percent = daysPassed * 100 / totalDays;
+
+            return percent;
         }
 
         private CompetitionPlatformUser GetAuthenticatedUser()
