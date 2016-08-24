@@ -1,47 +1,54 @@
 @model CompetitionPlatform.Models.ProjectViewModels.ProjectDetailsStatusBarViewModel
 
-<div class="progress status-progress-bar">
+<div class="row status-bar">
     @{
-        int completion = 0;
-        string style = "";
-        bool showDeadline = false;
-        string deadline = "";
+        var showDeadline = false;
+        var deadline = "";
+        var color = "";
     }
 
     @switch (Model.Status)
     {
         case Status.Initiative:
-            completion = 20;
-            style = "progress-bar-info";
+            color = "#0da7fc";
             break;
         case Status.CompetitionRegistration:
-            completion = 40;
-            style = "progress-bar-success";
+            color = "#13b72a";
             showDeadline = true;
-            deadline = @Model.CompetitionRegistrationDeadline.ToString("MMMM dd");
+            deadline = Model.CompetitionRegistrationDeadline.ToString("MMMM dd");
             break;
         case Status.Implementation:
-            completion = 60;
-            style = "progress-bar-danger";
+            color = "#ff3e2e";
             showDeadline = true;
-            deadline = @Model.ImplementationDeadline.ToString("MMMM dd");
+            deadline = Model.ImplementationDeadline.ToString("MMMM dd");
             break;
         case Status.Voting:
-            completion = 80;
-            style = "progress-bar-warning";
+            color = "#ffae2c";
             showDeadline = true;
-            deadline = @Model.VotingDeadline.ToString("MMMM dd");
+            deadline = Model.VotingDeadline.ToString("MMMM dd");
             break;
         case Status.Archive:
-            completion = 100;
+            color = "#b2b8bf";
             break;
     }
 
-    <div class="project-status-progress progress-bar @style inline" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
+    <div class="progress-bar status-progress-bar" style="color: @color; border-color: @color;">
+        <div class="progress-fill" style="width: @Model.StatusCompletionPercent%; background: @color;">
+            <div class="progress-fill-text">
+                <div class="inline project-status-bar-text navbar-left">
+                    @Model.Status.ToString().ToUpper()
+                </div>
+                @if (showDeadline)
+                {
+                    <div class="inline project-status-bar-deadline-text navbar-right">
+                        <span class="glyphicon glyphicon-fire" aria-hidden="true"></span> @deadline
+                    </div>
+                }
+            </div>
+        </div>
         <div class="inline project-status-bar-text navbar-left">
             @Model.Status.ToString().ToUpper()
         </div>
-
         @if (showDeadline)
         {
             <div class="inline project-status-bar-deadline-text navbar-right">

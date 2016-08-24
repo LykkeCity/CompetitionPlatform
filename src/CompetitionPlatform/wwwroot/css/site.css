@@ -8,7 +8,7 @@ html {
 }
 
 .header {
-     width: calc(100vw - 34px) !important;
+    width: calc(100vw - 34px) !important;
 }
 
 /* Wrapping element */
@@ -363,20 +363,20 @@ textarea {
     font-size: 18px;
 }
 
-.status-progress-bar {
-    height: 40px;
+.status-bar {
+    margin-bottom: 40px;
 }
 
 .project-status-bar-text {
-    margin-top: 11px;
+    margin-top: 3px;
     margin-left: 15px;
-    font-size: 20px;    
+    font-size: 20px;
 }
 
 .project-status-bar-deadline-text {
-    margin-top: 8px;
+    margin-top: 1px;
     margin-right: 15px;
-    font-size: 18px;    
+    font-size: 18px;
 }
 
 .project-details-description {
@@ -470,4 +470,26 @@ textarea {
 
 .nav--header {
     margin-top: -15px;
+}
+
+.status-progress-bar {
+    background: #fff;
+    padding: 10px 0;
+    width: 100%;
+    position: relative;
+    margin-left: 15px;
+    font-size: 20px;
+    border: 3px solid;
+}
+
+.progress-fill {
+    color: #fff;
+    padding: 10px 0;
+    position: absolute;
+    left: 0;
+    top: 0;
+    overflow: hidden;
+}
+
+.progress-fill-text {
 }
