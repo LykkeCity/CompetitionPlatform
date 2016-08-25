@@ -81,6 +81,8 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public bool IsParticipant { get; set; }
 
         public string ParticipantId { get; set; }
+
+        public bool IsFollowing { get; set; }
     }
 
     public class ProjectCompactViewModel
