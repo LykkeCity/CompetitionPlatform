@@ -167,6 +167,9 @@
                 <p class="bold-text project-details-header">TAGS</p>
                 <hr />
                 <div>
+                    <div class="project-details-tag inline text-muted">
+                        @Model.Category
+                    </div>
                     @if (Model.TagsList != null)
                     {
                         foreach (var category in Model.TagsList)
