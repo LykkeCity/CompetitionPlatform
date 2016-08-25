@@ -184,6 +184,10 @@ textarea {
     font-weight: bold;
 }
 
+.vertical-align-middle {
+    vertical-align: middle;
+}
+
 .project-comment {
     margin-bottom: 30px;
     margin-left: 20px;
@@ -511,4 +515,28 @@ textarea {
 
 .project-details-author-creator {
     font-size: 16px;
+}
+
+#financeButton {   
+    padding: 7px 20px 7px 20px;
+    height: 38px;
+}
+
+#followButton {
+    padding: 7px 20px 7px 20px;
+    height: 38px;
+}
+
+#etcButton {
+    padding: 7px 10px 7px 5px;
+    height: 38px;
+}
+
+.category-follow-button {
+    border: solid 1px #d3d6db;
+    background: white;
+}
+
+.project-status-bar-deadline-icon {
+    padding-bottom: 4px;
 }
