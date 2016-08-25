@@ -83,8 +83,8 @@ textarea {
 }
 
 .project-status-archive {
-    border-color: #3f4d60;
-    color: #3f4d60;
+    border-color: #b2b8bf;
+    color: #b2b8bf;
 }
 
 .primary-color {
@@ -517,7 +517,7 @@ textarea {
     font-size: 16px;
 }
 
-#financeButton {   
+#financeButton {
     padding: 7px 20px 7px 20px;
     height: 38px;
 }

@@ -3,9 +3,39 @@
 @foreach (var project in Model.Projects)
 {
     <div class="col-md-6 project-tile">
+        @{
+            var statusColor = "";
+            var projectStatus = project.Status.ToString().ToUpper();
+            var projectCount = "";
+            var votesCount = project.VotesFor + project.VotesAgainst;
+            var textMuted = "";
+        }
+
+        @switch (project.Status)
+        {
+            case Status.Initiative:
+                statusColor = "project-status-initiative";
+                projectCount = (votesCount == 1) ? votesCount + " VOTE" : votesCount + " VOTES";
+                break;
+            case Status.CompetitionRegistration:
+                statusColor = "project-status-competitionregistration";
+                projectStatus = "COMPETITION REGISTRATION";
+                projectCount = (project.ParticipantsCount == 1) ? project.ParticipantsCount + " PARTICIPANT" : project.ParticipantsCount + " PARTICIPANTS";
+                break;
+            case Status.Implementation:
+                statusColor = "project-status-implementation";
+                break;
+            case Status.Voting:
+                statusColor = "project-status-voting";
+                break;
+            case Status.Archive:
+                statusColor = "project-status-archive";
+                textMuted = "text-muted";
+                break;
+        }
         <div class="row">
             <div class="col-md-12">
-                <a class="inline h2" asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.Id">@project.Name</a>
+                <a class="inline h2 @textMuted" asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.Id">@project.Name</a>
                 <div class="pull-right">
                     <div class="project-index-budget">$@project.BudgetFirstPlace</div>
                 </div>
@@ -13,35 +43,6 @@
         </div>
         <div class="row">
             <div class="col-md-12">
-                @{
-                    var statusColor = "";
-                    var projectStatus = project.Status.ToString().ToUpper();
-                    var projectCount = "";
-                    var votesCount = project.VotesFor + project.VotesAgainst;
-                }
-
-                @switch (project.Status)
-                {
-                    case Status.Initiative:
-                        statusColor = "project-status-initiative";
-                        projectCount = (votesCount == 1) ? votesCount + " VOTE" : votesCount + " VOTES";
-                        break;
-                    case Status.CompetitionRegistration:
-                        statusColor = "project-status-competitionregistration";
-                        projectStatus = "COMPETITION REGISTRATION";
-                        projectCount = (project.ParticipantsCount == 1) ? project.ParticipantsCount + " PARTICIPANT" : project.ParticipantsCount + " PARTICIPANTS";
-                        break;
-                    case Status.Implementation:
-                        statusColor = "project-status-implementation";
-                        break;
-                    case Status.Voting:
-                        statusColor = "project-status-voting";
-                        break;
-                    case Status.Archive:
-                        statusColor = "project-status-archive";
-                        break;
-                }
-
                 <div class="btn btn-xs btn-info project-status @statusColor inline">
                     @projectStatus
                 </div>
@@ -92,4 +93,4 @@
         </div>
         <hr />
     </div>
-                    }
+            }
