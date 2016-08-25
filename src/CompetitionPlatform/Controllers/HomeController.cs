@@ -20,14 +20,17 @@ namespace CompetitionPlatform.Controllers
         private readonly IProjectCommentsRepository _projectCommentsRepository;
         private readonly IProjectCategoriesRepository _projectCategoriesRepository;
         private readonly IProjectParticipantsRepository _projectParticipantsRepository;
+        private readonly IProjectFollowRepository _projectFollowRepository;
 
         public HomeController(IProjectRepository projectRepository, IProjectCommentsRepository projectCommentsRepository,
-            IProjectCategoriesRepository projectCategoriesRepository, IProjectParticipantsRepository projectParticipantsRepository)
+            IProjectCategoriesRepository projectCategoriesRepository, IProjectParticipantsRepository projectParticipantsRepository,
+            IProjectFollowRepository projectFollowRepository)
         {
             _projectRepository = projectRepository;
             _projectCommentsRepository = projectCommentsRepository;
             _projectCategoriesRepository = projectCategoriesRepository;
             _projectParticipantsRepository = projectParticipantsRepository;
+            _projectFollowRepository = projectFollowRepository;
         }
 
         [Authorize]
@@ -58,6 +61,19 @@ namespace CompetitionPlatform.Controllers
             if (!string.IsNullOrEmpty(projectAuthorId))
                 projects = projects.Where(x => x.AuthorId == projectAuthorId);
 
+            var compactModels = await GetCompactProjectsList(projects);
+
+            var viewModel = new ProjectListIndexViewModel
+            {
+                ProjectCategories = projectCategories,
+                Projects = compactModels
+            };
+
+            return viewModel;
+        }
+
+        private async Task<List<ProjectCompactViewModel>> GetCompactProjectsList(IEnumerable<IProjectData> projects)
+        {
             var compactModels = new List<ProjectCompactViewModel>();
 
             foreach (var project in projects)
@@ -87,19 +103,36 @@ namespace CompetitionPlatform.Controllers
                 compactModels.Add(compactModel);
             }
 
+            return compactModels;
+        }
+        public async Task<IActionResult> FilterMyProjects()
+        {
+            var user = GetAuthenticatedUser();
+            var viewModel = await GetProjectListViewModel(projectAuthorId: user.Email);
+
+            return View("~/Views/Home/Index.cshtml", viewModel);
+        }
+
+        public async Task<IActionResult> FilterFollowingProjects()
+        {
+            var projectCategories = _projectCategoriesRepository.GetCategories();
+
+            var user = GetAuthenticatedUser();
+
+            var projects = await _projectRepository.GetProjectsAsync();
+
+            var following = await _projectFollowRepository.GetProjectsFollowAsync(user.Email);
+
+            var filtered = projects
+                   .Where(x => following.Any(y => y.ProjectId == x.Id));
+
+            var compactModels = await GetCompactProjectsList(filtered);
+
             var viewModel = new ProjectListIndexViewModel
             {
                 ProjectCategories = projectCategories,
                 Projects = compactModels
             };
-
-            return viewModel;
-        }
-
-        public async Task<IActionResult> FilterMyProjects()
-        {
-            var user = GetAuthenticatedUser();
-            var viewModel = await GetProjectListViewModel(projectAuthorId: user.Email);
 
             return View("~/Views/Home/Index.cshtml", viewModel);
         }
