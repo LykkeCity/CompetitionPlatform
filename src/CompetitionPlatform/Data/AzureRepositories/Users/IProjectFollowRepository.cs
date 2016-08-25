@@ -11,7 +11,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Users
 
     public interface IProjectFollowRepository
     {
-        Task SaveAsync(IProjectFollowData projectFollowData);
+        Task SaveAsync(string userId, string projectId);
         Task<IProjectFollowData> GetAsync(string userId, string projectId);
         Task<IEnumerable<IProjectFollowData>> GetProjectsFollowAsync(string userId);
         Task<IProjectFollowData> DeleteAsync(string userId, string projectId);
