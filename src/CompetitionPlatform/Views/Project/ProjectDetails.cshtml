@@ -104,21 +104,50 @@
            ImplementationDeadline = Model.ImplementationDeadline,
            VotingDeadline = Model.VotingDeadline
        })
-            <div>
-                <p>
-                    Category: <span class="label label-info">@Model.Category</span>
-                </p>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="btn-group">
+                        <div id="financeButton" class="btn btn-info col-md-5 text-muted">
+                            <img src="~/images/finance-icn.svg"
+                                 alt="Finance the project"
+                                 asp-append-version="true" />
+                            Finance
+                        </div>
+                        @if (!Model.IsFollowing)
+                        {
+                            <a asp-area="" asp-controller="ProjectDetails" asp-action="FollowProject" asp-route-id="@Model.Id" id="followButton" class="btn btn-info col-md-5 text-muted">
+                                <img src="~/images/follow-icn.svg"
+                                     alt="Finance the project"
+                                     asp-append-version="true" />
+                                Follow
+                            </a>
+                        }
+                        else
+                        {
+                            <a asp-area="" asp-controller="ProjectDetails" asp-action="UnFollowProject" asp-route-id="@Model.Id" id="followButton" class="btn btn-info col-md-5 text-muted">
+                                <div class="inline">
+                                    Unfollow
+                                </div>
+                            </a>
+                        }
+
+                        <button id="etcButton" class="btn btn-info col-md-2 text-muted">
+                            <span class="glyphicon glyphicon-option-horizontal vertical-align-middle" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                </div>
             </div>
 
             <div class="project-details-author">
                 <div class="inline">
                     <img src="~/images/avatar.svg"
                          alt="@Model.AuthorFullName"
-                         asp-append-version="true"/>
+                         asp-append-version="true" />
                 </div>
                 <div class="inline project-details-author-text">
                     <div class="bold-text">@Model.AuthorFullName.ToUpper()</div>
-                    <div class="text-muted project-details-author-creator">Creator</div> 
+                    <div class="text-muted project-details-author-creator">Creator</div>
                 </div>
             </div>
 
@@ -152,15 +181,15 @@
 
             <div class="project-details-share-icons">
                 <p class="bold-text project-details-header">SHARE</p>
-                <hr/>
+                <hr />
                 <p class="inline">
                     <a href="https://www.facebook.com/groups/542506412568917/">
                         <img src="~/images/facebook-icn.svg" asp-append-version="true" alt="facebook" />
                     </a>
                 </p>
-                
+
                 <a href="https://twitter.com/LykkeCity">
-                    <img src="~/images/twitter-icn.svg" asp-append-version="true" alt="twitter"/>
+                    <img src="~/images/twitter-icn.svg" asp-append-version="true" alt="twitter" />
                 </a>
             </div>
 
