@@ -22,11 +22,13 @@ namespace CompetitionPlatform.Controllers
         private readonly IProjectParticipantsRepository _projectParticipantsRepository;
         private readonly IProjectResultRepository _projectResultRepository;
         private readonly IProjectResultVoteRepository _projectResultVoteRepository;
+        private readonly IProjectFollowRepository _projectFollowRepository;
 
         public ProjectDetailsController(IProjectCommentsRepository projectCommentsRepository, IProjectFileRepository projectFileRepository,
             IProjectFileInfoRepository projectFileInfoRepository, IProjectVoteRepository projectVoteRepository,
             IProjectRepository projectRepository, IProjectParticipantsRepository projectParticipantsRepository,
-            IProjectResultRepository projectResultRepository, IProjectResultVoteRepository projectResultVoteRepository)
+            IProjectResultRepository projectResultRepository, IProjectResultVoteRepository projectResultVoteRepository,
+            IProjectFollowRepository projectFollowRepository)
         {
             _projectCommentsRepository = projectCommentsRepository;
             _projectFileRepository = projectFileRepository;
@@ -36,6 +38,7 @@ namespace CompetitionPlatform.Controllers
             _projectParticipantsRepository = projectParticipantsRepository;
             _projectResultRepository = projectResultRepository;
             _projectResultVoteRepository = projectResultVoteRepository;
+            _projectFollowRepository = projectFollowRepository;
         }
 
         public async Task<IActionResult> AddComment(ProjectCommentPartialViewModel model)
@@ -238,6 +241,24 @@ namespace CompetitionPlatform.Controllers
             }
 
             return RedirectToAction("ProjectDetails", "Project", new { id = model.ProjectId });
+        }
+
+        public async Task<IActionResult> FollowProject(string id)
+        {
+            var user = GetAuthenticatedUser();
+
+            await _projectFollowRepository.SaveAsync(user.Email, id);
+
+            return RedirectToAction("ProjectDetails", "Project", new { id = id });
+        }
+
+        public async Task<IActionResult> UnFollowProject(string id)
+        {
+            var user = GetAuthenticatedUser();
+
+            await _projectFollowRepository.DeleteAsync(user.Email, id);
+
+            return RedirectToAction("ProjectDetails", "Project", new { id = id });
         }
 
         private async Task CalculateScores(int totalVotes, string projectId)

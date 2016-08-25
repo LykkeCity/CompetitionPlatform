@@ -25,11 +25,12 @@ namespace CompetitionPlatform.Controllers
         private readonly IProjectParticipantsRepository _projectParticipantsRepository;
         private readonly IProjectCategoriesRepository _projectCategoriesRepository;
         private readonly IProjectResultRepository _projectResultRepository;
+        private readonly IProjectFollowRepository _projectFollowRepository;
 
         public ProjectController(IProjectRepository projectRepository, IProjectCommentsRepository projectCommentsRepository,
             IProjectFileRepository projectFileRepository, IProjectFileInfoRepository projectFileInfoRepository,
             IProjectParticipantsRepository projectParticipantsRepository, IProjectCategoriesRepository projectCategoriesRepository,
-            IProjectResultRepository projectResultRepository)
+            IProjectResultRepository projectResultRepository, IProjectFollowRepository projectFollowRepository)
         {
             _projectRepository = projectRepository;
             _projectCommentsRepository = projectCommentsRepository;
@@ -38,6 +39,7 @@ namespace CompetitionPlatform.Controllers
             _projectParticipantsRepository = projectParticipantsRepository;
             _projectCategoriesRepository = projectCategoriesRepository;
             _projectResultRepository = projectResultRepository;
+            _projectFollowRepository = projectFollowRepository;
         }
 
         public IActionResult Create()
@@ -119,6 +121,9 @@ namespace CompetitionPlatform.Controllers
                 isParticipant = true;
             }
 
+            var projectFollowing = await _projectFollowRepository.GetAsync(user.Email, id);
+            var isFollowing = projectFollowing != null;
+
             comments = comments.OrderBy(c => c.Created).Reverse().ToList();
 
             var statusBarPartial = new ProjectDetailsStatusBarViewModel
@@ -172,7 +177,8 @@ namespace CompetitionPlatform.Controllers
                 AuthorId = project.AuthorId,
                 AuthorFullName = project.AuthorFullName,
                 ParticipantId = participantId,
-                IsParticipant = isParticipant
+                IsParticipant = isParticipant,
+                IsFollowing = isFollowing
             };
 
             if (!string.IsNullOrEmpty(project.Tags))
