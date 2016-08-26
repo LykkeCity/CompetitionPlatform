@@ -387,6 +387,9 @@ textarea {
 
 .project-details-description {
     white-space: pre-line;
+    font-size: 18px;
+    line-height: 1.67;
+    color: #3f4d60;
 }
 
 .project-comments-avatar img {
