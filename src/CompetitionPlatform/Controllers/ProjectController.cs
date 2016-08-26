@@ -218,7 +218,7 @@ namespace CompetitionPlatform.Controllers
         {
             var projects = await _projectRepository.GetProjectsAsync();
 
-            var filteredProjects = projects.OrderByDescending(p => p.ParticipantsCount).Take(5).ToList();
+            var filteredProjects = projects.Where(x => x.Id != id).OrderByDescending(p => p.ParticipantsCount).Take(5).ToList();
 
             var otherProjects = new List<OtherProjectViewModel>();
 
