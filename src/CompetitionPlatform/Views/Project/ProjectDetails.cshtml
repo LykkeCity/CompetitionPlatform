@@ -199,6 +199,16 @@
             <div>
                 <p class="bold-text project-details-header">OTHER PROJECTS</p>
                 <hr />
+                @foreach (var project in Model.OtherProjects)
+                {
+                    <a class="other-projects-name" asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.Id">@project.Name</a>
+                    <div class="text-muted other-projects-budget-participants">
+                        <div class="inline other-project-budget">
+                            $@project.BudgetFirstPlace
+                        </div>
+                        @project.Members members
+                    </div>
+                }
             </div>
         </div>
     </div>
