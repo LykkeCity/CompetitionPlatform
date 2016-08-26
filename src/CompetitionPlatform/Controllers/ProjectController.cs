@@ -71,6 +71,7 @@ namespace CompetitionPlatform.Controllers
                 projectViewModel.AuthorFullName = user.GetFullName();
 
                 projectViewModel.Created = DateTime.UtcNow;
+                projectViewModel.ParticipantsCount = 0;
 
                 projectId = await _projectRepository.SaveAsync(projectViewModel);
             }
@@ -178,7 +179,8 @@ namespace CompetitionPlatform.Controllers
                 AuthorFullName = project.AuthorFullName,
                 ParticipantId = participantId,
                 IsParticipant = isParticipant,
-                IsFollowing = isFollowing
+                IsFollowing = isFollowing,
+                OtherProjects = await GetOtherProjects(project.Id)
             };
 
             if (!string.IsNullOrEmpty(project.Tags))
@@ -210,6 +212,30 @@ namespace CompetitionPlatform.Controllers
                 projectViewModel = PopulateResultsViewModel(projectViewModel);
 
             return projectViewModel;
+        }
+
+        private async Task<List<OtherProjectViewModel>> GetOtherProjects(string id)
+        {
+            var projects = await _projectRepository.GetProjectsAsync();
+
+            var filteredProjects = projects.OrderByDescending(p => p.ParticipantsCount).Take(5).ToList();
+
+            var otherProjects = new List<OtherProjectViewModel>();
+
+            foreach (var project in filteredProjects)
+            {
+                var otherProject = new OtherProjectViewModel
+                {
+                    Id = project.Id,
+                    Name = project.Name,
+                    BudgetFirstPlace = project.BudgetFirstPlace,
+                    Members = project.ParticipantsCount
+                };
+
+                otherProjects.Add(otherProject);
+            }
+
+            return otherProjects;
         }
 
         private ProjectViewModel PopulateResultsViewModel(ProjectViewModel model)
