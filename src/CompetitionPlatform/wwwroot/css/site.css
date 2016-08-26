@@ -541,3 +541,19 @@ textarea {
 .project-status-bar-deadline-icon {
     padding-bottom: 4px;
 }
+
+.other-projects-name {
+    font-size: 18px;
+    line-height: 1.67;
+    font-weight: 600;
+    color: #333333;
+}
+
+.other-projects-budget-participants {
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.other-project-budget:after {
+    content: " \B7 ";
+}
