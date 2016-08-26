@@ -140,6 +140,7 @@ namespace CompetitionPlatform.Controllers
             var commentsPartial = new ProjectCommentPartialViewModel
             {
                 ProjectId = project.Id,
+                UserId = project.AuthorId,
                 Comments = comments
             };
 

@@ -18,7 +18,14 @@
                          alt="@Model.FullName"
                          asp-append-version="true" />
                 </div>
-                <p class="project-comment-author bold-text inline">@comment.FullName</p> <small class="inline text-muted">@comment.LastModified.ToString("hh:mm tt MMMM dd, yyyy")</small>
+                <p class="project-comment-author bold-text inline">
+                    @comment.FullName
+                    @if (Model.UserId == comment.UserId)
+                    {
+                        <span class="label label-primary">CREATOR</span>
+                    }
+                </p>
+                <small class="inline text-muted">@comment.LastModified.ToString("hh:mm tt MMMM dd, yyyy")</small>
             </div>
             <div class="project-comment col-md-9">
                 <p class="project-comment-text">@comment.Comment</p>
