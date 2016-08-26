@@ -69,7 +69,7 @@ namespace CompetitionPlatform.Controllers
             {
                 ProjectId = id,
                 VoterUserId = user.Email,
-                ForAgainst = 1,
+                ForAgainst = 1
             };
 
             var vote = await _projectVoteRepository.GetAsync(id, user.Email);
@@ -189,7 +189,7 @@ namespace CompetitionPlatform.Controllers
                 await _projectRepository.UpdateAsync(project);
             }
 
-            return RedirectToAction("ProjectDetails", "Project", new { id = id });
+            return RedirectToAction("ProjectDetails", "Project", new { id });
         }
 
         public async Task<IActionResult> RemoveParticipant(string id)
@@ -209,7 +209,7 @@ namespace CompetitionPlatform.Controllers
                 await _projectRepository.UpdateAsync(project);
             }
 
-            return RedirectToAction("ProjectDetails", "Project", new { id = id });
+            return RedirectToAction("ProjectDetails", "Project", new { id });
         }
 
         public IActionResult AddResult(string id)
@@ -275,7 +275,7 @@ namespace CompetitionPlatform.Controllers
 
             await _projectFollowRepository.SaveAsync(user.Email, id);
 
-            return RedirectToAction("ProjectDetails", "Project", new { id = id });
+            return RedirectToAction("ProjectDetails", "Project", new { id });
         }
 
         public async Task<IActionResult> UnFollowProject(string id)
@@ -284,7 +284,7 @@ namespace CompetitionPlatform.Controllers
 
             await _projectFollowRepository.DeleteAsync(user.Email, id);
 
-            return RedirectToAction("ProjectDetails", "Project", new { id = id });
+            return RedirectToAction("ProjectDetails", "Project", new { id });
         }
 
         private async Task CalculateScores(int totalVotes, string projectId)
