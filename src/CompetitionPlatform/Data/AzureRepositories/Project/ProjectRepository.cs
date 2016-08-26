@@ -37,6 +37,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
         public DateTime LastModified { get; set; }
         public string AuthorId { get; set; }
         public string AuthorFullName { get; set; }
+        public int ParticipantsCount { get; set; }
 
         internal void Update(IProjectData src)
         {
@@ -44,7 +45,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
             Description = src.Description;
             Category = src.Category;
             Tags = src.Tags;
-            ProjectStatus = src.Status.ToString();
+            ProjectStatus = src.ProjectStatus;
             CompetitionRegistrationDeadline = src.CompetitionRegistrationDeadline;
             ImplementationDeadline = src.ImplementationDeadline;
             VotingDeadline = src.VotingDeadline;
@@ -53,6 +54,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
             VotesFor = src.VotesFor;
             VotesAgainst = src.VotesAgainst;
             LastModified = src.LastModified;
+            ParticipantsCount = src.ParticipantsCount;
         }
 
         public static ProjectEntity Create(IProjectData src)
@@ -74,7 +76,8 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
                 Created = src.Created,
                 LastModified = src.Created,
                 AuthorId = src.AuthorId,
-                AuthorFullName = src.AuthorFullName
+                AuthorFullName = src.AuthorFullName,
+                ParticipantsCount = src.ParticipantsCount
             };
 
             return result;
