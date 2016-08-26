@@ -181,6 +181,32 @@ namespace CompetitionPlatform.Controllers
                 };
 
                 await _projectParticipantsRepository.SaveAsync(viewModel);
+
+                var project = await _projectRepository.GetAsync(id);
+
+                project.ParticipantsCount += 1;
+
+                await _projectRepository.UpdateAsync(project);
+            }
+
+            return RedirectToAction("ProjectDetails", "Project", new { id = id });
+        }
+
+        public async Task<IActionResult> RemoveParticipant(string id)
+        {
+            var user = GetAuthenticatedUser();
+
+            var participant = await _projectParticipantsRepository.GetAsync(id, user.Email);
+
+            if (participant != null)
+            {
+                await _projectParticipantsRepository.DeleteAsync(id, user.Email);
+
+                var project = await _projectRepository.GetAsync(id);
+
+                project.ParticipantsCount -= 1;
+
+                await _projectRepository.UpdateAsync(project);
             }
 
             return RedirectToAction("ProjectDetails", "Project", new { id = id });
