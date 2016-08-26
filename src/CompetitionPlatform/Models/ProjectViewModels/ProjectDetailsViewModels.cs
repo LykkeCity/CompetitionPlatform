@@ -89,4 +89,12 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public DateTime VotingDeadline { get; set; }
         public int ParticipantsCount { get; set; }
     }
+
+    public class OtherProjectViewModel
+    {
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public int Members { get; set; }
+        public double BudgetFirstPlace { get; set; }
+    }
 }

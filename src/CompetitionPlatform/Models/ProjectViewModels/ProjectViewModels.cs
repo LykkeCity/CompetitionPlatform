@@ -72,6 +72,8 @@ namespace CompetitionPlatform.Models.ProjectViewModels
 
         public ProjectParticipantsPartialViewModel ParticipantsPartial { get; set; }
 
+        public int ParticipantsCount { get; set; }
+
         public ResultsPartialViewModel ResultsPartial { get; set; }
 
         public ProjectDetailsStatusBarViewModel StatusBarPartial { get; set; }
@@ -83,6 +85,8 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public string ParticipantId { get; set; }
 
         public bool IsFollowing { get; set; }
+
+        public List<OtherProjectViewModel> OtherProjects { get; set; }
     }
 
     public class ProjectCompactViewModel
