@@ -561,3 +561,8 @@ textarea {
 .other-project-budget:after {
     content: " \B7 ";
 }
+
+.project-comment-author:after {
+    content: " \B7 ";
+    color: #999999;
+}
