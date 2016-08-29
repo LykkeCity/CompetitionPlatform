@@ -27,7 +27,7 @@
 {
     <div>
         <p class="project-voting-text text-muted">To participate in the contest with the prize, you must be registered in the competition. Registration can be completed any time.</p>
-        <a asp-area="" asp-controller="ProjectDetails" asp-action="AddParticipant" asp-route-id="@Model.ProjectId" type="button" class="btn btn-primary project-details-status-button">
+        <a asp-area="" asp-controller="ProjectDetails" asp-action="AddParticipant" asp-route-id="@Model.ProjectId" type="button" class="btn btn-primary project-details-status-button col-md-12">
             <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Participate
         </a>
     </div>
@@ -40,7 +40,7 @@
 {
     <div>
         <p class="project-voting-text text-muted">The contest is finished You can help us determine the winners. Voting ends on @Model.VotingDeadline.ToString("MMMM d").</p>
-        <button id="voteTestButton" class="btn btn-primary project-details-status-button">
+        <button id="voteTestButton" class="btn btn-primary project-details-status-button col-md-12">
             <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> Vote/Test
         </button>
     </div>
