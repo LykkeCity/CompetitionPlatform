@@ -566,3 +566,11 @@ textarea {
     content: " \B7 ";
     color: #999999;
 }
+
+.project-details-sidebar-date {
+    font-size: 14px;
+}
+
+.project-details-sidebar-date:after {
+    content: " \B7 ";
+}

@@ -15,6 +15,31 @@
     </div>
 </div>
 
+@{
+    var createdDays = (DateTime.UtcNow - Model.Created).Days;
+    var modifiedDays = (DateTime.UtcNow - Model.LastModified).Days;
+    var createdDaysAgo = "";
+    var modifiedDaysAgo = "";
+
+    if (createdDays == 0 || createdDays == 1)
+    {
+        createdDaysAgo = (createdDays == 0) ? "today" : "yesterday";
+    }
+    else
+    {
+        createdDaysAgo = " " + createdDays + " days ago";
+    }
+
+    if (modifiedDays == 0 || modifiedDays == 1)
+    {
+        modifiedDaysAgo = (modifiedDays == 0) ? "today" : "yesterday";
+    }
+    else
+    {
+        modifiedDaysAgo = " " + modifiedDays + " days ago";
+    }
+}
+
 <div class="container">
     <div class="row">
         <div class="col-md-9">
@@ -152,15 +177,21 @@
             </div>
 
             <div>
-                <p>
+                <p class="project-details-sidebar-date inline">
                     <span class="text-muted">Created</span> @Model.Created.ToString("MMMM dd, yyyy")
                 </p>
+                <div class="inline">
+                    @createdDaysAgo
+                </div>
             </div>
 
             <div>
-                <p>
+                <p class="project-details-sidebar-date inline">
                     <span class="text-muted">Updated</span> @Model.LastModified.ToString("MMMM dd, yyyy")
                 </p>
+                <div class="inline">
+                    @modifiedDaysAgo
+                </div>
             </div>
 
             <div class="project-details-tags">
