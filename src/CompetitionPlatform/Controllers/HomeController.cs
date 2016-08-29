@@ -17,19 +17,19 @@ namespace CompetitionPlatform.Controllers
     public class HomeController : Controller
     {
         private readonly IProjectRepository _projectRepository;
-        private readonly IProjectCommentsRepository _projectCommentsRepository;
-        private readonly IProjectCategoriesRepository _projectCategoriesRepository;
-        private readonly IProjectParticipantsRepository _projectParticipantsRepository;
+        private readonly IProjectCommentsRepository _commentsRepository;
+        private readonly IProjectCategoriesRepository _categoriesRepository;
+        private readonly IProjectParticipantsRepository _participantsRepository;
         private readonly IProjectFollowRepository _projectFollowRepository;
 
-        public HomeController(IProjectRepository projectRepository, IProjectCommentsRepository projectCommentsRepository,
-            IProjectCategoriesRepository projectCategoriesRepository, IProjectParticipantsRepository projectParticipantsRepository,
+        public HomeController(IProjectRepository projectRepository, IProjectCommentsRepository commentsRepository,
+            IProjectCategoriesRepository categoriesRepository, IProjectParticipantsRepository participantsRepository,
             IProjectFollowRepository projectFollowRepository)
         {
             _projectRepository = projectRepository;
-            _projectCommentsRepository = projectCommentsRepository;
-            _projectCategoriesRepository = projectCategoriesRepository;
-            _projectParticipantsRepository = projectParticipantsRepository;
+            _commentsRepository = commentsRepository;
+            _categoriesRepository = categoriesRepository;
+            _participantsRepository = participantsRepository;
             _projectFollowRepository = projectFollowRepository;
         }
 
@@ -50,7 +50,7 @@ namespace CompetitionPlatform.Controllers
         {
             var projects = await _projectRepository.GetProjectsAsync();
 
-            var projectCategories = _projectCategoriesRepository.GetCategories();
+            var projectCategories = _categoriesRepository.GetCategories();
 
             if (!string.IsNullOrEmpty(projectStatusFilter))
                 projects = projects.Where(x => x.ProjectStatus == projectStatusFilter);
@@ -78,8 +78,8 @@ namespace CompetitionPlatform.Controllers
 
             foreach (var project in projects)
             {
-                var projectCommentsCount = await _projectCommentsRepository.GetProjectCommentsCountAsync(project.Id);
-                var participantsCount = await _projectParticipantsRepository.GetProjectParticipantsCountAsync(project.Id);
+                var projectCommentsCount = await _commentsRepository.GetProjectCommentsCountAsync(project.Id);
+                var participantsCount = await _participantsRepository.GetProjectParticipantsCountAsync(project.Id);
 
                 var compactModel = new ProjectCompactViewModel
                 {
@@ -115,7 +115,7 @@ namespace CompetitionPlatform.Controllers
 
         public async Task<IActionResult> FilterFollowingProjects()
         {
-            var projectCategories = _projectCategoriesRepository.GetCategories();
+            var projectCategories = _categoriesRepository.GetCategories();
 
             var user = GetAuthenticatedUser();
 

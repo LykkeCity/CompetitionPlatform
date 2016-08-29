@@ -14,30 +14,30 @@ namespace CompetitionPlatform.Controllers
 {
     public class ProjectDetailsController : Controller
     {
-        private readonly IProjectCommentsRepository _projectCommentsRepository;
-        private readonly IProjectFileRepository _projectFileRepository;
-        private readonly IProjectFileInfoRepository _projectFileInfoRepository;
-        private readonly IProjectVoteRepository _projectVoteRepository;
+        private readonly IProjectCommentsRepository _commentsRepository;
+        private readonly IProjectFileRepository _fileRepository;
+        private readonly IProjectFileInfoRepository _fileInfoRepository;
+        private readonly IProjectVoteRepository _voteRepository;
         private readonly IProjectRepository _projectRepository;
-        private readonly IProjectParticipantsRepository _projectParticipantsRepository;
-        private readonly IProjectResultRepository _projectResultRepository;
-        private readonly IProjectResultVoteRepository _projectResultVoteRepository;
+        private readonly IProjectParticipantsRepository _participantsRepository;
+        private readonly IProjectResultRepository _resultRepository;
+        private readonly IProjectResultVoteRepository _resultVoteRepository;
         private readonly IProjectFollowRepository _projectFollowRepository;
 
-        public ProjectDetailsController(IProjectCommentsRepository projectCommentsRepository, IProjectFileRepository projectFileRepository,
-            IProjectFileInfoRepository projectFileInfoRepository, IProjectVoteRepository projectVoteRepository,
-            IProjectRepository projectRepository, IProjectParticipantsRepository projectParticipantsRepository,
-            IProjectResultRepository projectResultRepository, IProjectResultVoteRepository projectResultVoteRepository,
+        public ProjectDetailsController(IProjectCommentsRepository commentsRepository, IProjectFileRepository fileRepository,
+            IProjectFileInfoRepository fileInfoRepository, IProjectVoteRepository voteRepository,
+            IProjectRepository projectRepository, IProjectParticipantsRepository participantsRepository,
+            IProjectResultRepository resultRepository, IProjectResultVoteRepository resultVoteRepository,
             IProjectFollowRepository projectFollowRepository)
         {
-            _projectCommentsRepository = projectCommentsRepository;
-            _projectFileRepository = projectFileRepository;
-            _projectFileInfoRepository = projectFileInfoRepository;
-            _projectVoteRepository = projectVoteRepository;
+            _commentsRepository = commentsRepository;
+            _fileRepository = fileRepository;
+            _fileInfoRepository = fileInfoRepository;
+            _voteRepository = voteRepository;
             _projectRepository = projectRepository;
-            _projectParticipantsRepository = projectParticipantsRepository;
-            _projectResultRepository = projectResultRepository;
-            _projectResultVoteRepository = projectResultVoteRepository;
+            _participantsRepository = participantsRepository;
+            _resultRepository = resultRepository;
+            _resultVoteRepository = resultVoteRepository;
             _projectFollowRepository = projectFollowRepository;
         }
 
@@ -49,15 +49,15 @@ namespace CompetitionPlatform.Controllers
             model.Created = DateTime.UtcNow;
             model.LastModified = model.Created;
 
-            await _projectCommentsRepository.SaveAsync(model);
+            await _commentsRepository.SaveAsync(model);
             return RedirectToAction("ProjectDetails", "Project", new { id = model.ProjectId });
         }
 
         public async Task<IActionResult> DownloadProjectFile(string id)
         {
-            var fileInfo = await _projectFileInfoRepository.GetAsync(id);
+            var fileInfo = await _fileInfoRepository.GetAsync(id);
 
-            var fileStream = await _projectFileRepository.GetProjectFile(id);
+            var fileStream = await _fileRepository.GetProjectFile(id);
             return File(fileStream, fileInfo.ContentType, fileInfo.FileName);
         }
 
@@ -72,11 +72,11 @@ namespace CompetitionPlatform.Controllers
                 ForAgainst = 1
             };
 
-            var vote = await _projectVoteRepository.GetAsync(id, user.Email);
+            var vote = await _voteRepository.GetAsync(id, user.Email);
 
             if (vote == null)
             {
-                await _projectVoteRepository.SaveAsync(result);
+                await _voteRepository.SaveAsync(result);
 
                 var project = await _projectRepository.GetAsync(id);
 
@@ -86,7 +86,7 @@ namespace CompetitionPlatform.Controllers
             }
             else
             {
-                await _projectVoteRepository.UpdateAsync(result);
+                await _voteRepository.UpdateAsync(result);
                 if (vote.ForAgainst == -1)
                 {
                     var project = await _projectRepository.GetAsync(id);
@@ -110,11 +110,11 @@ namespace CompetitionPlatform.Controllers
                 ForAgainst = -1
             };
 
-            var vote = await _projectVoteRepository.GetAsync(id, user.Email);
+            var vote = await _voteRepository.GetAsync(id, user.Email);
 
             if (vote == null)
             {
-                await _projectVoteRepository.SaveAsync(result);
+                await _voteRepository.SaveAsync(result);
 
                 var project = await _projectRepository.GetAsync(id);
 
@@ -124,7 +124,7 @@ namespace CompetitionPlatform.Controllers
             }
             else
             {
-                await _projectVoteRepository.UpdateAsync(result);
+                await _voteRepository.UpdateAsync(result);
                 if (vote.ForAgainst == 1)
                 {
                     var project = await _projectRepository.GetAsync(id);
@@ -167,7 +167,7 @@ namespace CompetitionPlatform.Controllers
         {
             var user = GetAuthenticatedUser();
 
-            var participant = await _projectParticipantsRepository.GetAsync(id, user.Email);
+            var participant = await _participantsRepository.GetAsync(id, user.Email);
 
             if (participant == null)
             {
@@ -180,7 +180,7 @@ namespace CompetitionPlatform.Controllers
                     Result = false
                 };
 
-                await _projectParticipantsRepository.SaveAsync(viewModel);
+                await _participantsRepository.SaveAsync(viewModel);
 
                 var project = await _projectRepository.GetAsync(id);
 
@@ -196,11 +196,11 @@ namespace CompetitionPlatform.Controllers
         {
             var user = GetAuthenticatedUser();
 
-            var participant = await _projectParticipantsRepository.GetAsync(id, user.Email);
+            var participant = await _participantsRepository.GetAsync(id, user.Email);
 
             if (participant != null)
             {
-                await _projectParticipantsRepository.DeleteAsync(id, user.Email);
+                await _participantsRepository.DeleteAsync(id, user.Email);
 
                 var project = await _projectRepository.GetAsync(id);
 
@@ -224,9 +224,9 @@ namespace CompetitionPlatform.Controllers
 
         public async Task<IActionResult> SaveResult(AddResultViewModel model)
         {
-            var participant = await _projectParticipantsRepository.GetAsync(model.ProjectId, model.ParticipantId);
+            var participant = await _participantsRepository.GetAsync(model.ProjectId, model.ParticipantId);
 
-            var result = await _projectResultRepository.GetAsync(model.ProjectId, model.ParticipantId);
+            var result = await _resultRepository.GetAsync(model.ProjectId, model.ParticipantId);
 
             model.ParticipantFullName = participant.FullName;
             model.Score = 0;
@@ -234,11 +234,11 @@ namespace CompetitionPlatform.Controllers
 
             if (result == null)
             {
-                await _projectResultRepository.SaveAsync(model);
+                await _resultRepository.SaveAsync(model);
 
                 participant.Result = true;
 
-                await _projectParticipantsRepository.UpdateAsync(participant);
+                await _participantsRepository.UpdateAsync(participant);
             }
 
             return RedirectToAction("ProjectDetails", "Project", new { id = model.ProjectId });
@@ -248,21 +248,21 @@ namespace CompetitionPlatform.Controllers
         {
             var voterId = GetAuthenticatedUser().Email;
 
-            var vote = await _projectResultVoteRepository.GetAsync(model.ProjectId, model.ParticipantId, voterId);
+            var vote = await _resultVoteRepository.GetAsync(model.ProjectId, model.ParticipantId, voterId);
 
             if (vote == null)
             {
                 model.VoterUserId = voterId;
 
-                await _projectResultVoteRepository.SaveAsync(model);
-                var votes = await _projectResultVoteRepository.GetProjectResultVotesAsync(model.ProjectId);
+                await _resultVoteRepository.SaveAsync(model);
+                var votes = await _resultVoteRepository.GetProjectResultVotesAsync(model.ProjectId);
 
                 var totalVotes = votes.Count();
-                var result = await _projectResultRepository.GetAsync(model.ProjectId, model.ParticipantId);
+                var result = await _resultRepository.GetAsync(model.ProjectId, model.ParticipantId);
 
                 result.Votes += 1;
 
-                await _projectResultRepository.UpdateAsync(result);
+                await _resultRepository.UpdateAsync(result);
                 await CalculateScores(totalVotes, model.ProjectId);
             }
 
@@ -289,12 +289,12 @@ namespace CompetitionPlatform.Controllers
 
         private async Task CalculateScores(int totalVotes, string projectId)
         {
-            var results = await _projectResultRepository.GetResultsAsync(projectId);
+            var results = await _resultRepository.GetResultsAsync(projectId);
 
             foreach (var result in results)
             {
                 result.Score = result.Votes * 100 / totalVotes;
-                await _projectResultRepository.UpdateAsync(result);
+                await _resultRepository.UpdateAsync(result);
             }
         }
 

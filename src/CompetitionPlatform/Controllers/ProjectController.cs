@@ -19,32 +19,32 @@ namespace CompetitionPlatform.Controllers
     public class ProjectController : Controller
     {
         private readonly IProjectRepository _projectRepository;
-        private readonly IProjectCommentsRepository _projectCommentsRepository;
-        private readonly IProjectFileRepository _projectFileRepository;
-        private readonly IProjectFileInfoRepository _projectFileInfoRepository;
-        private readonly IProjectParticipantsRepository _projectParticipantsRepository;
-        private readonly IProjectCategoriesRepository _projectCategoriesRepository;
-        private readonly IProjectResultRepository _projectResultRepository;
+        private readonly IProjectCommentsRepository _commentsRepository;
+        private readonly IProjectFileRepository _fileRepository;
+        private readonly IProjectFileInfoRepository _fileInfoRepository;
+        private readonly IProjectParticipantsRepository _participantsRepository;
+        private readonly IProjectCategoriesRepository _categoriesRepository;
+        private readonly IProjectResultRepository _resultRepository;
         private readonly IProjectFollowRepository _projectFollowRepository;
 
-        public ProjectController(IProjectRepository projectRepository, IProjectCommentsRepository projectCommentsRepository,
-            IProjectFileRepository projectFileRepository, IProjectFileInfoRepository projectFileInfoRepository,
-            IProjectParticipantsRepository projectParticipantsRepository, IProjectCategoriesRepository projectCategoriesRepository,
-            IProjectResultRepository projectResultRepository, IProjectFollowRepository projectFollowRepository)
+        public ProjectController(IProjectRepository projectRepository, IProjectCommentsRepository commentsRepository,
+            IProjectFileRepository fileRepository, IProjectFileInfoRepository fileInfoRepository,
+            IProjectParticipantsRepository participantsRepository, IProjectCategoriesRepository categoriesRepository,
+            IProjectResultRepository resultRepository, IProjectFollowRepository projectFollowRepository)
         {
             _projectRepository = projectRepository;
-            _projectCommentsRepository = projectCommentsRepository;
-            _projectFileRepository = projectFileRepository;
-            _projectFileInfoRepository = projectFileInfoRepository;
-            _projectParticipantsRepository = projectParticipantsRepository;
-            _projectCategoriesRepository = projectCategoriesRepository;
-            _projectResultRepository = projectResultRepository;
+            _commentsRepository = commentsRepository;
+            _fileRepository = fileRepository;
+            _fileInfoRepository = fileInfoRepository;
+            _participantsRepository = participantsRepository;
+            _categoriesRepository = categoriesRepository;
+            _resultRepository = resultRepository;
             _projectFollowRepository = projectFollowRepository;
         }
 
         public IActionResult Create()
         {
-            ViewBag.ProjectCategories = _projectCategoriesRepository.GetCategories();
+            ViewBag.ProjectCategories = _categoriesRepository.GetCategories();
             return View("CreateProject");
         }
 
@@ -97,21 +97,21 @@ namespace CompetitionPlatform.Controllers
 
         private async Task<ProjectViewModel> GetProjectViewModel(string id)
         {
-            var projectCategories = _projectCategoriesRepository.GetCategories();
+            var projectCategories = _categoriesRepository.GetCategories();
 
             var project = await _projectRepository.GetAsync(id);
 
             project.Status = (Status)Enum.Parse(typeof(Status), project.ProjectStatus, true);
 
-            var comments = await _projectCommentsRepository.GetProjectCommentsAsync(id);
+            var comments = await _commentsRepository.GetProjectCommentsAsync(id);
 
-            var participants = await _projectParticipantsRepository.GetProjectParticipantsAsync(id);
+            var participants = await _participantsRepository.GetProjectParticipantsAsync(id);
 
-            var results = await _projectResultRepository.GetResultsAsync(id);
+            var results = await _resultRepository.GetResultsAsync(id);
 
             var user = GetAuthenticatedUser();
 
-            var participant = await _projectParticipantsRepository.GetAsync(id, user.Email);
+            var participant = await _participantsRepository.GetAsync(id, user.Email);
 
             var participantId = "";
             var isParticipant = false;
@@ -196,7 +196,7 @@ namespace CompetitionPlatform.Controllers
                 projectViewModel.Tags = builder.ToString();
             }
 
-            var fileInfo = await _projectFileInfoRepository.GetAsync(id);
+            var fileInfo = await _fileInfoRepository.GetAsync(id);
 
             if (fileInfo != null)
             {
@@ -293,7 +293,7 @@ namespace CompetitionPlatform.Controllers
         {
             if (file != null)
             {
-                await _projectFileRepository.InsertProjectFile(file.OpenReadStream(), projectId);
+                await _fileRepository.InsertProjectFile(file.OpenReadStream(), projectId);
 
                 var fileInfo = new ProjectFileInfoEntity
                 {
@@ -302,7 +302,7 @@ namespace CompetitionPlatform.Controllers
                     FileName = file.FileName
                 };
 
-                await _projectFileInfoRepository.SaveAsync(fileInfo);
+                await _fileInfoRepository.SaveAsync(fileInfo);
             }
         }
 
