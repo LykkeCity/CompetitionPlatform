@@ -47,6 +47,11 @@ namespace CompetitionPlatform.Data.AzureRepositories.Users
     {
         private readonly IAzureTableStorage<WinnerEntity> _winnersStorage;
 
+        public ProjectWinnersRepository(IAzureTableStorage<WinnerEntity> winnersStorage)
+        {
+            _winnersStorage = winnersStorage;
+        }
+
         public async Task<IWinnerData> GetAsync(string projectId, string userId)
         {
             var partitionKey = WinnerEntity.GeneratePartitionKey(projectId);
