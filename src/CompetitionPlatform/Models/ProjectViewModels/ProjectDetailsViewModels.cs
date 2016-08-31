@@ -67,7 +67,6 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public double BudgetFirstPlace { get; set; }
         public double? BudgetSecondPlace { get; set; }
         public int ParticipantCount { get; set; }
-        public int WinnersCount { get; set; }
         public int DaysOfContest { get; set; }
         public IEnumerable<IWinnerData> Winners { get; set; }
     }

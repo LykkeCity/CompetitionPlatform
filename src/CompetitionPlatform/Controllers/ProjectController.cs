@@ -303,7 +303,6 @@ namespace CompetitionPlatform.Controllers
             model.ResultsPartial.BudgetSecondPlace = model.BudgetSecondPlace;
             model.ResultsPartial.ParticipantCount = model.ParticipantsPartial.Participants.Count();
             model.ResultsPartial.DaysOfContest = (DateTime.UtcNow - model.Created).Days;
-            model.ResultsPartial.WinnersCount = 0;
 
             var winnersList = await _winnersRepository.GetWinnersAsync(model.Id);
 
