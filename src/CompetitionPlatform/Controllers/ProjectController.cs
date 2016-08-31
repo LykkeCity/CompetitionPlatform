@@ -109,23 +109,21 @@ namespace CompetitionPlatform.Controllers
 
             var firstPlaceResult = resultDatas.FirstOrDefault();
 
-            if (project.BudgetSecondPlace == null)
+            var furstPlaceWinner = new WinnerViewModel
             {
-                var winner = new WinnerViewModel
-                {
-                    ProjectId = firstPlaceResult.ProjectId,
-                    WinnerId = firstPlaceResult.ParticipantId,
-                    FullName = firstPlaceResult.ParticipantFullName,
-                    Result = firstPlaceResult.Link,
-                    Votes = firstPlaceResult.Votes,
-                    Score = firstPlaceResult.Score,
-                    Place = 1,
-                    Budget = project.BudgetFirstPlace
-                };
+                ProjectId = firstPlaceResult.ProjectId,
+                WinnerId = firstPlaceResult.ParticipantId,
+                FullName = firstPlaceResult.ParticipantFullName,
+                Result = firstPlaceResult.Link,
+                Votes = firstPlaceResult.Votes,
+                Score = firstPlaceResult.Score,
+                Place = 1,
+                Budget = project.BudgetFirstPlace
+            };
 
-                await _winnersRepository.SaveAsync(winner);
-            }
-            else
+            await _winnersRepository.SaveAsync(furstPlaceWinner);
+
+            if (project.BudgetSecondPlace != null)
             {
                 var secondPlaceResults = resultDatas.Take(3).Skip(1);
 
@@ -139,11 +137,12 @@ namespace CompetitionPlatform.Controllers
                         Result = result.Link,
                         Votes = result.Votes,
                         Score = result.Score,
-                        Place = 2, 
+                        Place = 2,
                         Budget = project.BudgetSecondPlace
                     };
 
                     await _winnersRepository.SaveAsync(winner);
+
                 }
             }
         }
