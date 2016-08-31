@@ -573,3 +573,7 @@ textarea {
 .project-details-sidebar-date:after {
     content: " \B7 ";
 }
+
+.result-winners-score:after {
+    content: " \B7 ";
+}

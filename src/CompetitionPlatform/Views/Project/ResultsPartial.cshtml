@@ -117,8 +117,11 @@
                         <div class="results-winners-name">
                             @winner.FullName
                         </div>
-                        <div class="results-winners-scores text-muted">
-                            Score: @winner.Score/100 - @winner.Votes Votes
+                        <div class="text-muted">
+                            <div class="result-winners-score inline">
+                                Score: @winner.Score/100
+                            </div>
+                            @winner.Votes Votes
                         </div>
                     </td>
                     <td>
