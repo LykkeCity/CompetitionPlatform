@@ -106,5 +106,6 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public string Result { get; set; }
         public int Votes { get; set; }
         public int Score { get; set; }
+        public double? Budget { get; set; }
     }
 }

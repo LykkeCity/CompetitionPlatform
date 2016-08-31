@@ -119,7 +119,8 @@ namespace CompetitionPlatform.Controllers
                     Result = firstPlaceResult.Link,
                     Votes = firstPlaceResult.Votes,
                     Score = firstPlaceResult.Score,
-                    Place = 1
+                    Place = 1,
+                    Budget = project.BudgetFirstPlace
                 };
 
                 await _winnersRepository.SaveAsync(winner);
@@ -138,7 +139,8 @@ namespace CompetitionPlatform.Controllers
                         Result = result.Link,
                         Votes = result.Votes,
                         Score = result.Score,
-                        Place = 2
+                        Place = 2, 
+                        Budget = project.BudgetSecondPlace
                     };
 
                     await _winnersRepository.SaveAsync(winner);
