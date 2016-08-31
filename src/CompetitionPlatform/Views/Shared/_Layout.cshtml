@@ -122,24 +122,31 @@
                             </div>
                         </div>
                         @*<ul class="social social--header visible-xs visible-sm">
-                            <li><a href="https://www.facebook.com/groups/542506412568917/" target="_blank" class="social__item"><i class="icon_img icon_img--fb"></i></a></li>
-                            <li><a href="https://twitter.com/LykkeCity" target="_blank" class="social__item"><i class="icon_img icon_img--tw"></i></a></li>
-                            <li><a href="http://instagram.com/lykkecity" target="_blank" class="social__item"><i class="icon_img icon_img--inst"></i></a></li>
-                            <li><a href="https://www.youtube.com/channel/UCmMYipGdKMF0kzfaE-PXsNQ" target="_blank" class="social__item"><i class="icon_img icon_img--yt"></i></a></li>
-                        </ul>*@
+                                <li><a href="https://www.facebook.com/groups/542506412568917/" target="_blank" class="social__item"><i class="icon_img icon_img--fb"></i></a></li>
+                                <li><a href="https://twitter.com/LykkeCity" target="_blank" class="social__item"><i class="icon_img icon_img--tw"></i></a></li>
+                                <li><a href="http://instagram.com/lykkecity" target="_blank" class="social__item"><i class="icon_img icon_img--inst"></i></a></li>
+                                <li><a href="https://www.youtube.com/channel/UCmMYipGdKMF0kzfaE-PXsNQ" target="_blank" class="social__item"><i class="icon_img icon_img--yt"></i></a></li>
+                            </ul>*@
                     </div>
                 </div>
-                <div class="col-md-3 hidden-xs hidden-sm">
-                    <a class="h4 navbar-right">
-                        @if (User.Identity.IsAuthenticated)
-                        {
-                            <span>@ClaimsHelper.GetUser(User.Identity).GetFullName()</span>
-                        }
-                    </a>
-                </div>
-                @*<div class="col-sm-3 hidden-xs hidden-sm">
-                        <a href="https://wiki.lykkex.com/start?do=login" class="btn btn-link pull-right">Sign In</a>
-                    </div>*@
+                @if (ClaimsHelper.GetUser(User.Identity).Email == null)
+                {
+                    <div class="col-sm-3 hidden-xs hidden-sm">
+                        @*<a href="https://wiki.lykkex.com/start?do=login" class="btn btn-link pull-right">Sign In</a>*@
+                        <a asp-area="" asp-controller="Home" asp-action="SignIn" class="btn btn-link pull-right">Sign In</a>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-md-3 hidden-xs hidden-sm">
+                        <a class="h4 navbar-right">
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <span>@ClaimsHelper.GetUser(User.Identity).GetFullName()</span>
+                            }
+                        </a>
+                    </div>
+                }
             </div>
         </div>
     </header>

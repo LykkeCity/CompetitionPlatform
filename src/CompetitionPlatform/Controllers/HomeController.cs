@@ -33,7 +33,6 @@ namespace CompetitionPlatform.Controllers
             _projectFollowRepository = projectFollowRepository;
         }
 
-        [Authorize]
         public async Task<IActionResult> Index()
         {
             var viewModel = await GetProjectListViewModel();
@@ -105,6 +104,8 @@ namespace CompetitionPlatform.Controllers
 
             return compactModels;
         }
+
+        [Authorize]
         public async Task<IActionResult> FilterMyProjects()
         {
             var user = GetAuthenticatedUser();
@@ -113,6 +114,7 @@ namespace CompetitionPlatform.Controllers
             return View("~/Views/Home/Index.cshtml", viewModel);
         }
 
+        [Authorize]
         public async Task<IActionResult> FilterFollowingProjects()
         {
             var projectCategories = _categoriesRepository.GetCategories();
@@ -135,6 +137,12 @@ namespace CompetitionPlatform.Controllers
             };
 
             return View("~/Views/Home/Index.cshtml", viewModel);
+        }
+
+        [Authorize]
+        public IActionResult SignIn()
+        {
+            return RedirectToAction("Index", "Home");
         }
 
         public IActionResult About()
