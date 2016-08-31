@@ -169,7 +169,7 @@ namespace CompetitionPlatform.Controllers
 
             var user = GetAuthenticatedUser();
 
-            var participant = await _participantsRepository.GetAsync(id, user.Email);
+            var participant = (user.Email == null) ? null : await _participantsRepository.GetAsync(id, user.Email);
 
             var participantId = "";
             var isParticipant = false;
@@ -180,7 +180,7 @@ namespace CompetitionPlatform.Controllers
                 isParticipant = true;
             }
 
-            var projectFollowing = await _projectFollowRepository.GetAsync(user.Email, id);
+            var projectFollowing = (user.Email == null) ? null : await _projectFollowRepository.GetAsync(user.Email, id);
             var isFollowing = projectFollowing != null;
 
             comments = comments.OrderBy(c => c.Created).Reverse().ToList();
