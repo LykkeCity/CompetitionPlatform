@@ -98,52 +98,24 @@
 
     <table class="table">
         <tbody>
-            <tr>
-                <td>
-                    <div class="results-winners-place">
-                        1st
-                    </div>
-                </td>
-                <td>
-                    <div>
-                        <img src="~/images/avatar.svg"
-                             alt="@Model.FirstPlaceWinner.ParticipantFullName"
-                             asp-append-version="true" />
-                    </div>
-                </td>
-                <td>
-                    <div class="results-winners-name bold-text">
-                        @Model.FirstPlaceWinner.ParticipantFullName
-                    </div>
-                    <div class="results-winners-scores text-muted">
-                        Score: @Model.FirstPlaceWinner.Score/100 - @Model.FirstPlaceWinner.Votes Votes
-                    </div>
-                </td>
-                <td>
-                    <div class="results-winners-count-text text-muted">
-                        $ @Model.BudgetFirstPlace
-                    </div>
-                </td>
-            </tr>
-
-            @foreach (var winner in Model.SecondPlaceWinners)
+            @foreach (var winner in Model.Winners)
             {
                 <tr>
                     <td>
                         <div class="results-winners-place">
-                            2nd
+                            @winner.Place
                         </div>
                     </td>
                     <td>
                         <div>
                             <img src="~/images/avatar.svg"
-                                 alt="@winner.ParticipantFullName"
+                                 alt="@winner.FullName"
                                  asp-append-version="true" />
                         </div>
                     </td>
                     <td>
                         <div class="results-winners-name">
-                            @winner.ParticipantFullName
+                            @winner.FullName
                         </div>
                         <div class="results-winners-scores text-muted">
                             Score: @winner.Score/100 - @winner.Votes Votes

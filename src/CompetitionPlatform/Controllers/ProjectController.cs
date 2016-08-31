@@ -26,11 +26,13 @@ namespace CompetitionPlatform.Controllers
         private readonly IProjectCategoriesRepository _categoriesRepository;
         private readonly IProjectResultRepository _resultRepository;
         private readonly IProjectFollowRepository _projectFollowRepository;
+        private readonly IProjectWinnersRepository _winnersRepository;
 
         public ProjectController(IProjectRepository projectRepository, IProjectCommentsRepository commentsRepository,
             IProjectFileRepository fileRepository, IProjectFileInfoRepository fileInfoRepository,
             IProjectParticipantsRepository participantsRepository, IProjectCategoriesRepository categoriesRepository,
-            IProjectResultRepository resultRepository, IProjectFollowRepository projectFollowRepository)
+            IProjectResultRepository resultRepository, IProjectFollowRepository projectFollowRepository,
+            IProjectWinnersRepository winnersRepository)
         {
             _projectRepository = projectRepository;
             _commentsRepository = commentsRepository;
@@ -40,6 +42,7 @@ namespace CompetitionPlatform.Controllers
             _categoriesRepository = categoriesRepository;
             _resultRepository = resultRepository;
             _projectFollowRepository = projectFollowRepository;
+            _winnersRepository = winnersRepository;
         }
 
         public IActionResult Create()
@@ -82,11 +85,65 @@ namespace CompetitionPlatform.Controllers
                 projectId = projectViewModel.Id;
 
                 await _projectRepository.UpdateAsync(projectViewModel);
+
+                if (projectViewModel.Status == Status.Archive)
+                {
+                    await SaveWinners(projectViewModel.Id);
+                }
             }
 
             await SaveProjectFile(projectViewModel.File, projectId);
 
             return RedirectToAction("Index", "Home");
+        }
+
+        private async Task SaveWinners(string projectId)
+        {
+            var project = await _projectRepository.GetAsync(projectId);
+
+            var results = await _resultRepository.GetResultsAsync(projectId);
+
+            results = results.OrderByDescending(x => x.Votes).ThenByDescending(x => x.Score);
+
+            var resultDatas = results as IList<IProjectResultData> ?? results.ToList();
+
+            var firstPlaceResult = resultDatas.FirstOrDefault();
+
+            if (project.BudgetSecondPlace == null)
+            {
+                var winner = new WinnerViewModel
+                {
+                    ProjectId = firstPlaceResult.ProjectId,
+                    WinnerId = firstPlaceResult.ParticipantId,
+                    FullName = firstPlaceResult.ParticipantFullName,
+                    Result = firstPlaceResult.Link,
+                    Votes = firstPlaceResult.Votes,
+                    Score = firstPlaceResult.Score,
+                    Place = 1
+                };
+
+                await _winnersRepository.SaveAsync(winner);
+            }
+            else
+            {
+                var secondPlaceResults = resultDatas.Take(3).Skip(1);
+
+                foreach (var result in secondPlaceResults)
+                {
+                    var winner = new WinnerViewModel
+                    {
+                        ProjectId = result.ProjectId,
+                        WinnerId = result.ParticipantId,
+                        FullName = result.ParticipantFullName,
+                        Result = result.Link,
+                        Votes = result.Votes,
+                        Score = result.Score,
+                        Place = 2
+                    };
+
+                    await _winnersRepository.SaveAsync(winner);
+                }
+            }
         }
 
         public async Task<IActionResult> ProjectDetails(string id)
@@ -210,7 +267,7 @@ namespace CompetitionPlatform.Controllers
             }
 
             if (projectViewModel.Status == Status.Archive)
-                projectViewModel = PopulateResultsViewModel(projectViewModel);
+                projectViewModel = await PopulateResultsViewModel(projectViewModel);
 
             return projectViewModel;
         }
@@ -239,7 +296,7 @@ namespace CompetitionPlatform.Controllers
             return otherProjects;
         }
 
-        private ProjectViewModel PopulateResultsViewModel(ProjectViewModel model)
+        private async Task<ProjectViewModel> PopulateResultsViewModel(ProjectViewModel model)
         {
             model.ResultsPartial.BudgetFirstPlace = model.BudgetFirstPlace;
             model.ResultsPartial.BudgetSecondPlace = model.BudgetSecondPlace;
@@ -247,30 +304,9 @@ namespace CompetitionPlatform.Controllers
             model.ResultsPartial.DaysOfContest = (DateTime.UtcNow - model.Created).Days;
             model.ResultsPartial.WinnersCount = 0;
 
-            var firstPlacewinner = model.ResultsPartial.Results.OrderByDescending(x => x.Votes).FirstOrDefault();
-            var secondPlacewinners = model.ResultsPartial.Results.OrderByDescending(x => x.Votes).Take(3).Skip(1);
+            var winnersList = await _winnersRepository.GetWinnersAsync(model.Id);
 
-            if (firstPlacewinner.Votes > 0)
-            {
-                model.ResultsPartial.FirstPlaceWinner = firstPlacewinner;
-                model.ResultsPartial.WinnersCount += 1;
-            }
-
-            var winnersList = new List<IProjectResultData>();
-
-            if (model.BudgetSecondPlace != null)
-            {
-                foreach (var winner in secondPlacewinners)
-                {
-                    if (winner.Votes > 0)
-                    {
-                        winnersList.Add(winner);
-                        model.ResultsPartial.WinnersCount += 1;
-                    }
-                }
-            }
-
-            model.ResultsPartial.SecondPlaceWinners = winnersList;
+            model.ResultsPartial.Winners = winnersList;
 
             return model;
         }
