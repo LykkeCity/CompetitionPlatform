@@ -69,8 +69,7 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public int ParticipantCount { get; set; }
         public int WinnersCount { get; set; }
         public int DaysOfContest { get; set; }
-        public IProjectResultData FirstPlaceWinner { get; set; }
-        public IEnumerable<IProjectResultData> SecondPlaceWinners { get; set; }
+        public IEnumerable<IWinnerData> Winners { get; set; }
     }
 
     public class ResultVoteViewModel : IProjectResultVoteData
@@ -96,5 +95,16 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public string Name { get; set; }
         public int Members { get; set; }
         public double BudgetFirstPlace { get; set; }
+    }
+
+    public class WinnerViewModel : IWinnerData
+    {
+        public string ProjectId { get; set; }
+        public string WinnerId { get; set; }
+        public string FullName { get; set; }
+        public int Place { get; set; }
+        public string Result { get; set; }
+        public int Votes { get; set; }
+        public int Score { get; set; }
     }
 }
