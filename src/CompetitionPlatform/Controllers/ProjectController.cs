@@ -367,7 +367,7 @@ namespace CompetitionPlatform.Controllers
                     completion = 100;
                     break;
             }
-            return completion;
+            return (completion < 0) ? 0 : completion;
         }
 
         private int CalculateDateProgressPercent(DateTime start, DateTime end)
