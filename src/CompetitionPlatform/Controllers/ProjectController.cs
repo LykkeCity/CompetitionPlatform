@@ -306,6 +306,8 @@ namespace CompetitionPlatform.Controllers
 
             var winnersList = await _winnersRepository.GetWinnersAsync(model.Id);
 
+            winnersList = winnersList.OrderBy(x => x.Place).ThenByDescending(x => x.Votes).ThenByDescending(x => x.Score);
+
             model.ResultsPartial.Winners = winnersList;
 
             return model;
