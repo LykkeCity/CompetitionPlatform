@@ -10,6 +10,7 @@ using CompetitionPlatform.Data.ProjectCategory;
 using CompetitionPlatform.Helpers;
 using CompetitionPlatform.Models;
 using CompetitionPlatform.Models.ProjectViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -45,18 +46,21 @@ namespace CompetitionPlatform.Controllers
             _winnersRepository = winnersRepository;
         }
 
+        [Authorize]
         public IActionResult Create()
         {
             ViewBag.ProjectCategories = _categoriesRepository.GetCategories();
             return View("CreateProject");
         }
 
+        [Authorize]
         public async Task<IActionResult> Edit(string id)
         {
             var viewModel = await GetProjectViewModel(id);
             return View("EditProject", viewModel);
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> SaveProject(ProjectViewModel projectViewModel)
         {
@@ -146,7 +150,7 @@ namespace CompetitionPlatform.Controllers
                 }
             }
         }
-
+        
         public async Task<IActionResult> ProjectDetails(string id)
         {
             var viewModel = await GetProjectViewModel(id);

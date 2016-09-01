@@ -8,6 +8,7 @@ using CompetitionPlatform.Data.AzureRepositories.Vote;
 using CompetitionPlatform.Helpers;
 using CompetitionPlatform.Models;
 using CompetitionPlatform.Models.ProjectViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CompetitionPlatform.Controllers
@@ -41,6 +42,7 @@ namespace CompetitionPlatform.Controllers
             _projectFollowRepository = projectFollowRepository;
         }
 
+        [Authorize]
         public async Task<IActionResult> AddComment(ProjectCommentPartialViewModel model)
         {
             var user = GetAuthenticatedUser();
@@ -163,6 +165,7 @@ namespace CompetitionPlatform.Controllers
             return PartialView("~/Views/Project/VotingBarsPartial.cshtml", viewModel);
         }
 
+        [Authorize]
         public async Task<IActionResult> AddParticipant(string id)
         {
             var user = GetAuthenticatedUser();
@@ -192,6 +195,7 @@ namespace CompetitionPlatform.Controllers
             return RedirectToAction("ProjectDetails", "Project", new { id });
         }
 
+        [Authorize]
         public async Task<IActionResult> RemoveParticipant(string id)
         {
             var user = GetAuthenticatedUser();
@@ -212,6 +216,7 @@ namespace CompetitionPlatform.Controllers
             return RedirectToAction("ProjectDetails", "Project", new { id });
         }
 
+        [Authorize]
         public IActionResult AddResult(string id)
         {
             var viewModel = new AddResultViewModel
@@ -222,6 +227,7 @@ namespace CompetitionPlatform.Controllers
             return View("~/Views/Project/AddResult.cshtml", viewModel);
         }
 
+        [Authorize]
         public async Task<IActionResult> SaveResult(AddResultViewModel model)
         {
             var participant = await _participantsRepository.GetAsync(model.ProjectId, model.ParticipantId);
@@ -269,6 +275,7 @@ namespace CompetitionPlatform.Controllers
             return RedirectToAction("ProjectDetails", "Project", new { id = model.ProjectId });
         }
 
+        [Authorize]
         public async Task<IActionResult> FollowProject(string id)
         {
             var user = GetAuthenticatedUser();
@@ -278,6 +285,7 @@ namespace CompetitionPlatform.Controllers
             return RedirectToAction("ProjectDetails", "Project", new { id });
         }
 
+        [Authorize]
         public async Task<IActionResult> UnFollowProject(string id)
         {
             var user = GetAuthenticatedUser();
