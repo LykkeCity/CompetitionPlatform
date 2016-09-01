@@ -28,12 +28,13 @@ namespace CompetitionPlatform.Controllers
         private readonly IProjectResultRepository _resultRepository;
         private readonly IProjectFollowRepository _projectFollowRepository;
         private readonly IProjectWinnersRepository _winnersRepository;
+        private readonly IUserRolesRepository _userRolesRepository;
 
         public ProjectController(IProjectRepository projectRepository, IProjectCommentsRepository commentsRepository,
             IProjectFileRepository fileRepository, IProjectFileInfoRepository fileInfoRepository,
             IProjectParticipantsRepository participantsRepository, IProjectCategoriesRepository categoriesRepository,
             IProjectResultRepository resultRepository, IProjectFollowRepository projectFollowRepository,
-            IProjectWinnersRepository winnersRepository)
+            IProjectWinnersRepository winnersRepository, IUserRolesRepository userRolesRepository)
         {
             _projectRepository = projectRepository;
             _commentsRepository = commentsRepository;
@@ -44,20 +45,42 @@ namespace CompetitionPlatform.Controllers
             _resultRepository = resultRepository;
             _projectFollowRepository = projectFollowRepository;
             _winnersRepository = winnersRepository;
+            _userRolesRepository = userRolesRepository;
         }
 
         [Authorize]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewBag.ProjectCategories = _categoriesRepository.GetCategories();
-            return View("CreateProject");
+            var user = GetAuthenticatedUser();
+
+            var userRole = await _userRolesRepository.GetAsync(user.Email);
+            if (userRole != null)
+            {
+                ViewBag.ProjectCategories = _categoriesRepository.GetCategories();
+                return View("CreateProject");
+            }
+
+            return View("AccessDenied");
         }
 
         [Authorize]
         public async Task<IActionResult> Edit(string id)
         {
+            var user = GetAuthenticatedUser();
+            var userRole = await _userRolesRepository.GetAsync(user.Email);
+
             var viewModel = await GetProjectViewModel(id);
-            return View("EditProject", viewModel);
+
+            if (userRole != null && userRole.Role == "ADMIN")
+            {
+                return View("EditProject", viewModel);
+            }
+            if (viewModel.Status == Status.Initiative && viewModel.AuthorId == user.Email)
+            {
+                return View("EditProject", viewModel);
+            }
+
+            return View("AccessDenied");
         }
 
         [Authorize]
@@ -150,7 +173,7 @@ namespace CompetitionPlatform.Controllers
                 }
             }
         }
-        
+
         public async Task<IActionResult> ProjectDetails(string id)
         {
             var viewModel = await GetProjectViewModel(id);
