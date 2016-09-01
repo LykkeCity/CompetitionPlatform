@@ -1,12 +1,17 @@
+@using System.Threading.Tasks
+@using CompetitionPlatform.Helpers
 @model CompetitionPlatform.Models.ProjectViewModels.ProjectCommentPartialViewModel
 
 <form asp-controller="ProjectDetails" asp-action="AddComment" enctype="multipart/form-data">
-    <div class="form-group">
-        @Html.Hidden("projectId", Model.ProjectId)
-        <input asp-for="@Model.ProjectId" type="hidden" />
-        <textarea asp-for="@Model.Comment" rows="5" class="form-control" placeholder="Enter your comment here..."></textarea>
-    </div>
-    <input type="submit" value="Post Comment" class="btn btn-primary pull-right" />
+    @if (ClaimsHelper.GetUser(User.Identity).Email != null)
+    {
+        <div class="form-group">
+            @Html.Hidden("projectId", Model.ProjectId)
+            <input asp-for="@Model.ProjectId" type="hidden" />
+            <textarea asp-for="@Model.Comment" rows="5" class="form-control" placeholder="Enter your comment here..."></textarea>
+        </div>
+        <input type="submit" value="Post Comment" class="btn btn-primary pull-right" />
+    }
 </form>
 <div class="project-details-comments">
     @foreach (var comment in Model.Comments)
