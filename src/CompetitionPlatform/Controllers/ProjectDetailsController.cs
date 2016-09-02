@@ -139,6 +139,7 @@ namespace CompetitionPlatform.Controllers
             }
         }
 
+        [Authorize]
         public async Task<IActionResult> VoteFor(string projectId)
         {
             await DoVoteFor(projectId);
@@ -146,6 +147,7 @@ namespace CompetitionPlatform.Controllers
             return await ProjectVotingBarsPartial(projectId);
         }
 
+        [Authorize]
         public async Task<IActionResult> VoteAgainst(string projectId)
         {
             await DoVoteAgainst(projectId);
@@ -250,8 +252,14 @@ namespace CompetitionPlatform.Controllers
             return RedirectToAction("ProjectDetails", "Project", new { id = model.ProjectId });
         }
 
+        [Authorize]
         public async Task<IActionResult> VoteForResult(ResultVoteViewModel model)
         {
+            if (model.ProjectId == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             var voterId = GetAuthenticatedUser().Email;
 
             var vote = await _resultVoteRepository.GetAsync(model.ProjectId, model.ParticipantId, voterId);
