@@ -1,26 +1,36 @@
 @using System.Threading.Tasks
+@using CompetitionPlatform.Helpers
 @model CompetitionPlatform.Models.ProjectViewModels.ProjectDetailsStatusViewModel
 
 @if (Model.Status == Status.Initiative)
 {
     <div>
-        <p class="project-voting-text text-muted">Cast your vote for or against the competition. Do you think this is the project that Lykke City needs?</p>
-        <div class="project-voting-buttons">
+        @if (ClaimsHelper.GetUser(User.Identity).Email != null)
+        {
+            <p class="project-voting-text text-muted">Cast your vote for or against the competition. Do you think this is the project that Lykke City needs?</p>
+            <div class="project-voting-buttons">
 
-            <button id="voteForButton" class="btn btn-sm btn-primary alert-success">
-                <span class="glyphicon glyphicon-thumbs-up"></span>
-            </button>
+                <button id="voteForButton" class="btn btn-sm btn-primary alert-success">
+                    <span class="glyphicon glyphicon-thumbs-up"></span>
+                </button>
 
-            <button id="voteAgainstButton" class="btn btn-sm btn-primary alert-danger">
-                <span class="glyphicon glyphicon-thumbs-down"></span>
-            </button>
+                <button id="voteAgainstButton" class="btn btn-sm btn-primary alert-danger">
+                    <span class="glyphicon glyphicon-thumbs-down"></span>
+                </button>
 
-            <input asp-for="@Model.ProjectId" type="hidden" />
+                <input asp-for="@Model.ProjectId" type="hidden"/>
 
-            <p class="inline">@(Model.VotesFor + Model.VotesAgainst) Votes</p>
-            <div id="projectVoteResults" class="project-details-voting-bars">
+                <p class="inline">@(Model.VotesFor + Model.VotesAgainst) Votes</p>
+                <div id="projectVoteResults" class="project-details-voting-bars">
+                </div>
             </div>
-        </div>
+        }
+        else
+        {
+            <p>Please 
+                <a asp-area="" asp-controller="Home" asp-action="SignIn" class="">Sign In</a>
+         to Vote</p>
+        }
     </div>
 }
 @if (Model.Status == Status.CompetitionRegistration)

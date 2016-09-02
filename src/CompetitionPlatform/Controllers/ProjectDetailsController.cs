@@ -139,7 +139,6 @@ namespace CompetitionPlatform.Controllers
             }
         }
 
-        [Authorize]
         public async Task<IActionResult> VoteFor(string projectId)
         {
             await DoVoteFor(projectId);
@@ -147,7 +146,6 @@ namespace CompetitionPlatform.Controllers
             return await ProjectVotingBarsPartial(projectId);
         }
 
-        [Authorize]
         public async Task<IActionResult> VoteAgainst(string projectId)
         {
             await DoVoteAgainst(projectId);
