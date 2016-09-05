@@ -52,11 +52,16 @@ namespace CompetitionPlatform.Controllers
         public async Task<IActionResult> Create()
         {
             var user = GetAuthenticatedUser();
-
             var userRole = await _userRolesRepository.GetAsync(user.Email);
+            ViewBag.ProjectCategories = _categoriesRepository.GetCategories();
+
             if (userRole != null)
             {
-                ViewBag.ProjectCategories = _categoriesRepository.GetCategories();
+                return View("CreateProject");
+            }
+
+            if (user.Documents.Contains("Selfie") && user.Documents.Contains("IdCard"))
+            {
                 return View("CreateProject");
             }
 
