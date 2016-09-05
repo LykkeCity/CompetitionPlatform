@@ -10,7 +10,7 @@ namespace CompetitionPlatform.Helpers
     {
         public static CompetitionPlatformUser GetUser(IIdentity identity)
         {
-            var claimsIdentity = (ClaimsIdentity) identity;
+            var claimsIdentity = (ClaimsIdentity)identity;
             IEnumerable<Claim> claims = claimsIdentity.Claims;
 
             var claimsList = claims as IList<Claim> ?? claims.ToList();
@@ -24,11 +24,15 @@ namespace CompetitionPlatform.Helpers
             var email = claimsList.Where(c => c.Type == ClaimTypes.Email)
                    .Select(c => c.Value).SingleOrDefault();
 
+            var documents = claimsList.Where(c => c.Type == "documents")
+                .Select(c => c.Value).SingleOrDefault();
+
             var user = new CompetitionPlatformUser
             {
                 Email = email,
                 FirstName = firstName,
-                LastName = lastName
+                LastName = lastName,
+                Documents = documents
             };
 
             return user;
