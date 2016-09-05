@@ -108,7 +108,7 @@ namespace CompetitionPlatform
                 // retrieve the identity provider's configuration and spare you from setting
                 // the different endpoints URIs or the token validation parameters explicitly.
                 Authority = Settings.Authentication.Authority,
-                Scope = { "email" }
+                Scope = { "email profile" }
             });
 
             app.UseStaticFiles();
