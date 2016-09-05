@@ -92,7 +92,7 @@ namespace CompetitionPlatform.Controllers
         [HttpPost]
         public async Task<IActionResult> SaveProject(ProjectViewModel projectViewModel)
         {
-            projectViewModel.Tags = TrimAndSerializeTags(projectViewModel.Tags);
+            projectViewModel.Tags = SerializeTags(projectViewModel.Tags);
 
             projectViewModel.ProjectStatus = projectViewModel.Status.ToString();
 
@@ -345,7 +345,7 @@ namespace CompetitionPlatform.Controllers
             return model;
         }
 
-        private string TrimAndSerializeTags(string tagsString)
+        private string SerializeTags(string tagsString)
         {
             if (string.IsNullOrEmpty(tagsString))
                 return null;
