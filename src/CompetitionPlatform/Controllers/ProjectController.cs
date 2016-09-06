@@ -72,11 +72,10 @@ namespace CompetitionPlatform.Controllers
         public async Task<IActionResult> Edit(string id)
         {
             var user = GetAuthenticatedUser();
-            var userRole = await _userRolesRepository.GetAsync(user.Email);
 
             var viewModel = await GetProjectViewModel(id);
 
-            if (userRole != null && userRole.Role == "ADMIN")
+            if (viewModel.IsAdmin)
             {
                 return View("EditProject", viewModel);
             }
@@ -203,6 +202,10 @@ namespace CompetitionPlatform.Controllers
 
             var participant = (user.Email == null) ? null : await _participantsRepository.GetAsync(id, user.Email);
 
+            var userRole = (user.Email == null) ? null : await _userRolesRepository.GetAsync(user.Email);
+
+            var isAdmin = userRole != null && userRole.Role == "ADMIN";
+
             var participantId = "";
             var isParticipant = false;
 
@@ -270,6 +273,7 @@ namespace CompetitionPlatform.Controllers
                 AuthorFullName = project.AuthorFullName,
                 ParticipantId = participantId,
                 IsParticipant = isParticipant,
+                IsAdmin = isAdmin,
                 IsFollowing = isFollowing,
                 OtherProjects = await GetOtherProjects(project.Id)
             };
