@@ -9,6 +9,7 @@ using CompetitionPlatform.Data;
 using CompetitionPlatform.Data.AzureRepositories.Log;
 using AzureStorage.Tables;
 using CompetitionPlatform.Data.AzureRepositories.Settings;
+using CompetitionPlatform.ScheduledJobs;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
@@ -59,7 +60,7 @@ namespace CompetitionPlatform
             var log = new LogToTable(new AzureTableStorage<LogEntity>(connectionStringLogs, "LogCompPlatform", null));
 
             services.RegisterRepositories(connectionString, log);
-
+            JobScheduler.Start(connectionString, log);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

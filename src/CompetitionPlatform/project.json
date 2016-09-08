@@ -48,7 +48,8 @@
     "Common": "1.0.0-*",
     "Newtonsoft.Json": "9.0.1",
     "Microsoft.IdentityModel.Protocols.OpenIdConnect": "2.0.0",
-    "Microsoft.AspNetCore.Authentication.OpenIdConnect": "1.0.0" },
+    "Microsoft.AspNetCore.Authentication.OpenIdConnect": "1.0.0",
+    "Quartz": "3.0.0-alpha2" },
 
   "tools": {
     "BundlerMinifier.Core": "2.0.238",
