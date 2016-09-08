@@ -25,7 +25,7 @@ namespace CompetitionPlatform.ScheduledJobs
             var trigger = TriggerBuilder.Create()
               .WithIdentity("myTrigger", "group1")
               .WithSimpleSchedule(x => x
-                  .WithIntervalInSeconds(50)
+                  .WithIntervalInHours(1)
                   .RepeatForever())
               .Build();
 
