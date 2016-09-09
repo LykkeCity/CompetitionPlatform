@@ -2,27 +2,22 @@
 
 A website to help manage Projects Competitions.
 
-# AppSettings
+# How to create the configuration file?
 
-Get the template for the appsettings file [here](https://github.com/LykkeCity/CompetitionPlatform/blob/master/appsettings_template.json)
+First you have to add these settings in the environmental variables on the host:
 
-Fill the fields for authentication server:
+* AzureStorageConnString - the main connection string that is used to store information about projects, users, etc.
+* AzureStorageLogConnString - points to the storage that is used for logging.
+* SettingsContainerName - name of the blob container where the global settings file is stored.
+* SettingsFileName - name of the global settings file ( including extension ).
 
-* AzureStorage - the main connection string that is used to store information about projects, users, etc.
-* AzureStorageLog - points to the storage that is used for logging.
-* Container - name of the blob container where the general settings file is stored.
-* FileName - name of the general settings file ( including extension ).
+The configuration file will be fetched using AzureStorageConnString connection string. The filename should equal SettingsFileName and the Blob container name that it is uploaded to should equal SettingsContainerName.
 
-# General Settings
+Get the template for the settings file [here](https://github.com/LykkeCity/CompetitionPlatform/blob/master/generalsettings_template.json)
 
-Will be fetched using AzureStorage connection string ( from appsettings or overwritten in environmental variables ). Should be uploaded to "settings" folder in Azure Blob Container.
-
-Get the template for the settins file [here](https://github.com/LykkeCity/CompetitionPlatform/blob/master/generalsettings_template.json)
-
-Fill the fields for authentication server:
+Fill the fields for the authentication server:
 
 * ClientId - id fields of the application.
 * ClientSecret - secret field associated with the clientId.
 * PostLogoutRedirectUri - link to the authentication server.
 * Authority - link to the authentication server.
-
