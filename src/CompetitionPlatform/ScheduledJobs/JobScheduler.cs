@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Common.Log;
-using CompetitionPlatform.Data.AzureRepositories.Log;
+﻿using Common.Log;
 using Quartz;
 using Quartz.Impl;
 
