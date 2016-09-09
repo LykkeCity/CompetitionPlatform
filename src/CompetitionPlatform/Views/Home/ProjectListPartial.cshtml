@@ -56,12 +56,15 @@
         <div class="project-description">@project.Description</div>
         <div class="row project-tile-bottom">
             <div class="row project-index-author">
-                <div class="inline">
+                <div class="inline project-index-author-avatar">
                     <img src="~/images/avatar.svg"
                          alt="@project.AuthorFullName"
                          asp-append-version="true" />
                 </div>
-                <p class="project-index-author-text bold-text inline">@project.AuthorFullName</p>
+                <div class="inline vertical-align-middle">
+                    <div class="project-index-author-text bold-text">@project.AuthorFullName.ToUpper()</div>
+                    <div class="project-index-category-text text-muted">In @project.Category</div>
+                </div>
             </div>
             <a asp-area="" asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.Id" class="pull-right inline project-details-button nohover text-muted">
                 <span class="glyphicon glyphicon-option-horizontal"></span>

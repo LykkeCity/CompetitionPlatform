@@ -93,7 +93,8 @@ namespace CompetitionPlatform.Controllers
                     VotingDeadline = project.VotingDeadline,
                     CommentsCount = projectCommentsCount,
                     ParticipantsCount = participantsCount,
-                    AuthorFullName = project.AuthorFullName
+                    AuthorFullName = project.AuthorFullName,
+                    Category = project.Category
                 };
 
                 if (!string.IsNullOrEmpty(project.ProjectStatus))

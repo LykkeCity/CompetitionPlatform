@@ -234,9 +234,19 @@ textarea {
     margin-bottom: -30px;
 }
 
+.project-index-author-avatar img {
+    width: 45px;
+    height: auto;
+}
+
 .project-index-author-text {
     margin-left: 10px;
     font-size: 16px;
+}
+
+.project-index-category-text {
+    margin-left: 10px;
+    font-size: 15px;
 }
 
 .projects-filter-buttons {

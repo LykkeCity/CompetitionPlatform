@@ -106,6 +106,7 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public DateTime ImplementationDeadline { get; set; }
         public DateTime VotingDeadline { get; set; }
         public string AuthorFullName { get; set; }
+        public string Category { get; set; }
     }
 
     public class ProjectFileInfoViewModel
