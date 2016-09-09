@@ -2,27 +2,22 @@
 
 A website to help manage Projects Competitions.
 
-# AppSettings
+# How to create the configuration file?
 
-Get the template for the appsettings file [here](https://github.com/LykkeCity/CompetitionPlatform/blob/master/appsettings_template.json)
+* Add these settings in the environmental variables on the host:
 
-Fill the fields for authentication server:
+  *  AzureStorageConnString - the main connection string that is used to store information about projects, users, etc.
+  *  AzureStorageLogConnString - points to the storage that is used for logging.
+  *  SettingsContainerName - name of the blob container where the global settings file is stored.
+  *  SettingsFileName - name of the global settings file ( including extension ).
 
-* AzureStorage - the main connection string that is used to store information about projects, users, etc.
-* AzureStorageLog - points to the storage that is used for logging.
-* Container - name of the blob container where the general settings file is stored.
-* FileName - name of the general settings file ( including extension ).
+* Create the global settings file using this [template](https://github.com/LykkeCity/CompetitionPlatform/blob/master/generalsettings_template.json)
 
-# General Settings
+* Fill the fields for the authentication server:
 
-Will be fetched using AzureStorage connection string ( from appsettings or overwritten in environmental variables ). Should be uploaded to "settings" folder in Azure Blob Container.
+  *  ClientId - id fields of the application.
+  *  ClientSecret - secret field associated with the clientId.
+  *  PostLogoutRedirectUri - link to the authentication server.
+  *  Authority - link to the authentication server.
 
-Get the template for the settins file [here](https://github.com/LykkeCity/CompetitionPlatform/blob/master/generalsettings_template.json)
-
-Fill the fields for authentication server:
-
-* ClientId - id fields of the application.
-* ClientSecret - secret field associated with the clientId.
-* PostLogoutRedirectUri - link to the authentication server.
-* Authority - link to the authentication server.
-
+* Upload the global settings file to the server where the AzureStorageConnString is pointing. The filename should equal SettingsFileName and the Blob container name that it is uploaded to should equal SettingsContainerName.
