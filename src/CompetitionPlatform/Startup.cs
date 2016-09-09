@@ -41,12 +41,11 @@ namespace CompetitionPlatform
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var connectionString = Configuration.GetConnectionString("AzureStorage");
-            var connectionStringLogs = Configuration.GetConnectionString("AzureStorageLog");
+            var connectionString = Configuration.GetValue<string>("AzureStorageConnString");
+            var connectionStringLogs = Configuration.GetValue<string>("AzureStorageLogConnString");
 
-            var generalSettingsConfiguration = Configuration.GetSection("GeneralSettings");
-            var settingsContainer = generalSettingsConfiguration.GetValue<string>("Container");
-            var settingsFileName = generalSettingsConfiguration.GetValue<string>("FileName");
+            var settingsContainer = Configuration.GetValue<string>("SettingsContainerName");
+            var settingsFileName = Configuration.GetValue<string>("SettingsFileName");
 
             Settings = GeneralSettingsReader.ReadGeneralSettings<BaseSettings>(connectionString, settingsContainer, settingsFileName);
 
