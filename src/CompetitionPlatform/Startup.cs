@@ -44,7 +44,11 @@ namespace CompetitionPlatform
             var connectionString = Configuration.GetConnectionString("AzureStorage");
             var connectionStringLogs = Configuration.GetConnectionString("AzureStorageLog");
 
-            Settings = GeneralSettingsReader.ReadGeneralSettings<BaseSettings>(connectionString);
+            var generalSettingsConfiguration = Configuration.GetSection("GeneralSettings");
+            var settingsContainer = generalSettingsConfiguration.GetValue<string>("Container");
+            var settingsFileName = generalSettingsConfiguration.GetValue<string>("FileName");
+
+            Settings = GeneralSettingsReader.ReadGeneralSettings<BaseSettings>(connectionString, settingsContainer, settingsFileName);
 
             // Add framework services.
             services.AddDbContext<ApplicationDbContext>(options =>
