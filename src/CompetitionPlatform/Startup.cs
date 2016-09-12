@@ -59,7 +59,6 @@ namespace CompetitionPlatform
             services.AddMvc();
             services.RegisterLyykeServices();
 
-
             var log = new LogToTable(new AzureTableStorage<LogEntity>(connectionStringLogs, "LogCompPlatform", null));
 
             services.RegisterRepositories(connectionString, log);
