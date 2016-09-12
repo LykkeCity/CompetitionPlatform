@@ -90,7 +90,7 @@
                     @Model.Winners.Count()
                 </div>
                 <div class="results-winners-text">
-                    Winners
+                    @(Model.Winners.Count() == 1 ? "Winner" : "Winners")
                 </div>
             </div>
         </div>
