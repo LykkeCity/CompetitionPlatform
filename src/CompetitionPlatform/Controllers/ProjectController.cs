@@ -10,6 +10,7 @@ using CompetitionPlatform.Data.ProjectCategory;
 using CompetitionPlatform.Helpers;
 using CompetitionPlatform.Models;
 using CompetitionPlatform.Models.ProjectViewModels;
+using CompetitionPlatform.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -29,12 +30,14 @@ namespace CompetitionPlatform.Controllers
         private readonly IProjectFollowRepository _projectFollowRepository;
         private readonly IProjectWinnersRepository _winnersRepository;
         private readonly IUserRolesRepository _userRolesRepository;
+        private readonly IProjectWinnersService _winnersService;
 
         public ProjectController(IProjectRepository projectRepository, IProjectCommentsRepository commentsRepository,
             IProjectFileRepository fileRepository, IProjectFileInfoRepository fileInfoRepository,
             IProjectParticipantsRepository participantsRepository, IProjectCategoriesRepository categoriesRepository,
             IProjectResultRepository resultRepository, IProjectFollowRepository projectFollowRepository,
-            IProjectWinnersRepository winnersRepository, IUserRolesRepository userRolesRepository)
+            IProjectWinnersRepository winnersRepository, IUserRolesRepository userRolesRepository,
+            IProjectWinnersService winnersService)
         {
             _projectRepository = projectRepository;
             _commentsRepository = commentsRepository;
@@ -46,6 +49,7 @@ namespace CompetitionPlatform.Controllers
             _projectFollowRepository = projectFollowRepository;
             _winnersRepository = winnersRepository;
             _userRolesRepository = userRolesRepository;
+            _winnersService = winnersService;
         }
 
         [Authorize]
@@ -119,63 +123,13 @@ namespace CompetitionPlatform.Controllers
 
                 if (projectViewModel.Status == Status.Archive)
                 {
-                    await SaveWinners(projectViewModel.Id);
+                    await _winnersService.SaveWinners(projectViewModel.Id);
                 }
             }
 
             await SaveProjectFile(projectViewModel.File, projectId);
 
             return RedirectToAction("Index", "Home");
-        }
-
-        private async Task SaveWinners(string projectId)
-        {
-            var project = await _projectRepository.GetAsync(projectId);
-
-            var results = await _resultRepository.GetResultsAsync(projectId);
-
-            results = results.OrderByDescending(x => x.Votes).ThenByDescending(x => x.Score);
-
-            var resultDatas = results as IList<IProjectResultData> ?? results.ToList();
-
-            var firstPlaceResult = resultDatas.FirstOrDefault();
-
-            var furstPlaceWinner = new WinnerViewModel
-            {
-                ProjectId = firstPlaceResult.ProjectId,
-                WinnerId = firstPlaceResult.ParticipantId,
-                FullName = firstPlaceResult.ParticipantFullName,
-                Result = firstPlaceResult.Link,
-                Votes = firstPlaceResult.Votes,
-                Score = firstPlaceResult.Score,
-                Place = 1,
-                Budget = project.BudgetFirstPlace
-            };
-
-            await _winnersRepository.SaveAsync(furstPlaceWinner);
-
-            if (project.BudgetSecondPlace != null)
-            {
-                var secondPlaceResults = resultDatas.Take(3).Skip(1);
-
-                foreach (var result in secondPlaceResults)
-                {
-                    var winner = new WinnerViewModel
-                    {
-                        ProjectId = result.ProjectId,
-                        WinnerId = result.ParticipantId,
-                        FullName = result.ParticipantFullName,
-                        Result = result.Link,
-                        Votes = result.Votes,
-                        Score = result.Score,
-                        Place = 2,
-                        Budget = project.BudgetSecondPlace
-                    };
-
-                    await _winnersRepository.SaveAsync(winner);
-
-                }
-            }
         }
 
         public async Task<IActionResult> ProjectDetails(string id)

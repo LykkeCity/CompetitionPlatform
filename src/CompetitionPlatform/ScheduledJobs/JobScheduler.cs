@@ -13,14 +13,14 @@ namespace CompetitionPlatform.ScheduledJobs
             var sched = await schedFact.GetScheduler();
             await sched.Start();
 
-            var job = JobBuilder.Create<ProjectStatusIpdaterJob>()
+            var job = JobBuilder.Create<ProjectStatusUpdaterJob>()
                 .WithIdentity("myJob", "group1")
                 .Build();
 
             var trigger = TriggerBuilder.Create()
               .WithIdentity("myTrigger", "group1")
               .WithSimpleSchedule(x => x
-                  .WithIntervalInHours(1)
+                   .WithIntervalInHours(1)
                   .RepeatForever())
               .Build();
 

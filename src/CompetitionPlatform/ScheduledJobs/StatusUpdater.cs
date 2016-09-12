@@ -2,16 +2,19 @@
 using System.Threading.Tasks;
 using CompetitionPlatform.Data.AzureRepositories.Project;
 using CompetitionPlatform.Models;
+using CompetitionPlatform.Services;
 
 namespace CompetitionPlatform.ScheduledJobs
 {
     public class StatusUpdater
     {
         private readonly IProjectRepository _projectRepository;
+        private readonly IProjectWinnersService _winnersService;
 
-        public StatusUpdater(IProjectRepository projectRepository)
+        public StatusUpdater(IProjectRepository projectRepository, IProjectWinnersService winnersService)
         {
             _projectRepository = projectRepository;
+            _winnersService = winnersService;
         }
 
         public async Task UpdateProjectStatuses()
@@ -44,6 +47,7 @@ namespace CompetitionPlatform.ScheduledJobs
                         if (project.VotingDeadline <= DateTime.Today)
                         {
                             project.ProjectStatus = Status.Archive.ToString();
+                            await _winnersService.SaveWinners(project.Id);
                             await _projectRepository.UpdateAsync(project);
                         }
                         break;
