@@ -11,7 +11,7 @@ namespace CompetitionPlatform.Helpers
         public static CompetitionPlatformUser GetUser(IIdentity identity)
         {
             var claimsIdentity = (ClaimsIdentity)identity;
-            IEnumerable<Claim> claims = claimsIdentity.Claims;
+            var claims = claimsIdentity.Claims;
 
             var claimsList = claims as IList<Claim> ?? claims.ToList();
 
