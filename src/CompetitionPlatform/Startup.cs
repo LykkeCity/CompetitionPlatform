@@ -71,17 +71,37 @@ namespace CompetitionPlatform
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            if (env.IsDevelopment())
+            if (env.IsStaging())
+            {
+                app.Use(async (context, next) =>
+                {
+                    if (context.Request.IsHttps)
+                    {
+                        await next();
+                    }
+                    else
+                    {
+                        var withHttps = "https://" + context.Request.Host + context.Request.Path;
+                        context.Response.Redirect(withHttps);
+                    }
+                });
+            }
+
+            if (env.IsDevelopment() || env.IsStaging())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
-                app.UseBrowserLink();
             }
             else
             {
                 app.UseExceptionHandler("/Home/Error");
             }
 
+            if (env.IsDevelopment())
+            {
+                app.UseDatabaseErrorPage();
+                app.UseBrowserLink();
+            }
+            
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
                 AutomaticAuthenticate = true,
