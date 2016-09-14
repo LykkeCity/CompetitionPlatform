@@ -13,21 +13,21 @@
 </div>
 <div class="col-md-12">
     <div class="row col-md-3 project-filter">
-        <select id="projectStatusFilter" name="projectStatusFilter" class="form-control" value="Create">
-            <option value="">Status : All</option>
-            @foreach (var status in Enum.GetValues(typeof(Status)))
-            {
-                <option value=@status>@status</option>
-            }
-        </select>
-    </div>
-
-    <div class="row col-md-3 project-filter">
         <select id="projectCategoryFilter" name="projectCategoryFilter" class="form-control" value="Create">
             <option value="">Category: All</option>
             @foreach (var category in Model.ProjectCategories)
             {
                 <option value="@category">@category</option>
+            }
+        </select>
+    </div>
+
+    <div class="row col-md-3 project-filter">
+        <select id="projectStatusFilter" name="projectStatusFilter" class="form-control" value="Create">
+            <option value="">Status : All</option>
+            @foreach (var status in Enum.GetValues(typeof(Status)))
+            {
+                <option value=@status>@status</option>
             }
         </select>
     </div>
