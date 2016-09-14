@@ -34,19 +34,22 @@ namespace CompetitionPlatform.Services
 
             var firstPlaceResult = resultDatas.FirstOrDefault();
 
-            var firstPlaceWinner = new WinnerViewModel
+            if (firstPlaceResult != null)
             {
-                ProjectId = firstPlaceResult.ProjectId,
-                WinnerId = firstPlaceResult.ParticipantId,
-                FullName = firstPlaceResult.ParticipantFullName,
-                Result = firstPlaceResult.Link,
-                Votes = firstPlaceResult.Votes,
-                Score = firstPlaceResult.Score,
-                Place = 1,
-                Budget = project.BudgetFirstPlace
-            };
+                var firstPlaceWinner = new WinnerViewModel
+                {
+                    ProjectId = firstPlaceResult.ProjectId,
+                    WinnerId = firstPlaceResult.ParticipantId,
+                    FullName = firstPlaceResult.ParticipantFullName,
+                    Result = firstPlaceResult.Link,
+                    Votes = firstPlaceResult.Votes,
+                    Score = firstPlaceResult.Score,
+                    Place = 1,
+                    Budget = project.BudgetFirstPlace
+                };
 
-            await _winnersRepository.SaveAsync(firstPlaceWinner);
+                await _winnersRepository.SaveAsync(firstPlaceWinner);
+            }
 
             if (project.BudgetSecondPlace != null)
             {
