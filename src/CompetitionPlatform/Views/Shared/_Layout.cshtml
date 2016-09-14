@@ -111,10 +111,20 @@
                 else
                 {
                     <div class="col-md-3 hidden-xs hidden-sm">
-                        <div class="h4 navbar-right">
+                        <div class="navbar-right">
                             @if (User.Identity.IsAuthenticated)
                             {
-                                <span>@ClaimsHelper.GetUser(User.Identity).GetFullName()</span>
+                                <div class="dropdown">
+                                    <div class="btn dropdown-toggle h4" type="button" data-toggle="dropdown">
+                                        <div class="h4">
+                                            @ClaimsHelper.GetUser(User.Identity).GetFullName()
+                                            <span class="caret"></span>
+                                        </div>
+                                    </div>
+                                        <ul class="dropdown-menu">
+                                            <li><a asp-controller="Home" asp-action="LogOut" asp-route-id="">Sign Out</a></li>
+                                        </ul>
+                                    </div>
                             }
                         </div>
                     </div>

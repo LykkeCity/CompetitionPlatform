@@ -10,6 +10,7 @@ using CompetitionPlatform.Helpers;
 using CompetitionPlatform.Models;
 using Microsoft.AspNetCore.Mvc;
 using CompetitionPlatform.Models.ProjectViewModels;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 
 namespace CompetitionPlatform.Controllers
@@ -163,6 +164,17 @@ namespace CompetitionPlatform.Controllers
         public IActionResult Error()
         {
             return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> LogOut()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                await HttpContext.Authentication.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                await HttpContext.Authentication.SignOutAsync("OpenIdConnect");
+            }
+            return RedirectToAction("Index", "Home");
         }
 
         private CompetitionPlatformUser GetAuthenticatedUser()
