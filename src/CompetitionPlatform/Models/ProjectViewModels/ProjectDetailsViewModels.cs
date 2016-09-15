@@ -5,7 +5,6 @@ using CompetitionPlatform.Data.AzureRepositories.Project;
 using CompetitionPlatform.Data.AzureRepositories.Result;
 using CompetitionPlatform.Data.AzureRepositories.Users;
 using CompetitionPlatform.Data.AzureRepositories.Vote;
-using Newtonsoft.Json;
 
 namespace CompetitionPlatform.Models.ProjectViewModels
 {
@@ -42,6 +41,7 @@ namespace CompetitionPlatform.Models.ProjectViewModels
 
     public class ProjectParticipantsPartialViewModel
     {
+        public string CurrentUserId { get; set; }
         public IEnumerable<IProjectParticipateData> Participants { get; set; }
     }
 
@@ -69,6 +69,12 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public int ParticipantCount { get; set; }
         public int DaysOfContest { get; set; }
         public IEnumerable<IWinnerData> Winners { get; set; }
+    }
+
+    public class EditResultViewModel
+    {
+        public string ProjectId { get; set; }
+        public string UserId { get; set; }
     }
 
     public class ResultVoteViewModel : IProjectResultVoteData
