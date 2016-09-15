@@ -6,7 +6,7 @@
             <tr>
                 <th>USERNAME</th>
                 <th>REGISTRATION DATE</th>
-                <th>RESULT</th>
+                <th class="text-center">RESULT</th>
             </tr>
         </thead>
         <tbody>
@@ -22,10 +22,23 @@
                         </div>
                     </td>
                     <td>@participant.Registered.ToString("MMMM dd, yyyy hh:mm")</td>
-                    <td class="project-details-participants">
+                    <td class="text-center">
                         @if (participant.Result)
                         {
-                            <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>
+                            if (participant.UserId == Model.CurrentUserId)
+                            {
+                                    <form asp-controller="ProjectDetails" asp-action="EditResult" enctype="multipart/form-data">
+                                            <input asp-for="@participant.ProjectId" name="ProjectId" type="hidden" />
+                                            <input asp-for="@participant.UserId" name="UserId" type="hidden" />
+                                        <input type="submit" value="Edit" class="btn-link" />
+                                    </form>
+                            }
+                            else
+                            {
+                                <img src="~/images/result.svg"
+                                     alt="Result"
+                                     asp-append-version="true" />
+                            }
                         }
                     </td>
                 </tr>

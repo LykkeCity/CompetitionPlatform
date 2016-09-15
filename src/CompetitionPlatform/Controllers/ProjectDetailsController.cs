@@ -228,6 +228,21 @@ namespace CompetitionPlatform.Controllers
         }
 
         [Authorize]
+        public async Task<IActionResult> EditResult(EditResultViewModel model)
+        {
+            var result = await _resultRepository.GetAsync(model.ProjectId, model.UserId);
+
+            var viewModel = new AddResultViewModel
+            {
+                ProjectId = model.ProjectId,
+                ParticipantId = model.UserId,
+                Link = result.Link
+            };
+
+            return View("~/Views/Project/AddResult.cshtml", viewModel);
+        }
+
+        [Authorize]
         public async Task<IActionResult> SaveResult(AddResultViewModel model)
         {
             var participant = await _participantsRepository.GetAsync(model.ProjectId, model.ParticipantId);
@@ -235,16 +250,26 @@ namespace CompetitionPlatform.Controllers
             var result = await _resultRepository.GetAsync(model.ProjectId, model.ParticipantId);
 
             model.ParticipantFullName = participant.FullName;
-            model.Score = 0;
-            model.Submitted = DateTime.UtcNow;
 
             if (result == null)
             {
+                
+                model.Score = 0;
+                model.Submitted = DateTime.UtcNow;
+
                 await _resultRepository.SaveAsync(model);
 
                 participant.Result = true;
 
                 await _participantsRepository.UpdateAsync(participant);
+            }
+            else
+            {
+                model.Score = result.Score;
+                model.Submitted = result.Submitted;
+                model.Votes = result.Votes;
+
+                await _resultRepository.UpdateAsync(model);
             }
 
             return RedirectToAction("ProjectDetails", "Project", new { id = model.ProjectId });
