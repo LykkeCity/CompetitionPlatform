@@ -495,6 +495,7 @@ textarea {
     margin-left: 15px;
     font-size: 20px;
     border: 3px solid;
+    border-radius: 3px;
 }
 
 .progress-fill {
