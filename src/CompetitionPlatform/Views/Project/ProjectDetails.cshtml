@@ -46,15 +46,19 @@
             <div class="project-details-projectname">@Model.Name</div>
 
             <div class="project-details-budget inline">
-                <span class="h2 text-muted">$@Model.BudgetFirstPlace</span>
-                <div>1st PLACE</div>
+                <span>$@Model.BudgetFirstPlace</span>
+                <div>
+                    1<sup>ST</sup> PRIZE
+                </div>
             </div>
 
             @if (Model.BudgetSecondPlace != null)
             {
                 <div class="project-details-budget inline">
-                    <span class="h2 text-muted">$@Model.BudgetSecondPlace</span>
-                    <div>3x2nd PLACE</div>
+                    <span>$@Model.BudgetSecondPlace</span>
+                    <div>
+                        3x2<sup>ND</sup> PRIZE
+                    </div>
                 </div>
             }
             @await Html.PartialAsync("ProjectDetailsStatusBarPartial", Model.StatusBarPartial)

@@ -153,6 +153,21 @@ textarea {
     margin-right: 40px;
 }
 
+    .project-details-budget span {
+        opacity: 0.6;
+        font-size: 50px;
+        line-height: 1;
+        color: #3f4d60;
+    }
+
+    .project-details-budget div {
+        font-size: 18px;
+        font-weight: 600;
+        line-height: 1.78;
+        letter-spacing: 1.8px;
+        color: #333333;
+    }
+
 .inline {
     display: inline-block !important;
 }
