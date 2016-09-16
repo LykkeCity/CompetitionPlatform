@@ -577,9 +577,9 @@ textarea {
     font-size: 14px;
 }
 
-.project-details-sidebar-date:after {
-    content: " \B7 ";
-}
+    .project-details-sidebar-date:after {
+        content: " \B7 ";
+    }
 
 .result-winners-score:after {
     content: " \B7 ";
