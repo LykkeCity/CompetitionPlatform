@@ -253,7 +253,6 @@ namespace CompetitionPlatform.Controllers
 
             if (result == null)
             {
-                
                 model.Score = 0;
                 model.Submitted = DateTime.UtcNow;
 
