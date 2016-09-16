@@ -584,3 +584,11 @@ textarea {
 .result-winners-score:after {
     content: " \B7 ";
 }
+
+.project-details-projectname {
+    font-size: 40px;
+    font-weight: 600;
+    line-height: 1.25;
+    color: #333333;
+    margin-bottom: 50px;
+}
