@@ -103,7 +103,19 @@
                 <tr>
                     <td>
                         <div class="results-winners-place">
-                            @winner.Place
+                            @if (winner.Place == 1)
+                            {
+                                <img src="~/images/1-prize.svg"
+                                     alt="First Place"
+                                     asp-append-version="true" />
+                            }
+                            else
+                            {
+                                <img src="~/images/2-prize.svg"
+                                     alt="First Place"
+                                     asp-append-version="true" />
+                            }
+
                         </div>
                     </td>
                     <td>
