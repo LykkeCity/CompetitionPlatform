@@ -115,13 +115,16 @@ namespace CompetitionPlatform.Controllers
             }
             else
             {
+                var project = await _projectRepository.GetAsync(projectViewModel.Id);
+                project.Status = (Status)Enum.Parse(typeof(Status), project.ProjectStatus, true);
+
                 projectViewModel.LastModified = DateTime.UtcNow;
 
                 projectId = projectViewModel.Id;
 
                 await _projectRepository.UpdateAsync(projectViewModel);
 
-                if (projectViewModel.Status == Status.Archive)
+                if (project.Status != Status.Archive && projectViewModel.Status == Status.Archive)
                 {
                     await _winnersService.SaveWinners(projectViewModel.Id);
                 }
