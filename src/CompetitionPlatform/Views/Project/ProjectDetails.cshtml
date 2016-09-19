@@ -42,7 +42,7 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-md-9">
+        <div class="col-md-8">
             <div class="project-details-projectname">@Model.Name</div>
 
             <div class="project-details-budget inline">
@@ -122,7 +122,7 @@
             </div>
         </div>
 
-        <div class="col-md-3 project-details-right-panel">
+        <div class="col-md-4 project-details-right-panel">
             @await Html.PartialAsync("ProjectDetailsStatusPartial", new ProjectDetailsStatusViewModel
        {
            ProjectId = Model.Id,
@@ -137,7 +137,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="btn-group">
-                        <div id="financeButton" class="btn btn-info col-md-5 text-muted">
+                        <div id="financeButton" class="btn btn-info text-muted">
                             <img src="~/images/finance-icn.svg"
                                  alt="Finance the project"
                                  asp-append-version="true" />
@@ -145,7 +145,7 @@
                         </div>
                         @if (!Model.IsFollowing)
                         {
-                            <a asp-area="" asp-controller="ProjectDetails" asp-action="FollowProject" asp-route-id="@Model.Id" id="followButton" class="btn btn-info col-md-5 text-muted">
+                            <a asp-area="" asp-controller="ProjectDetails" asp-action="FollowProject" asp-route-id="@Model.Id" id="followButton" class="btn btn-info text-muted">
                                 <img src="~/images/follow-icn.svg"
                                      alt="Finance the project"
                                      asp-append-version="true" />
@@ -154,14 +154,14 @@
                         }
                         else
                         {
-                            <a asp-area="" asp-controller="ProjectDetails" asp-action="UnFollowProject" asp-route-id="@Model.Id" id="followButton" class="btn btn-info col-md-5 text-muted">
+                            <a asp-area="" asp-controller="ProjectDetails" asp-action="UnFollowProject" asp-route-id="@Model.Id" id="followButton" class="btn btn-info text-muted">
                                 <div class="inline">
                                     Unfollow
                                 </div>
                             </a>
                         }
 
-                        <button id="etcButton" class="btn btn-info col-md-2 text-muted">
+                        <button id="etcButton" class="btn btn-info text-muted">
                             <span class="glyphicon glyphicon-option-horizontal vertical-align-middle" aria-hidden="true"></span>
                         </button>
                     </div>
@@ -175,7 +175,7 @@
                          asp-append-version="true" />
                 </div>
                 <div class="inline project-details-author-text">
-                    <div class="bold-text">@Model.AuthorFullName.ToUpper()</div>
+                    <div class="project-details-project-author">@Model.AuthorFullName.ToUpper()</div>
                     <div class="text-muted project-details-author-creator">Creator</div>
                 </div>
             </div>
@@ -184,7 +184,7 @@
                 <p class="project-details-sidebar-date inline">
                     <span class="text-muted">Created</span> @Model.Created.ToString("MMMM dd, yyyy")
                 </p>
-                <div class="inline">
+                <div class="project-details-project-date inline">
                     @createdDaysAgo
                 </div>
             </div>
@@ -193,7 +193,7 @@
                 <p class="project-details-sidebar-date inline">
                     <span class="text-muted">Updated</span> @Model.LastModified.ToString("MMMM dd, yyyy")
                 </p>
-                <div class="inline">
+                <div class="project-details-project-date inline">
                     @modifiedDaysAgo
                 </div>
             </div>

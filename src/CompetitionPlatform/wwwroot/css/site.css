@@ -403,7 +403,9 @@ textarea {
 .project-status-bar-text {
     margin-top: 3px;
     margin-left: 15px;
-    font-size: 20px;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 1.8px;
 }
 
 .project-status-bar-deadline-text {
@@ -537,6 +539,11 @@ textarea {
     margin-bottom: 25px;
 }
 
+    .project-details-author img {
+        width: 60px;
+        height: auto;
+    }
+
 .project-details-author-text {
     vertical-align: middle;
     margin-left: 10px;
@@ -547,18 +554,18 @@ textarea {
 }
 
 #financeButton {
-    padding: 7px 20px 7px 20px;
-    height: 38px;
+    padding: 8px 25px 8px 25px;
+    height: 40px;
 }
 
 #followButton {
-    padding: 7px 20px 7px 20px;
-    height: 38px;
+    padding: 8px 25px 8px 25px;
+    height: 40px;
 }
 
 #etcButton {
-    padding: 7px 10px 7px 5px;
-    height: 38px;
+    padding: 8px 25px 8px 25px;
+    height: 40px;
 }
 
 .category-follow-button {
@@ -592,7 +599,9 @@ textarea {
 }
 
 .project-details-sidebar-date {
-    font-size: 14px;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #3f4d60;
 }
 
     .project-details-sidebar-date:after {
@@ -609,4 +618,12 @@ textarea {
     line-height: 1.25;
     color: #333333;
     margin-bottom: 50px;
+}
+
+.project-details-project-author {
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.78;
+    letter-spacing: 1.8px;
+    color: #333333;
 }
