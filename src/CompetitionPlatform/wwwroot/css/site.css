@@ -334,8 +334,11 @@ textarea {
     margin-bottom: 15px;
 }
 
-.project-voting-text {
+.project-sidebar-helper-text {
+    opacity: 0.6;
     font-size: 16px;
+    line-height: 1.5;
+    color: #3f4d60;
 }
 
 .project-status-progress {
