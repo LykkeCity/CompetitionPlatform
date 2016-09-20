@@ -646,3 +646,8 @@ textarea {
     color: #333333;
     margin-bottom: 7px;
 }
+
+.projext-list-project-name:hover {
+    color: #b2b8bf;
+    text-decoration:none;  
+}
