@@ -275,8 +275,8 @@ textarea {
 }
 
 .project-file-icon {
-    font-size: 30px;
-    margin-right: 5px;
+    font-size: 50px;
+    vertical-align: middle;
 }
 
 .project-details-back {
