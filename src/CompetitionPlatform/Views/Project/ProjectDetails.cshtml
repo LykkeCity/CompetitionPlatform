@@ -1,4 +1,5 @@
 @using System.Threading.Tasks
+@using CompetitionPlatform.Helpers
 @using CompetitionPlatform.Models.ProjectViewModels
 @model ProjectViewModel
 
@@ -94,11 +95,48 @@
                     @if (Model.FileInfo != null)
                     {
                         <div class="project-file">
-                            <div class="inline">
-                                <span class="glyphicon glyphicon-file inline project-file-icon"></span>
-                            </div>
-                            <div class="inline">
-                                <div class="bold-text">@Model.FileInfo.FileName</div>
+                            @switch (Model.FileInfo.ContentType)
+                            {
+                                case ContentTypesHelper.Xls:
+                                case ContentTypesHelper.Xlsx:
+                                    <div class="inline">
+                                        <img src="~/images/xls-file.png"
+                                             alt="xls"
+                                             asp-append-version="true" />
+                                    </div>
+                                    break;
+                                case ContentTypesHelper.Pdf:
+                                    <div class="inline">
+                                        <img src="~/images/pdf-file.png"
+                                             alt="pdf"
+                                             asp-append-version="true" />
+                                    </div>
+                                    break;
+                                case ContentTypesHelper.Jpg:
+                                    <div class="inline">
+                                        <img src="~/images/jpg-file.png"
+                                             alt="jpg"
+                                             asp-append-version="true" />
+                                    </div>
+                                    break;
+                                case ContentTypesHelper.Doc:
+                                case ContentTypesHelper.Docx:
+                                    <div class="inline">
+                                        <img src="~/images/doc-file.png"
+                                             alt="doc"
+                                             asp-append-version="true" />
+                                    </div>
+                                    break;
+                                default:
+                                    <div>
+                                        <div class="inline">
+                                            <span class="glyphicon glyphicon-file inline project-file-icon"></span>
+                                        </div>
+                                    </div>
+                                    break;
+                            }
+                            <div class="project-details-file-info inline">
+                                <div class="project-details-file-name">@Model.FileInfo.FileName</div>
                                 <a asp-area="" asp-controller="ProjectDetails" asp-action="DownloadProjectFile" asp-route-id="@Model.Id">Download</a>
                             </div>
                         </div>
