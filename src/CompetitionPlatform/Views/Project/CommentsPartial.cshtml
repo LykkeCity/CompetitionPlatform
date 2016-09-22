@@ -16,24 +16,36 @@
 <div class="project-details-comments">
     @foreach (var comment in Model.Comments)
     {
-        <div class="container">
-            <div class="row">
-                <div class="project-comments-avatar inline">
-                    <img src="~/images/avatar.svg"
-                         alt="@Model.FullName"
-                         asp-append-version="true" />
+        <div class="container @(!string.IsNullOrEmpty(comment.ParentId) ? "project-reply-background" : "")">
+            <div class="comments-partial-comment-body">
+                <div class="row">
+                    <div class="project-comments-avatar inline">
+                        <img src="~/images/avatar.svg"
+                             alt="@Model.FullName"
+                             asp-append-version="true" />
+                    </div>
+                    <p class="project-comment-author bold-text inline">
+                        @comment.FullName
+                        @if (Model.UserId == comment.UserId)
+                        {
+                            <span class="label label-primary">CREATOR</span>
+                        }
+                    </p>
+                    <small class="inline text-muted">@comment.LastModified.ToString("hh:mm tt MMMM dd, yyyy")</small>
                 </div>
-                <p class="project-comment-author bold-text inline">
-                    @comment.FullName
-                    @if (Model.UserId == comment.UserId)
+                <div class="project-comment col-md-12">
+                    <p class="project-comment-text">@comment.Comment</p>
+                    <div id="@comment.Id"></div>
+                    @if (Model.IsAdmin)
+                {
+                    if (Model.UserId != comment.UserId)
                     {
-                        <span class="label label-primary">CREATOR</span>
+                            <div>
+                                <button id="@comment.Id" class="btn btn-sm btn-info replyToCommentButton @comment.Id">Reply</button>
+                            </div>
+                        }
                     }
-                </p>
-                <small class="inline text-muted">@comment.LastModified.ToString("hh:mm tt MMMM dd, yyyy")</small>
-            </div>
-            <div class="project-comment col-md-9">
-                <p class="project-comment-text">@comment.Comment</p>
+                </div>
             </div>
         </div>
     }
