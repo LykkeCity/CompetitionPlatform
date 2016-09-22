@@ -175,7 +175,7 @@ namespace CompetitionPlatform.Controllers
             var projectFollowing = (user.Email == null) ? null : await _projectFollowRepository.GetAsync(user.Email, id);
             var isFollowing = projectFollowing != null;
 
-            comments = comments.OrderBy(c => c.Created).Reverse().ToList();
+            comments = SortComments(comments);
 
             var statusBarPartial = new ProjectDetailsStatusBarViewModel
             {
@@ -191,7 +191,8 @@ namespace CompetitionPlatform.Controllers
             {
                 ProjectId = project.Id,
                 UserId = project.AuthorId,
-                Comments = comments
+                Comments = comments,
+                IsAdmin = isAdmin
             };
 
             var participantsPartial = new ProjectParticipantsPartialViewModel
@@ -376,6 +377,26 @@ namespace CompetitionPlatform.Controllers
             var percent = daysPassed * 100 / totalDays;
 
             return (percent > 100) ? 100 : percent;
+        }
+
+        private IEnumerable<ICommentData> SortComments(IEnumerable<ICommentData> comments)
+        {
+            var commentsData = comments as IList<ICommentData> ?? comments.ToList();
+
+            var childComments = commentsData.Where(x => x.ParentId != null).ToList();
+            comments = commentsData.Where(x => x.ParentId == null).ToList();
+            comments = comments.OrderBy(c => c.Created).Reverse().ToList();
+
+            var sortedComments = new List<ICommentData>();
+
+            foreach (var comment in comments)
+            {
+                sortedComments.Add(comment);
+                var children = childComments.Where(x => x.ParentId == comment.Id).ToList();
+                sortedComments.AddRange(children);
+            }
+
+            return sortedComments;
         }
 
         private CompetitionPlatformUser GetAuthenticatedUser()
