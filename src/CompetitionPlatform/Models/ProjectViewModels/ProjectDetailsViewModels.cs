@@ -10,13 +10,16 @@ namespace CompetitionPlatform.Models.ProjectViewModels
 {
     public class ProjectCommentPartialViewModel : ICommentData
     {
+        public string Id { get; set; }
         public string ProjectId { get; set; }
         public string UserId { get; set; }
         public string FullName { get; set; }
         public string Comment { get; set; }
+        public string ParentId { get; set; }
         public DateTime Created { get; set; }
         public DateTime LastModified { get; set; }
         public IEnumerable<ICommentData> Comments { get; set; }
+        public bool IsAdmin { get; set; }
     }
 
     public class ProjectDetailsStatusViewModel
