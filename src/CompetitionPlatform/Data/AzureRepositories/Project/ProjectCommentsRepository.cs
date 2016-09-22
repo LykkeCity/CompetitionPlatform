@@ -14,29 +14,34 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
             return projectId;
         }
 
-        public static string GenerateRowKey()
+        public static string GenerateRowKey(string id)
         {
-            return (DateTime.MaxValue.Ticks - DateTime.UtcNow.Ticks).ToString("d19");
+            return id;
         }
 
+        public string Id { get; set; }
         public string UserId { get; set; }
         public string FullName { get; set; }
         public string ProjectId { get; set; }
         public string Comment { get; set; }
+        public string ParentId { get; set; }
         public DateTime Created { get; set; }
         public DateTime LastModified { get; set; }
 
         public static CommentEntity Create(ICommentData src)
         {
+            var id = Guid.NewGuid().ToString("N");
             var result = new CommentEntity
             {
-                RowKey = GenerateRowKey(),
                 PartitionKey = GeneratePartitionKey(src.ProjectId),
+                RowKey = GenerateRowKey(id),
+                Id = id,
                 Comment = src.Comment,
                 UserId = src.UserId,
                 FullName = src.FullName,
                 Created = src.Created,
-                LastModified = src.LastModified
+                LastModified = src.LastModified,
+                ParentId = src.ParentId
             };
 
             return result;
@@ -67,17 +72,17 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
         public async Task SaveAsync(ICommentData projectCommentData)
         {
             var newEntity = CommentEntity.Create(projectCommentData);
-            await _projectCommentsTableStorage.InsertAndGenerateRowKeyAsDateTimeAsync(newEntity, DateTime.Now);
+            await _projectCommentsTableStorage.InsertAsync(newEntity);
         }
 
-        public Task UpdateAsync(ICommentData projectData)
+        public Task UpdateAsync(ICommentData projectCommentData)
         {
-            var partitionKey = CommentEntity.GeneratePartitionKey(projectData.ProjectId);
-            var rowKey = CommentEntity.GenerateRowKey();
+            var partitionKey = CommentEntity.GeneratePartitionKey(projectCommentData.ProjectId);
+            var rowKey = CommentEntity.GenerateRowKey(projectCommentData.Id);
 
             return _projectCommentsTableStorage.ReplaceAsync(partitionKey, rowKey, itm =>
             {
-                itm.Update(projectData);
+                itm.Update(projectCommentData);
                 return itm;
             });
         }
