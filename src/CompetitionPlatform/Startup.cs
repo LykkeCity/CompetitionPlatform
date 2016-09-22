@@ -71,7 +71,7 @@ namespace CompetitionPlatform
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            if (env.IsStaging())
+            if (env.IsStaging() || env.IsProduction())
             {
                 app.Use(async (context, next) =>
                 {
