@@ -393,6 +393,7 @@ namespace CompetitionPlatform.Controllers
             {
                 sortedComments.Add(comment);
                 var children = childComments.Where(x => x.ParentId == comment.Id).ToList();
+                children = children.OrderBy(x => x.Created).ToList();
                 sortedComments.AddRange(children);
             }
 
