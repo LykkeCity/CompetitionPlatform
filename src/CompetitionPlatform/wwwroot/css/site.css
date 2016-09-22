@@ -651,3 +651,14 @@ textarea {
     color: #b2b8bf;
     text-decoration:none;  
 }
+
+.project-reply-background {
+    background-color: #eaedef;
+}
+
+.comments-partial-comment-body {
+    padding-top: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-bottom: 15px;
+}

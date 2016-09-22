@@ -53,8 +53,15 @@
     }
 
     $('#voteTestButton')
-        .click(function(e) {
+        .click(function (e) {
             e.preventDefault();
             $('#projectDetailsTabs a[href="#Results"]').tab('show');
         });
+
+    $('.replyToCommentButton')
+       .click(function () {
+           var id = '#' + this.id;
+           $(id).load('/ProjectDetails/GetCommentReplyForm?commentId=' + this.id + '&projectId=' + $('#projectId').val());
+           $('.' + this.id).hide();
+       });
 });
