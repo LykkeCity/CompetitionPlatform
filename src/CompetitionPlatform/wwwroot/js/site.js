@@ -64,4 +64,9 @@
            $(id).load('/ProjectDetails/GetCommentReplyForm?commentId=' + this.id + '&projectId=' + $('#projectId').val());
            $('.' + this.id).hide();
        });
+
+    $('#file').change(function () {
+        $("#fileInputHelperText").empty();
+        $("#fileInputHelperText").append(this.value.split('\\').pop());
+    });
 });
