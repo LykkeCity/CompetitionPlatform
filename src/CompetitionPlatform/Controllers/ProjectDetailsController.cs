@@ -55,6 +55,24 @@ namespace CompetitionPlatform.Controllers
             return RedirectToAction("ProjectDetails", "Project", new { id = model.ProjectId });
         }
 
+        public IActionResult GetCommentReplyForm(string commentId, string projectId)
+        {
+            var user = GetAuthenticatedUser();
+            var created = DateTime.UtcNow;
+
+            var model = new ProjectCommentPartialViewModel
+            {
+                UserId = user.Email,
+                FullName = user.GetFullName(),
+                ProjectId = projectId,
+                ParentId = commentId,
+                Created = created,
+                LastModified = created
+            };
+
+            return PartialView("~/Views/Project/CommentReplyFormPartial.cshtml", model);
+        }
+
         public async Task<IActionResult> DownloadProjectFile(string id)
         {
             var fileInfo = await _fileInfoRepository.GetAsync(id);
