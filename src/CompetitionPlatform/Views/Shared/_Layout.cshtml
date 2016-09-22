@@ -1,4 +1,6 @@
-﻿@using CompetitionPlatform.Helpers
+﻿@using System.Reflection
+@using CompetitionPlatform.Controllers
+@using CompetitionPlatform.Helpers
 <!DOCTYPE html>
 <html>
 <head>
@@ -149,6 +151,9 @@
         @RenderBody()
         <hr />
         <footer class="navbar-default navbar-fixed-bottom text-center page-footer">
+            <p class="container-fluid navbar-left">
+                Ver. @typeof(HomeController).GetTypeInfo().Assembly.GetName().Version.ToString()
+            </p>
             <div class="container-fluid">
                 <p>&copy; 2016 Lykke. All rights reserved</p>
             </div>
