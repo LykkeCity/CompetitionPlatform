@@ -13,6 +13,7 @@ using CompetitionPlatform.ScheduledJobs;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using PaulMiami.AspNetCore.Mvc.Recaptcha;
 
 namespace CompetitionPlatform
 {
@@ -33,10 +34,13 @@ namespace CompetitionPlatform
             }
 
             Configuration = builder.Build();
+            HostingEnvironment = env;
         }
 
         public IConfigurationRoot Configuration { get; }
         private BaseSettings Settings { get; set; }
+        public IHostingEnvironment HostingEnvironment { get; }
+
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -63,6 +67,15 @@ namespace CompetitionPlatform
 
             services.RegisterRepositories(connectionString, log);
             JobScheduler.Start(connectionString, log);
+
+            var siteKey = Configuration["RecaptchaSiteKey"];
+            var secretKey = Configuration["RecaptchaSecretKey"];
+
+            services.AddRecaptcha(new RecaptchaOptions
+            {
+                SiteKey = siteKey,
+                SecretKey = secretKey
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -101,7 +114,7 @@ namespace CompetitionPlatform
                 app.UseDatabaseErrorPage();
                 app.UseBrowserLink();
             }
-            
+
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
                 AutomaticAuthenticate = true,
