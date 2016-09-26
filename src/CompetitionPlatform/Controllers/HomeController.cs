@@ -182,6 +182,11 @@ namespace CompetitionPlatform.Controllers
             return ClaimsHelper.GetUser(User.Identity);
         }
 
+        public IActionResult AuthenticationFailed()
+        {
+            return View("AuthenticationFailed");
+        }
+
         public string Version()
         {
             return typeof(HomeController).GetTypeInfo().Assembly.GetName().Version.ToString();
