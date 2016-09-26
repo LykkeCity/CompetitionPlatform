@@ -70,13 +70,10 @@ namespace CompetitionPlatform
             services.RegisterRepositories(connectionString, log);
             JobScheduler.Start(connectionString, log);
 
-            var siteKey = Settings.Recaptcha.SiteKey;
-            var secretKey = Settings.Recaptcha.SecretKey;
-
             services.AddRecaptcha(new RecaptchaOptions
             {
-                SiteKey = siteKey,
-                SecretKey = secretKey
+                SiteKey = Settings.Recaptcha.SiteKey,
+                SecretKey = Settings.Recaptcha.SecretKey
             });
         }
 
