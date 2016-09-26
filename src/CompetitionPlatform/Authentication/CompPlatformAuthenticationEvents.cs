@@ -1,8 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing;
 
 namespace CompetitionPlatform.Authentication
 {
@@ -12,6 +10,7 @@ namespace CompetitionPlatform.Authentication
         {
             context.HandleResponse();
             context.Response.Redirect("/Home/AuthenticationFailed");
+
             return Task.FromResult(0);
         }
     }
