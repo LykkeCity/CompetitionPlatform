@@ -46,13 +46,14 @@ namespace CompetitionPlatform
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var connectionString = Configuration.GetValue<string>("AzureStorageConnString");
-            var connectionStringLogs = Configuration.GetValue<string>("AzureStorageLogConnString");
+            var settingsConnectionString = Configuration["SettingsConnString"];
+            var settingsContainer = Configuration["SettingsContainerName"];
+            var settingsFileName = Configuration["SettingsFileName"];
 
-            var settingsContainer = Configuration.GetValue<string>("SettingsContainerName");
-            var settingsFileName = Configuration.GetValue<string>("SettingsFileName");
+            Settings = GeneralSettingsReader.ReadGeneralSettings<BaseSettings>(settingsConnectionString, settingsContainer, settingsFileName);
 
-            Settings = GeneralSettingsReader.ReadGeneralSettings<BaseSettings>(connectionString, settingsContainer, settingsFileName);
+            var connectionString = Settings.Azure.StorageConnString;
+            var connectionStringLogs = Settings.Azure.StorageLogConnString;
 
             // Add framework services.
             services.AddDbContext<ApplicationDbContext>(options =>
@@ -69,8 +70,8 @@ namespace CompetitionPlatform
             services.RegisterRepositories(connectionString, log);
             JobScheduler.Start(connectionString, log);
 
-            var siteKey = Configuration["RecaptchaSiteKey"];
-            var secretKey = Configuration["RecaptchaSecretKey"];
+            var siteKey = Settings.Recaptcha.SiteKey;
+            var secretKey = Settings.Recaptcha.SecretKey;
 
             services.AddRecaptcha(new RecaptchaOptions
             {
