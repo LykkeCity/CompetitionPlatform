@@ -1,8 +1,23 @@
 {
+  "Azure": {
+    "StorageConnString": "",
+    "StorageLogConnString": ""
+  },
+
   "Authentication": {
     "ClientId": "",
     "ClientSecret": "",
     "PostLogoutRedirectUri": "",
     "Authority": ""
+  },
+
+  "Notifications": {
+    "EmailsQueueConnString": "",
+    "SlackQueueConnString": ""
+  },
+
+  "Recaptcha": {
+    "SiteKey": "",
+    "SecretKey": ""
   }
 }
