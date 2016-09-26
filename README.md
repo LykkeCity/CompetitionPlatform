@@ -34,4 +34,4 @@ A website to help manage Projects Competitions.
   *  SiteKey - Recaptcha site key.
   *  SecretKey - Recaptcha secret key.
 
-* Upload the global settings file to the server where the AzureStorageConnString is pointing. The filename should equal SettingsFileName and the Blob container name that it is uploaded to should equal SettingsContainerName.
+* Upload the global settings file to the blob storage where the SettingsConnString is pointing. The filename should equal SettingsFileName and the Blob container name that it is uploaded to should equal SettingsContainerName.
