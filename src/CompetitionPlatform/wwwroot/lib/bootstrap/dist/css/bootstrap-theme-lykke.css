@@ -439,7 +439,7 @@ ol{
 ol li{padding-left: 17px;}
 ul{font-size: 18px;line-height: 2.2;color: #3f4d60;list-style: none;padding-left: 23px;}
 ul li{}
-ul li:before{color: #ab00ff;padding-right: 8px;font-size: 50px;line-height: 0px;}
+ul li:before{color: #ab00ff;content: ". ";padding-right: 8px;font-size: 50px;line-height: 0px;}
 ol li:before{padding-right: 8px;}
 
 .list-group{
