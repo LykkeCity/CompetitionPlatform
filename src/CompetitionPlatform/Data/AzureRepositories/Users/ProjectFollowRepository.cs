@@ -7,22 +7,25 @@ namespace CompetitionPlatform.Data.AzureRepositories.Users
 {
     public class ProjectFollowEntity : TableEntity, IProjectFollowData
     {
-        public static string GeneratePartitionKey(string userId)
+        public static string GeneratePartitionKey()
         {
-            return userId;
+            return "ProjectFollow";
         }
 
-        public static string GenerateRowKey(string projectId)
+        public static string GenerateRowKey(string projectId, string userId)
         {
-            return projectId;
+            return projectId + userId;
         }
 
         public static ProjectFollowEntity Create(string userId, string projectId)
         {
+            var id = GenerateRowKey(projectId, userId);
+
             var result = new ProjectFollowEntity
             {
-                PartitionKey = GeneratePartitionKey(userId),
-                RowKey = GenerateRowKey(projectId),
+                PartitionKey = GeneratePartitionKey(),
+                RowKey = id,
+                Id = id,
                 UserId = userId,
                 ProjectId = projectId
             };
@@ -30,6 +33,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Users
             return result;
         }
 
+        public string Id { get; set; }
         public string UserId { get; set; }
         public string ProjectId { get; set; }
     }
@@ -50,23 +54,23 @@ namespace CompetitionPlatform.Data.AzureRepositories.Users
 
         public async Task<IProjectFollowData> GetAsync(string userId, string projectId)
         {
-            var partitionKey = ProjectFollowEntity.GeneratePartitionKey(userId);
-            var rowKey = ProjectFollowEntity.GenerateRowKey(projectId);
+            var partitionKey = ProjectFollowEntity.GeneratePartitionKey();
+            var rowKey = ProjectFollowEntity.GenerateRowKey(projectId, userId);
 
             return await _projectFollowTableStorage.GetDataAsync(partitionKey, rowKey);
         }
 
-        public async Task<IEnumerable<IProjectFollowData>> GetProjectsFollowAsync(string userId)
+        public async Task<IEnumerable<IProjectFollowData>> GetFollowAsync()
         {
-            var partitionKey = ProjectFollowEntity.GeneratePartitionKey(userId);
+            var partitionKey = ProjectFollowEntity.GeneratePartitionKey();
 
             return await _projectFollowTableStorage.GetDataAsync(partitionKey);
         }
 
         public async Task<IProjectFollowData> DeleteAsync(string userId, string projectId)
         {
-            var partitionKey = ProjectFollowEntity.GeneratePartitionKey(userId);
-            var rowKey = ProjectFollowEntity.GenerateRowKey(projectId);
+            var partitionKey = ProjectFollowEntity.GeneratePartitionKey();
+            var rowKey = ProjectFollowEntity.GenerateRowKey(projectId, userId);
 
             return await _projectFollowTableStorage.DeleteAsync(partitionKey, rowKey);
         }

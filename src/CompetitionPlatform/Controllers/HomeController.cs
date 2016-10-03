@@ -125,7 +125,9 @@ namespace CompetitionPlatform.Controllers
 
             var projects = await _projectRepository.GetProjectsAsync();
 
-            var following = await _projectFollowRepository.GetProjectsFollowAsync(user.Email);
+            var follows = await _projectFollowRepository.GetFollowAsync();
+
+            var following = follows.Where(f => f.UserId == user.Email).ToList();
 
             var filtered = projects
                    .Where(x => following.Any(y => y.ProjectId == x.Id));
