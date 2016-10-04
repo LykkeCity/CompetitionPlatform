@@ -89,9 +89,7 @@
 
             <div class="tab-content project-details-tabs">
                 <div role="tabpanel" class="tab-pane active" id="Info">
-                    <div class="project-details-description">
-                        @Model.Description
-                    </div>
+                    @Html.Raw(Model.Description)
                     @if (Model.FileInfo != null)
                     {
                         <div class="project-file">
