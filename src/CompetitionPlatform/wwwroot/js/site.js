@@ -69,4 +69,6 @@
         $("#fileInputHelperText").empty();
         $("#fileInputHelperText").append(this.value.split('\\').pop());
     });
+
+    tinymce.init({ selector: 'textarea' });
 });
