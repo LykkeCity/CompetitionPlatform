@@ -21,6 +21,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
 
         public string Id => RowKey;
         public string Name { get; set; }
+        public string Overview { get; set; }
         public string Description { get; set; }
         public Status Status { get; set; }
         public string ProjectStatus { get; set; }
@@ -42,6 +43,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
         internal void Update(IProjectData src)
         {
             Name = src.Name;
+            Overview = src.Overview;
             Description = src.Description;
             Category = src.Category;
             Tags = src.Tags;
@@ -64,6 +66,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
                 RowKey = Guid.NewGuid().ToString("N"),
                 PartitionKey = GeneratePartitionKey(),
                 Name = src.Name,
+                Overview = src.Overview,
                 Description = src.Description,
                 ProjectStatus = Status.Initiative.ToString(),
                 Category = src.Category,

@@ -9,6 +9,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
     {
         string Id { get; }
         string Name { get; set; }
+        string Overview { get; set; }
         string Description { get; set; }
         Status Status { get; set; }
         string ProjectStatus { get; set; }
