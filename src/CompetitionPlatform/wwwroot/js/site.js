@@ -70,5 +70,5 @@
         $("#fileInputHelperText").append(this.value.split('\\').pop());
     });
 
-    tinymce.init({ selector: 'textarea' });
+    tinymce.init({ selector: 'textarea.richEditor' });
 });
