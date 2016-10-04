@@ -662,3 +662,9 @@ textarea {
     padding-right: 15px;
     padding-bottom: 15px;
 }
+
+.no-bullets li:before{
+    content: "";
+    list-style: none;
+    padding-right: 0px;
+}
