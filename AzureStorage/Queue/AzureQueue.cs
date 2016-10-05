@@ -21,7 +21,7 @@ namespace AzureStorage.Queue
 
         public Task PutMessageAsync(T itm)
         {
-            var msg = Newtonsoft.Json.JsonConvert.SerializeObject(itm);
+            var msg = itm.ToString();
             return _queue.AddMessageAsync(new CloudQueueMessage(msg));
         }
 
