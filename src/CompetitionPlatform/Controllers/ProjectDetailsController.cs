@@ -1,6 +1,8 @@
 using System;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
+using AzureStorage.Queue;
 using CompetitionPlatform.Data.AzureRepositories.Project;
 using CompetitionPlatform.Data.AzureRepositories.Result;
 using CompetitionPlatform.Data.AzureRepositories.Users;
@@ -24,12 +26,15 @@ namespace CompetitionPlatform.Controllers
         private readonly IProjectResultRepository _resultRepository;
         private readonly IProjectResultVoteRepository _resultVoteRepository;
         private readonly IProjectFollowRepository _projectFollowRepository;
+        private readonly IMailSentRepository _mailSentRepository;
+        private readonly IAzureQueue<string> _emailsQueue;
 
         public ProjectDetailsController(IProjectCommentsRepository commentsRepository, IProjectFileRepository fileRepository,
             IProjectFileInfoRepository fileInfoRepository, IProjectVoteRepository voteRepository,
             IProjectRepository projectRepository, IProjectParticipantsRepository participantsRepository,
             IProjectResultRepository resultRepository, IProjectResultVoteRepository resultVoteRepository,
-            IProjectFollowRepository projectFollowRepository)
+            IProjectFollowRepository projectFollowRepository, IMailSentRepository mailSentRepository,
+            IAzureQueue<string> emailsQueue)
         {
             _commentsRepository = commentsRepository;
             _fileRepository = fileRepository;
@@ -40,6 +45,8 @@ namespace CompetitionPlatform.Controllers
             _resultRepository = resultRepository;
             _resultVoteRepository = resultVoteRepository;
             _projectFollowRepository = projectFollowRepository;
+            _mailSentRepository = mailSentRepository;
+            _emailsQueue = emailsQueue;
         }
 
         [Authorize]
@@ -328,7 +335,23 @@ namespace CompetitionPlatform.Controllers
         {
             var user = GetAuthenticatedUser();
 
-            await _projectFollowRepository.SaveAsync(user.Email, id);
+            var project = await _projectRepository.GetAsync(id);
+
+            project.Status = (Status)Enum.Parse(typeof(Status), project.ProjectStatus, true);
+
+            var sentMails = await _mailSentRepository.GetFollowAsync();
+
+            var match = sentMails.FirstOrDefault(x => x.ProjectId == id && x.UserId == user.Email);
+
+            if (project.Status == Status.Initiative && match == null)
+            {
+                var initiativeMessage = NotificationMessageHelper.GenerateInitiativeMessage(project, user.GetFullName(),
+                    user.Email);
+                await _emailsQueue.PutMessageAsync(initiativeMessage);
+                await _mailSentRepository.SaveFollowAsync(user.Email, id);
+            }
+
+            await _projectFollowRepository.SaveAsync(user.Email, user.GetFullName(), id);
 
             return RedirectToAction("ProjectDetails", "Project", new { id });
         }
