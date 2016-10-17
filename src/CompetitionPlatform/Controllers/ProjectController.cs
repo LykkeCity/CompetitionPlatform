@@ -294,6 +294,7 @@ namespace CompetitionPlatform.Controllers
             {
                 Id = project.Id,
                 Name = project.Name,
+                Overview = project.Overview,
                 Description = project.Description,
                 ProjectCategories = projectCategories,
                 Category = project.Category,

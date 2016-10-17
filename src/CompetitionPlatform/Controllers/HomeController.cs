@@ -85,6 +85,7 @@ namespace CompetitionPlatform.Controllers
                 {
                     Id = project.Id,
                     Name = project.Name.Length > 36 ? project.Name.Substring(0, 33) + "..." : project.Name,
+                    Overview = project.Overview.Length > 500 ? project.Overview.Substring(0, 497) + "..." : project.Overview,
                     Description = project.Description.Length > 500 ? project.Description.Substring(0, 497) + "..." : project.Description,
                     BudgetFirstPlace = project.BudgetFirstPlace,
                     VotesFor = project.VotesFor,

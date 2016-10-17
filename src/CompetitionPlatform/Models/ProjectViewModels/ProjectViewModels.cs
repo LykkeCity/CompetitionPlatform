@@ -15,6 +15,10 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public string Name { get; set; }
 
         [Required]
+        [Display(Name="Overview")]
+        public string Overview { get; set; }
+
+        [Required]
         [StringLength(5000)]
         [DataType(DataType.MultilineText)]
         [Display(Name = "Describe the project")]
@@ -95,6 +99,7 @@ namespace CompetitionPlatform.Models.ProjectViewModels
     {
         public string Id { get; set; }
         public string Name { get; set; }
+        public string Overview { get; set; }
         public string Description { get; set; }
         public Status Status { get; set; }
         public double BudgetFirstPlace { get; set; }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using CompetitionPlatform.Models;
 using Microsoft.WindowsAzure.Storage.Table;
@@ -21,6 +22,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
 
         public string Id => RowKey;
         public string Name { get; set; }
+        public string Overview { get; set; }
         public string Description { get; set; }
         public Status Status { get; set; }
         public string ProjectStatus { get; set; }
@@ -42,6 +44,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
         internal void Update(IProjectData src)
         {
             Name = src.Name;
+            Overview = src.Overview;
             Description = src.Description;
             Category = src.Category;
             Tags = src.Tags;
@@ -64,6 +67,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
                 RowKey = Guid.NewGuid().ToString("N"),
                 PartitionKey = GeneratePartitionKey(),
                 Name = src.Name,
+                Overview = src.Overview,
                 Description = src.Description,
                 ProjectStatus = Status.Initiative.ToString(),
                 Category = src.Category,
@@ -98,13 +102,22 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
             var partitionKey = ProjectEntity.GeneratePartitionKey();
             var rowKey = ProjectEntity.GenerateRowKey(id);
 
-            return await _projectsTableStorage.GetDataAsync(partitionKey, rowKey);
+            var project = await _projectsTableStorage.GetDataAsync(partitionKey, rowKey);
+
+            return ChangeNullWithDefault(project);
         }
 
         public async Task<IEnumerable<IProjectData>> GetProjectsAsync()
         {
             var partitionKey = ProjectEntity.GeneratePartitionKey();
-            return await _projectsTableStorage.GetDataAsync(partitionKey);
+
+            var projects = await _projectsTableStorage.GetDataAsync(partitionKey);
+
+            return projects.ToList().Select(c =>
+            {
+                c = ChangeNullWithDefault(c);
+                return c;
+            });
         }
 
         public async Task<string> SaveAsync(IProjectData projectData)
@@ -124,6 +137,14 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
                 itm.Update(projectData);
                 return itm;
             });
+        }
+
+        private ProjectEntity ChangeNullWithDefault(ProjectEntity projectData)
+        {
+            if (projectData.Overview == null) projectData.Overview = "Overview was not provided";
+            if (projectData.Description == null) projectData.Overview = "Description was not provided";
+
+            return projectData;
         }
     }
 }
