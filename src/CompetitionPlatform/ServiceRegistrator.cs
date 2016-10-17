@@ -5,9 +5,12 @@ using Common.Log;
 using CompetitionPlatform.Services;
 using AzureStorage.Tables;
 using AzureStorage.Blobs;
+using AzureStorage.Queue;
 using CompetitionPlatform.Data.AzureRepositories.Result;
 using CompetitionPlatform.Data.AzureRepositories.Vote;
 using CompetitionPlatform.Data.ProjectCategory;
+using CompetitionPlatform.Helpers;
+using Microsoft.WindowsAzure.Storage.Queue;
 
 namespace CompetitionPlatform
 {
@@ -51,6 +54,9 @@ namespace CompetitionPlatform
             services.AddSingleton<IAzureTableStorage<UserRoleEntity>>(
                 new AzureTableStorage<UserRoleEntity>(connectionString, "UserRoles", log));
 
+            services.AddSingleton<IAzureTableStorage<MailSentEntity>>(
+                new AzureTableStorage<MailSentEntity>(connectionString, "MailSent", log));
+
             services.AddTransient<IProjectRepository, ProjectRepository>();
             services.AddTransient<IProjectFileRepository, ProjectFileRepository>();
             services.AddTransient<IUsersRepository, UsersRepository>();
@@ -65,6 +71,7 @@ namespace CompetitionPlatform
             services.AddTransient<IProjectWinnersRepository, ProjectWinnersRepository>();
             services.AddTransient<IUserRolesRepository, UserRolesRepository>();
             services.AddTransient<IProjectWinnersService, ProjectWinnersService>();
+            services.AddTransient<IMailSentRepository, MailSentRepository>();
         }
 
         public static void RegisterLyykeServices(this IServiceCollection services)
@@ -72,6 +79,17 @@ namespace CompetitionPlatform
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
+        }
+
+        public static void RegisterNotificationServices(this IServiceCollection services, string emailsQueueConnString,
+            string slackQueueConnString)
+        {
+            services.AddSingleton<IAzureQueue<string>>(new AzureQueue<string>(emailsQueueConnString, "emailsqueue"));
+        }
+
+        public static void RegisterInMemoryNotificationServices(this IServiceCollection services)
+        {
+            services.AddSingleton<IAzureQueue<string>>(new QueueInMemory<string>());
         }
     }
 }

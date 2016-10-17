@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using CompetitionPlatform.Data;
 using CompetitionPlatform.Data.AzureRepositories.Log;
 using AzureStorage.Tables;
+using Common.Log;
 using CompetitionPlatform.Authentication;
 using CompetitionPlatform.Data.AzureRepositories.Settings;
 using CompetitionPlatform.ScheduledJobs;
@@ -41,6 +42,7 @@ namespace CompetitionPlatform
         public IConfigurationRoot Configuration { get; }
         private BaseSettings Settings { get; set; }
         public IHostingEnvironment HostingEnvironment { get; }
+        private ILog Log { get; set; }
 
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -55,6 +57,8 @@ namespace CompetitionPlatform
             var connectionString = Settings.Azure.StorageConnString;
             var connectionStringLogs = Settings.Azure.StorageLogConnString;
 
+            Log = new LogToTable(new AzureTableStorage<LogEntity>(connectionStringLogs, "LogCompPlatform", null));
+
             // Add framework services.
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
@@ -65,10 +69,20 @@ namespace CompetitionPlatform
             services.AddMvc();
             services.RegisterLyykeServices();
 
-            var log = new LogToTable(new AzureTableStorage<LogEntity>(connectionStringLogs, "LogCompPlatform", null));
+            var notificationEmailsQueueConnString = Settings.Notifications.EmailsQueueConnString;
+            var notificationSlackQueueConnString = Settings.Notifications.SlackQueueConnString;
 
-            services.RegisterRepositories(connectionString, log);
-            JobScheduler.Start(connectionString, log);
+            if (HostingEnvironment.IsProduction())
+            {
+                services.RegisterNotificationServices(notificationEmailsQueueConnString, notificationSlackQueueConnString);
+            }
+            else
+            {
+                services.RegisterInMemoryNotificationServices();
+            }
+
+            services.RegisterRepositories(connectionString, Log);
+            JobScheduler.Start(connectionString, Log);
 
             services.AddRecaptcha(new RecaptchaOptions
             {
@@ -137,7 +151,7 @@ namespace CompetitionPlatform
 
                 // Use the authorization code flow.
                 ResponseType = OpenIdConnectResponseType.Code,
-                Events = new CompPlatformAuthenticationEvents(),
+                Events = new CompPlatformAuthenticationEvents(Settings.Azure.StorageConnString, Log),
 
                 // Note: setting the Authority allows the OIDC client middleware to automatically
                 // retrieve the identity provider's configuration and spare you from setting
