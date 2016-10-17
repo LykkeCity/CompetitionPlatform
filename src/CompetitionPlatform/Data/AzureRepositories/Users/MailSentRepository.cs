@@ -12,9 +12,9 @@ namespace CompetitionPlatform.Data.AzureRepositories.Users
             return partition;
         }
 
-        public static string GenerateRowKey(string userId)
+        public static string GenerateRowKey(string userId, string projectId)
         {
-            return userId;
+            return userId + projectId;
         }
 
         public static MailSentEntity Create(string partition, string userId, string projectId = "")
@@ -22,8 +22,9 @@ namespace CompetitionPlatform.Data.AzureRepositories.Users
             var result = new MailSentEntity
             {
                 PartitionKey = GeneratePartitionKey(partition),
-                RowKey = GenerateRowKey(userId),
-                UserId = userId
+                RowKey = GenerateRowKey(userId, projectId),
+                UserId = userId,
+                ProjectId = projectId
             };
 
             return result;
@@ -42,9 +43,9 @@ namespace CompetitionPlatform.Data.AzureRepositories.Users
             _mailSentStorage = mailSentStorage;
         }
 
-        public async Task SaveRegisterAsync(string userId)
+        public async Task SaveRegisterAsync(string userId, string projectId)
         {
-            var newEntity = MailSentEntity.Create("Register", userId);
+            var newEntity = MailSentEntity.Create("Register", userId, projectId);
             await _mailSentStorage.InsertAsync(newEntity);
         }
 
@@ -54,12 +55,11 @@ namespace CompetitionPlatform.Data.AzureRepositories.Users
             await _mailSentStorage.InsertAsync(newEntity);
         }
 
-        public async Task<IMailSentData> GetRegisterAsync(string userId)
+        public async Task<IEnumerable<IMailSentData>> GetRegisterAsync(string userId)
         {
             var partitionKey = MailSentEntity.GeneratePartitionKey("Register");
-            var rowKey = MailSentEntity.GenerateRowKey(userId);
 
-            return await _mailSentStorage.GetDataAsync(partitionKey, rowKey);
+            return await _mailSentStorage.GetDataAsync(partitionKey);
         }
 
         public async Task<IEnumerable<IMailSentData>> GetFollowAsync()

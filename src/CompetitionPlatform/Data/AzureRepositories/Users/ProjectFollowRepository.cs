@@ -17,7 +17,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Users
             return projectId + userId;
         }
 
-        public static ProjectFollowEntity Create(string userId, string projectId)
+        public static ProjectFollowEntity Create(string userId, string fullName, string projectId)
         {
             var id = GenerateRowKey(projectId, userId);
 
@@ -26,6 +26,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Users
                 PartitionKey = GeneratePartitionKey(),
                 RowKey = id,
                 Id = id,
+                FullName = fullName,
                 UserId = userId,
                 ProjectId = projectId
             };
@@ -34,6 +35,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Users
         }
 
         public string Id { get; set; }
+        public string FullName { get; set; }
         public string UserId { get; set; }
         public string ProjectId { get; set; }
     }
@@ -46,9 +48,9 @@ namespace CompetitionPlatform.Data.AzureRepositories.Users
             _projectFollowTableStorage = projectFollowTableStorage;
         }
 
-        public async Task SaveAsync(string userId, string projectId)
+        public async Task SaveAsync(string userId, string fullName, string projectId)
         {
-            var newEntity = ProjectFollowEntity.Create(userId, projectId);
+            var newEntity = ProjectFollowEntity.Create(userId, fullName, projectId);
             await _projectFollowTableStorage.InsertAsync(newEntity);
         }
 

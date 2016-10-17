@@ -11,9 +11,9 @@ namespace CompetitionPlatform.Data.AzureRepositories.Users
 
     public interface IMailSentRepository
     {
-        Task SaveRegisterAsync(string userId);
+        Task SaveRegisterAsync(string userId, string projectId);
         Task SaveFollowAsync(string userId, string projectId);
-        Task<IMailSentData> GetRegisterAsync(string userId);
+        Task<IEnumerable<IMailSentData>> GetRegisterAsync(string userId);
         Task<IEnumerable<IMailSentData>> GetFollowAsync();
     }
 }
