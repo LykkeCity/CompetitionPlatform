@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AzureStorage.Queue;
 using CompetitionPlatform.Data.AzureRepositories.Project;
 using CompetitionPlatform.Data.AzureRepositories.Result;
 using CompetitionPlatform.Data.AzureRepositories.Users;
@@ -31,13 +32,14 @@ namespace CompetitionPlatform.Controllers
         private readonly IProjectWinnersRepository _winnersRepository;
         private readonly IUserRolesRepository _userRolesRepository;
         private readonly IProjectWinnersService _winnersService;
+        private readonly IAzureQueue<string> _emailsQueue;
 
         public ProjectController(IProjectRepository projectRepository, IProjectCommentsRepository commentsRepository,
             IProjectFileRepository fileRepository, IProjectFileInfoRepository fileInfoRepository,
             IProjectParticipantsRepository participantsRepository, IProjectCategoriesRepository categoriesRepository,
             IProjectResultRepository resultRepository, IProjectFollowRepository projectFollowRepository,
             IProjectWinnersRepository winnersRepository, IUserRolesRepository userRolesRepository,
-            IProjectWinnersService winnersService)
+            IProjectWinnersService winnersService, IAzureQueue<string> emailsQueue)
         {
             _projectRepository = projectRepository;
             _commentsRepository = commentsRepository;
@@ -50,6 +52,7 @@ namespace CompetitionPlatform.Controllers
             _winnersRepository = winnersRepository;
             _userRolesRepository = userRolesRepository;
             _winnersService = winnersService;
+            _emailsQueue = emailsQueue;
         }
 
         [Authorize]
@@ -112,6 +115,13 @@ namespace CompetitionPlatform.Controllers
                 projectViewModel.ParticipantsCount = 0;
 
                 projectId = await _projectRepository.SaveAsync(projectViewModel);
+
+                if (_emailsQueue != null)
+                {
+                    var message = NotificationMessageHelper.ProjectCreatedMessage(user.Email, user.GetFullName(),
+                        projectViewModel.Name);
+                    await _emailsQueue.PutMessageAsync(message);
+                }
             }
             else
             {
@@ -124,6 +134,21 @@ namespace CompetitionPlatform.Controllers
 
                 await _projectRepository.UpdateAsync(projectViewModel);
 
+                if (project.Status != Status.CompetitionRegistration && projectViewModel.Status == Status.CompetitionRegistration)
+                {
+                    await AddCompetitionMailToQueue(project);
+                }
+
+                if (project.Status != Status.Implementation && projectViewModel.Status == Status.Implementation)
+                {
+                    await AddImplementationMailToQueue(project);
+                }
+
+                if (project.Status != Status.Voting && projectViewModel.Status == Status.Voting)
+                {
+                    await AddVotingMailToQueue(project);
+                }
+
                 if (project.Status != Status.Archive && projectViewModel.Status == Status.Archive)
                 {
                     await _winnersService.SaveWinners(projectViewModel.Id);
@@ -133,6 +158,64 @@ namespace CompetitionPlatform.Controllers
             await SaveProjectFile(projectViewModel.File, projectId);
 
             return RedirectToAction("Index", "Home");
+        }
+
+        private async Task AddCompetitionMailToQueue(IProjectData project)
+        {
+            var following = await GetProjectFollows(project.Id);
+
+            foreach (var follower in following)
+            {
+                if (_emailsQueue != null)
+                {
+                    var message = NotificationMessageHelper.GenerateCompetitionMessage(project, follower);
+                    await _emailsQueue.PutMessageAsync(message);
+                }
+            }
+        }
+
+        private async Task AddImplementationMailToQueue(IProjectData project)
+        {
+            var following = await GetProjectFollows(project.Id);
+
+            var participants = await _participantsRepository.GetProjectParticipantsAsync(project.Id);
+            var projectParticipateData = participants as IList<IProjectParticipateData> ?? participants.ToList();
+
+            foreach (var follower in following)
+            {
+                if (_emailsQueue != null)
+                {
+                    var participant = projectParticipateData.FirstOrDefault(x => x.ProjectId == project.Id && x.UserId == follower.UserId);
+
+                    var templateType = "";
+                    templateType = participant != null ? "ImplementationParticipant" : "ImplementationFollower";
+
+                    var message = NotificationMessageHelper.GenerateImplementationMessage(project, follower,
+                            templateType);
+                    await _emailsQueue.PutMessageAsync(message);
+                }
+            }
+        }
+
+        private async Task AddVotingMailToQueue(IProjectData project)
+        {
+            var following = await GetProjectFollows(project.Id);
+
+            foreach (var follower in following)
+            {
+                if (_emailsQueue != null)
+                {
+                    var message = NotificationMessageHelper.GenerateVotingMessage(project, follower);
+                    await _emailsQueue.PutMessageAsync(message);
+                }
+            }
+        }
+
+        private async Task<IEnumerable<IProjectFollowData>> GetProjectFollows(string projectId)
+        {
+            var follows = await _projectFollowRepository.GetFollowAsync();
+            var projectFollows = follows.Where(f => f.ProjectId == projectId).ToList();
+            return projectFollows;
         }
 
         public async Task<IActionResult> ProjectDetails(string id)
