@@ -71,4 +71,36 @@
     });
 
     tinymce.init({ selector: 'textarea.richEditor' });
+
+    //restyling js
+
+    $('._show_hidden_form').on('click', function (ev) {
+        ev.preventDefault();
+        $(this).hide().siblings('.hidden_form').show();
+    });
+
+    $('#msg')
+      .bind('blur', function () {
+          if (!$(this).val()) {
+              $(this).parents('.form--message').removeClass('focused');
+              $(this).parents('.message_card__inner').removeAttr('style');
+          }
+      })
+      .bind('focus', function () { $(this).parents('.form--message').addClass('focused'); })
+      .keyup(function () {
+          if ($(this).val()) { $(this).parents('.form--message').addClass('with_value'); }
+          else { $(this).parents('.form--message').removeClass('with_value'); }
+      })
+
+    $('#msg')
+      .each(function () { autosize(this); })
+      .on('autosize:resized', function () {
+          $('.message_card__inner').css({ height: 'auto' });
+      });
+
+    $('._voting_btn').on('click', function () {
+        $(this).toggleClass('active').siblings('._voting_btn').toggleClass('invisible').parents('.voting_group').toggleClass('voted');
+    });
+
+    $('#datetimepicker1').datetimepicker();
 });
