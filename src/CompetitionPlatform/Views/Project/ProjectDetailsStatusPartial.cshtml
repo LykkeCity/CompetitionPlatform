@@ -2,62 +2,105 @@
 @using CompetitionPlatform.Helpers
 @model CompetitionPlatform.Models.ProjectViewModels.ProjectDetailsStatusViewModel
 
+@*@if (Model.Status == Status.Initiative)
+    {
+        <div>
+            @if (ClaimsHelper.GetUser(User.Identity).Email != null)
+            {
+                <p class="text-muted small_desc">Cast your vote for or against the competition. Do you think this is the project that Lykke City needs?</p>
+                <div class="project-voting-buttons">
+
+                    <button id="voteForButton" class="btn btn-success">
+                        <i class="icon icon--vote_yes"></i>
+                    </button>
+
+                    <button id="voteAgainstButton" class="btn btn-danger">
+                        <i class="icon icon--vote_no"></i>
+                    </button>
+
+                    <input asp-for="@Model.ProjectId" type="hidden" />
+
+                    <p class="inline">@(Model.VotesFor + Model.VotesAgainst) Votes</p>
+                    <div id="projectVoteResults" class="project-details-voting-bars">
+                    </div>
+                </div>
+            }
+            else
+            {
+                <p>
+                    Please
+                    <a asp-area="" asp-controller="Home" asp-action="SignIn" class="">Sign In</a>
+                    to Vote
+                </p>
+            }
+        </div>
+    }*@
 @if (Model.Status == Status.Initiative)
 {
     <div>
         @if (ClaimsHelper.GetUser(User.Identity).Email != null)
         {
-            <p class="project-sidebar-helper-text">Cast your vote for or against the competition. Do you think this is the project that Lykke City needs?</p>
-            <div class="project-voting-buttons">
+            <p class="text-muted small_desc">Cast your vote for or against the competition. Do you think this is the project that Lykke City needs?</p>
+            @*<div class="project-voting-buttons">
 
-                <button id="voteForButton" class="btn btn-sm btn-primary alert-success">
-                    <span class="glyphicon glyphicon-thumbs-up"></span>
-                </button>
+                    <button id="voteForButton" class="btn btn-success">
+                        <i class="icon icon--vote_yes"></i>
+                    </button>
 
-                <button id="voteAgainstButton" class="btn btn-sm btn-primary alert-danger">
-                    <span class="glyphicon glyphicon-thumbs-down"></span>
-                </button>
+                    <button id="voteAgainstButton" class="btn btn-danger">
+                        <i class="icon icon--vote_no"></i>
+                    </button>
 
-                <input asp-for="@Model.ProjectId" type="hidden"/>
+                    <input asp-for="@Model.ProjectId" type="hidden" />
 
-                <p class="inline">@(Model.VotesFor + Model.VotesAgainst) Votes</p>
-                <div id="projectVoteResults" class="project-details-voting-bars">
+                    <p class="inline">@(Model.VotesFor + Model.VotesAgainst) Votes</p>
+                    <div id="projectVoteResults" class="project-details-voting-bars">
+                    </div>
+                </div>*@
+            <div class="voting_group">
+                <button id="voteForButton" class="btn btn--circle btn--green _voting_btn" data-hover="Vote again"><i class="icon icon--vote_yes"></i><span>Yes</span></button>
+                <button id ="voteAgainstButton" class="btn btn--circle btn--red _voting_btn" data-hover="Vote again"><i class="icon icon--vote_no"></i><span>No</span></button>
+
+                <div class="voting_group__value">@(Model.VotesFor + Model.VotesAgainst) votes</div>
+                <div id="projectVoteResults" class="voting_group__status">
                 </div>
             </div>
         }
         else
         {
-            <p>Please 
+            <p>
+                Please
                 <a asp-area="" asp-controller="Home" asp-action="SignIn" class="">Sign In</a>
-         to Vote</p>
+                to Vote
+            </p>
         }
     </div>
 }
 @if (Model.Status == Status.CompetitionRegistration)
 {
-    <div>
-        <p class="project-sidebar-helper-text">To participate in the contest with the prize, you must be registered in the competition. Registration can be completed any time.</p>
-        <a asp-area="" asp-controller="ProjectDetails" asp-action="AddParticipant" asp-route-id="@Model.ProjectId" type="button" class="btn btn-primary project-details-status-button col-md-12">
-            <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Participate
-        </a>
-    </div>
+    <p class="text-muted small_desc">To participate in the contest with the prize, you must be registered in the competition. Registration can be completed at any time.</p>
+
+    <a asp-area="" asp-controller="ProjectDetails" asp-action="AddParticipant" asp-route-id="@Model.ProjectId" type="button" class="btn btn-block btn_participate">
+        <i class="icon icon--participate"></i>Participate
+    </a>
 }
 @if (Model.Status == Status.Implementation)
 {
-    <p class="project-sidebar-helper-text">The contest began. You can no longer participate, but will be able to evaluate the results of the competition after @Model.ImplementationDeadline.ToString("MMMM d").</p>
+    <p class="text-muted small_desc">The contest began. You can no longer participate, but will be able to evaluate the results of the competition after @Model.ImplementationDeadline.ToString("MMMM d").</p>
+
 }
 @if (Model.Status == Status.Voting)
 {
     <div>
-        <p class="project-sidebar-helper-text">The contest is finished You can help us determine the winners. Voting ends on @Model.VotingDeadline.ToString("MMMM d").</p>
-        <button id="voteTestButton" class="btn btn-primary project-details-status-button col-md-12">
-            <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> Vote/Test
+        <p class="text-muted small_desc">The contest is finished You can help us determine the winners. Voting ends on @Model.VotingDeadline.ToString("MMMM d").</p>
+        <button id="voteTestButton" class="btn btn-block btn_participate">
+            <i class="icon icon--vote"></i>Vote/Test
         </button>
     </div>
 }
 @if (Model.Status == Status.Archive)
 {
     <div>
-        <p class="project-sidebar-helper-text">The competition and voting have completed. Winners were determined by the citizens of Lykke City.</p>
+        <p class="text-muted small_desc">The competition and voting have completed. Winners were determined by the citizens of Lykke City.</p>
     </div>
 }

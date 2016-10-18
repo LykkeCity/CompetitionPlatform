@@ -10,22 +10,24 @@
 
     <environment names="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-theme-lykke.css" />
+        @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-theme-lykke.css" />*@
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-datepicker.css" />
-        <link rel="stylesheet" href="~/css/site.css" />
-        <link rel="stylesheet" href="~/css/header.css" />
+        @*<link rel="stylesheet" href="~/css/site.css" />
+            <link rel="stylesheet" href="~/css/header.css" />*@
+        <link rel="stylesheet" href="~/css/style.css" />
     </environment>
     <environment names="Staging,Production">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/css/bootstrap.min.css"
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-theme-lykke.css" />
+        @*<link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />*@
+        @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-theme-lykke.css" />*@
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-datepicker.css" />
-        <link rel="stylesheet" href="~/css/site.css" />
-        <link rel="stylesheet" href="~/css/header.css" />
+        @*<link rel="stylesheet" href="~/css/site.css" />
+            <link rel="stylesheet" href="~/css/header.css" />*@
+        <link rel="stylesheet" href="~/css/style.css" />
     </environment>
-    
+
     <link rel="shortcut icon" type="image/x-icon" href="~/favicon.ico" />
 </head>
 <body>
@@ -33,9 +35,9 @@
         <div class="container">
             <div class="row">
                 <div class="col-xs-2 col-sm-3">
-                    <a href="/" class="logo header__logo"><img src="~/images/lykke_new.svg" height="50" alt="" /></a>
+                    <a href="/" class="logo header__logo"><img src="~/img/lykke_new.svg" height="50" alt="" /></a>
                 </div>
-                <div class="col-xs-10 col-sm-6 text-center">
+                <div class="col-xs-10 col-sm-9 col-md-6 text-center">
                     <button type="button" class="navbar-toggle collapsed btn btn--stroke pull-right" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false">
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
@@ -45,17 +47,8 @@
                         <div class="t-simulate">
                             <div class="t-row">
                                 <div class="t-cell">
-                                    <ul class="nav nav--header no-bullets">
-                                        <li>
-                                            <a class="dropdown__control" href="https://lykke.com/lykkewallet/">Wallet</a>
-                                            <div class="dropdown__container">
-                                                <ul class="dropdown__nav no-bullets">
-                                                    <li><a href="https://www.youtube.com/watch?v=h5T2gRGcMso&feature=youtu.be">Watch the video</a></li>
-                                                    <li><a href="https://lykke.com/lykkewallet/privacy_policy.html">Privacy Policy</a></li>
-                                                    <li><a href="https://lykke.com/city/terms_of_use">Terms of Use</a></li>
-                                                </ul>
-                                            </div>
-                                        </li>
+
+                                    <ul class="nav nav--header">
                                         <li class="_add_active_exchange">
                                             <a class="dropdown__control" href="https://lykke.com/exchange.php">Exchange</a>
                                             <div class="dropdown__container">
@@ -69,7 +62,7 @@
                                             </div>
                                         </li>
                                         <li>
-                                            <a class="dropdown__control primary-color-important" href="https://lykke.com/city/start">City</a>
+                                            <a class="dropdown__control" href="https://lykke.com/city/start">City</a>
                                             <div class="dropdown__container">
                                                 <ul class="dropdown__nav">
                                                     <li><a href="https://lykke.com/city/start?do=register">Check In</a></li>
@@ -91,21 +84,24 @@
                                                 </ul>
                                             </div>
                                         </li>
+                                        <li>
+                                            <a class="dropdown__control" href="https://lykke.com/lykkewallet/">Consulting</a>
+                                        </li>
                                     </ul>
                                     <a href="https://wiki.lykkex.com/start?do=login" class="visible-xs-inline-block visible-sm-inline-block btn">Sign In</a>
                                 </div>
                             </div>
                         </div>
-                        @*<ul class="social social--header visible-xs visible-sm">
-                                <li><a href="https://www.facebook.com/groups/542506412568917/" target="_blank" class="social__item"><i class="icon_img icon_img--fb"></i></a></li>
-                                <li><a href="https://twitter.com/LykkeCity" target="_blank" class="social__item"><i class="icon_img icon_img--tw"></i></a></li>
-                                <li><a href="http://instagram.com/lykkecity" target="_blank" class="social__item"><i class="icon_img icon_img--inst"></i></a></li>
-                                <li><a href="https://www.youtube.com/channel/UCmMYipGdKMF0kzfaE-PXsNQ" target="_blank" class="social__item"><i class="icon_img icon_img--yt"></i></a></li>
-                            </ul>*@
+                        <ul class="social social--header visible-xs visible-sm">
+                            <li><a href="https://www.facebook.com/groups/542506412568917/" target="_blank" class="social__item"><i class="icon_img icon_img--fb"></i></a></li>
+                            <li><a href="https://twitter.com/LykkeCity" target="_blank" class="social__item"><i class="icon_img icon_img--tw"></i></a></li>
+                            <li><a href="http://instagram.com/lykkecity" target="_blank" class="social__item"><i class="icon_img icon_img--inst"></i></a></li>
+                            <li><a href="https://www.youtube.com/channel/UCmMYipGdKMF0kzfaE-PXsNQ" target="_blank" class="social__item"><i class="icon_img icon_img--yt"></i></a></li>
+                        </ul>
                     </div>
                 </div>
                 @if (ClaimsHelper.GetUser(User.Identity).Email == null)
-                {
+            {
                     <div class="col-sm-3 hidden-xs hidden-sm">
                         <a asp-area="" asp-controller="Home" asp-action="SignIn" class="btn btn-link pull-right">Sign In</a>
                     </div>
@@ -116,17 +112,16 @@
                         <div class="navbar-right">
                             @if (User.Identity.IsAuthenticated)
                             {
-                                <div class="dropdown">
-                                    <div class="btn dropdown-toggle h4" type="button" data-toggle="dropdown">
-                                        <div class="h4">
-                                            @ClaimsHelper.GetUser(User.Identity).GetFullName()
-                                            <span class="caret"></span>
+                                <ul class="nav nav--header">
+                                    <li>
+                                        <a class="dropdown__control" href="">@ClaimsHelper.GetUser(User.Identity).GetFullName()</a>
+                                        <div class="dropdown__container">
+                                            <ul class="dropdown__nav">
+                                                <li><a asp-controller="Home" asp-action="LogOut" asp-route-id="">Sign Out</a></li>
+                                            </ul>
                                         </div>
-                                    </div>
-                                        <ul class="dropdown-menu no-bullets">
-                                            <li><a asp-controller="Home" asp-action="LogOut" asp-route-id="">Sign Out</a></li>
-                                        </ul>
-                                    </div>
+                                    </li>
+                                </ul>
                             }
                         </div>
                     </div>
@@ -134,31 +129,53 @@
             </div>
         </div>
     </header>
-    <hr />
-    <div class="navbar text-center menu-top-panel">
+    <article class="content page">
+        <nav class="page_nav page__nav">
+            <div class="page_nav__inner">
+                <div class="container">
+                    <ul class="page_nav__list">
+                        <li class="page_nav__item"><a href="https://lykke.com/city/start?do=register">Check In</a></li>
+                        <li class="page_nav__item"><a href="https://lykke.com/city/yellowpages/registerform">Become a Citizen</a></li>
+                        <li class="page_nav__item"><a href="https://lykke.com/city/about/openposition">Open Positions</a></li>
+                        <li class="page_nav__item"><a href="https://lykke.com/city/openprojects/index">Projects Board</a></li>
+                        <li class="page_nav__item"><a href="https://lykke.com/city/lykketimes">Lykke Times</a></li>
+                        <li class="page_nav__item"><a href="https://lykke.com/city/blog/index">Blog</a></li>
+                        <li class="pull-right hidden-xs hidden-sm"><a type="button" class="btn btn-circle new-project-button" href="/Project/Create">+</a></li>
+                    </ul>
 
-        <div class="menu-top-panel-link">
-            <a href="https://lykke.com/city/start?do=register" class="h4 text-muted">Check In</a>
-            <a href="https://lykke.com/city/yellowpages/registerform" class="h4 text-muted">Become a Citizen</a>
-            <a href="https://lykke.com/city/about/openposition" class="h4 text-muted">Open Positions</a>
-            <a href="https://lykke.com/city/lykketimes" class="h4 text-muted">Lykke Times</a>
-            <a href="https://lykke.com/city/openprojects/index" class="h4 text-muted">Projects Board</a>
-            <a href="https://lykke.com/city/blog/index" class="h4 text-muted">Blog</a>
-            <a asp-area="" asp-controller="Project" asp-action="Create" type="button" class="btn btn-circle btn-primary new-project-button">+</a>
-        </div>
-    </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer class="navbar-default navbar-fixed-bottom text-center page-footer">
-            <p class="container-fluid navbar-left">
-                Ver. @typeof(HomeController).GetTypeInfo().Assembly.GetName().Version.ToString()
-            </p>
-            <div class="container-fluid">
-                <p>&copy; 2016 Lykke. All rights reserved</p>
+                </div>
             </div>
-        </footer>
-    </div>
+        </nav>
+        @RenderBody()
+    </article>
+    <footer class="footer page__footer">
+        <div class="footer__bottom">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-6 col-sm-4 hidden-xs text-left pull-left">
+                        <div class="clearfix">
+                            <div class="footer__copy">Ver. @typeof(HomeController).GetTypeInfo().Assembly.GetName().Version.ToString()</div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 col-sm-4 text-right pull-right">
+                        <div class="clearfix">
+                            <ul class="social social--footer_alt">
+                                <li><a href="https://www.linkedin.com/company/lykke-ag" target="_blank" class="social__item"><i class="icon_img icon_img--in"></i></a></li>
+                                <li><a href="https://www.facebook.com/groups/542506412568917/" target="_blank" class="social__item"><i class="icon_img icon_img--fb"></i></a></li>
+                                <li><a href="https://twitter.com/LykkeCity" target="_blank" class="social__item"><i class="icon_img icon_img--tw"></i></a></li>
+                                <li><a href="http://instagram.com/lykkecity" target="_blank" class="social__item"><i class="icon_img icon_img--inst"></i></a></li>
+                                <li><a href="https://www.youtube.com/channel/UCmMYipGdKMF0kzfaE-PXsNQ" target="_blank" class="social__item"><i class="icon_img icon_img--yt"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 col-sm-4 text-center">
+                        <div class="footer__copy">&copy; Lykke 2016. All rights reserved</div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </footer>
 
     <environment names="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
@@ -166,20 +183,38 @@
         <script src="~/lib/bootstrap/dist/js/bootstrap-datepicker.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
         <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+
+        <script src="~/js/vendor/jquery-1.11.2.min.js"></script>
+        <script src="~/js/vendor/bootstrap.min.js"></script>
+        <script src="~/js/vendor/fastclick.min.js"></script>
+        <script src="~/js/vendor/jquery.inview.min.js"></script>
+        <script src="~/js/functions_landing.js"></script>
+        <script src="~/js/vendor/autosize.min.js"></script>
+        <script src="~/js/vendor/bootstrap-datetimepicker.min.js"></script>
     </environment>
     <environment names="Staging,Production">
         <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
                 asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
                 asp-fallback-test="window.jQuery">
+
         </script>
         <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/bootstrap.min.js"
                 asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
                 asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal">
+
         </script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap-datepicker.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
         <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+
+        <script src="~/js/vendor/jquery-1.11.2.min.js"></script>
+        <script src="~/js/vendor/bootstrap.min.js"></script>
+        <script src="~/js/vendor/fastclick.min.js"></script>
+        <script src="~/js/vendor/jquery.inview.min.js"></script>
+        <script src="~/js/functions_landing.js"></script>
+        <script src="~/js/vendor/autosize.min.js"></script>
+        <script src="~/js/vendor/bootstrap-datetimepicker.min.js"></script>
     </environment>
 
     @RenderSection("scripts", required: false)

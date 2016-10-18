@@ -1,0 +1,151 @@
+.text {
+  h5, .h5 {
+    font-size: 18px;
+    font-weight: 600;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.67;
+    color: #333333;
+  }
+
+  h4, .h4 {
+    font-size: 18px;
+    font-weight: 600;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.78;
+    letter-spacing: 1.8px;
+    color: #333333;
+    text-transform: uppercase;
+  }
+
+  h3, .h3 {
+    font-size: 28px;
+    font-weight: 600;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.43;
+    color: #333333;
+    margin-bottom: 18px;
+  }
+
+  h2, .h2 {
+    font-size: 40px;
+    font-weight: 600;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.25;
+    color: #333333;
+  }
+
+  h1, .h1 {
+    font-size: 50px;
+    font-weight: 600;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.2;
+    color: #333333;
+    margin-bottom: 20px;
+  }
+
+  p, ul, ol {
+    font-size: 18px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.67;
+    color: #3f4d60;
+    margin-bottom: 15px;
+
+    + h3, + h4, + h2 {
+      margin-top: 45px;
+    }
+  }
+
+  figcaption {
+    font-size: 16px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.75;
+    color: #3f4d60;
+  }
+
+  blockquote {
+    font-size: 22px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.64;
+    color: #3f4d60;
+  }
+
+  ul {
+    list-style-position: outside; list-style-type: disc;
+  }
+
+  table {
+    width: 100%;
+  }
+
+  ul {
+    list-style: disc;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    margin-bottom: 20px; margin-top: 20px; padding-left: 25px; color: rgba(63, 77, 96, 0.8);
+    font-size: 18px;
+    line-height: 30px;
+
+    li {color: #AB00FF; margin-bottom: 15px;}
+    .li {color: rgba(63, 77, 96, 0.8);}
+
+    a:not(.btn) {
+      color: #0da7fc;
+    }
+
+    + h3, + h4, + h2 {
+      margin-top: 45px;
+    }
+  }
+
+  ol {
+    color: rgba(63, 77, 96, 0.8);
+    padding-left: 24px;
+
+    li {
+      margin-bottom: 10px;
+    }
+
+    + h3, + h4, + h2 {
+      margin-top: 45px;
+    }
+  }
+
+  @media (max-width: 640px)  {
+    h1, .h1 {
+      font-size: 36px;
+      margin-bottom: 27px;
+    }
+
+    h2, .h2 {
+      font-size: 28px;
+    }
+
+
+    h3, .h3 {
+      font-size: 22px;
+    }
+
+    p, ul, ul li, ol, ol li, b, strong {
+      font-size: 16px;
+      line-height: 26px;
+    }
+
+    ul, ol {
+      li {
+        margin-bottom: 5px;
+      }
+    }
+  }
+}

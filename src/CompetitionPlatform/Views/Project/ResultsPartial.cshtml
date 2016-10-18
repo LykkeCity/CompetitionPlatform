@@ -2,146 +2,149 @@
 
 @if (Model.Status == Status.Implementation || Model.Status == Status.Voting)
 {
-    <div>
-        <table class="table">
-            <thead>
+    <div class="banner banner--results">
+        <img src="~/img/competition/banner-coin.svg" class="pull-right" width="88" alt="banner-coin">
+        <div class="banner__content">
+            <h4>Help us determine the winner!</h4>
+            <p>Check the completed task, participants of the contest and choose the best result. You can cast votes for the various participants.</p>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table--board">
+            <tr>
+                <th class="board_name">Username</th>
+                <th class="board_date">reg. and Subm. Date</th>
+                <th class="board_result text-center">Result</th>
+                <th class="board_score text-center">Score</th>
+                <th class="board_vote text-center">Vote</th>
+                <th class="board_action"></th>
+            </tr>
+            @foreach (var result in Model.Results)
+            {
                 <tr>
-                    <th>USERNAME</th>
-                    <th>SUBMISSION DATE</th>
-                    <th>RESULT</th>
-                    <th>SCORE</th>
-                    <th>VOTES</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var result in Model.Results)
-                {
-                    <tr>
-                        <td>
-                            <div class="project-participant">
-                                <img src="~/images/avatar.svg"
-                                     alt="@result.ParticipantFullName"
-                                     asp-append-version="true" />
-                                @result.ParticipantFullName
-                            </div>
-                        </td>
-                        <td>@result.Submitted.ToString("MMMM dd, yyyy hh:mm")</td>
-                        <td>
-                            <a href="@result.Link">View</a>
-                        </td>
-                        <td>@result.Score/100</td>
-                        <td>
-                            @result.Votes
-                        </td>
-                        @if (Model.Status == Status.Voting)
+                    <td class="board_name">
+                        <div class="user_badge user_badge--small">
+                            <div class="user_badge__img"><img src="~/images/avatar.svg" alt=""></div>
+                            <div class="user_badge__info">@result.ParticipantFullName</div>
+                        </div>
+                    </td>
+                    <td class="board_date">@result.Submitted.ToString("MMMM dd, yyyy hh:mm")</td>
+                    <td class="board_result text-center"><a href="@result.Link">Vew</a></td>
+                    <td class="board_score text-center">@result.Score<span class="text-muted">/100</span></td>
+                    <td class="board_vote text-center">@result.Votes</td>
+                    @if (Model.Status == Status.Voting)
                     {
-                            <td>
-                                <form asp-controller="ProjectDetails" asp-action="VoteForResult" enctype="multipart/form-data">
-                                    <input type="hidden" name="ProjectId" value="@result.ProjectId">
-                                    <input type="hidden" name="ParticipantId" value="@result.ParticipantId">
-                                    <input type="submit" value="+1" class="btn project-results-vote btn-default" />
-                                </form>
-                            </td>
-                        }
-                    </tr>
-                }
-            </tbody>
+                        <td class="board_action">
+                            <form asp-controller="ProjectDetails" asp-action="VoteForResult" enctype="multipart/form-data">
+                                <input type="hidden" name="ProjectId" value="@result.ProjectId">
+                                <input type="hidden" name="ParticipantId" value="@result.ParticipantId">
+                                <input type="submit" value="+1" class="circle_voting_btn _vote_plus" />
+                            </form>
+                        </td>
+                    }
+
+                </tr>
+            }
         </table>
     </div>
 }
 @if (Model.Status == Status.Archive)
 {
-    <div class="container results-info-panel col-md-12">
-        <div class="row">
-            <div class="inline text-center col-md-2 h4">
-                <div class="results-winners-count-text text-muted">
-                    $ @Model.BudgetFirstPlace
-                </div>
-                <div class="results-winners-text">
-                    Prize Fund
-                </div>
-            </div>
-            <div class="inline text-center col-md-2 h4">
-                <div class="results-winners-count-text text-muted">
-                    @Model.ParticipantCount
-                </div>
-                <div class="results-winners-text">
-                    Participants
-                </div>
-            </div>
-            <div class="inline text-center col-md-2 h4">
-                <div class="results-winners-count-text text-muted">
-                    @Model.DaysOfContest
-                </div>
-                <div class="results-winners-text">
-                    Days of the contest
-                </div>
-            </div>
-            <div class="inline text-center col-md-2 h4">
-                <div class="results-winners-count-text text-muted">
-                    @Model.Results.Count()
-                </div>
-                <div class="results-winners-text">
-                    Results
-                </div>
-            </div>
-            <div class="inline text-center col-md-2 h4">
-                <div class="results-winners-count-text text-muted">
-                    @Model.Winners.Count()
-                </div>
-                <div class="results-winners-text">
-                    @(Model.Winners.Count() == 1 ? "Winner" : "Winners")
-                </div>
+    <div class="banner banner--results">
+        <div class="banner__content">
+            <div class="table-responsive">
+                <table class="table">
+                    <tr>
+                        <td>
+                            <div class="prize__value">$@Model.BudgetFirstPlace</div>
+                            <span>Prize fund</span>
+                        </td>
+                        <td>
+                            <div class="prize__value">@Model.ParticipantCount</div>
+                            <span>Participants</span>
+                        </td>
+                        <td>
+                            <div class="prize__value">@Model.DaysOfContest</div>
+                            <span>Days of the contest</span>
+                        </td>
+                        <td>
+                            <div class="prize__value">@Model.Results.Count()</div>
+                            <span>Results</span>
+                        </td>
+                        <td>
+                            <div class="prize__value">@Model.Winners.Count()</div>
+                            <span>Winners</span>
+                        </td>
+                    </tr>
+                </table>
             </div>
         </div>
     </div>
 
-    <table class="table">
-        <tbody>
+    <div class="table-responsive">
+        @{
+            var showSecondPlaceIcon = true;
+        }
+        <table class="table table--board table--board_results">
             @foreach (var winner in Model.Winners)
             {
-                <tr>
-                    <td>
-                        <div class="results-winners-place">
-                            @if (winner.Place == 1)
-                            {
-                                <img src="~/images/1-prize.png"
-                                     alt="First Place"
-                                     asp-append-version="true" />
-                            }
-                            else
-                            {
-                                <img src="~/images/2-prize.png"
-                                     alt="First Place"
-                                     asp-append-version="true" />
-                            }
-                        </div>
-                    </td>
-                    <td>
-                        <div>
-                            <img src="~/images/avatar.svg"
-                                 alt="@winner.FullName"
-                                 asp-append-version="true" />
-                        </div>
-                    </td>
-                    <td>
-                        <div class="results-winners-name">
-                            @winner.FullName
-                        </div>
-                        <div class="text-muted">
-                            <div class="result-winners-score inline">
-                                Score: @winner.Score/100
+                if (winner.Place == 1)
+                {
+                    <tr class="board_winner">
+                        <td class="board_place">
+                            <span class="icon icon--prize">
+                                <span class="path1"></span><span class="path2"></span><span class="path3"></span>
+                            </span>
+                        </td>
+                        <td class="board_name">
+                            <div class="user_badge user_badge--small">
+                                <div class="user_badge__img">
+                                    <a href=""><img src="~/images/avatar.svg" alt=""></a>
+                                </div>
+                                <div class="user_badge__info">
+                                    <div class="user_badge__title">
+                                        <a href="">@winner.FullName</a>
+                                    </div>
+                                    <span class="user_badge__desc">Score: @winner.Score/100 &middot; @winner.Votes votes</span>
+                                </div>
                             </div>
-                            @winner.Votes Votes
-                        </div>
-                    </td>
-                    <td>
-                        <div class="results-winners-count-text text-muted">
-                            $ @winner.Budget
-                        </div>
-                    </td>
-                </tr>
+                        </td>
+                        <td class="board_sum">
+                            <div class="prize__value">$ @winner.Budget</div>
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    <tr>
+                        @if (showSecondPlaceIcon)
+                        {
+                            <td class="board_place" rowspan="3">
+                                <span class="icon icon--prize2"></span>
+                            </td>
+                            showSecondPlaceIcon = false;
+                        }
+                        <td class="board_name">
+                            <div class="user_badge user_badge--small">
+                                <div class="user_badge__img">
+                                    <a href=""><img src="~/images/avatar.svg" alt=""></a>
+                                </div>
+                                <div class="user_badge__info">
+                                    <div class="user_badge__title">
+                                        <a href="">@winner.FullName</a>
+                                    </div>
+                                    <span class="user_badge__desc">Score: @winner.Score/100 &middot; @winner.Votes votes</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="board_sum">
+                            <div class="prize__value">$ 2000</div>
+                        </td>
+                    </tr>
+                }
+
             }
-        </tbody>
-    </table>
+        </table>
+    </div>
 }

@@ -1,0 +1,242 @@
+.btn {
+  color: #fff;
+  font-weight: $fw-semi;
+  font-size: 18px;
+  padding: 13px 28px 12px;
+  border: 0;
+  background: $primary;
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+  @include border-radius(100px);
+  @include transition($all);
+  @include box-shadow-none(none!important);
+
+  &:after {
+    content: '';
+    position: absolute;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    transition: all 0.3s;
+    width: 0%;
+    height: 200%;
+    background: rgba(255,255,255,0.15);
+    z-index: 1;
+    right: 0;
+    top: 0;
+    margin: -5px 0 0 -5px;
+    -webkit-transform-origin: 0 0;
+    -webkit-transform: rotate(-20deg);
+    -moz-transform-origin: 0 0;
+    -moz-transform: rotate(-20deg);
+    -ms-transform-origin: 0 0;
+    -ms-transform: rotate(-20deg);
+    transform-origin: 0 0;
+    transform: rotate(-20deg);
+  }
+
+  &:not([disabled]) {
+    &:hover {
+      color: #fff;
+
+      &:after {
+        width: 40%;
+      }
+    }
+
+    &:focus, &:active {
+      color: #fff;
+    }
+
+    &:active {
+      @include transform(scale(0.98));
+    }
+  }
+
+  &--gradient {
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ff9100+0,ff0029+50,ab00ff+100 */
+    background: $primary !important; /* Old browsers */
+    background: -moz-linear-gradient(left,  #ff9100 0%, #ff0029 50%, #ab00ff 100%)!important; /* FF3.6-15 */
+    background: -webkit-linear-gradient(left,  #ff9100 0%,#ff0029 50%,#ab00ff 100%)!important; /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to right,  #ff9100 0%,#ff0029 50%,#ab00ff 100%)!important; /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff9100', endColorstr='#ab00ff',GradientType=1 )!important; /* IE6-9 */
+  }
+
+  &--stroke {
+    background: transparent;
+    border: 2px solid $primary;
+    color: $primary !important;
+    font-weight: normal;
+    @include border-radius(200px);
+
+    .header & {
+      font-size: 16px;
+      padding: 7px 25px;
+    }
+
+    &:hover {
+      background: $primary;
+      color: #fff !important;
+    }
+  }
+
+  &--go {
+    margin: 60px 0 40px;
+  }
+
+  &--default {
+    border: 1px solid #e1e1e1;
+    background: transparent;
+    font-size: 16px;
+    color: #3F4D60 !important;
+    font-weight: normal;
+    padding: 13px 21px;
+
+    &:after {
+      display: none;
+    }
+
+    &:hover {
+      /* BG: */
+      border-color: #B3B7BA;
+      color: #3F4D60 !important;
+      @include transform(none !important);
+    }
+  }
+
+  &--red {
+    background: #FF3E2E;
+
+    &:hover {
+      background: lighten(#FF3E2E, 5%);
+    }
+
+    &:after {
+      display: none;
+    }
+  }
+
+  &--green {
+    background: #13B72A;
+
+    &:hover {
+      background: lighten(#13B72A, 3%);
+    }
+
+    &:after {
+      display: none;
+    }
+  }
+}
+
+.btn-circle,
+.btn--circle {
+  border-radius: 100px;
+  height: 50px;
+  min-width: 50px;
+  padding: 10px 15px;
+  text-align: center;
+  font-size: 18px;
+  line-height: 24px;
+  text-transform: uppercase;
+  font-weight: $fw-semi;
+
+  &:after {
+    display: none;
+  }
+
+  .page_nav & {
+    margin-top: 0;
+  }
+
+  .icon {
+    margin-right: 0;
+
+    + span {
+      margin-left: 10px;
+    }
+  }
+}
+
+.btn_participate {
+  margin-bottom: 30px;
+  padding: 14px 18px 12px;
+  max-width: 298px;
+
+  .icon {
+    font-size: 23px;
+    margin-right: 3px;
+    position: relative;
+    left: -12px;
+  }
+}
+
+.new-project-button {
+  font-size: 40px;
+  line-height: 34px;
+}
+
+.btn-group {
+  font-size: 0;
+  display: table;
+  width: 100%;
+  white-space: nowrap;
+  margin-bottom: 40px;
+
+  .btn {
+    background: transparent;
+    border: 1px solid #D3D6DB;
+    border-radius: 0;
+    margin-left: -1px;
+    padding: 7px 21px;
+    font-size: 16px;
+    color: rgba(#3F4D60, .8) !important;
+    letter-spacing: 0px;
+    line-height: 24px;
+    display: table-cell;
+    vertical-align: top;
+
+    .icon {
+      font-size: 16px;
+      color: rgb(138,150,161);
+
+      .path1:before, .path2:before, .path3:before {
+        color: rgb(138,150,161);
+      }
+    }
+
+    &:after {
+      display: none;
+    }
+
+    &:hover {
+      @include scale(1);
+      background: rgba(#D3D6DB, .2);
+    }
+
+    &:first-child {
+      border-radius: 50px 0 0 50px;
+    }
+
+    &:last-child {
+      border-radius: 0 50px 50px 0;
+      padding: 7px 18px;
+    }
+  }
+}
+
+.circle_voting_btn {
+  color: $primary;
+  border: 2px solid $primary;
+  border-radius: 100px;
+  background: #fff;
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  font-weight: $fw-semi;
+
+  &.active {
+    background: $primary;
+    color: #fff;
+  }
+}

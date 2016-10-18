@@ -1,0 +1,363 @@
+@mixin css3-prefix($property, $value) {
+  -webkit-#{$property}: #{$value};
+  -moz-#{$property}: #{$value};
+  -ms-#{$property}: #{$value};
+  -o-#{$property}: #{$value};
+  #{$property}: #{$value};
+}
+
+@mixin background-gradient($startColor: #3C3C3C, $endColor: #999999) {
+  background-color: $startColor;
+  background-image: -webkit-gradient(linear, left top, left bottom, from($startColor), to($endColor));
+  background-image: -webkit-linear-gradient(top, $startColor, $endColor);
+  background-image:    -moz-linear-gradient(top, $startColor, $endColor);
+  background-image:     -ms-linear-gradient(top, $startColor, $endColor);
+  background-image:      -o-linear-gradient(top, $startColor, $endColor);
+  background-image:         linear-gradient(top, $startColor, $endColor);
+  filter:            progid:DXImageTransform.Microsoft.gradient(startColorStr='#{$startColor}', endColorStr='#{$endColor}');
+}
+
+@mixin background-horizontal($startColor: #3C3C3C, $endColor: #999999) {
+  background-color: $startColor;
+  background-image: -webkit-gradient(linear, left top, right top, from($startColor), to($endColor));
+  background-image: -webkit-linear-gradient(left, $startColor, $endColor);
+  background-image:    -moz-linear-gradient(left, $startColor, $endColor);
+  background-image:     -ms-linear-gradient(left, $startColor, $endColor);
+  background-image:      -o-linear-gradient(left, $startColor, $endColor);
+  background-image:         linear-gradient(left, $startColor, $endColor);
+  filter:            progid:DXImageTransform.Microsoft.gradient(startColorStr='#{$startColor}', endColorStr='#{$endColor}', gradientType='1');
+}
+
+@mixin background-radial($startColor: #FFFFFF, $startPos: 0%, $endColor: #000000, $endPos:100%) {
+  background: -moz-radial-gradient(center, ellipse cover, $startColor $startPos, $endColor $endPos);
+  background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop($startPos,$startColor), color-stop($endPos,$endColor));
+  background: -webkit-radial-gradient(center, ellipse cover, $startColor $startPos,$endColor $endPos);
+  background: -o-radial-gradient(center, ellipse cover, $startColor $startPos,$endColor $endPos);
+  background: -ms-radial-gradient(center, ellipse cover, $startColor $startPos,$endColor $endPos);
+  background: radial-gradient(ellipse at center, $startColor $startPos,$endColor $endPos);
+}
+
+@mixin background-size($arg...) {
+  @if type-of($arg) == 'number' and $arg != null {
+    @include css3-prefix('background-size', $arg $arg);
+  } @else {
+    @include css3-prefix('background-size', $arg);
+  }
+}
+
+@mixin background-opacity($color: #000, $opacity: 0.85) {
+  background: $color;
+  background: rgba($color, $opacity);
+}
+
+@mixin border-radius($radius: 5px) {
+  @include css3-prefix('border-radius', $radius);
+}
+
+@mixin border-radius-separate($topLeftRadius: 5px, $topRightRadius: 5px, $bottomLeftRadius: 5px, $bottomRightRadius: 5px) {
+  -webkit-border-top-left-radius:     $topLeftRadius;
+  -webkit-border-top-right-radius:    $topRightRadius;
+  -webkit-border-bottom-right-radius: $bottomRightRadius;
+  -webkit-border-bottom-left-radius:  $bottomLeftRadius;
+
+  -moz-border-radius-topleft:     $topLeftRadius;
+  -moz-border-radius-topright:    $topRightRadius;
+  -moz-border-radius-bottomright: $bottomRightRadius;
+  -moz-border-radius-bottomleft:  $bottomLeftRadius;
+
+  border-top-left-radius:     $topLeftRadius;
+  border-top-right-radius:    $topRightRadius;
+  border-bottom-right-radius: $bottomRightRadius;
+  border-bottom-left-radius:  $bottomLeftRadius;
+}
+
+@mixin box($orient: horizontal, $pack: center, $align: center) {
+  display: -webkit-box;
+  display: -moz-box;
+  display: box;
+
+  @include css3-prefix('box-orient', $orient);
+  @include css3-prefix('box-pack', $pack);
+  @include css3-prefix('box-align', $align);
+}
+
+@mixin box-rgba($r: 60, $g: 3, $b: 12, $opacity: 0.23, $color: #3C3C3C) {
+  background-color: transparent;
+  background-color: rgba($r, $g, $b, $opacity);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#{$color}',endColorstr='#{$color}');
+  zoom:   1;
+}
+
+
+@mixin box-shadow($x: 2px, $y: 2px, $blur: 5px, $color: rgba(0,0,0,.4), $inset: "") {
+  @if ($inset != "") {
+    @include css3-prefix('box-shadow', $inset $x $y $blur $color);
+  } @else {
+    @include css3-prefix('box-shadow', $x $y $blur $color);
+  }
+}
+
+@mixin box-shadow-none($arg) {
+  @include css3-prefix('box-shadow',$arg);
+}
+
+@mixin box-sizing($type: border-box) {
+  @include css3-prefix('box-sizing', $type);
+}
+
+@mixin columns($count: 3, $gap: 10) {
+  @include css3-prefix('column-count', $count);
+  @include css3-prefix('column-gap', $gap);
+}
+
+@mixin double-borders($colorOne: #3C3C3C, $colorTwo: #999999, $radius: 0) {
+  border: 1px solid $colorOne;
+
+  @include css3-prefix('box-shadow', 0 0 0 1px $colorTwo);
+
+  @include border-radius( $radius );
+}
+
+@mixin flex($value: 1) {
+  @include css3-prefix('box-flex', $value);
+}
+
+@mixin flip($scaleX: -1) {
+  @include css3-prefix('transform', scaleX($scaleX));
+  filter:            FlipH;
+  -ms-filter:        "FlipH";
+}
+
+@mixin font-face($fontFamily: myFont, $eotFileSrc: 'myFont.eot', $woffFileSrc: 'myFont.woff', $ttfFileSrc: 'myFont.ttf') {
+  font-family: $fontFamily;
+  src: url($eotFileSrc)  format('eot'),
+  url($woffFileSrc) format('woff'),
+  url($ttfFileSrc)  format('truetype');
+}
+
+@mixin opacity($opacity: 0.5) {
+  $opacityMultiplied: ($opacity * 100);
+
+  filter:         alpha(opacity=$opacityMultiplied);
+  -ms-filter:     "progid:DXImageTransform.Microsoft.Alpha(Opacity=" + $opacityMultiplied + ")";
+  @include css3-prefix('opacity', $opacity);
+}
+
+
+@mixin outline-radius($radius: 5px) {
+  @include css3-prefix('outline-radius', $radius);
+}
+
+@mixin resize($direction: both) {
+  @include css3-prefix('resize', $direction);
+}
+
+@mixin text-shadow($x: 2px, $y: 2px, $blur: 5px, $color: rgba(0,0,0,.4)) {
+  text-shadow: $x $y $blur $color;
+}
+
+
+@mixin transform($params) {
+  @include css3-prefix('transform', $params);
+}
+
+
+@mixin transform-style($style: preserve-3d) {
+  @include css3-prefix('transform-style', $style);
+}
+
+
+@mixin transition($properties...) {
+
+  @if length($properties) >= 1 {
+    @include css3-prefix('transition', $properties);
+  }
+
+  @else {
+    @include css3-prefix('transition', $what: all, $length: 1s, $easing: ease-in-out);
+  }
+}
+
+
+@mixin triple-borders($colorOne: #3C3C3C, $colorTwo: #999999, $colorThree: #000000, $radius: 0) {
+  border: 1px solid $colorOne;
+
+  @include border-radius($radius);
+
+  @include css3-prefix('box-shadow', 0 0 0 1px $colorTwo, 0 0 0 2px $colorThree);
+}
+
+
+@mixin keyframes($animation-name) {
+  @-webkit-keyframes #{$animation-name} {
+    @content;
+  }
+  @-moz-keyframes #{$animation-name} {
+    @content;
+  }
+  @-ms-keyframes #{$animation-name} {
+    @content;
+  }
+  @-o-keyframes #{$animation-name} {
+    @content;
+  }
+  @keyframes #{$animation-name} {
+    @content;
+  }
+}
+
+
+@mixin animation($str) {
+  @include css3-prefix('animation', $str);
+}
+
+@mixin animation-name($str) {
+  @include css3-prefix('animation-name', $str);
+}
+
+@mixin animation-duration($str) {
+  @include css3-prefix('animation-duration', $str);
+}
+
+@mixin clearfix{
+  &:after, &:before{ content:""; display:table; clear:both; }
+}
+
+@mixin x-rem ($property, $value) {
+  #{$property}: $value * $main-font-size;
+  #{$property}: #{$value}rem;
+}
+
+@mixin placeholder {
+  ::-webkit-input-placeholder {@content}
+  :-moz-placeholder           {@content}
+  ::-moz-placeholder          {@content}
+  :-ms-input-placeholder      {@content}
+}
+
+// Animations
+@mixin animation($animation) {
+  -webkit-animation: $animation;
+  -o-animation: $animation;
+  animation: $animation;
+}
+@mixin animation-name($name) {
+  -webkit-animation-name: $name;
+  animation-name: $name;
+}
+@mixin animation-duration($duration) {
+  -webkit-animation-duration: $duration;
+  animation-duration: $duration;
+}
+@mixin animation-timing-function($timing-function) {
+  -webkit-animation-timing-function: $timing-function;
+  animation-timing-function: $timing-function;
+}
+@mixin animation-delay($delay) {
+  -webkit-animation-delay: $delay;
+  animation-delay: $delay;
+}
+@mixin animation-iteration-count($iteration-count) {
+  -webkit-animation-iteration-count: $iteration-count;
+  animation-iteration-count: $iteration-count;
+}
+@mixin animation-direction($direction) {
+  -webkit-animation-direction: $direction;
+  animation-direction: $direction;
+}
+@mixin animation-fill-mode($fill-mode) {
+  -webkit-animation-fill-mode: $fill-mode;
+  animation-fill-mode: $fill-mode;
+}
+@mixin transition-property($transition-property...) {
+  -webkit-transition-property: $transition-property;
+  transition-property: $transition-property;
+}
+@mixin transition-delay($transition-delay) {
+  -webkit-transition-delay: $transition-delay;
+  transition-delay: $transition-delay;
+}
+@mixin transition-duration($transition-duration...) {
+  -webkit-transition-duration: $transition-duration;
+  transition-duration: $transition-duration;
+}
+@mixin transition-timing-function($timing-function) {
+  -webkit-transition-timing-function: $timing-function;
+  transition-timing-function: $timing-function;
+}
+@mixin transition-transform($transition...) {
+  -webkit-transition: -webkit-transform $transition;
+  -moz-transition: -moz-transform $transition;
+  -o-transition: -o-transform $transition;
+  transition: transform $transition;
+}
+// Transformations
+@mixin scale($ratio...) {
+  -webkit-transform: scale($ratio);
+  -ms-transform: scale($ratio); // IE9 only
+  -o-transform: scale($ratio);
+  transform: scale($ratio);
+}
+
+@mixin scaleX($ratio) {
+  -webkit-transform: scaleX($ratio);
+  -ms-transform: scaleX($ratio); // IE9 only
+  -o-transform: scaleX($ratio);
+  transform: scaleX($ratio);
+}
+@mixin scaleY($ratio) {
+  -webkit-transform: scaleY($ratio);
+  -ms-transform: scaleY($ratio); // IE9 only
+  -o-transform: scaleY($ratio);
+  transform: scaleY($ratio);
+}
+@mixin skew($x, $y) {
+  -webkit-transform: skewX($x) skewY($y);
+  -ms-transform: skewX($x) skewY($y); // See https://github.com/twbs/bootstrap/issues/4885; IE9+
+  -o-transform: skewX($x) skewY($y);
+  transform: skewX($x) skewY($y);
+}
+@mixin translate($x, $y) {
+  -webkit-transform: translate($x, $y);
+  -ms-transform: translate($x, $y); // IE9 only
+  -o-transform: translate($x, $y);
+  transform: translate($x, $y);
+}
+@mixin translate3d($x, $y, $z) {
+  -webkit-transform: translate3d($x, $y, $z);
+  transform: translate3d($x, $y, $z);
+}
+@mixin rotate($degrees) {
+  -webkit-transform: rotate($degrees);
+  -ms-transform: rotate($degrees); // IE9 only
+  -o-transform: rotate($degrees);
+  transform: rotate($degrees);
+}
+@mixin rotateX($degrees) {
+  -webkit-transform: rotateX($degrees);
+  -ms-transform: rotateX($degrees); // IE9 only
+  -o-transform: rotateX($degrees);
+  transform: rotateX($degrees);
+}
+@mixin rotateY($degrees) {
+  -webkit-transform: rotateY($degrees);
+  -ms-transform: rotateY($degrees); // IE9 only
+  -o-transform: rotateY($degrees);
+  transform: rotateY($degrees);
+}
+@mixin perspective($perspective) {
+  -webkit-perspective: $perspective;
+  -moz-perspective: $perspective;
+  perspective: $perspective;
+}
+@mixin perspective-origin($perspective) {
+  -webkit-perspective-origin: $perspective;
+  -moz-perspective-origin: $perspective;
+  perspective-origin: $perspective;
+}
+@mixin transform-origin($origin) {
+  -webkit-transform-origin: $origin;
+  -moz-transform-origin: $origin;
+  -ms-transform-origin: $origin; // IE9 only
+  transform-origin: $origin;
+}

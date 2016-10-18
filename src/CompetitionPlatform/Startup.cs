@@ -97,21 +97,21 @@ namespace CompetitionPlatform
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            if (env.IsStaging() || env.IsProduction())
-            {
-                app.Use(async (context, next) =>
-                {
-                    if (context.Request.IsHttps)
-                    {
-                        await next();
-                    }
-                    else
-                    {
-                        var withHttps = "https://" + context.Request.Host + context.Request.Path;
-                        context.Response.Redirect(withHttps);
-                    }
-                });
-            }
+            //if (env.IsStaging() || env.IsProduction())
+            //{
+            //    app.Use(async (context, next) =>
+            //    {
+            //        if (context.Request.IsHttps)
+            //        {
+            //            await next();
+            //        }
+            //        else
+            //        {
+            //            var withHttps = "https://" + context.Request.Host + context.Request.Path;
+            //            context.Response.Redirect(withHttps);
+            //        }
+            //    });
+            //}
 
             if (env.IsDevelopment() || env.IsStaging())
             {

@@ -1,97 +1,184 @@
 ﻿@model CompetitionPlatform.Models.ProjectViewModels.ProjectListIndexViewModel
 
-@foreach (var project in Model.Projects)
-{
-    <div class="col-md-6 project-tile">
-        @{
-            var statusColor = "";
-            var projectStatus = project.Status.ToString().ToUpper();
-            var projectCount = "";
-            var votesCount = project.VotesFor + project.VotesAgainst;
-        }
-
-        @switch (project.Status)
+<div class="container container--extend">
+    <div class="row">
+        @foreach (var project in Model.Projects)
         {
-            case Status.Initiative:
-                statusColor = "project-status-initiative";
-                projectCount = (votesCount == 1) ? votesCount + " VOTE" : votesCount + " VOTES";
-                break;
-            case Status.CompetitionRegistration:
-                statusColor = "project-status-competitionregistration";
-                projectStatus = "COMPETITION REGISTRATION";
-                projectCount = (project.ParticipantsCount == 1) ? project.ParticipantsCount + " PARTICIPANT" : project.ParticipantsCount + " PARTICIPANTS";
-                break;
-            case Status.Implementation:
-                statusColor = "project-status-implementation";
-                break;
-            case Status.Voting:
-                statusColor = "project-status-voting";
-                break;
-            case Status.Archive:
-                statusColor = "project-status-archive";
-                break;
-        }
-        <div class="row">
-            <div class="col-md-12">
-                <a class="inline h2 projext-list-project-name" asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.Id">@project.Name</a>
-                <div class="pull-right">
-                    <div class="project-index-budget">$@project.BudgetFirstPlace</div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="btn btn-xs btn-info project-status @statusColor inline">
-                    @projectStatus
-                </div>
-                <div class="inline project-status-count">
-                    <p class="text-muted inline">
-                        @projectCount
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="project-description">@project.Overview</div>
-        <div class="row project-tile-bottom">
-            <div class="row project-index-author">
-                <div class="inline project-index-author-avatar">
-                    <img src="~/images/avatar.svg"
-                         alt="@project.AuthorFullName"
-                         asp-append-version="true" />
-                </div>
-                <div class="inline vertical-align-middle">
-                    <div class="project-index-author-text bold-text">@project.AuthorFullName.ToUpper()</div>
-                    <div class="project-index-category-text text-muted">In @project.Category</div>
-                </div>
-            </div>
-            <a asp-area="" asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.Id" class="pull-right inline project-details-button nohover text-muted">
-                <span class="glyphicon glyphicon-option-horizontal"></span>
-            </a>
-            <div class="inline navbar-right comments-count text-muted">
-                <span class="glyphicon glyphicon-comment index-comments-icon"></span>
-                <div class="inline">
-                    @project.CommentsCount
-                </div>
-            </div>
+            <div class="col-md-6">
+                @{
+                    var statusColor = "";
+                    var projectStatus = project.Status.ToString().ToUpper();
+                    var projectCount = "";
+                    var votesCount = project.VotesFor + project.VotesAgainst;
+                }
 
-            <div class="inline pull-right project-deadline text-muted">
-                @if (project.Status == Status.CompetitionRegistration)
+                @switch (project.Status)
                 {
-                    <span class="glyphicon glyphicon-fire" aria-hidden="true"></span>
-                    @project.CompetitionRegistrationDeadline.ToString("dd.MM.yy")
+                    case Status.Initiative:
+                        statusColor = "label--blue";
+                        projectCount = (votesCount == 1) ? votesCount + " VOTE" : votesCount + " VOTES";
+                        break;
+                    case Status.CompetitionRegistration:
+                        statusColor = "label--green";
+                        projectStatus = "COMPETITION REGISTRATION";
+                        projectCount = (project.ParticipantsCount == 1) ? project.ParticipantsCount + " PARTICIPANT" : project.ParticipantsCount + " PARTICIPANTS";
+                        break;
+                    case Status.Implementation:
+                        statusColor = "label--red";
+                        break;
+                    case Status.Voting:
+                        statusColor = "label--yellow";
+                        break;
+                    case Status.Archive:
+                        statusColor = "label--grey";
+                        break;
                 }
-                @if (project.Status == Status.Implementation)
-                {
-                    <span class="glyphicon glyphicon-fire" aria-hidden="true"></span>
-                    @project.ImplementationDeadline.ToString("dd.MM.yy")
-                }
-                @if (project.Status == Status.Voting)
-                {
-                    <span class="glyphicon glyphicon-fire" aria-hidden="true"></span>
-                    @project.VotingDeadline.ToString("dd.MM.yy")
-                }
+                <div class="card card--preview">
+                    <div class="card__inner">
+                        <div class="card__body">
+                            <div class="card__header">
+                                <div class="card__sum h3 pull-right">$@project.BudgetFirstPlace</div>
+                                <div class="card__title h3">
+                                    <a asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.Id">@project.Name</a>
+                                </div>
+                            </div>
+                            <div class="card__desc">
+                                <a href="" class="label @statusColor label--flat">@projectStatus</a>
+                                <span class="votes">@projectCount</span>
+                            </div>
+                            <p class="card__text">
+                                @project.Overview
+                            </p>
+                        </div>
+
+                        <div class="card__footer">
+                            <div class="card__actions text-right">
+                                @if (project.Status == Status.CompetitionRegistration)
+                                {
+                                    <a href="" class="action_link action_link--deadline"><i class="icon icon--deadline"></i> @project.CompetitionRegistrationDeadline.ToString("dd.MM.yyyy")</a>
+                                    
+                                }
+                                @if (project.Status == Status.Implementation)
+                                {
+                                    <a href="" class="action_link action_link--deadline"><i class="icon icon--deadline"></i> @project.ImplementationDeadline.ToString("dd.MM.yyyy")</a>
+                                }
+                                @if (project.Status == Status.Voting)
+                                {
+                                    <a href="" class="action_link action_link--deadline"><i class="icon icon--deadline"></i> @project.VotingDeadline.ToString("dd.MM.yyyy")</a>
+                                }
+                                <a href="" class="action_link action_link--comments"><i class="icon icon--comment"></i> @project.CommentsCount</a>
+                                <a asp-area="" asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.Id" class="action_link action_link--more">
+                                    <i class="icon icon--more"></i>
+                                </a>
+                            </div>
+
+                            <div class="user_badge">
+                                <div class="user_badge__img"><a href=""><img src="~/images/avatar.svg" alt=""></a></div>
+                                <div class="user_badge__info">
+                                    <div class="user_badge__title"><a href="">@project.AuthorFullName</a></div>
+                                    <div class="user_badge__desc">In <a href="">@project.Category</a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-        <hr />
+                    }
     </div>
+</div>
+
+@*@foreach (var project in Model.Projects)
+    {
+        <div class="col-md-6 project-tile">
+            @{
+                var statusColor = "";
+                var projectStatus = project.Status.ToString().ToUpper();
+                var projectCount = "";
+                var votesCount = project.VotesFor + project.VotesAgainst;
             }
+
+            @switch (project.Status)
+            {
+                case Status.Initiative:
+                    statusColor = "project-status-initiative";
+                    projectCount = (votesCount == 1) ? votesCount + " VOTE" : votesCount + " VOTES";
+                    break;
+                case Status.CompetitionRegistration:
+                    statusColor = "project-status-competitionregistration";
+                    projectStatus = "COMPETITION REGISTRATION";
+                    projectCount = (project.ParticipantsCount == 1) ? project.ParticipantsCount + " PARTICIPANT" : project.ParticipantsCount + " PARTICIPANTS";
+                    break;
+                case Status.Implementation:
+                    statusColor = "project-status-implementation";
+                    break;
+                case Status.Voting:
+                    statusColor = "project-status-voting";
+                    break;
+                case Status.Archive:
+                    statusColor = "project-status-archive";
+                    break;
+            }
+            <div class="row">
+                <div class="col-md-12">
+                    <a class="inline h2 projext-list-project-name" asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.Id">@project.Name</a>
+                    <div class="pull-right">
+                        <div class="project-index-budget">$@project.BudgetFirstPlace</div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="btn btn-xs btn-info project-status @statusColor inline">
+                        @projectStatus
+                    </div>
+                    <div class="inline project-status-count">
+                        <p class="text-muted inline">
+                            @projectCount
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="project-description">@project.Overview</div>
+            <div class="row project-tile-bottom">
+                <div class="row project-index-author">
+                    <div class="inline project-index-author-avatar">
+                        <img src="~/images/avatar.svg"
+                             alt="@project.AuthorFullName"
+                             asp-append-version="true" />
+                    </div>
+                    <div class="inline vertical-align-middle">
+                        <div class="project-index-author-text bold-text">@project.AuthorFullName.ToUpper()</div>
+                        <div class="project-index-category-text text-muted">In @project.Category</div>
+                    </div>
+                </div>
+                <a asp-area="" asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.Id" class="pull-right inline project-details-button nohover text-muted">
+                    <span class="glyphicon glyphicon-option-horizontal"></span>
+                </a>
+                <div class="inline navbar-right comments-count text-muted">
+                    <span class="glyphicon glyphicon-comment index-comments-icon"></span>
+                    <div class="inline">
+                        @project.CommentsCount
+                    </div>
+                </div>
+
+                <div class="inline pull-right project-deadline text-muted">
+                    @if (project.Status == Status.CompetitionRegistration)
+                    {
+                        <span class="glyphicon glyphicon-fire" aria-hidden="true"></span>
+                        @project.CompetitionRegistrationDeadline.ToString("dd.MM.yy")
+                    }
+                    @if (project.Status == Status.Implementation)
+                    {
+                        <span class="glyphicon glyphicon-fire" aria-hidden="true"></span>
+                        @project.ImplementationDeadline.ToString("dd.MM.yy")
+                    }
+                    @if (project.Status == Status.Voting)
+                    {
+                        <span class="glyphicon glyphicon-fire" aria-hidden="true"></span>
+                        @project.VotingDeadline.ToString("dd.MM.yy")
+                    }
+                </div>
+            </div>
+            <hr />
+        </div>
+                }*@

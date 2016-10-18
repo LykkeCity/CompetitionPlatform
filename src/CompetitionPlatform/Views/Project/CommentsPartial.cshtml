@@ -2,51 +2,113 @@
 @using CompetitionPlatform.Helpers
 @model CompetitionPlatform.Models.ProjectViewModels.ProjectCommentPartialViewModel
 
-<form asp-controller="ProjectDetails" asp-action="AddComment" enctype="multipart/form-data">
+<form asp-controller="ProjectDetails" asp-action="AddComment" enctype="multipart/form-data" class="form form--message">
     @if (ClaimsHelper.GetUser(User.Identity).Email != null)
     {
-        <div class="form-group">
-            @Html.Hidden("projectId", Model.ProjectId)
-            <input asp-for="@Model.ProjectId" type="hidden" />
-            <textarea asp-for="@Model.Comment" rows="5" class="form-control" placeholder="Enter your comment here..."></textarea>
+        <div class="message_card message_card--form">
+            <div class="user_badge user_badge--small">
+                <div class="user_badge__img">
+                    <a href=""><img src="~/images/avatar.svg" alt=""></a>
+                </div>
+                <div class="user_badge__message">
+                    <div class="message_card__inner">
+                        <div class="user_badge__title">
+                            <a href="">@ClaimsHelper.GetUser(User.Identity).GetFullName()</a>
+                        </div>
+                        @Html.Hidden("projectId", Model.ProjectId)
+                        <input asp-for="@Model.ProjectId" type="hidden" />
+                        <textarea asp-for="@Model.Comment" id="msg" placeholder="Enter your comment here..." class="form-control form-control--textarea message_card__area"></textarea>
+                    </div>
+                </div>
+            </div>
         </div>
-        <input type="submit" value="Post Comment" class="btn btn-primary pull-right" />
+        <div class="message_actions">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="checkbox">
+                        <label for="ch1" class="checkbox__label"><input type="checkbox" id="ch1" class="checkbox__control"> Notify me of new comments via email</label>
+                    </div>
+                </div>
+                <div class="col-sm-6 text-right">
+                    <input type="submit" value="Post Comment" class="btn" />
+                </div>
+            </div>
+        </div>
     }
 </form>
-<div class="project-details-comments">
+
+<div class="messages_list">
     @foreach (var comment in Model.Comments)
     {
-        <div class="container @(!string.IsNullOrEmpty(comment.ParentId) ? "project-reply-background" : "")">
-            <div class="comments-partial-comment-body">
-                <div class="row">
-                    <div class="project-comments-avatar inline">
-                        <img src="~/images/avatar.svg"
-                             alt="@Model.FullName"
-                             asp-append-version="true" />
+        <div class="message_card @(!string.IsNullOrEmpty(comment.ParentId) ? "message_card--accent" : "")">
+            <div class="user_badge user_badge--small">
+                <div class="user_badge__img"><a href=""><img src="~/images/avatar.svg" alt=""></a></div>
+                <div class="user_badge__message">
+                    <div class="message_card__inner">
+                        <div class="user_badge__title">
+                            <a href="">@comment.FullName</a>
+                            @if (!string.IsNullOrEmpty(comment.ParentId))
+                            {
+                                <span class="label label--primary">creator</span>
+                            }
+                            <span class="message_card__date">&middot; @comment.LastModified.ToString("hh:mm tt MMMM dd, yyyy")</span>
+                        </div>
+                        <div class="message_card__message">
+                            <p>
+                                @comment.Comment
+                            </p>
+                            <div id="@comment.Id"></div>
+                            @if (Model.IsAdmin)
+                            {
+                                if (Model.UserId != comment.UserId)
+                                {
+                                    <div>
+                                        <button id="@comment.Id" class="btn btn--default replyToCommentButton @comment.Id">Reply</button>
+                                    </div>
+                                }
+                            }
+                        </div>
                     </div>
-                    <p class="project-comment-author bold-text inline">
-                        @comment.FullName
-                        @if (Model.UserId == comment.UserId)
-                        {
-                            <span class="label label-primary">CREATOR</span>
-                        }
-                    </p>
-                    <small class="inline text-muted">@comment.LastModified.ToString("hh:mm tt MMMM dd, yyyy")</small>
-                </div>
-                <div class="project-comment col-md-12">
-                    <p class="project-comment-text">@comment.Comment</p>
-                    <div id="@comment.Id"></div>
-                    @if (Model.IsAdmin)
-                {
-                    if (Model.UserId != comment.UserId)
-                    {
-                            <div>
-                                <button id="@comment.Id" class="btn btn-sm btn-info replyToCommentButton @comment.Id">Reply</button>
-                            </div>
-                        }
-                    }
                 </div>
             </div>
         </div>
     }
 </div>
+
+@*<div class="project-details-comments">
+        @foreach (var comment in Model.Comments)
+        {
+            <div class="container @(!string.IsNullOrEmpty(comment.ParentId) ? "project-reply-background" : "")">
+                <div class="comments-partial-comment-body">
+                    <div class="row">
+                        <div class="project-comments-avatar inline">
+                            <img src="~/images/avatar.svg"
+                                 alt="@Model.FullName"
+                                 asp-append-version="true" />
+                        </div>
+                        <p class="project-comment-author bold-text inline">
+                            @comment.FullName
+                            @if (Model.UserId == comment.UserId)
+                            {
+                                <span class="label label-primary">CREATOR</span>
+                            }
+                        </p>
+                        <small class="inline text-muted">@comment.LastModified.ToString("hh:mm tt MMMM dd, yyyy")</small>
+                    </div>
+                    <div class="project-comment col-md-12">
+                        <p class="project-comment-text">@comment.Comment</p>
+                        <div id="@comment.Id"></div>
+                        @if (Model.IsAdmin)
+                    {
+                        if (Model.UserId != comment.UserId)
+                        {
+                                <div>
+                                    <button id="@comment.Id" class="btn btn-sm btn-info replyToCommentButton @comment.Id">Reply</button>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>*@

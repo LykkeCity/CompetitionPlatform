@@ -1,0 +1,46 @@
+.banner {
+  &--results {
+    background: #F7F8F9;
+    border-radius: 3px;
+    padding: 20px 22px;
+    margin-bottom: 40px;
+
+    p:last-of-type, h4 {
+      margin-bottom: 0;
+    }
+
+    img {
+      margin-left: 20px;
+    }
+
+    .table-responsive {
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .prize__value {
+      font-size: 28px;
+      margin-bottom: 5px;
+    }
+
+    .table {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      color: $secondary;
+      font-size: 18px;
+
+      tr {
+        &:hover td {
+          background: transparent;
+        }
+
+        td {
+          border-bottom: 0;
+          text-align: center;
+          padding: 5px;
+          cursor: auto;
+        }
+      }
+    }
+  }
+}

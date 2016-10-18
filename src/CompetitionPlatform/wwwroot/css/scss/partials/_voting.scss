@@ -1,0 +1,154 @@
+.voting_group {
+  margin-bottom: 25px;
+
+  .btn--circle {
+    color: #fff;
+    min-width: 0;
+    position: relative;
+    letter-spacing: 0.05em;
+
+    span {
+      width: 0;
+      display: inline-block;
+      vertical-align: middle;
+      overflow: hidden;
+      margin-left: 0;
+
+      @include transition(all .3s ease);
+    }
+
+    + .btn--circle {
+      margin-left: 10px;
+    }
+
+    &.active {
+      color: #fff;
+      z-index:2;
+      padding-left: 30px;
+      padding-right: 30px;
+
+      span {
+        margin-left: 12px;
+        width: 35px;
+      }
+
+      + .btn--circle {
+        margin-left: -67px;
+        margin-right: 0;
+      }
+
+      &:before {
+        content: attr(data-hover);
+        text-transform: none;
+        color: #fff;
+        letter-spacing: normal;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border-radius: 100px;
+        background: $primary !important;
+        top: 0;
+        left: 0;
+        opacity: 0;
+        visibility: hidden;
+        z-index:3;
+        padding: 13px 16px;
+        text-align: center;
+
+        @include transition(all .3s ease);
+      }
+
+      &:hover {
+        background: $primary !important;
+
+        &:before {
+          opacity: 1;
+          visibility: visible;
+        }
+      }
+    }
+
+    &.invisible {
+      opacity: 0;
+      visibility: hidden;
+
+      + .btn--circle {
+        margin-left: -56px;
+        margin-right: -11px;
+      }
+    }
+  }
+
+  &__value, &__status {
+    display: inline-block;
+    vertical-align: middle;
+    text-transform: uppercase;
+    font-weight: $fw-semi;
+    margin-left: 20px;
+  }
+
+  &__status {
+    font-weight: normal;
+    font-size: 16px;
+    text-transform: none;
+    display: none;
+  }
+
+  &__count {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 6px;
+    position: relative;
+    top: -1px;
+
+    span {
+      font-weight: $fw-semi;
+      width: 28px;
+      display: inline-block;
+      vertical-align: middle;
+      position: relative;
+      top: -1px;
+    }
+  }
+
+  &__group {
+    white-space: nowrap;
+  }
+
+  &.voted {
+    .voting_group__value {
+      display: none;
+    }
+    .voting_group__status {
+      display: inline-block;
+    }
+  }
+}
+
+
+.status_bar {
+  width: 65px;
+  height: 4px;
+  border-radius: 10px;
+  display: inline-block;
+  vertical-align: middle;
+  position: relative;
+  background: rgba($secondary, .15);
+
+  &__line {
+    position: absolute;
+    width: 0;
+    height: 100%;
+    border-radius: 10px;
+
+    @include transition(all .3s ease .1s);
+
+    &--green {
+      background: #13B72A;
+    }
+
+    &--red {
+      background: #FF3E2E;
+    }
+  }
+}

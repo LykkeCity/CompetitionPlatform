@@ -4,131 +4,166 @@
     ViewData["Title"] = "Create a Project";
 }
 
-<a asp-area="" asp-controller="Home" asp-action="Index" class="btn btn-sm btn-info project-details-back"><span class="glyphicon glyphicon-menu-left"></span> Back to Projects</a>
-
-<h2>Create a Project</h2>
-
-<form asp-action="SaveProject" enctype="multipart/form-data">
-    <div class="form-horizontal">
-        <h4>BASIC INFO</h4>
-        <hr />
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="form-group">
-            <div class="col-md-9">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger" />
+<section class="section section--lead section--padding">
+    <div class="container">
+        <div class="page__actions">
+            <div class="back_link">
+                <a asp-area="" asp-controller="Home" asp-action="Index">
+                    <i class="icon icon--back"></i> Back to Projects
+                </a>
             </div>
         </div>
-        
-        <div class="form-group">
-            <div class="col-md-9">
-                <label asp-for="Overview" class="control-label"></label>
-                <textarea asp-for="Overview" class="form-control" rows="5"></textarea>
-                <span asp-validation-for="Overview" class="text-danger" />
+        <div class="content__left">
+            <div class="pull-right latest_updated">
             </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-9">
-                <label asp-for="Description" class="control-label"></label>
-                <textarea asp-for="Description" class="form-control richEditor" rows="10"></textarea>
-                <span asp-validation-for="Description" class="text-danger" />
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-9">
-                <div>
-                    <label class="control-label">Brief</label>
-                </div>
-                <label class="btn btn-info btn-file">
-                    Choose File... <input id="file" type="file" name="File" style="display: none;">
-                </label>
-                <label id="fileInputHelperText" class="help-block inline">Maximum file size is 3Mb</label>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-4">
-                <label class="control-label">Category</label>
-                <select asp-for="@Model.Category" class="form-control">
-                    @foreach (var category in ViewBag.ProjectCategories)
-                    {
-                        <option>@category</option>
-                    }
-                </select>
-            </div>
-            <div class="col-md-4">
-                <label class="control-label">Tags</label>
-                <input asp-for="Tags" class="form-control" />
-            </div>
-        </div>
-
-        <h4>DEADLINES</h4>
-        <hr />
-        <div class="form-group">
-            <div class="col-md-3">
-                <label asp-for="CompetitionRegistrationDeadline" class="control-label"></label>
-                <input asp-for="CompetitionRegistrationDeadline" class="form-control datepicker" />
-                @*<input class="form-control datepicker" type="text" id="CompetitionRegistrationDeadline" name="CompetitionRegistrationDeadline">*@
-                <span asp-validation-for="CompetitionRegistrationDeadline" class="text-danger" />
-            </div>
-            <div class="col-md-3">
-                <label asp-for="ImplementationDeadline" class="control-label"></label>
-                <input asp-for="ImplementationDeadline" class="form-control datepicker" />
-                @*<input class="form-control datepicker" type="text" id="ImplementationDeadline" name="ImplementationDeadline">*@
-                <span asp-validation-for="ImplementationDeadline" class="text-danger" />
-            </div>
-            <div class="col-md-3">
-                <label asp-for="VotingDeadline" class="control-label"></label>
-                <input asp-for="VotingDeadline" class="form-control datepicker" />
-                @*<input class="form-control datepicker" type="text" id="VotingDeadline" name="VotingDeadline">*@
-                <span asp-validation-for="VotingDeadline" class="text-danger" />
-            </div>
-        </div>
-
-        <h4>BUDGET</h4>
-        <hr />
-        <div class="form-group">
-            <div class="col-md-3">
-                <label asp-for="BudgetFirstPlace" class="control-label"></label>
-                <div class="input-group input-group-unstyled">
-                    <span class="input-group-addon">
-                        <i class="glyphicon glyphicon-usd"></i>
-                    </span>
-                    <input asp-for="BudgetFirstPlace" class="form-control" />
-                </div>
-                <span asp-validation-for="BudgetFirstPlace" class="text-danger" />
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-3">
-                <label asp-for="BudgetSecondPlace" class="control-label"></label>
-                <div class="input-group input-group-unstyled">
-                    <span class="input-group-addon">
-                        <i class="glyphicon glyphicon-usd"></i>
-                    </span>
-                    <input asp-for="BudgetSecondPlace" class="form-control" />
-                </div>
-                <span asp-validation-for="BudgetSecondPlace" class="text-danger" />
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-md-3">
-                <recaptcha />
-                <span class="text-danger" id="recaptchaErrorMessage"></span>
-            </div>
-        </div>
-        <hr />
-        <div class="form-group">
-            <div class="col-md-9">
-                <input type="submit" value="Publish Project" class="btn btn-default" />
-            </div>
+            <h2>Create a project</h2>
         </div>
     </div>
-</form>
+</section>
+
+<section class="section section--competition_edit">
+    <div class="container">
+        <div class="content__left">
+            <form asp-action="SaveProject" enctype="multipart/form-data" class="form form--default form--competition_edit">
+                <h4 class="form_title">basic info</h4>
+
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger" />
+                </div>
+
+                <div class="form-group">
+                    <div class="row">
+                        <label asp-for="Overview" class="control-label col-sm-4"></label>
+                    </div>
+                    <textarea asp-for="Overview" class="form-control" rows="10"></textarea>
+                    <span asp-validation-for="Overview" class="text-danger" />
+                </div>
+
+                <div class="form-group">
+                    <div class="row">
+                        <label asp-for="Description" class="control-label col-sm-4"></label>
+
+                    </div>
+                    <textarea asp-for="Description" class="form-control richEditor" rows="10"></textarea>
+                    <span asp-validation-for="Description" class="text-danger" />
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Brief</label>
+                    <div class="fileupload">
+                        <label class="btn btn--default fileupload__btn">
+                            Choose File... <input id="file" type="file" name="File" style="display: none;">
+                        </label>
+                        <span id="fileInputHelperText" class="fileupload__notice">Maximum file size is 3Mb</span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label class="control-label">Category:</label>
+                        <div class="form-group" data-control="select">
+                            <select asp-for="@Model.Category" class="form-control">
+                                @foreach (var category in ViewBag.ProjectCategories)
+                                {
+                                    <option>@category</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="control-label">Tags</label>
+                            <input asp-for="Tags" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+
+                <h4 class="form_title">deadlines</h4>
+                <p class="text-muted">Decide with deadlines for each stage. The project will take place automatically and change the status of the checkpoints.</p>
+
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label asp-for="CompetitionRegistrationDeadline" class="control-label"></label>
+                            <input asp-for="CompetitionRegistrationDeadline" class="form-control datetimepicker" />
+                            <span asp-validation-for="CompetitionRegistrationDeadline" class="text-danger" />
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label asp-for="ImplementationDeadline" class="control-label"></label>
+                            <input asp-for="ImplementationDeadline" class="form-control datetimepicker" />
+                            <span asp-validation-for="ImplementationDeadline" class="text-danger" />
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label asp-for="VotingDeadline" class="control-label"></label>
+                            <input asp-for="VotingDeadline" class="form-control datetimepicker" />
+                            <span asp-validation-for="VotingDeadline" class="text-danger" />
+                        </div>
+                    </div>
+                </div>
+
+                <h4 class="form_title">budget</h4>
+                <p class="text-muted">Any of the citizens of Lykke City will be able to finance the project. You can enter the estimated budget of the project. You can give the project the entire fund to one winner, and can spread among several.</p>
+
+                <div class="form-group">
+                    <label class="control-label">1<sup>st</sup> prize</label>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="row">
+                                <div class="col-sm-1">
+                                    <div class="prize__value">$</div>
+                                </div>
+                                <div class="col-sm-11">
+                                    <input asp-for="BudgetFirstPlace" class="form-control" />
+                                </div>
+                            </div>
+                            <span asp-validation-for="BudgetFirstPlace" class="text-danger" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">2<sup>nd</sup> prize</label>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="row">
+                                <div class="col-sm-1">
+                                    <div class="prize__value">$</div>
+                                </div>
+                                <div class="col-sm-11">
+                                    <input asp-for="BudgetSecondPlace" class="form-control" />
+                                </div>
+                            </div>
+                            <span asp-validation-for="BudgetSecondPlace" class="text-danger" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="">
+                        <recaptcha />
+                        <span class="text-danger" id="recaptchaErrorMessage"></span>
+                    </div>
+                </div>
+                
+                <div class="form__submit">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <button type="submit" class="btn">Publish Project</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

@@ -4,38 +4,81 @@
     ViewData["Title"] = "Projects";
 }
 
-<div class="projects-filter-buttons">
-    <div class="col-md-12">
-        <a asp-area="" asp-controller="Home" asp-action="Index" class="btn btn-primary btn-sm">All Projects</a>
-        <a asp-area="" asp-controller="Home" asp-action="FilterMyProjects" class="btn  btn-info btn-sm">My Projects</a>
-        <a asp-area="" asp-controller="Home" asp-action="FilterFollowingProjects" class="btn  btn-info btn-sm">Following</a>
-    </div>
-</div>
-<div class="col-md-12">
-    <div class="row col-md-3 project-filter">
-        <select id="projectCategoryFilter" name="projectCategoryFilter" class="form-control" value="Create">
-            <option value="">Category: All</option>
-            @foreach (var category in Model.ProjectCategories)
-            {
-                <option value="@category">@category</option>
-            }
-        </select>
-    </div>
+<section class="section section--lead section--padding">
+    <div class="container container--extend">
+        @*<div class="pull-right"><button class="btn-link simple_single_search" type="button"><i class="icon--search"></i></button></div>*@
+        <div class="tabs_stack">
+            <div class="tab_item tab_item--active">
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="tab_item__link">All projects</a>
+            </div>
+            <div class="tab_item">
+                <a asp-area="" asp-controller="Home" asp-action="FilterMyProjects" class="tab_item__link">my projects</a>
+            </div>
+            <div class="tab_item">
+                <a asp-area="" asp-controller="Home" asp-action="FilterFollowingProjects" class="tab_item__link">following</a>
+            </div>
+        </div>
 
-    <div class="row col-md-3 project-filter">
-        <select id="projectStatusFilter" name="projectStatusFilter" class="form-control" value="Create">
-            <option value="">Status : All</option>
-            @foreach (var status in Enum.GetValues(typeof(Status)))
-            {
-                <option value=@status>@status</option>
-            }
-        </select>
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="select form-group" data-control="select">
+                    <label for="projectCategoryFilter" class="select__label control-label">Category:</label>
+                    <div class="select__value"><span class="_value">All</span></div>
+                    <select id="projectCategoryFilter" name="projectCategoryFilter" class="form-control select__elem">
+                        <option value="All">All</option>
+                        @foreach (var category in Model.ProjectCategories)
+                        {
+                            <option value="@category">@category</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="select form-group" data-control="select">
+                    <label for="projectStatusFilter" class="select__label control-label">Status:</label>
+                    <div class="select__value"><span class="_value">All</span></div>
+                    <select id="projectStatusFilter" name="projectStatusFilter" class="form-control select__elem">
+                        <option value="All">All</option>
+                        @foreach (var status in Enum.GetValues(typeof(Status)))
+                        {
+                            <option value=@status>@status</option>
+                        }
+                    </select>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
-<div>
-    <div id="projectListResults">
-        @await Html.PartialAsync("ProjectListPartial", Model)
-    </div>
-</div>
+</section>
+@*<div class="col-md-12">
+        <div class="row col-md-3 project-filter">
+            <select id="projectCategoryFilter" name="projectCategoryFilter" class="form-control" value="Create">
+                <option value="">Category: All</option>
+                @foreach (var category in Model.ProjectCategories)
+                {
+                    <option value="@category">@category</option>
+                }
+            </select>
+        </div>
+
+        <div class="row col-md-3 project-filter">
+            <select id="projectStatusFilter" name="projectStatusFilter" class="form-control" value="Create">
+                <option value="">Status : All</option>
+                @foreach (var status in Enum.GetValues(typeof(Status)))
+                {
+                    <option value=@status>@status</option>
+                }
+            </select>
+        </div>
+    </div>*@
+
+<section id="projectListResults" class="section section--competition_list">
+    @await Html.PartialAsync("ProjectListPartial", Model)
+</section>
+
+@*<div>
+        <div id="projectListResults">
+            @await Html.PartialAsync("ProjectListPartial", Model)
+        </div>
+    </div>*@
 
 

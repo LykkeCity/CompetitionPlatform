@@ -1,0 +1,91 @@
+
+.navbar-toggle {
+  padding-left: 8px !important;
+  padding-right: 8px !important;
+  height: 40px;
+  display: none;
+  border-color: rgba($secondary, .6) !important;
+
+  &:not(.collapsed) {
+    .icon-bar {
+      position: relative;
+      background-color: rgba($secondary, .6);
+      @include transform-origin(9% 50%);
+      left: 2px;
+      &:first-child {
+        @include rotate(45deg)
+      }
+      &:nth-child(2) {
+        @include scale(0);
+      }
+      &:last-child {
+        @include rotate(-45deg)
+      }
+    }
+  }
+
+  &:focus {
+    outline: 0;
+    background: transparent;
+  }
+
+  &:hover {
+    background: transparent;
+    .icon-bar {
+      background-color: rgba($secondary, .6);
+    }
+  }
+
+  .icon-bar {
+    background-color: rgba($secondary, .6);
+    display: block;
+    width: 20px;
+    height: 2px;
+    border-radius: 1px;
+    @include transition(all .2s ease);
+  }
+
+  .icon-bar+.icon-bar {
+    margin-top: 4px;
+  }
+}
+
+.navbar-collapse {
+  overflow-x: visible;
+  @include clearfix;
+  -webkit-overflow-scrolling: touch;
+
+  &.in {
+    overflow-y: auto;
+  }
+}
+
+.nav-tabs {
+  padding: 0;
+  border-bottom-color: $border;
+  margin-right: 0;
+
+  > li > a {
+    border: 0;
+    border-bottom: 2px solid transparent;
+    font-size: 18px;
+    color: rgba($secondary, .6);
+    padding: 11px 20px;
+    font-weight: $fw-semi;
+  }
+
+  @media all and (max-width: 539px) {
+    margin-right: -15px !important;
+    width: auto;
+
+    > li > a {
+      font-size: 14px;
+    }
+  }
+}
+
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:hover, .nav-tabs>li.active>a:focus {
+  border: 0;
+  border-bottom: 2px solid $primary;
+  color: $primary;
+}

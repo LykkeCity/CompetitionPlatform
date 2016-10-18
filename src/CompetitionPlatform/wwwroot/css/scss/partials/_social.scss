@@ -1,0 +1,156 @@
+.social {
+  &__item {
+    margin-right: 40px;
+    text-decoration: none !important;
+    &:last-child {
+      margin-right: 0;
+    }
+    &:hover {
+      color: $secondary;
+    }
+  }
+
+  &--footer {
+    .icon {
+      opacity: .45;
+    }
+
+    > li > a {
+      padding: 5px 0;
+      display: inline-block;
+      color: rgba($secondary, .8);
+
+      &:hover {
+        color: rgba($secondary, 1);
+      }
+    }
+  }
+
+  &--header {
+    position: absolute;
+    bottom: 30px;
+    left: 0;
+    right: 0;
+  }
+
+  &--footer_alt, &--header {
+    padding: 5px 0;
+
+    > li {
+      display: inline-block;
+      vertical-align: middle;
+      margin-left: 28px;
+      font-size: 20px;
+
+      &:first-child {
+        margin-left: 0;
+      }
+
+      > a {
+        color: rgba($secondary, .25);
+        display: inline-block;
+        vertical-align: middle;
+        padding: 8px;
+        opacity: .6;
+
+        &:hover {
+          color: rgba($secondary, .4);
+          opacity: 1;
+        }
+      }
+    }
+  }
+}
+
+.icon_img {
+  display: inline-block;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  color: rgba(#3f4d60, .6);
+
+  &--in {
+    background-image: url('../img/linkedin-icn.svg');
+    width: 24px;
+    height: 24px;
+  }
+
+  &--fb {
+    background-image: url('../img/fb.svg');
+    width: 10.4px;
+    height: 20px;
+  }
+  &--tw {
+    background-image: url('../img/twitter.svg');
+    width: 20px;
+    height: 16.3px;
+  }
+  &--yt {
+    background-image: url('../img/youtube.svg');
+    width: 22px;
+    height: 16px;
+  }
+  &--inst {
+    background-image: url('../img/insta.svg');
+    width: 24px;
+    height: 24px;
+  }
+}
+
+.sharing {
+  margin-bottom: 44px;
+
+  &__link {
+    border-radius: 100px;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    line-height: 40px;
+    display: inline-block;
+    vertical-align: top;
+
+    .icon {
+      font-size: 40px;
+      color: #fff;
+    }
+
+    &--fb {
+      background: #3C5A98;
+    }
+
+    &--tw {
+      background: #2AA9E0;
+    }
+
+    &:hover {
+      opacity: .9;
+    }
+  }
+}
+
+.apps {
+  font-size: 0;
+  text-align: center;
+
+  .apps_apple, .apps_google {
+    display: inline-block;
+    vertical-align: middle;
+
+    a {
+      display: block;
+
+      &:hover {
+        @include scale(1.01);
+      }
+    }
+  }
+
+  .apps_apple {
+    margin-right: 20px;
+  }
+
+  .landing--intro & {
+    margin: 70px 0 100px;
+  }
+}

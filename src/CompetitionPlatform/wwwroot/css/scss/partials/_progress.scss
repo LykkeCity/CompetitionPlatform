@@ -1,0 +1,99 @@
+.progress {
+  margin: 40px 0;
+  border-radius: 4px;
+  border: 2px solid #3F4D60;
+  background: rgba(#3F4D60, .5);
+  min-height: 50px;
+  position: relative;
+
+  &__content {
+    padding: 8px 20px;
+    position: relative;
+    z-index:2;
+  }
+
+  &__bar {
+    background: rgba(#3F4D60, 1);
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+  }
+
+  &__title {
+    text-transform: uppercase;
+    font-weight: $fw-semi;
+    font-size: 18px;
+    color: #FFFFFF;
+    letter-spacing: 1.79px;
+    line-height: 32px;
+  }
+
+  &__info {
+    list-style: none;
+    margin-bottom: 0;
+    padding: 4px 0 0;
+
+    li {
+      display: inline-block;
+      vertical-align: baseline;
+      margin-bottom: 0;
+      color: #fff;
+      margin-left: 20px;
+    }
+
+    .icon {
+      position: relative;
+      top: -2px;
+    }
+  }
+
+  &--green {
+    border-color: #12B62B;
+    background: rgba(#12B62B, .5);
+
+    .progress__bar {
+      background: rgba(#12B62B, 1);
+    }
+  }
+
+  &--red {
+    border-color: #FF3E2E;
+    background: rgba(#FF3E2E, .5);
+
+    .progress__bar {
+      background: rgba(#FF3E2E, 1);
+    }
+  }
+
+  &--blue {
+    border-color: #0DA7FC;
+    background: rgba(#0DA7FC, .5);
+
+    .progress__bar {
+      background: rgba(#0DA7FC, 1);
+    }
+  }
+
+  &--yellow {
+    border-color: #FFAE2C;
+    background: rgba(#FFAE2C, .5);
+
+    .progress__bar {
+      background: rgba(#FFAE2C, 1);
+    }
+  }
+
+  &--grey {
+    border-color: rgb(185, 193, 200);
+    background: rgba(185, 193, 200, .5);
+
+    .progress__bar {
+      background: rgba(185, 193, 200, 1);
+    }
+  }
+
+  @media all and (max-width: 767px) {
+    margin: 20px 0;
+  }
+}

@@ -1,0 +1,114 @@
+.steps {
+  display: table;
+  width: 100%;
+  margin-bottom: 40px;
+  position: relative;
+
+  &:before {
+    content: '';
+    position: absolute;
+    top: 25px;
+    left: 4%;
+    right: 9%;
+    border-bottom: 2px dashed rgba($secondary, .35);
+    z-index: 0;
+  }
+
+  &__item {
+    display: table-cell;
+    vertical-align: top;
+    width: 20%;
+    margin-bottom: 20px;
+    padding-left: 30px;
+    position: relative;
+    z-index: 10;
+
+    &:first-child {
+      padding-left: 0;
+    }
+
+    &.active {
+      .steps__index {
+        color: #fff;
+      }
+    }
+
+    &.success {
+      .steps__text {
+        color: rgba($secondary, .35) !important;
+      }
+
+      .steps__index {
+        font-size: 0;
+
+        &:before {
+          color: #fff;
+          font-family: 'icon' !important;
+          font-size: 18px;
+          content: "\e91b";
+        }
+      }
+    }
+
+    &--1 {
+      &.active, &.success {
+        .steps__index { background: #0DA7FC; border-color: #0DA7FC }
+        .steps__text { color: #0DA7FC; }
+      }
+    }
+
+    &--2 {
+      &.active, &.success {
+        .steps__index { background: #13B72A; border-color: #13B72A }
+        .steps__text { color: #13B72A; }
+      }
+    }
+
+    &--3 {
+      &.active, &.success {
+        .steps__index { background: #FF3E2E; border-color: #FF3E2E }
+        .steps__text { color: #FF3E2E; }
+      }
+    }
+
+    &--4 {
+      &.active, &.success {
+        .steps__index { background: #FFAE2C; border-color: #FFAE2C }
+        .steps__text { color: #FFAE2C; }
+      }
+    }
+
+    &--5 {
+      &.active, &.success {
+        .steps__index { background: $secondary; border-color: $secondary }
+        .steps__text { color: rgba($secondary, .6); }
+      }
+    }
+  }
+
+  &__index {
+    width: 50px;
+    height: 50px;
+    line-height: 48px;
+    border: 2px solid;
+    font-size: 20px;
+    text-align: center;
+    font-weight: $fw-semi;
+    border-radius: 100px;
+    color: rgba($secondary, .35);
+    margin-bottom: 22px;
+    z-index: 10;
+    background: #f7f8f9;
+    box-shadow: 0 0 0 10px #f7f8f9;
+    overflow: hidden;
+  }
+
+  &__text {
+    text-transform: uppercase;
+    font-weight: $fw-semi;
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: .1em;
+    color: rgba($secondary, .35);
+  }
+}

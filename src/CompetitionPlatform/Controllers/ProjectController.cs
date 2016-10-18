@@ -281,7 +281,8 @@ namespace CompetitionPlatform.Controllers
             var participantsPartial = new ProjectParticipantsPartialViewModel
             {
                 CurrentUserId = user.Email,
-                Participants = participants
+                Participants = participants,
+                Status = project.Status
             };
 
             var resultsPartial = new ResultsPartialViewModel

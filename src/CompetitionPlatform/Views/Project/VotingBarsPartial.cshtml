@@ -12,24 +12,39 @@
     }
 }
 
-<div class="row">
-    <div class="col-md-10">
-        <div class="progress vote-progress-bar">
-            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="@forPercent" aria-valuemin="0" aria-valuemax="100" style="width: @forPercent%"></div>
+@*<div class="row">
+        <div class="col-md-10">
+            <div class="progress vote-progress-bar">
+                <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="@forPercent" aria-valuemin="0" aria-valuemax="100" style="width: @forPercent%"></div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <p class="text-success bold-text vote-progress-bar-text">@Model.VotesFor</p>
         </div>
     </div>
-    <div class="col-md-2">
-        <p class="text-success bold-text vote-progress-bar-text">@Model.VotesFor</p>
+
+    <div class="row">
+        <div class="col-md-10">
+            <div class="progress vote-progress-bar">
+                <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="@againstPercent" aria-valuemin="0" aria-valuemax="100" style="width: @againstPercent%"></div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <p class="text-danger bold-text vote-progress-bar-text">@Model.VotesAgainst</p>
+        </div>
+    </div>*@
+
+<div class="voting_group__group">
+    <div class="status_bar"><span class="status_bar__line status_bar__line--green" style="width: @forPercent%"></span></div>
+    <div class="voting_group__count">
+        <span class="text-green">@Model.VotesFor<!--max 3 symbols, for example, 240 or 10k--></span> Yes
+    </div>
+</div>
+<div class="voting_group__group">
+    <div class="status_bar"><span class="status_bar__line status_bar__line--red" style="width: @againstPercent%"></span></div>
+    <div class="voting_group__count">
+        <span class="text-red">@Model.VotesAgainst</span> No
     </div>
 </div>
 
-<div class="row">
-    <div class="col-md-10">
-        <div class="progress vote-progress-bar">
-            <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="@againstPercent" aria-valuemin="0" aria-valuemax="100" style="width: @againstPercent%"></div>
-        </div>
-    </div>
-    <div class="col-md-2">
-        <p class="text-danger bold-text vote-progress-bar-text">@Model.VotesAgainst</p>
-    </div>
-</div>
+

@@ -1,0 +1,120 @@
+.message_card {
+  padding: 15px 20px;
+  margin-bottom: 20px;
+
+  .user_badge__title {
+    text-transform: none;
+    letter-spacing: 0;
+    line-height: 22px;
+  }
+
+  &__reply {
+    margin-top: 20px;
+    color: $secondary;
+  }
+
+  &__area {
+    text-align: left;
+    background: #fff;
+    border-radius: 0;
+    padding: 0;
+    font-size: 16px;
+    position: relative;
+    resize: none;
+    height: 110px;
+    min-height: 108px;
+    margin-top: -4px;
+    max-height: 400px;
+    border: 0 !important;
+
+    @include transition(all .3s ease);
+    @include transform(translate(0, -18px))
+  }
+
+  &__inner {
+    position: relative;
+  }
+
+  &__message {
+    margin-top: 4px;
+    font-size: 18px;
+    line-height: 30px;
+
+    p {
+      margin-bottom: 0;
+    }
+  }
+
+  &__date {
+    color: rgba(#3F4D60, .6);
+    font-weight: normal;
+    font-size: 16px;
+  }
+
+  .btn {
+    margin-top: 15px;
+    padding: 7px 21px;
+  }
+
+  &--form {
+    border-radius: 3px;
+    border: 1px solid #e1e1e1;
+    margin-bottom: 0;
+    
+    .user_badge__title {
+      opacity: 0;
+      visibility: hidden;
+
+      @include transform(translate(0, -18px));
+      @include transition(all .3s ease);
+    }
+
+    .message_card__inner {
+      height: 29px;
+      //overflow: hidden;
+
+      @include transition(all .3s ease);
+    }
+    
+    .focused & {
+      .user_badge__title {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .form-control {
+        margin-top: 10px;
+      }
+
+      .form-control, .user_badge__title {
+        @include transform(translate(0, 0));
+      }
+
+      .message_card__inner {
+        height: 142px;
+        padding-top: 2px;
+      }
+    }
+  }
+
+  &--accent {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-radius: 3px;
+    background: rgba(#EAEDEF, .4);
+  }
+}
+
+.message_actions {
+  margin-top: 30px;
+}
+
+.messages_list {
+  .user_badge__message {
+    padding-top: 2px;
+  }
+
+  .btn-block, + .btn-block {
+    margin: 30px 0;
+  }
+}

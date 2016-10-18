@@ -1,0 +1,26 @@
+.content {
+  overflow: hidden;
+  padding-top: 84px;
+
+  &__left {
+    .h2, h2 {
+      margin-bottom: 25px;
+    }
+  }
+
+  &__right {
+    .h5, h5 {
+      text-transform: uppercase;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #DFE1E5;
+      margin-bottom: 18px;
+    }
+  }
+
+  @media (min-width: 992px) {
+    &__right {
+      padding-left: 52px;
+      padding-right: 48px;
+    }
+  }
+}

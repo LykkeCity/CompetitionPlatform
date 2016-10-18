@@ -1,0 +1,223 @@
+.card {
+  &__header {
+    margin-bottom: 16px;
+    @include clearfix;
+  }
+
+  &__title {
+    overflow: hidden;
+    padding-right: 20px;
+    margin-bottom: 0;
+
+    a {
+      color: $text;
+
+      &:hover {
+        color: rgba($secondary, .6);
+      }
+    }
+  }
+
+  &__actions {
+    float: right;
+    padding: 13px 0;
+
+    .action_link {
+      color: rgba($secondary, .6);
+      padding: 1px 8px;
+      display: inline-block;
+      vertical-align: middle;
+      font-size: 16px;
+
+      &:hover {
+        color: #3f4d60;
+      }
+    }
+  }
+
+  &__inner {
+    position: relative;
+  }
+
+  &__desc {
+
+    .votes {
+      text-transform: uppercase;
+      color: rgba($secondary, .6);
+      font-size: 14px;
+      line-height: 24px;
+      letter-spacing: .07em;
+      margin: 0 10px;
+      display: inline-block;
+      vertical-align: middle;
+      position: relative;
+      top: -1px;
+    }
+
+    a.votes:hover {
+      color: rgba($secondary, 1);
+    }
+
+    .users_stack {
+      display: inline-block;
+      vertical-align: middle;
+      margin-top: -6px;
+      margin-bottom: -5px;
+      position: relative;
+      top: -1px;
+    }
+
+    .label, .votes, .users_stack {
+      margin-bottom: 15px;
+      vertical-align: middle;
+    }
+  }
+
+  &__text {
+    line-height: 30px;
+    margin-bottom: 0;
+  }
+
+  &__sum {
+    font-weight: normal;
+    color: rgba($secondary, .6);
+  }
+
+  .user_badge {
+    margin-bottom: 0;
+    overflow: hidden;
+
+    &__img {
+      width: 50px;
+      height: 50px;
+      margin-right: 14px;
+    }
+
+    &__title {
+      font-size: 16px;
+      line-height: normal;
+      margin-bottom: 4px;
+    }
+
+    &__info {
+      padding-top: 3px;
+    }
+  }
+
+  &--preview {
+    padding-right: 20px;
+    margin-bottom: 60px;
+
+    .card__body {
+      height: 305px;
+      overflow: hidden;
+      position: relative;
+
+      &:after {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 100%;
+        height: 9px;
+        box-shadow: 0 -8px 15px 4px #fff;
+      }
+    }
+
+    .card__inner {
+      padding-bottom: 103px;
+      border-bottom: 1px solid #DFE1E5;
+    }
+
+    .card__footer {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 0 0 30px;
+
+      @include clearfix;
+    }
+  }
+
+  @media all and (max-width: 992px) {
+    &__actions {
+      padding: 0;
+      float: none;
+      margin-bottom: 20px;
+      text-align: right;
+
+      .action_link {
+        padding: 10px 6px;
+        margin-right: 10px;
+      }
+    }
+
+    &--preview {
+      margin-bottom: 30px;
+      padding-right: 0;
+
+      .card__body {
+        height: auto;
+        padding-bottom: 20px;
+
+        &:after {
+          display: none;
+        }
+      }
+
+      .card__actions {
+        padding: 0;
+        float: none;
+        margin-bottom: 5px;
+        text-align: right;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+
+        .action_link {
+          padding: 10px 6px;
+          margin-right: 10px;
+        }
+
+        +.user_badge {
+          padding-bottom: 40px;
+        }
+      }
+      
+      .card__text {
+        max-height: 205px;
+        overflow: hidden;
+      }
+
+      .card__footer {
+        padding-bottom: 20px;
+      }
+
+      .card__header, .card__footer {
+        position: relative;
+      }
+
+      .card__sum {
+        position: absolute;
+        bottom: 0;
+        text-align: left;
+        padding-left: 0;
+        margin-bottom: 0;
+
+        +.card__title {
+          padding-bottom: 35px;
+        }
+      }
+
+      .card__inner {
+        padding-bottom: 0;
+      }
+      
+      .card__footer {
+        position: static;
+      }
+    }
+  }
+}

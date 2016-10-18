@@ -1,14 +1,28 @@
 @model CompetitionPlatform.Models.ProjectViewModels.AddResultViewModel
 
-<form asp-controller="ProjectDetails" asp-action="SaveResult" enctype="multipart/form-data">
-    <div class="form-group col-md-10">
-        <input asp-for="@Model.ProjectId" type="hidden"/>
-        <input asp-for="@Model.ParticipantId" type="hidden"/>
-        <input asp-for="@Model.Link" class="form-control inline" placeholder="Insert link for the shared file(Dropbox, googleDrive, GitHub)"/>
+@*<form asp-controller="ProjectDetails" asp-action="SaveResult" enctype="multipart/form-data">
+        <div class="form-group col-md-10">
+            <input asp-for="@Model.ProjectId" type="hidden"/>
+            <input asp-for="@Model.ParticipantId" type="hidden"/>
+            <input asp-for="@Model.Link" class="form-control inline" placeholder="Insert link for the shared file(Dropbox, googleDrive, GitHub)"/>
+            <span asp-validation-for="@Model.Link" class="text-danger" />
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Send Result" class="btn btn-primary col-md-2 inline" />
+        </div>
+    </form>*@
+
+<form asp-controller="ProjectDetails" asp-action="SaveResult" enctype="multipart/form-data" class="form form--share_result">
+    <div class="row">
+        <input asp-for="@Model.ProjectId" type="hidden" />
+        <input asp-for="@Model.ParticipantId" type="hidden" />
+        <div class="col-sm-9">
+            <input asp-for="@Model.Link" class="form-control" type="text" placeholder="Insert link for the shared file(Dropbox, googleDrive, GitHub)" />
+        </div>
         <span asp-validation-for="@Model.Link" class="text-danger" />
-    </div>
-    <div class="form-group">
-        <input type="submit" value="Send Result" class="btn btn-primary col-md-2 inline" />
+        <div class="col-sm-3">
+            <button type="submit" class="btn btn-md"><i class="icon icon--share_result"></i> Send Result</button>
+        </div>
     </div>
 </form>
 

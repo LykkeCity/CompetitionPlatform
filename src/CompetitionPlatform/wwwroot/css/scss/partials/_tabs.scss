@@ -1,0 +1,47 @@
+.tabs_stack {
+  margin-bottom: 30px;
+}
+
+.tab_item {
+  display: inline-block;
+  vertical-align: top;
+  font-size: 15px;
+  font-weight: $fw-semi;
+  border-radius: 100px;
+  color: rgba($secondary, .6);
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  font-family: $ff;
+  border: 1px solid transparent;
+  margin-bottom: 10px;
+
+  @include transition(all .3s ease);
+
+  &:hover {
+    border-color: $primary;
+  }
+
+  &__link {
+    padding: 7px 22px;
+    display: block;
+    color: rgba($secondary, .6);
+
+    &:hover {
+      color: $primary;
+    }
+  }
+
+  &--active {
+    color: #fff;
+    background: $primary;
+    border-color: $primary;
+
+    .tab_item__link {
+      color: #fff;
+    }
+  }
+
+  &:hover {
+    text-decoration: none;
+  }
+}

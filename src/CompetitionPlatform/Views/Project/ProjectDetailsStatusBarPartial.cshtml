@@ -1,78 +1,63 @@
 @model CompetitionPlatform.Models.ProjectViewModels.ProjectDetailsStatusBarViewModel
 
-<div class="row status-bar">
-    @{
-        var showDeadline = false;
-        var showParticipantCount = false;
-        var participantCount = (Model.ParticipantsCount == 1) ? Model.ParticipantsCount + " participant" : Model.ParticipantsCount + " participants";
-        var deadline = "";
-        var color = "";
-        var status = @Model.Status.ToString().ToUpper();
-    }
 
-    @switch (Model.Status)
-    {
-        case Status.Initiative:
-            color = "#0da7fc";
-            break;
-        case Status.CompetitionRegistration:
-            color = "#13b72a";
-            showDeadline = true;
-            showParticipantCount = true;
-            deadline = Model.CompetitionRegistrationDeadline.ToString("MMMM dd");
-            status = "COMPETITION REGISTRATION";
-            break;
-        case Status.Implementation:
-            color = "#ff3e2e";
-            showDeadline = true;
-            deadline = Model.ImplementationDeadline.ToString("MMMM dd");
-            break;
-        case Status.Voting:
-            color = "#ffae2c";
-            showDeadline = true;
-            deadline = Model.VotingDeadline.ToString("MMMM dd");
-            break;
-        case Status.Archive:
-            color = "#b2b8bf";
-            break;
-    }
+@{
+    var showDeadline = false;
+    var showParticipantCount = false;
+    var participantCount = (Model.ParticipantsCount == 1) ? Model.ParticipantsCount + " participant" : Model.ParticipantsCount + " participants";
+    var deadline = "";
+    var color = "";
+    var status = @Model.Status.ToString().ToUpper();
+}
 
-    <div class="progress-bar status-progress-bar" style="color: @color; border-color: @color;">
-        <div class="progress-fill" style="width: @Model.StatusCompletionPercent%; background: @color;">
-            <div class="progress-fill-text">
-                <div class="inline project-status-bar-text navbar-left">
-                    @status
-                </div>
-                @if (showParticipantCount)
-                {
-                    <div class="inline project-status-bar-deadline-text navbar-right">
-                        <span class="glyphicon glyphicon-user position-static vertical-align-middle project-status-bar-deadline-icon" aria-hidden="true"></span> @participantCount
-                    </div>
-                }
-                @if (showDeadline)
-                {
-                    <div class="inline project-status-bar-deadline-text navbar-right">
-                        <span class="glyphicon glyphicon-fire position-static vertical-align-middle project-status-bar-deadline-icon" aria-hidden="true"></span> @deadline
-                    </div>
-                }
+@switch (Model.Status)
+{
+    case Status.Initiative:
+        color = "blue";
+        break;
+    case Status.CompetitionRegistration:
+        color = "green";
+        showDeadline = true;
+        showParticipantCount = true;
+        deadline = Model.CompetitionRegistrationDeadline.ToString("MMMM dd");
+        status = "COMPETITION REGISTRATION";
+        break;
+    case Status.Implementation:
+        color = "red";
+        showDeadline = true;
+        deadline = Model.ImplementationDeadline.ToString("MMMM dd");
+        break;
+    case Status.Voting:
+        color = "yellow";
+        showDeadline = true;
+        deadline = Model.VotingDeadline.ToString("MMMM dd");
+        break;
+    case Status.Archive:
+        color = "#b2b8bf";
+        break;
+}
+
+
+<!--green, red, yellow, blue-->
+<div class="progress progress--@color">
+    <div class="progress__bar" style="width: @Model.StatusCompletionPercent%"></div>
+    <div class="progress__content">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="progress__title">@status</div>
+            </div>
+            <div class="col-sm-6 text-right">
+                <ul class="progress__info">
+                    @if (showParticipantCount)
+                    {
+                        <li><i class="icon icon--participate"></i> @participantCount</li>
+                    }
+                    @if (showDeadline)
+                    {
+                        <li><i class="icon icon--deadline"></i> @deadline</li>
+                    }
+                </ul>
             </div>
         </div>
-        <div class="inline project-status-bar-text navbar-left">
-            @status
-        </div>
-        @if (showDeadline)
-        {
-            <div class="inline project-status-bar-deadline-text navbar-right">
-                <span class="glyphicon glyphicon-fire position-static vertical-align-middle project-status-bar-deadline-icon" aria-hidden="true"></span> @deadline
-            </div>
-        }
-
-        @if (showParticipantCount)
-        {
-            <div class="inline project-status-bar-deadline-text navbar-right">
-                <span class="glyphicon glyphicon-user position-static vertical-align-middle project-status-bar-deadline-icon" aria-hidden="true"></span> @participantCount
-            </div>
-        }
     </div>
 </div>
-

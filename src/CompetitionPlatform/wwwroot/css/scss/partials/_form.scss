@@ -1,0 +1,358 @@
+.form-control {
+  text-align: left;
+  background: #e8e9ea;
+  color: $text;
+  font-size: 18px;
+  border: 0;
+  height: 50px;
+  @include box-shadow-none(none!important);
+  @include placeholder {
+    color: rgba(#3f4d60, .5);
+  }
+
+  &.error {
+    background: rgba(#ff0029, .1);
+  }
+}
+
+textarea.form-control {
+  resize: none;
+  height: 120px;
+  border: 1px solid $border;
+  background: #fff;
+
+  &:focus {
+    border-color: $border;
+  }
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.reserve_form {
+  padding: 45px 0 45px 0;
+  max-width: 100%;
+  width: 300px;
+  margin: 0 auto;
+  text-align: center;
+
+  .btn {
+    width: 100%;
+  }
+}
+
+
+.help-block {
+  margin: 17px -15px;
+  font-size: 18px;
+  color: rgba(#333333, .50);
+}
+
+label.error {
+  display: none!important;
+}
+
+
+.input-search {
+  width: 200px;
+  position: relative;
+
+  .form-control {
+    border-radius: 100px;
+    background: transparent;
+    border: 1px solid transparent;
+    height: 40px;
+    text-align: left;
+    font-size: 16px;
+    padding-left: 45px;
+
+    &:focus {
+      border-color: #D3D6DB;
+      background: #fff;
+    }
+
+    @include placeholder {
+      color: rgba(#3F4D60, .5);
+    }
+  }
+
+  .btn-link {
+    position: absolute;
+    top: 5px;
+    left: 11px;
+    z-index:2;
+    color: rgba(#3F4D60, .5);
+
+    .icon--search {
+      font-size: 16px;
+      margin-right: 0;
+      @include rotateY(180deg);
+    }
+
+  }
+}
+
+.leading__inner,
+.reserve_form {
+  .btn {
+    padding: 13px 30px 12px 24px;
+    margin: 0 10px 15px;
+  }
+
+  .btn_group {
+    margin-left: -10px;
+    margin-right: -10px;
+  }
+
+  .store_icon {
+    margin-right: 8px;
+  }
+}
+
+.requestForm {
+  position: relative;
+}
+
+.hidden_form {
+  display: none;
+}
+
+.form {
+  font-size: 16px;
+
+  &--search {
+    @include clearfix;
+  }
+
+  &--share_result {
+    margin-bottom: 40px;
+
+    .form-control {
+      text-align: left;
+      background: #FFFFFF;
+      border: 1px solid #D3D6DB;
+      border-radius: 4px;
+      padding-left: 20px;
+      padding-right: 20px;
+
+      &[disabled] {
+        background: #F4F4F4;
+      }
+    }
+
+    .btn {
+      padding: 13px 28px 12px;
+    }
+
+    .icon {
+      font-size: 24px;
+    }
+  }
+
+  &--message {
+    margin-bottom: 38px;
+    position: relative;
+
+    @include transition(padding .3s ease);
+
+    .message_actions {
+      position: absolute;
+      bottom:0;
+      left: 0;
+      width: 100%;
+      opacity: 0;
+      visibility: hidden;
+
+      @include transform(translate3d(0, 80px, 0));
+      @include transition(all .3s ease);
+    }
+
+    &.with_value {
+      padding-bottom: 75px;
+
+      .message_actions {
+        opacity: 1;
+        visibility: visible;
+
+        @include transform(translate3d(0, 0, 0));
+      }
+    }
+  }
+
+  &--default {
+    .form-group {
+      margin-bottom: 28px;
+
+      ~ .form_title {
+        margin-top: 22px;
+      }
+    }
+
+    .control-label {
+      margin-bottom: 12px;
+
+      + .text-muted {
+        padding-top: 5px;
+      }
+    }
+
+    p {
+      font-size: 16px;
+      margin-bottom: 30px;
+    }
+
+    .form-control:not(.select__elem) {
+      background: #fff;
+      padding: 10px 16px;
+      font-size: 16px;
+      border: 1px solid #e1e1e1;
+    }
+
+    .select__value {
+      padding-left: 20px;
+    }
+
+    textarea.form-control {
+      height: 350px;
+      resize: auto;
+      max-width: 100%;
+    }
+
+    .prize__value {
+      font-size: 24px;
+      padding-top: 11px;
+    }
+
+    .form__submit {
+      padding: 42px 0;
+
+      .text-muted {
+        margin-top: 15px;
+      }
+
+      .btn {
+        padding: 17px 50px 16px;
+      }
+    }
+  }
+}
+
+.checkbox {
+  font-size: 16px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  label {
+    padding-left: 25px;
+
+    input[type="checkbox"] {
+      margin-left: -25px;
+    }
+  }
+}
+
+.control-label {
+  color: rgba($secondary, .6);
+  font-weight: normal;
+
+  sup {
+    text-transform: uppercase;
+    font-size: 60%;
+  }
+}
+
+.select {
+  border-radius: 3px;
+  position: relative;
+  border: 1px solid rgba($secondary, .2);
+  display: table;
+  width: 100%;
+
+  &__value, &__label {
+    display: table-cell;
+    vertical-align: baseline;
+  }
+
+  &__value {
+    width: auto;
+    height: auto;
+    font-size: 16px;
+    color: $secondary;
+    cursor: pointer;
+    padding: 14px 40px 14px 0;
+    
+    span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  &__label {
+    margin: 0;
+    padding: 14px 10px 14px 20px;
+    font-size: 16px;
+    width: 10px;
+  }
+
+  &__elem {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: transparent;
+    font-size: 0;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    cursor: pointer;
+    
+     option {
+       font-size: 16px;
+     }
+  }
+
+  &:after {
+    font-family: 'icon';
+    content: "\e90f";
+    position: absolute;
+    font-size: 10px;
+    right: 15px;
+    top: 50%;
+    margin-top: -4px;
+    color: rgba($secondary, .6);
+  }
+}
+
+.form_title {
+  font-size: 16px;
+  padding: 11px 0;
+  border-bottom: 1px solid #DFE1E5;
+  margin-bottom: 25px;
+}
+
+.fileupload {
+  position: relative;
+
+  &__field {
+    position: absolute;
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  &__btn.btn {
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+
+  &__notice {
+    margin-left: 15px;
+    color: rgba($secondary, .6);
+  }
+}

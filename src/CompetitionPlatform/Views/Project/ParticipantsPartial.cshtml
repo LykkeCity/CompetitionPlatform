@@ -1,48 +1,86 @@
 @model CompetitionPlatform.Models.ProjectViewModels.ProjectParticipantsPartialViewModel
 
-<div>
-    <table class="table">
-        <thead>
+<div class="table-responsive">
+    <table class="table table--board">
+        <tr>
+            <th>Username</th>
+            <th class="text-right">Registration date</th>
+            <th class="text-center">Result</th>
+        </tr>
+        @foreach (var participant in Model.Participants)
+        {
             <tr>
-                <th>USERNAME</th>
-                <th>REGISTRATION DATE</th>
-                <th class="text-center">RESULT</th>
+                <td>
+                    <div class="user_badge user_badge--small">
+                        <div class="user_badge__img"><img src="~/images/avatar.svg" alt=""></div>
+                        <div class="user_badge__info">@participant.FullName</div>
+                    </div>
+                </td>
+                <td class="text-right">@participant.Registered.ToString("MMMM dd, yyyy hh:mm")</td>
+                @if (participant.Result)
+                {
+                    if (participant.UserId == Model.CurrentUserId && Model.Status == Status.Implementation)
+                    {
+                        <td class="text-center">
+                            <form asp-controller="ProjectDetails" asp-action="EditResult" enctype="multipart/form-data">
+                                <input asp-for="@participant.ProjectId" name="ProjectId" type="hidden" />
+                                <input asp-for="@participant.UserId" name="UserId" type="hidden" />
+                                <input type="submit" value="Edit" class="btn-link" />
+                            </form>
+                        </td>
+                    }
+                    else
+                    {
+                        <td class="text-center"><i class="icon icon--result"><span class="path1"></span><span class="path2"></span></i></td>
+                    }
+                }
             </tr>
-        </thead>
-        <tbody>
-            @foreach (var participant in Model.Participants)
-            {
-                <tr>
-                    <td>
-                        <div class="project-participant">
-                            <img src="~/images/avatar.svg"
-                                 alt="@participant.FullName"
-                                 asp-append-version="true" />
-                            @participant.FullName
-                        </div>
-                    </td>
-                    <td>@participant.Registered.ToString("MMMM dd, yyyy hh:mm")</td>
-                    <td class="text-center">
-                        @if (participant.Result)
-                        {
-                            if (participant.UserId == Model.CurrentUserId)
-                            {
-                                    <form asp-controller="ProjectDetails" asp-action="EditResult" enctype="multipart/form-data">
-                                            <input asp-for="@participant.ProjectId" name="ProjectId" type="hidden" />
-                                            <input asp-for="@participant.UserId" name="UserId" type="hidden" />
-                                        <input type="submit" value="Edit" class="btn-link" />
-                                    </form>
-                            }
-                            else
-                            {
-                                <img src="~/images/result.svg"
-                                     alt="Result"
-                                     asp-append-version="true" />
-                            }
-                        }
-                    </td>
-                </tr>
-            }
-        </tbody>
+        }
     </table>
 </div>
+@*<div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>USERNAME</th>
+                    <th>REGISTRATION DATE</th>
+                    <th class="text-center">RESULT</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var participant in Model.Participants)
+                {
+                    <tr>
+                        <td>
+                            <div class="project-participant">
+                                <img src="~/images/avatar.svg"
+                                     alt="@participant.FullName"
+                                     asp-append-version="true" />
+                                @participant.FullName
+                            </div>
+                        </td>
+                        <td>@participant.Registered.ToString("MMMM dd, yyyy hh:mm")</td>
+                        <td class="text-center">
+                            @if (participant.Result)
+                            {
+                                if (participant.UserId == Model.CurrentUserId)
+                                {
+                                        <form asp-controller="ProjectDetails" asp-action="EditResult" enctype="multipart/form-data">
+                                                <input asp-for="@participant.ProjectId" name="ProjectId" type="hidden" />
+                                                <input asp-for="@participant.UserId" name="UserId" type="hidden" />
+                                            <input type="submit" value="Edit" class="btn-link" />
+                                        </form>
+                                }
+                                else
+                                {
+                                    <img src="~/images/result.svg"
+                                         alt="Result"
+                                         asp-append-version="true" />
+                                }
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>*@

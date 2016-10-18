@@ -1,0 +1,43 @@
+footer {
+  background: #fff;
+  font-size: 18px;
+  color: rgba(#3f4d60, .80);
+}
+
+.footer {
+  .new_page & {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index:10;
+  }
+
+  &__top {
+    padding: 48px 0;
+
+    .row {
+      font-size: 0;
+    }
+
+    .col-xs-6 {
+      display: inline-block;
+      vertical-align: top;
+      float: none;
+    }
+  }
+
+  &__bottom {
+    padding: 24px 0;
+    background: #f7f8f9;
+
+  }
+
+  &__copy {
+    color: rgba(#3f4d60, .80);
+    padding: 18px 0;
+    font-weight: 400;
+    line-height: 1.67;
+    text-align: center;
+  }
+}

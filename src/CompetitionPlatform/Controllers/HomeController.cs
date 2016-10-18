@@ -52,10 +52,10 @@ namespace CompetitionPlatform.Controllers
 
             var projectCategories = _categoriesRepository.GetCategories();
 
-            if (!string.IsNullOrEmpty(projectStatusFilter))
+            if (!string.IsNullOrEmpty(projectStatusFilter) && projectStatusFilter != "All")
                 projects = projects.Where(x => x.ProjectStatus == projectStatusFilter);
 
-            if (!string.IsNullOrEmpty(projectCategoryFilter))
+            if (!string.IsNullOrEmpty(projectCategoryFilter) && projectCategoryFilter != "All")
                 projects = projects.Where(x => x.Category == projectCategoryFilter);
 
             if (!string.IsNullOrEmpty(projectAuthorId))
@@ -84,9 +84,9 @@ namespace CompetitionPlatform.Controllers
                 var compactModel = new ProjectCompactViewModel
                 {
                     Id = project.Id,
-                    Name = project.Name.Length > 36 ? project.Name.Substring(0, 33) + "..." : project.Name,
-                    Overview = project.Overview.Length > 500 ? project.Overview.Substring(0, 497) + "..." : project.Overview,
-                    Description = project.Description.Length > 500 ? project.Description.Substring(0, 497) + "..." : project.Description,
+                    Name = project.Name, //project.Name.Length > 36 ? project.Name.Substring(0, 33) + "..." : project.Name,
+                    Overview = project.Overview, //project.Overview.Length > 500 ? project.Overview.Substring(0, 497) + "..." : project.Overview,
+                    Description = project.Description, //project.Description.Length > 500 ? project.Description.Substring(0, 497) + "..." : project.Description,
                     BudgetFirstPlace = project.BudgetFirstPlace,
                     VotesFor = project.VotesFor,
                     VotesAgainst = project.VotesAgainst,

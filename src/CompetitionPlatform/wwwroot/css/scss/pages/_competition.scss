@@ -1,0 +1,32 @@
+.prize {
+  font-family: $ff;
+
+  &__value {
+    color: rgba(#3F4D60, .6);
+    font-size: 50px;
+  }
+
+  &__title {
+    text-transform: uppercase;
+    font-size: 18px;
+    color: #333333;
+    letter-spacing: 1.79px;
+    line-height: 32px;
+    font-weight: $fw-semi;
+
+    sup {
+      font-size: 60%;
+      margin-right: 5px;
+    }
+  }
+
+  @media all and (max-width: 767px) {
+    &__value {
+      font-size: 32px;
+    }
+    &__title {
+      font-size: 12px;
+      line-height: normal;
+    }
+  }
+}

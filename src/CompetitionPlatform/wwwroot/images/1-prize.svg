@@ -3,7 +3,13 @@
     <!-- Generator: sketchtool 39.1 (31720) - http://www.bohemiancoding.com/sketch -->
     <title>8433F8AD-63C6-4CB8-B1B1-750D76FF7359</title>
     <desc>Created with sketchtool.</desc>
-    <defs></defs>
+    <defs>
+      <style>
+        @font-face {
+        font-family: ProximaNova-Semibold;
+        src: url("../lib/bootstrap/dist/fonts/ProximaNova-Semibold.eot"); }
+      </style>
+    </defs>
     <g id="Competition-Platform" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
         <g id="icons_set_competition_platform" transform="translate(-1301.000000, -1001.000000)">
             <g id="1_prize" transform="translate(1301.000000, 1001.000000)">

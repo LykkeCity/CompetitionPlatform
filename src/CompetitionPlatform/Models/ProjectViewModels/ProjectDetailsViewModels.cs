@@ -46,6 +46,7 @@ namespace CompetitionPlatform.Models.ProjectViewModels
     {
         public string CurrentUserId { get; set; }
         public IEnumerable<IProjectParticipateData> Participants { get; set; }
+        public Status Status { get; set; }
     }
 
     public class AddResultViewModel : IProjectResultData

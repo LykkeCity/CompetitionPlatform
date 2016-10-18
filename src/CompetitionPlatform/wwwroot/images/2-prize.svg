@@ -4,6 +4,11 @@
     <title>501020B1-28D5-4534-8F72-A6B849963B9A</title>
     <desc>Created with sketchtool.</desc>
     <defs>
+      <style>
+        @font-face {
+        font-family: ProximaNova-Semibold;
+        src: url("../lib/bootstrap/dist/fonts/ProximaNova-Semibold.eot"); }
+      </style>
         <polygon id="path-1" points="20 46.4974 0 34.9504 0 11.8564 20 0.3094 40 11.8564 40 34.9504"></polygon>
         <mask id="mask-2" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="0" y="0" width="40" height="46.188" fill="white">
             <use xlink:href="#path-1"></use>
@@ -13,10 +18,10 @@
         <g id="icons_set_competition_platform" transform="translate(-101.000000, -1201.000000)">
             <g id="2_prize" transform="translate(101.000000, 1201.000000)">
                 <use id="Page-1" stroke="#3F4D60" mask="url(#mask-2)" stroke-width="4" xlink:href="#path-1"></use>
-                <text id="2" font-family="ProximaNova-Semibold, Proxima Nova" font-size="20" font-weight="500" letter-spacing="2.5" fill="#3F4D60">
+                <text id="2" font-family="ProximaNova-Semibold" font-size="20" font-weight="500" letter-spacing="2.5" fill="#3F4D60">
                     <tspan x="5" y="30">2</tspan>
                 </text>
-                <text id="ND" font-family="ProximaNova-Semibold, Proxima Nova" font-size="12" font-weight="500" letter-spacing="0.5" fill="#3F4D60">
+                <text id="ND" font-family="ProximaNova-Semibold" font-size="12" font-weight="500" letter-spacing="0.5" fill="#3F4D60">
                     <tspan x="18" y="25">ND</tspan>
                 </text>
             </g>

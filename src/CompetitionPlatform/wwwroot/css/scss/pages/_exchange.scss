@@ -1,0 +1,113 @@
+.exchange_header {
+  position: relative;
+  padding: 130px 0 60px;
+
+  &__bg {
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    margin: 0 0 0 -406px;
+    z-index:-1;
+  }
+
+  .h1 {
+
+  }
+
+  .h2 {
+    font-weight: normal;
+    line-height: normal;
+  }
+
+  @media all and (max-width: 539px) {
+    padding: 90px 0px 40px;
+
+    .h1 {
+      font-size: 30px;
+    }
+
+    .h2 {
+      font-size: 18px;
+      margin-bottom: 20px;
+    }
+
+    &__bg {
+      width: 630px;
+      margin: 0 0 0 -315px;
+
+      img {
+        max-width: 100%;
+      }
+    }
+  }
+}
+
+.exchange {
+  padding-top: 40px !important;
+
+  hr {
+    border-width: 1px;
+    max-width: 100%;
+    width: 100%;
+    margin: 10px 0;
+  }
+
+  .table-responsive {
+    margin: 30px 0 10px;
+  }
+
+  .back_link {
+    color: rgba($secondary, .6);
+    font-size: 16px;
+    margin-bottom: 60px;
+    display: inline-block;
+    text-decoration: none !important;
+
+    &:hover {
+      color: $primary;
+    }
+
+    img {
+      display: inline-block;
+      vertical-align: middle;
+      position: relative;
+      top: -1px;
+      margin-right: 6px;
+    }
+
+    @media (min-width: 992px) {
+      margin-left: 50px;
+    }
+
+    @media (max-width: 767px) {
+      margin: -39px -15px 20px;
+      padding: 20px;
+      display: block;
+      background: #f7f8f9;
+    }
+  }
+
+  .h2-alt {
+    font-size: 39px;
+    margin-bottom: 26px;
+    letter-spacing: .04em;
+
+    @media all and (max-width: 540px) {
+      font-size: 32px;
+
+      img {
+        margin-right: 10px;
+      }
+    }
+  }
+
+  .text {
+    p {
+      margin-bottom: 15px;
+    }
+  }
+}
+
+#RatesTableUSD, #RatesTableBTC {
+  min-height: 418px;
+}
