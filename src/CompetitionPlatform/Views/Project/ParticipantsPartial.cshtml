@@ -23,9 +23,9 @@
                     {
                         <td class="text-center">
                             <form asp-controller="ProjectDetails" asp-action="EditResult" enctype="multipart/form-data">
-                                <input asp-for="@participant.ProjectId" name="ProjectId" type="hidden" />
-                                <input asp-for="@participant.UserId" name="UserId" type="hidden" />
-                                <input type="submit" value="Edit" class="btn-link" />
+                                <input asp-for="@participant.ProjectId" name="ProjectId" type="hidden"/>
+                                <input asp-for="@participant.UserId" name="UserId" type="hidden"/>
+                                <input type="submit" value="Edit" class="btn-link"/>
                             </form>
                         </td>
                     }
@@ -33,6 +33,10 @@
                     {
                         <td class="text-center"><i class="icon icon--result"><span class="path1"></span><span class="path2"></span></i></td>
                     }
+                }
+                else
+                {
+                    <td class="text-center"></td>
                 }
             </tr>
         }
