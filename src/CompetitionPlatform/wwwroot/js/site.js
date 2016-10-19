@@ -48,9 +48,9 @@
 
     barWidth();
 
-    window.onresize = function () {
+    window.onresize = function() {
         barWidth();
-    }
+    };
 
     $('#voteTestButton')
         .click(function (e) {
@@ -80,17 +80,21 @@
     });
 
     $('#msg')
-      .bind('blur', function () {
-          if (!$(this).val()) {
-              $(this).parents('.form--message').removeClass('focused');
-              $(this).parents('.message_card__inner').removeAttr('style');
-          }
-      })
-      .bind('focus', function () { $(this).parents('.form--message').addClass('focused'); })
-      .keyup(function () {
-          if ($(this).val()) { $(this).parents('.form--message').addClass('with_value'); }
-          else { $(this).parents('.form--message').removeClass('with_value'); }
-      })
+        .bind('blur',
+            function() {
+                if (!$(this).val()) {
+                    $(this).parents('.form--message').removeClass('focused');
+                    $(this).parents('.message_card__inner').removeAttr('style');
+                }
+            })
+        .bind('focus', function() { $(this).parents('.form--message').addClass('focused'); })
+        .keyup(function() {
+            if ($(this).val()) {
+                $(this).parents('.form--message').addClass('with_value');
+            } else {
+                $(this).parents('.form--message').removeClass('with_value');
+            }
+        });
 
     $('#msg')
       .each(function () { autosize(this); })
