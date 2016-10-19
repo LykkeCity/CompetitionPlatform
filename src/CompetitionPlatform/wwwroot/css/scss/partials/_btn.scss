@@ -196,6 +196,10 @@
     display: table-cell;
     vertical-align: top;
 
+    + .btn {
+      border-left: 0;
+    }
+
     .icon {
       font-size: 16px;
       color: rgb(138,150,161);
@@ -207,6 +211,13 @@
 
     &:after {
       display: none;
+    }
+
+
+    &:active {
+      border-color: #D3D6DB;
+      background: rgba(#D3D6DB, .2);
+      @include transform(none);
     }
 
     &:hover {

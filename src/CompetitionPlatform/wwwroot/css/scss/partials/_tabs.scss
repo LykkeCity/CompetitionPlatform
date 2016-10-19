@@ -21,6 +21,11 @@
     border-color: $primary;
   }
 
+  &:focus {
+     text-decoration: none;
+     color: rgba($secondary, .6);
+  }
+
   &__link {
     padding: 7px 22px;
     display: block;
@@ -28,6 +33,11 @@
 
     &:hover {
       color: $primary;
+    }
+
+    &:focus {
+       text-decoration: none;
+       color: rgba($secondary, .6);
     }
   }
 

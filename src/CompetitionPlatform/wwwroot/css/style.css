@@ -276,7 +276,6 @@ hr {
   width: 100%; }
 
 .text ul {
-  list-style: disc;
   font-weight: normal;
   font-style: normal;
   font-stretch: normal;
@@ -285,10 +284,20 @@ hr {
   padding-left: 25px;
   color: rgba(63, 77, 96, 0.8);
   font-size: 18px;
-  line-height: 30px; }
+  line-height: 30px;
+  list-style: none; }
   .text ul li {
-    color: #AB00FF;
-    margin-bottom: 15px; }
+    color: #3f4d60;
+    margin-bottom: 15px;
+    position: relative; }
+    .text ul li:before {
+      color: #AB00FF;
+      content: "\2022";
+      font-size: 28px;
+      position: absolute;
+      right: 100%;
+      margin-right: 11px;
+      top: -2px; }
   .text ul .li {
     color: rgba(63, 77, 96, 0.8); }
   .text ul a:not(.btn) {
@@ -983,7 +992,7 @@ label.error {
   .form--default .select__value {
     padding-left: 20px; }
   .form--default textarea.form-control {
-    height: 350px;
+    height: auto;
     resize: auto;
     max-width: 100%; }
   .form--default .prize__value {
@@ -1259,6 +1268,8 @@ label.error {
     line-height: 24px;
     display: table-cell;
     vertical-align: top; }
+    .btn-group .btn + .btn {
+      border-left: 0; }
     .btn-group .btn .icon {
       font-size: 16px;
       color: #8a96a1; }
@@ -1266,6 +1277,14 @@ label.error {
         color: #8a96a1; }
     .btn-group .btn:after {
       display: none; }
+    .btn-group .btn:active {
+      border-color: #D3D6DB;
+      background: rgba(211, 214, 219, 0.2);
+      -webkit-transform: none;
+      -moz-transform: none;
+      -ms-transform: none;
+      -o-transform: none;
+      transform: none; }
     .btn-group .btn:hover {
       -webkit-transform: scale(1);
       -ms-transform: scale(1);
@@ -3688,12 +3707,18 @@ hr.full {
   transition: all 0.3s ease; }
   .tab_item:hover {
     border-color: #ab00ff; }
+  .tab_item:focus {
+    text-decoration: none;
+    color: rgba(63, 77, 96, 0.6); }
   .tab_item__link {
     padding: 7px 22px;
     display: block;
     color: rgba(63, 77, 96, 0.6); }
     .tab_item__link:hover {
       color: #ab00ff; }
+    .tab_item__link:focus {
+      text-decoration: none;
+      color: rgba(63, 77, 96, 0.6); }
   .tab_item--active {
     color: #fff;
     background: #ab00ff;
@@ -4004,6 +4029,7 @@ hr.full {
     .banner--results .table tr:hover td {
       background: transparent; }
     .banner--results .table tr td {
+      border-top: 0;
       border-bottom: 0;
       text-align: center;
       padding: 5px;
@@ -5428,15 +5454,24 @@ html.fp-enabled,
     .page_nav__inner {
       border-top: 1px solid #eaedef; } }
 
-.page .tab-pane ul li {
-  color: #AB00FF;
-  margin-bottom: 15px; }
-
-.page .tab-pane ul .li {
-  color: #3f4d60; }
-
-.page .tab-pane ul + h3, .page .tab-pane ul + h4, .page .tab-pane ul + h2 {
-  margin-top: 45px; }
+.page .tab-pane ul {
+  list-style: none; }
+  .page .tab-pane ul li {
+    color: #3f4d60;
+    margin-bottom: 15px;
+    position: relative; }
+    .page .tab-pane ul li:before {
+      color: #AB00FF;
+      content: "\2022";
+      font-size: 28px;
+      position: absolute;
+      right: 100%;
+      margin-right: 11px;
+      top: -2px; }
+  .page .tab-pane ul .li {
+    color: #3f4d60; }
+  .page .tab-pane ul + h3, .page .tab-pane ul + h4, .page .tab-pane ul + h2 {
+    margin-top: 45px; }
 
 .page__title, .page h1.page__title, .page h2.page__title {
   margin-bottom: 17px; }

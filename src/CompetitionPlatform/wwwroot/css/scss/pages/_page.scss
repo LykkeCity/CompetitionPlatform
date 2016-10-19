@@ -190,7 +190,20 @@
 .page {
   .tab-pane {
     ul {
-      li {color: #AB00FF; margin-bottom: 15px;}
+      list-style: none;
+       li {color: #3f4d60; margin-bottom: 15px;
+         position: relative;
+ 
+         &:before {
+           color: #AB00FF;
+           content: "\2022";
+           font-size: 28px;
+           position: absolute;
+           right: 100%;
+           margin-right: 11px;
+           top: -2px;
+         }
+       }
       .li {color: #3f4d60;}
 
       + h3, + h4, + h2 {

@@ -89,15 +89,28 @@
   }
 
   ul {
-    list-style: disc;
     font-weight: normal;
     font-style: normal;
     font-stretch: normal;
     margin-bottom: 20px; margin-top: 20px; padding-left: 25px; color: rgba(63, 77, 96, 0.8);
     font-size: 18px;
     line-height: 30px;
+    list-style: none;
 
-    li {color: #AB00FF; margin-bottom: 15px;}
+    li {color: #3f4d60; margin-bottom: 15px;
+      position: relative;
+
+       &:before {
+         color: #AB00FF;
+         content: "\2022";
+         font-size: 28px;
+         position: absolute;
+         right: 100%;
+         margin-right: 11px;
+         top: -2px;
+       }
+     }
+
     .li {color: rgba(63, 77, 96, 0.8);}
 
     a:not(.btn) {
