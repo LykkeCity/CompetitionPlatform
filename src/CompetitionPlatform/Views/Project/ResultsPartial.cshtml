@@ -30,7 +30,14 @@
                         </div>
                     </td>
                     <td class="board_date">@result.Submitted.ToString("MMMM dd, yyyy hh:mm")</td>
-                    <td class="board_result text-center"><a href="@result.Link">Vew</a></td>
+                    @if (Model.Status == Status.Voting)
+                    {
+                        <td class="board_result text-center"><a href="@result.Link">Vew</a></td>
+                    }
+                    else
+                    {
+                        <td class="text-center"><i class="icon icon--result"><span class="path1"></span><span class="path2"></span></i></td>
+                    }
                     <td class="board_score text-center">@result.Score<span class="text-muted">/100</span></td>
                     <td class="board_vote text-center">@result.Votes</td>
                     @if (Model.Status == Status.Voting)
