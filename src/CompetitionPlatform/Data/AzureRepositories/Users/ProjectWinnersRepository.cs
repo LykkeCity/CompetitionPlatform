@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage.Table;
 using AzureStorage.Tables;
@@ -65,14 +66,18 @@ namespace CompetitionPlatform.Data.AzureRepositories.Users
         public async Task<IEnumerable<IWinnerData>> GetWinnersAsync(string projectId)
         {
             var partitionKey = WinnerEntity.GeneratePartitionKey(projectId);
-
             return await _winnersStorage.GetDataAsync(partitionKey);
+        }
+
+        public async Task<int> GetWinnersCountAsync(string projectId)
+        {
+            var winners = await GetWinnersAsync(projectId);
+            return winners.ToList().Count;
         }
 
         public async Task SaveAsync(IWinnerData winnerData)
         {
             var newEntity = WinnerEntity.Create(winnerData);
-
             await _winnersStorage.InsertAsync(newEntity);
         }
     }

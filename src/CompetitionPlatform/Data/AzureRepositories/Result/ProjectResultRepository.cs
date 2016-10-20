@@ -75,6 +75,12 @@ namespace CompetitionPlatform.Data.AzureRepositories.Result
             return await _projectResultInfoTableStorage.GetDataAsync(partitionKey);
         }
 
+        public async Task<int> GetResultsCountAsync(string projectId)
+        {
+            var results = await GetResultsAsync(projectId);
+            return results.ToList().Count;
+        }
+
         public async Task SaveAsync(IProjectResultData resultData)
         {
             var newEntity = ProjectResultEntity.Create(resultData);

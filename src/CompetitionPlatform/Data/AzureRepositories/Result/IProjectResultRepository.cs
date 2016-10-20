@@ -19,6 +19,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Result
     {
         Task<IProjectResultData> GetAsync(string projectId, string participantId);
         Task<IEnumerable<IProjectResultData>> GetResultsAsync(string projectId);
+        Task<int> GetResultsCountAsync(string projectId);
         Task SaveAsync(IProjectResultData resultData);
         Task UpdateAsync(IProjectResultData resultData);
     }
