@@ -15,7 +15,7 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public string Name { get; set; }
 
         [Required]
-        [Display(Name="Overview")]
+        [Display(Name = "Overview")]
         public string Overview { get; set; }
 
         [Required]
@@ -107,6 +107,8 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public int VotesAgainst { get; set; }
         public int CommentsCount { get; set; }
         public int ParticipantsCount { get; set; }
+        public int ResultsCount { get; set; }
+        public int WinnersCount { get; set; }
         public DateTime CompetitionRegistrationDeadline { get; set; }
         public DateTime ImplementationDeadline { get; set; }
         public DateTime VotingDeadline { get; set; }
