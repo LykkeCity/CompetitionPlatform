@@ -25,12 +25,15 @@
                         break;
                     case Status.Implementation:
                         statusColor = "label--red";
+                        projectCount = (project.ParticipantsCount == 1) ? project.ParticipantsCount + " PARTICIPANT" : project.ParticipantsCount + " PARTICIPANTS";
                         break;
                     case Status.Voting:
                         statusColor = "label--yellow";
+                        projectCount = (project.ResultsCount == 1) ? project.ResultsCount + " RESULT" : project.ResultsCount + " RESULTS";
                         break;
                     case Status.Archive:
                         statusColor = "label--grey";
+                        projectCount = (project.WinnersCount == 1) ? project.WinnersCount + " WINNER" : project.WinnersCount + " WINNERS";
                         break;
                 }
                 <div class="card card--preview">
@@ -56,7 +59,6 @@
                                 @if (project.Status == Status.CompetitionRegistration)
                                 {
                                     <a href="" class="action_link action_link--deadline"><i class="icon icon--deadline"></i> @project.CompetitionRegistrationDeadline.ToString("dd.MM.yyyy")</a>
-                                    
                                 }
                                 @if (project.Status == Status.Implementation)
                                 {

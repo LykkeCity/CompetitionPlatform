@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using CompetitionPlatform.Data.AzureRepositories.Project;
+using CompetitionPlatform.Data.AzureRepositories.Result;
 using CompetitionPlatform.Data.AzureRepositories.Users;
 using CompetitionPlatform.Data.ProjectCategory;
 using CompetitionPlatform.Helpers;
@@ -22,16 +23,21 @@ namespace CompetitionPlatform.Controllers
         private readonly IProjectCategoriesRepository _categoriesRepository;
         private readonly IProjectParticipantsRepository _participantsRepository;
         private readonly IProjectFollowRepository _projectFollowRepository;
+        private readonly IProjectResultRepository _resultsRepository;
+        private readonly IProjectWinnersRepository _winnersRepository;
 
         public HomeController(IProjectRepository projectRepository, IProjectCommentsRepository commentsRepository,
             IProjectCategoriesRepository categoriesRepository, IProjectParticipantsRepository participantsRepository,
-            IProjectFollowRepository projectFollowRepository)
+            IProjectFollowRepository projectFollowRepository, IProjectResultRepository resultsRepository,
+            IProjectWinnersRepository winnersRepository)
         {
             _projectRepository = projectRepository;
             _commentsRepository = commentsRepository;
             _categoriesRepository = categoriesRepository;
             _participantsRepository = participantsRepository;
             _projectFollowRepository = projectFollowRepository;
+            _resultsRepository = resultsRepository;
+            _winnersRepository = winnersRepository;
         }
 
         public async Task<IActionResult> Index()
@@ -80,6 +86,8 @@ namespace CompetitionPlatform.Controllers
             {
                 var projectCommentsCount = await _commentsRepository.GetProjectCommentsCountAsync(project.Id);
                 var participantsCount = await _participantsRepository.GetProjectParticipantsCountAsync(project.Id);
+                var resultsCount = await _resultsRepository.GetResultsCountAsync(project.Id);
+                var winnersCount = await _winnersRepository.GetWinnersCountAsync(project.Id);
 
                 var compactModel = new ProjectCompactViewModel
                 {
@@ -95,6 +103,8 @@ namespace CompetitionPlatform.Controllers
                     VotingDeadline = project.VotingDeadline,
                     CommentsCount = projectCommentsCount,
                     ParticipantsCount = participantsCount,
+                    ResultsCount = resultsCount,
+                    WinnersCount = winnersCount,
                     AuthorFullName = project.AuthorFullName,
                     Category = project.Category
                 };
