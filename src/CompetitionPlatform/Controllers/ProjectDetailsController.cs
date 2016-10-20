@@ -272,6 +272,8 @@ namespace CompetitionPlatform.Controllers
         {
             var participant = await _participantsRepository.GetAsync(model.ProjectId, model.ParticipantId);
 
+            if (participant == null) return View("AccessDenied");
+
             var result = await _resultRepository.GetAsync(model.ProjectId, model.ParticipantId);
 
             model.ParticipantFullName = participant.FullName;
