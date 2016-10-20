@@ -59,117 +59,173 @@ namespace CompetitionPlatform
 
             Log = new LogToTable(new AzureTableStorage<LogEntity>(connectionStringLogs, "LogCompPlatform", null));
 
-            // Add framework services.
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-
-            services.AddAuthentication(
-                options => { options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme; });
-
-            services.AddMvc();
-            services.RegisterLyykeServices();
-
-            var notificationEmailsQueueConnString = Settings.Notifications.EmailsQueueConnString;
-            var notificationSlackQueueConnString = Settings.Notifications.SlackQueueConnString;
-
-            if (HostingEnvironment.IsProduction() && !string.IsNullOrEmpty(notificationEmailsQueueConnString) && !string.IsNullOrEmpty(notificationSlackQueueConnString))
+            CheckSettings(Settings, Log);
+            try
             {
-                services.RegisterNotificationServices(notificationEmailsQueueConnString, notificationSlackQueueConnString);
+                // Add framework services.
+                services.AddDbContext<ApplicationDbContext>(options =>
+                        options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+                services.AddAuthentication(
+                    options => { options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme; });
+
+                services.AddMvc();
+                services.RegisterLyykeServices();
+
+                var notificationEmailsQueueConnString = Settings.Notifications.EmailsQueueConnString;
+                var notificationSlackQueueConnString = Settings.Notifications.SlackQueueConnString;
+
+                if (HostingEnvironment.IsProduction() && !string.IsNullOrEmpty(notificationEmailsQueueConnString) &&
+                    !string.IsNullOrEmpty(notificationSlackQueueConnString))
+                {
+                    services.RegisterNotificationServices(notificationEmailsQueueConnString,
+                        notificationSlackQueueConnString);
+                }
+                else
+                {
+                    services.RegisterInMemoryNotificationServices();
+                }
+
+                services.RegisterRepositories(connectionString, Log);
+                JobScheduler.Start(connectionString, Log);
+
+                services.AddRecaptcha(new RecaptchaOptions
+                {
+                    SiteKey = Settings.Recaptcha.SiteKey,
+                    SecretKey = Settings.Recaptcha.SecretKey
+                });
             }
-            else
+            catch (Exception ex)
             {
-                services.RegisterInMemoryNotificationServices();
+                Log.WriteError("Startup", "RegisterServices", "Registering Repositories and services", ex);
             }
-
-            services.RegisterRepositories(connectionString, Log);
-            JobScheduler.Start(connectionString, Log);
-
-            services.AddRecaptcha(new RecaptchaOptions
-            {
-                SiteKey = Settings.Recaptcha.SiteKey,
-                SecretKey = Settings.Recaptcha.SecretKey
-            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
-
-            if (env.IsStaging() || env.IsProduction())
+            try
             {
-                app.Use(async (context, next) =>
+                loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+                loggerFactory.AddDebug();
+
+                if (env.IsStaging() || env.IsProduction())
                 {
-                    if (context.Request.IsHttps)
+                    app.Use(async (context, next) =>
                     {
-                        await next();
-                    }
-                    else
-                    {
-                        var withHttps = "https://" + context.Request.Host + context.Request.Path;
-                        context.Response.Redirect(withHttps);
-                    }
+                        if (context.Request.IsHttps)
+                        {
+                            await next();
+                        }
+                        else
+                        {
+                            var withHttps = "https://" + context.Request.Host + context.Request.Path;
+                            context.Response.Redirect(withHttps);
+                        }
+                    });
+                }
+
+                if (env.IsDevelopment() || env.IsStaging())
+                {
+                    app.UseDeveloperExceptionPage();
+                }
+                else
+                {
+                    app.UseExceptionHandler("/Home/Error");
+                }
+
+                if (env.IsDevelopment())
+                {
+                    app.UseDatabaseErrorPage();
+                    app.UseBrowserLink();
+                }
+
+                app.UseCookieAuthentication(new CookieAuthenticationOptions
+                {
+                    AutomaticAuthenticate = true,
+                    AutomaticChallenge = true,
+                    ExpireTimeSpan = TimeSpan.FromMinutes(5),
+                    LoginPath = new PathString("/signin"),
+                    AccessDeniedPath = "/Home/Error"
+                });
+
+                app.UseOpenIdConnectAuthentication(new OpenIdConnectOptions
+                {
+                    RequireHttpsMetadata = false,
+                    SaveTokens = true,
+
+                    // Note: these settings must match the application details
+                    // inserted in the database at the server level.
+                    ClientId = Settings.Authentication.ClientId,
+                    ClientSecret = Settings.Authentication.ClientSecret,
+                    PostLogoutRedirectUri = Settings.Authentication.PostLogoutRedirectUri,
+                    CallbackPath = "/auth",
+
+                    // Use the authorization code flow.
+                    ResponseType = OpenIdConnectResponseType.Code,
+                    Events = new CompPlatformAuthenticationEvents(Settings.Azure.StorageConnString, Log),
+
+                    // Note: setting the Authority allows the OIDC client middleware to automatically
+                    // retrieve the identity provider's configuration and spare you from setting
+                    // the different endpoints URIs or the token validation parameters explicitly.
+                    Authority = Settings.Authentication.Authority,
+                    Scope = { "email profile" }
+                });
+
+                app.UseStaticFiles();
+
+                // Add external authentication middleware below. To configure them please see http://go.microsoft.com/fwlink/?LinkID=532715
+
+                app.UseMvc(routes =>
+                {
+                    routes.MapRoute(
+                        name: "default",
+                        template: "{controller=Home}/{action=Index}/{id?}");
                 });
             }
-
-            if (env.IsDevelopment() || env.IsStaging())
+            catch (Exception ex)
             {
-                app.UseDeveloperExceptionPage();
+                Log.WriteError("Startup", "Configure", "Configuring App and Authentication", ex);
             }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-            }
+        }
 
-            if (env.IsDevelopment())
-            {
-                app.UseDatabaseErrorPage();
-                app.UseBrowserLink();
-            }
+        private void CheckSettings(BaseSettings settings, ILog log)
+        {
+            if (string.IsNullOrEmpty(settings.Azure.StorageConnString))
+                WriteSettingsReadError(log, "StorageConnString");
 
-            app.UseCookieAuthentication(new CookieAuthenticationOptions
-            {
-                AutomaticAuthenticate = true,
-                AutomaticChallenge = true,
-                ExpireTimeSpan = TimeSpan.FromMinutes(5),
-                LoginPath = new PathString("/signin"),
-                AccessDeniedPath = "/Home/Error"
-            });
+            if (string.IsNullOrEmpty(settings.Azure.StorageLogConnString))
+                WriteSettingsReadError(log, "StorageLogConnString");
 
-            app.UseOpenIdConnectAuthentication(new OpenIdConnectOptions
-            {
-                RequireHttpsMetadata = false,
-                SaveTokens = true,
+            if (string.IsNullOrEmpty(settings.Authentication.ClientId))
+                WriteSettingsReadError(log, "ClientId");
 
-                // Note: these settings must match the application details
-                // inserted in the database at the server level.
-                ClientId = Settings.Authentication.ClientId,
-                ClientSecret = Settings.Authentication.ClientSecret,
-                PostLogoutRedirectUri = Settings.Authentication.PostLogoutRedirectUri,
-                CallbackPath = "/auth",
+            if (string.IsNullOrEmpty(settings.Authentication.ClientSecret))
+                WriteSettingsReadError(log, "ClientSecret");
 
-                // Use the authorization code flow.
-                ResponseType = OpenIdConnectResponseType.Code,
-                Events = new CompPlatformAuthenticationEvents(Settings.Azure.StorageConnString, Log),
+            if (string.IsNullOrEmpty(settings.Authentication.PostLogoutRedirectUri))
+                WriteSettingsReadError(log, "PostLogoutRedirectUri");
 
-                // Note: setting the Authority allows the OIDC client middleware to automatically
-                // retrieve the identity provider's configuration and spare you from setting
-                // the different endpoints URIs or the token validation parameters explicitly.
-                Authority = Settings.Authentication.Authority,
-                Scope = { "email profile" }
-            });
+            if (string.IsNullOrEmpty(settings.Authentication.Authority))
+                WriteSettingsReadError(log, "Authority");
 
-            app.UseStaticFiles();
+            if (string.IsNullOrEmpty(settings.Notifications.EmailsQueueConnString))
+                WriteSettingsReadError(log, "EmailsQueueConnString");
 
-            // Add external authentication middleware below. To configure them please see http://go.microsoft.com/fwlink/?LinkID=532715
+            if (string.IsNullOrEmpty(settings.Notifications.SlackQueueConnString))
+                WriteSettingsReadError(log, "SlackQueueConnString");
 
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
-            });
+            if (string.IsNullOrEmpty(settings.Recaptcha.SiteKey))
+                WriteSettingsReadError(log, "Recaptcha SiteKey");
+
+            if (string.IsNullOrEmpty(settings.Recaptcha.SecretKey))
+                WriteSettingsReadError(log, "Recaptcha SecretKey");
+        }
+
+        private void WriteSettingsReadError(ILog log, string elementName)
+        {
+            log.WriteError("Startup:ReadSettings", "Read " + elementName, elementName + " Missing or Empty",
+                new Exception(elementName + " is missing from the settings file!"));
         }
     }
 }
