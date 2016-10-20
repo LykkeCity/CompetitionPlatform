@@ -72,7 +72,7 @@ namespace CompetitionPlatform
             var notificationEmailsQueueConnString = Settings.Notifications.EmailsQueueConnString;
             var notificationSlackQueueConnString = Settings.Notifications.SlackQueueConnString;
 
-            if (HostingEnvironment.IsProduction())
+            if (HostingEnvironment.IsProduction() && !string.IsNullOrEmpty(notificationEmailsQueueConnString) && !string.IsNullOrEmpty(notificationSlackQueueConnString))
             {
                 services.RegisterNotificationServices(notificationEmailsQueueConnString, notificationSlackQueueConnString);
             }
