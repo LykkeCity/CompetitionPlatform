@@ -9,13 +9,13 @@ A website to help manage Projects Competitions.
   *  SettingsConnString - Connection string that points to the azure blob that contains the main settings file.
   *  SettingsContainerName - Name of the blob container where the global settings file is stored.
   *  SettingsFileName - Name of the global settings file ( including extension ).
+  *  LogsConnString - Connection string that points to the azure storage that contains logs.
 
 * Create the global settings file using this [template](https://github.com/LykkeCity/CompetitionPlatform/blob/master/generalsettings_template.json)
 
 * Fill the Azure connection settings:
 
   *  StorageConnString - Connection string that points to azure storage that contains main project files (projects, votes, comments, etc).
-  *  StorageLogConnString - Connection string that points to the azure storage that contains logs.
 
 * Fill the fields for the authentication server:
 
