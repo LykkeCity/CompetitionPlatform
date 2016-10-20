@@ -19,7 +19,6 @@
     public class AzureSettings
     {
         public string StorageConnString { get; set; }
-        public string StorageLogConnString { get; set; }
     }
 
     public class NotificationsSettings

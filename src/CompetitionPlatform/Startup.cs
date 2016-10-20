@@ -51,13 +51,21 @@ namespace CompetitionPlatform
             var settingsConnectionString = Configuration["SettingsConnString"];
             var settingsContainer = Configuration["SettingsContainerName"];
             var settingsFileName = Configuration["SettingsFileName"];
-
-            Settings = GeneralSettingsReader.ReadGeneralSettings<BaseSettings>(settingsConnectionString, settingsContainer, settingsFileName);
-
-            var connectionString = Settings.Azure.StorageConnString;
-            var connectionStringLogs = Settings.Azure.StorageLogConnString;
+            var connectionStringLogs = Configuration["LogsConnString"];
 
             Log = new LogToTable(new AzureTableStorage<LogEntity>(connectionStringLogs, "LogCompPlatform", null));
+
+            try
+            {
+                Settings = GeneralSettingsReader.ReadGeneralSettings<BaseSettings>(settingsConnectionString,
+                    settingsContainer, settingsFileName);
+            }
+            catch (Exception ex)
+            {
+                Log.WriteError("Startup", "ReadSettingsFile", "Readins Settings File", ex);
+            }
+
+            var connectionString = Settings.Azure.StorageConnString;
 
             CheckSettings(Settings, Log);
             try
@@ -193,9 +201,6 @@ namespace CompetitionPlatform
         {
             if (string.IsNullOrEmpty(settings.Azure.StorageConnString))
                 WriteSettingsReadError(log, "StorageConnString");
-
-            if (string.IsNullOrEmpty(settings.Azure.StorageLogConnString))
-                WriteSettingsReadError(log, "StorageLogConnString");
 
             if (string.IsNullOrEmpty(settings.Authentication.ClientId))
                 WriteSettingsReadError(log, "ClientId");
