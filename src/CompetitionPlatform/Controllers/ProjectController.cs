@@ -248,11 +248,14 @@ namespace CompetitionPlatform.Controllers
 
             var participantId = "";
             var isParticipant = false;
+            var hasResult = false;
 
             if (participant != null)
             {
                 participantId = user.Email;
                 isParticipant = true;
+
+                hasResult = results.Any(r => r.ParticipantId == user.Email);
             }
 
             var projectFollowing = (user.Email == null) ? null : await _projectFollowRepository.GetAsync(user.Email, id);
@@ -282,7 +285,8 @@ namespace CompetitionPlatform.Controllers
             {
                 CurrentUserId = user.Email,
                 Participants = participants,
-                Status = project.Status
+                Status = project.Status,
+                HasResult = hasResult
             };
 
             var resultsPartial = new ResultsPartialViewModel

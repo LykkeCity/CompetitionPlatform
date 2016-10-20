@@ -144,7 +144,7 @@
                         }
                     </div>
                     <div role="tabpanel" class="tab-pane" id="Participants">
-                        @if (Model.IsParticipant && Model.Status == Status.Implementation)
+                        @if (Model.IsParticipant && Model.Status == Status.Implementation && !Model.ParticipantsPartial.HasResult)
                         {
                             <a asp-area="" asp-controller="ProjectDetails" asp-action="AddResult" asp-route-id="@Model.Id" class="btn btn-md">
                                 <i class="icon icon--share_result"></i> Add Your Result
