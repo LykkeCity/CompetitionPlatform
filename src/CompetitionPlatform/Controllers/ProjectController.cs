@@ -244,7 +244,8 @@ namespace CompetitionPlatform.Controllers
 
             var userRole = (user.Email == null) ? null : await _userRolesRepository.GetAsync(user.Email);
 
-            var isAdmin = userRole != null && userRole.Role == "ADMIN";
+            var isAdmin = (userRole != null) && userRole.Role == "ADMIN";
+            var isAuthor = (user.Email != null) && user.Email == project.AuthorId;
 
             var participantId = "";
             var isParticipant = false;
@@ -278,7 +279,8 @@ namespace CompetitionPlatform.Controllers
                 ProjectId = project.Id,
                 UserId = project.AuthorId,
                 Comments = comments,
-                IsAdmin = isAdmin
+                IsAdmin = isAdmin,
+                IsAuthor = isAuthor
             };
 
             var participantsPartial = new ProjectParticipantsPartialViewModel

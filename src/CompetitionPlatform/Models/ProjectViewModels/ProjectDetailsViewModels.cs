@@ -20,6 +20,7 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public DateTime LastModified { get; set; }
         public IEnumerable<ICommentData> Comments { get; set; }
         public bool IsAdmin { get; set; }
+        public bool IsAuthor { get; set; }
     }
 
     public class ProjectDetailsStatusViewModel

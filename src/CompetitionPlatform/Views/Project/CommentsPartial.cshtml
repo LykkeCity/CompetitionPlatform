@@ -58,14 +58,11 @@
                                 @comment.Comment
                             </p>
                             <div id="@comment.Id"></div>
-                            @if (Model.IsAdmin)
+                            @if (Model.IsAuthor && Model.UserId != comment.UserId)
                             {
-                                if (Model.UserId != comment.UserId)
-                                {
-                                    <div>
-                                        <button id="@comment.Id" class="btn btn--default replyToCommentButton @comment.Id">Reply</button>
-                                    </div>
-                                }
+                                <div>
+                                    <button id="@comment.Id" class="btn btn--default replyToCommentButton @comment.Id">Reply</button>
+                                </div>
                             }
                         </div>
                     </div>
