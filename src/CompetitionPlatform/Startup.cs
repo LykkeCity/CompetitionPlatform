@@ -62,7 +62,7 @@ namespace CompetitionPlatform
             }
             catch (Exception ex)
             {
-                Log.WriteError("Startup", "ReadSettingsFile", "Readins Settings File", ex);
+                Log.WriteError("Startup", "ReadSettingsFile", "Reading Settings File", ex);
             }
 
             var connectionString = Settings.Azure.StorageConnString;
