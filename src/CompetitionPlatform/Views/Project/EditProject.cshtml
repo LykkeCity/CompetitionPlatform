@@ -27,6 +27,8 @@
         var implementationCircle = "";
         var votingCircle = "";
         var archiveCircle = "";
+        var votesCount = Model.VotesFor + Model.VotesAgainst;
+        var numberOfVotes = votesCount == 1 ? votesCount + " VOTE" : votesCount + " VOTES";
 
         if (Model.Status == Status.Initiative)
         {
@@ -93,6 +95,24 @@
                 </a>
             </div>
         </div>
+
+        @if (Model.Status == Status.Initiative)
+        {
+            <div class="row">
+                <div class="col-sm-9">
+                    <p>The project must go through several stages before the competition starts. At Initiative must collect a minimum of 40 votes, for a competition. Once this amount will be collected, the project can be transferred to the status of competition registration.</p>
+                </div>
+                <div class="col-sm-3">
+                    <div class="voting_group__value">@numberOfVotes</div>
+
+                    @await Html.PartialAsync("VotingBarsPartial", new ProjectVoteViewModel
+               {
+                   VotesFor = Model.VotesFor,
+                   VotesAgainst = Model.VotesAgainst
+               })
+                </div>
+            </div>
+        }
     </div>
 </section>
 
