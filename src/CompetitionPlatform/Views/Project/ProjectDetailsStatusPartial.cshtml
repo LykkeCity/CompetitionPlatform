@@ -2,64 +2,15 @@
 @using CompetitionPlatform.Helpers
 @model CompetitionPlatform.Models.ProjectViewModels.ProjectDetailsStatusViewModel
 
-@*@if (Model.Status == Status.Initiative)
-    {
-        <div>
-            @if (ClaimsHelper.GetUser(User.Identity).Email != null)
-            {
-                <p class="text-muted small_desc">Cast your vote for or against the competition. Do you think this is the project that Lykke City needs?</p>
-                <div class="project-voting-buttons">
-
-                    <button id="voteForButton" class="btn btn-success">
-                        <i class="icon icon--vote_yes"></i>
-                    </button>
-
-                    <button id="voteAgainstButton" class="btn btn-danger">
-                        <i class="icon icon--vote_no"></i>
-                    </button>
-
-                    <input asp-for="@Model.ProjectId" type="hidden" />
-
-                    <p class="inline">@(Model.VotesFor + Model.VotesAgainst) Votes</p>
-                    <div id="projectVoteResults" class="project-details-voting-bars">
-                    </div>
-                </div>
-            }
-            else
-            {
-                <p>
-                    Please
-                    <a asp-area="" asp-controller="Home" asp-action="SignIn" class="">Sign In</a>
-                    to Vote
-                </p>
-            }
-        </div>
-    }*@
 @if (Model.Status == Status.Initiative)
 {
     <div>
         @if (ClaimsHelper.GetUser(User.Identity).Email != null)
         {
             <p class="text-muted small_desc">Cast your vote for or against the competition. Do you think this is the project that Lykke City needs?</p>
-            @*<div class="project-voting-buttons">
-
-                    <button id="voteForButton" class="btn btn-success">
-                        <i class="icon icon--vote_yes"></i>
-                    </button>
-
-                    <button id="voteAgainstButton" class="btn btn-danger">
-                        <i class="icon icon--vote_no"></i>
-                    </button>
-
-                    <input asp-for="@Model.ProjectId" type="hidden" />
-
-                    <p class="inline">@(Model.VotesFor + Model.VotesAgainst) Votes</p>
-                    <div id="projectVoteResults" class="project-details-voting-bars">
-                    </div>
-                </div>*@
             <div class="voting_group">
                 <button id="voteForButton" class="btn btn--circle btn--green _voting_btn" data-hover="Vote again"><i class="icon icon--vote_yes"></i><span>Yes</span></button>
-                <button id ="voteAgainstButton" class="btn btn--circle btn--red _voting_btn" data-hover="Vote again"><i class="icon icon--vote_no"></i><span>No</span></button>
+                <button id="voteAgainstButton" class="btn btn--circle btn--red _voting_btn" data-hover="Vote again"><i class="icon icon--vote_no"></i><span>No</span></button>
 
                 <div class="voting_group__value">@(Model.VotesFor + Model.VotesAgainst) votes</div>
                 <div id="projectVoteResults" class="voting_group__status">
