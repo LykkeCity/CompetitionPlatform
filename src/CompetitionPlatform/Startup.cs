@@ -62,7 +62,7 @@ namespace CompetitionPlatform
             }
             catch (Exception ex)
             {
-                Log.WriteError("Startup", "ReadSettingsFile", "Reading Settings File", ex);
+                Log.WriteError("Startup", "ReadSettingsFile", "Reading Settings File", ex).Wait();
             }
 
             var connectionString = Settings.Azure.StorageConnString;
@@ -105,7 +105,7 @@ namespace CompetitionPlatform
             }
             catch (Exception ex)
             {
-                Log.WriteError("Startup", "RegisterServices", "Registering Repositories and services", ex);
+                Log.WriteError("Startup", "RegisterServices", "Registering Repositories and services", ex).Wait();
             }
         }
 
@@ -193,7 +193,7 @@ namespace CompetitionPlatform
             }
             catch (Exception ex)
             {
-                Log.WriteError("Startup", "Configure", "Configuring App and Authentication", ex);
+                Log.WriteError("Startup", "Configure", "Configuring App and Authentication", ex).Wait();
             }
         }
 
@@ -230,7 +230,7 @@ namespace CompetitionPlatform
         private void WriteSettingsReadError(ILog log, string elementName)
         {
             log.WriteError("Startup:ReadSettings", "Read " + elementName, elementName + " Missing or Empty",
-                new Exception(elementName + " is missing from the settings file!"));
+                new Exception(elementName + " is missing from the settings file!")).Wait();
         }
     }
 }
