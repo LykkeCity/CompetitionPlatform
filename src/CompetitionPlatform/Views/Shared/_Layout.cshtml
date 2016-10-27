@@ -126,7 +126,7 @@
                         <div class="navbar-right">
                             @if (User.Identity.IsAuthenticated)
                             {
-                                <ul class="nav nav--header">
+                                <ul class="nav nav--header pull-right">
                                     <li class="pull-right">
                                         <a class="dropdown__control" href="">@ClaimsHelper.GetUser(User.Identity).GetFullName()</a>
                                         <div class="dropdown__container">
