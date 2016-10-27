@@ -15,6 +15,7 @@
         @*<link rel="stylesheet" href="~/css/site.css" />
             <link rel="stylesheet" href="~/css/header.css" />*@
         <link rel="stylesheet" href="~/css/style.css" />
+        <link rel="stylesheet" href="~/css/addstyle.css" />
     </environment>
     <environment names="Staging,Production">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/css/bootstrap.min.css"
@@ -26,6 +27,7 @@
         @*<link rel="stylesheet" href="~/css/site.css" />
             <link rel="stylesheet" href="~/css/header.css" />*@
         <link rel="stylesheet" href="~/css/style.css" />
+        <link rel="stylesheet" href="~/css/addstyle.css" />
     </environment>
 
     <link rel="shortcut icon" type="image/x-icon" href="~/favicon.ico" />
@@ -35,7 +37,10 @@
         <div class="container">
             <div class="row">
                 <div class="col-xs-2 col-sm-3">
-                    <a href="/" class="logo header__logo"><img src="~/img/lykke_new.svg" height="50" alt="" /></a>
+                    <div style="display:inline-block;">
+                        <a href="/" class="logo header__logo"><img src="~/img/lykke_new.svg" height="50" alt="" /></a>
+                    </div>
+                    <div class="page__title h2" style="display: inline-block; vertical-align: middle; margin: 4px 0 0 5px; color: #333;"><span>Streams</span></div>
                 </div>
                 <div class="col-xs-10 col-sm-9 col-md-6 text-center">
                     <button type="button" class="navbar-toggle collapsed btn btn--stroke pull-right" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false">
@@ -49,7 +54,7 @@
                                 <div class="t-cell">
 
                                     <ul class="nav nav--header">
-                                        <li class="_add_active_exchange">
+                                        @*<li class="_add_active_exchange">
                                             <a class="dropdown__control" href="https://lykke.com/exchange.php">Exchange</a>
                                             <div class="dropdown__container">
                                                 <ul class="dropdown__nav">
@@ -86,6 +91,15 @@
                                         </li>
                                         <li>
                                             <a class="dropdown__control" href="https://lykke.com/lykkewallet/">Consulting</a>
+                                        </li>*@
+                                        <li>
+                                            <a asp-area="" asp-controller="Home" asp-action="Index" class="tab_item__link">All projects</a>
+                                        </li>
+                                        <li>
+                                            <a asp-area="" asp-controller="Home" asp-action="FilterFollowingProjects" class="tab_item__link">Following</a>
+                                        </li>
+                                        <li>
+                                            <a asp-area="" asp-controller="Home" asp-action="FilterMyProjects" class="tab_item__link">My projects</a>
                                         </li>
                                     </ul>
                                     <a href="https://wiki.lykkex.com/start?do=login" class="visible-xs-inline-block visible-sm-inline-block btn">Sign In</a>
@@ -113,7 +127,7 @@
                             @if (User.Identity.IsAuthenticated)
                             {
                                 <ul class="nav nav--header">
-                                    <li>
+                                    <li class="pull-right">
                                         <a class="dropdown__control" href="">@ClaimsHelper.GetUser(User.Identity).GetFullName()</a>
                                         <div class="dropdown__container">
                                             <ul class="dropdown__nav">
@@ -134,13 +148,13 @@
             <div class="page_nav__inner">
                 <div class="container">
                     <ul class="page_nav__list">
-                        <li class="page_nav__item"><a href="https://lykke.com/city/start?do=register">Check In</a></li>
+                        @*<li class="page_nav__item"><a href="https://lykke.com/city/start?do=register">Check In</a></li>
                         <li class="page_nav__item"><a href="https://lykke.com/city/yellowpages/registerform">Become a Citizen</a></li>
                         <li class="page_nav__item"><a href="https://lykke.com/city/about/openposition">Open Positions</a></li>
                         <li class="page_nav__item active"><a href="https://lykke.com/city/openprojects/index">Projects Board</a></li>
                         <li class="page_nav__item"><a href="https://lykke.com/city/lykketimes">Lykke Times</a></li>
                         <li class="page_nav__item"><a href="https://lykke.com/city/blog/index">Blog</a></li>
-                        <li class="pull-right hidden-xs hidden-sm"><a type="button" class="btn btn-circle new-project-button" href="/Project/Create">+</a></li>
+                        <li class="pull-right hidden-xs hidden-sm"><a type="button" class="btn btn-circle new-project-button" href="/Project/Create">+</a></li>*@
                     </ul>
 
                 </div>

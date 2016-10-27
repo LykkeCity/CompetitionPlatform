@@ -34,18 +34,19 @@
 
 <section class="section section--lead section--padding">
     <div class="container container--extend">
-        <div class="page__actions">
-            <div class="edit_page_link pull-right">
-                <a asp-area="" asp-controller="Project" asp-action="Edit" asp-route-id="@Model.Id">
-                    <i class="icon icon--edit"></i> Edit
-                </a>
-            </div>
-            <div class="back_link">
-                <a asp-area="" asp-controller="Home" asp-action="Index">
-                    <i class="icon icon--back"></i> Back to Projects
-                </a>
-            </div>
+    <div class="page__actions row">
+        <div class="pull-right" style="margin-left: 20px; margin-top: -16px;"><a type="button" class="btn btn-circle new-project-button" href="/Project/Create">+</a></div>
+        <div class="edit_page_link pull-right">
+            <a asp-area="" asp-controller="Project" asp-action="Edit" asp-route-id="@Model.Id">
+                <i class="icon icon--edit"></i> Edit
+            </a>
         </div>
+        <div class="back_link">
+            <a asp-area="" asp-controller="Home" asp-action="Index">
+                <i class="icon icon--back"></i> Back to Projects
+            </a>
+        </div>
+    </div>
         <div class="row">
             <div class="col-md-8 content__left">
                 <h2>@Model.Name</h2>
