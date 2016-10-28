@@ -70,7 +70,10 @@
         $("#fileInputHelperText").append(this.value.split('\\').pop());
     });
 
-    tinymce.init({ selector: 'textarea.richEditor' });
+    tinymce.init({
+        selector: 'textarea.richEditor',
+        plugins: 'link'
+    });
 
     //restyling js
 
