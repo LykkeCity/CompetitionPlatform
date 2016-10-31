@@ -34,19 +34,19 @@
 
 <section class="section section--lead section--padding">
     <div class="container container--extend">
-    <div class="page__actions row">
-        <div class="pull-right" style="margin-left: 20px; margin-top: -16px;"><a type="button" class="btn btn-circle new-project-button" href="/Project/Create">+</a></div>
-        <div class="edit_page_link pull-right">
-            <a asp-area="" asp-controller="Project" asp-action="Edit" asp-route-id="@Model.Id">
-                <i class="icon icon--edit"></i> Edit
-            </a>
+        <div class="page__actions row">
+            <div class="pull-right" style="margin-left: 20px; margin-top: -16px;"><a type="button" class="btn btn-circle new-project-button" href="/Project/Create">+</a></div>
+            <div class="edit_page_link pull-right">
+                <a asp-area="" asp-controller="Project" asp-action="Edit" asp-route-id="@Model.Id">
+                    <i class="icon icon--edit"></i> Edit
+                </a>
+            </div>
+            <div class="back_link">
+                <a asp-area="" asp-controller="Home" asp-action="Index">
+                    <i class="icon icon--back"></i> Back to Projects
+                </a>
+            </div>
         </div>
-        <div class="back_link">
-            <a asp-area="" asp-controller="Home" asp-action="Index">
-                <i class="icon icon--back"></i> Back to Projects
-            </a>
-        </div>
-    </div>
         <div class="row">
             <div class="col-md-8 content__left">
                 <h2>@Model.Name</h2>
@@ -107,6 +107,17 @@
                 <div class="tab-content">
                     <div role="tabpanel" class="tab-pane active" id="info">
                         <div class="text">
+                            <div class="form-group">
+                                <div class="row">
+                                    <label asp-for="Overview" class="control-label col-sm-4"></label>
+                                </div>
+                                @Model.Overview
+                            </div>
+                        </div>
+                        <div class="text">
+                            <div class="row">
+                                <label class="control-label col-sm-4">Description</label>
+                            </div>
                             @Html.Raw(Model.Description)
                         </div>
                         @if (Model.FileInfo != null)
@@ -116,20 +127,30 @@
                                 {
                                     case ContentTypesHelper.Xls:
                                     case ContentTypesHelper.Xlsx:
-                                        <div class="asset_link__icon"><a href=""><i class="icon icon--xls_file"><span class="path1"></span><span class="path2"></span></i></a></div>
+                                        <div class="asset_link__icon">
+                                            <a href=""><i class="icon icon--xls_file"><span class="path1"></span><span class="path2"></span></i></a>
+                                        </div>
                                         break;
                                     case ContentTypesHelper.Pdf:
-                                        <div class="asset_link__icon"><a href=""><i class="icon icon--pdf_file"><span class="path1"></span><span class="path2"></span></i></a></div>
+                                        <div class="asset_link__icon">
+                                            <a href=""><i class="icon icon--pdf_file"><span class="path1"></span><span class="path2"></span></i></a>
+                                        </div>
                                         break;
                                     case ContentTypesHelper.Jpg:
-                                        <div class="asset_link__icon"><a href=""><i class="icon icon--jpg_file"><span class="path1"></span><span class="path2"></span></i></a></div>
+                                        <div class="asset_link__icon">
+                                            <a href=""><i class="icon icon--jpg_file"><span class="path1"></span><span class="path2"></span></i></a>
+                                        </div>
                                         break;
                                     case ContentTypesHelper.Doc:
                                     case ContentTypesHelper.Docx:
-                                        <div class="asset_link__icon"><a href=""><i class="icon icon--doc_file"><span class="path1"></span><span class="path2"></span></i></a></div>
+                                        <div class="asset_link__icon">
+                                            <a href=""><i class="icon icon--doc_file"><span class="path1"></span><span class="path2"></span></i></a>
+                                        </div>
                                         break;
                                     default:
-                                        <div class="asset_link__icon"><a href=""><i class="icon icon--pdf_file"><span class="path1"></span><span class="path2"></span></i></a></div>
+                                        <div class="asset_link__icon">
+                                            <a href=""><i class="icon icon--pdf_file"><span class="path1"></span><span class="path2"></span></i></a>
+                                        </div>
                                         break;
                                 }
                                 <div class="asset_link__info">
@@ -154,14 +175,14 @@
                             <br>
                             <br>
                         }
-                        
+
                         @await Html.PartialAsync("ParticipantsPartial", Model.ParticipantsPartial)
                     </div>
 
                     <div role="tabpanel" class="tab-pane" id="Comments">
                         @await Html.PartialAsync("CommentsPartial", Model.CommentsPartial)
                     </div>
-                    
+
                     <div role="tabpanel" class="tab-pane" id="Results">
                         @await Html.PartialAsync("ResultsPartial", Model.ResultsPartial)
                     </div>
