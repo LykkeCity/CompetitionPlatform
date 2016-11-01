@@ -16,7 +16,8 @@ namespace CompetitionPlatform.Data.ProjectCategory
                 "Technology",
                 "Bitcoin",
                 "Mobile",
-                "Payments"
+                "Payments",
+                "Communications and media"
             };
         }
     }
