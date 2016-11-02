@@ -46,13 +46,13 @@ namespace CompetitionPlatform.Controllers
             return View(viewModel);
         }
 
-        public async Task<IActionResult> GetProjectList(string projectStatusFilter, string projectCategoryFilter)
+        public async Task<IActionResult> GetProjectList(string projectStatusFilter, string projectCategoryFilter, string projectPrizeFilter)
         {
-            var viewModel = await GetProjectListViewModel(projectStatusFilter, projectCategoryFilter);
+            var viewModel = await GetProjectListViewModel(projectStatusFilter, projectCategoryFilter, projectPrizeFilter);
             return PartialView("ProjectListPartial", viewModel);
         }
 
-        private async Task<ProjectListIndexViewModel> GetProjectListViewModel(string projectStatusFilter = null, string projectCategoryFilter = null, string projectAuthorId = null)
+        private async Task<ProjectListIndexViewModel> GetProjectListViewModel(string projectStatusFilter = null, string projectCategoryFilter = null, string projectPrizeFilter = null, string projectAuthorId = null)
         {
             var projects = await _projectRepository.GetProjectsAsync();
 
@@ -62,10 +62,23 @@ namespace CompetitionPlatform.Controllers
                 projects = projects.Where(x => x.ProjectStatus == projectStatusFilter);
 
             if (!string.IsNullOrEmpty(projectCategoryFilter) && projectCategoryFilter != "All")
-                projects = projects.Where(x => x.Category == projectCategoryFilter);
+                projects = projects.Where(x => x.Category.Replace(" ","") == projectCategoryFilter);
 
             if (!string.IsNullOrEmpty(projectAuthorId))
                 projects = projects.Where(x => x.AuthorId == projectAuthorId);
+
+            if (!string.IsNullOrEmpty(projectPrizeFilter))
+            {
+                if (projectPrizeFilter == "Ascending")
+                    projects = projects.OrderBy(x => x.BudgetFirstPlace);
+
+                if (projectPrizeFilter == "Descending")
+                    projects = projects.OrderByDescending(x => x.BudgetFirstPlace);
+            }
+            else
+            {
+                projects = projects.OrderBy(x => x.BudgetFirstPlace);
+            }
 
             var compactModels = await GetCompactProjectsList(projects);
 

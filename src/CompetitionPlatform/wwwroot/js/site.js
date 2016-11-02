@@ -8,15 +8,22 @@
     $('#projectStatusFilter')
         .change(function () {
             $('#projectListResults').load('Home/GetProjectList?projectStatusFilter=' +
-                $('#projectStatusFilter').val() + '&projectCategoryFilter=' +
-                $('#projectCategoryFilter').val());
+                $('#projectStatusFilter :selected').val() + '&projectCategoryFilter=' +
+                $('#projectCategoryFilter :selected').val().replace(/\s/g, '') + '&projectPrizeFilter=' + $('#projectPrizeFilter :selected').val());
         });
 
     $('#projectCategoryFilter')
         .change(function () {
             $('#projectListResults').load('Home/GetProjectList?projectStatusFilter=' +
                 $('#projectStatusFilter :selected').val() + '&projectCategoryFilter=' +
-                $('#projectCategoryFilter :selected').val());
+                $('#projectCategoryFilter :selected').val().replace(/\s/g, '') + '&projectPrizeFilter=' + $('#projectPrizeFilter :selected').val());
+        });
+
+    $('#projectPrizeFilter')
+        .change(function () {
+            $('#projectListResults').load('Home/GetProjectList?projectStatusFilter=' +
+                $('#projectStatusFilter :selected').val() + '&projectCategoryFilter=' +
+                $('#projectCategoryFilter :selected').val().replace(/\s/g, '') + '&projectPrizeFilter=' + $('#projectPrizeFilter :selected').val());
         });
 
     $('#voteForButton')
