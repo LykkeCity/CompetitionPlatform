@@ -1,10 +1,4 @@
 ﻿$(function () {
-    //$('.datepicker').datepicker();
-
-    //$('.datepicker').on('changeDate', function () {
-    //    $(this).datepicker('hide');
-    //});
-
     $('#projectStatusFilter')
         .change(function () {
             $('#projectListResults').load('Home/GetProjectList?projectStatusFilter=' +
