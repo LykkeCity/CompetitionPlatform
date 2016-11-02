@@ -122,6 +122,10 @@ namespace CompetitionPlatform.Controllers
                         projectViewModel.Name);
                     await _emailsQueue.PutMessageAsync(message);
                 }
+
+                await SaveProjectFile(projectViewModel.File, projectId);
+
+                return RedirectToAction("Index", "Home");
             }
             else
             {
@@ -153,11 +157,11 @@ namespace CompetitionPlatform.Controllers
                 {
                     await _winnersService.SaveWinners(projectViewModel.Id);
                 }
+
+                await SaveProjectFile(projectViewModel.File, projectId);
+
+                return RedirectToAction("ProjectDetails", "Project", new { id = projectViewModel.Id });
             }
-
-            await SaveProjectFile(projectViewModel.File, projectId);
-
-            return RedirectToAction("Index", "Home");
         }
 
         private async Task AddCompetitionMailToQueue(IProjectData project)
