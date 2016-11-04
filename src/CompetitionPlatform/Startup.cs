@@ -171,7 +171,7 @@ namespace CompetitionPlatform
 
                     // Use the authorization code flow.
                     ResponseType = OpenIdConnectResponseType.Code,
-                    Events = new CompPlatformAuthenticationEvents(Settings.Azure.StorageConnString, Log),
+                    Events = new CompPlatformAuthenticationEvents(Log, HostingEnvironment, Settings.Azure.StorageConnString, Settings.Notifications.EmailsQueueConnString),
 
                     // Note: setting the Authority allows the OIDC client middleware to automatically
                     // retrieve the identity provider's configuration and spare you from setting
