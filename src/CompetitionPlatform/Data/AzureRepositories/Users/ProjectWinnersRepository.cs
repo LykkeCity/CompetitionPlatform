@@ -30,7 +30,8 @@ namespace CompetitionPlatform.Data.AzureRepositories.Users
                 Result = src.Result,
                 Votes = src.Votes,
                 Score = src.Score,
-                Budget = src.Budget
+                Budget = src.Budget,
+                WinnerId = src.WinnerId
             };
 
             return result;
