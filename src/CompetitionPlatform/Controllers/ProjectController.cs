@@ -156,6 +156,7 @@ namespace CompetitionPlatform.Controllers
                 if (project.Status != Status.Archive && projectViewModel.Status == Status.Archive)
                 {
                     await _winnersService.SaveWinners(projectViewModel.Id);
+                    await AddArchiveMailToQueue(project);
                 }
 
                 await SaveProjectFile(projectViewModel.File, projectId);
@@ -210,6 +211,24 @@ namespace CompetitionPlatform.Controllers
                 if (_emailsQueue != null)
                 {
                     var message = NotificationMessageHelper.GenerateVotingMessage(project, follower);
+                    await _emailsQueue.PutMessageAsync(message);
+                }
+            }
+        }
+
+        private async Task AddArchiveMailToQueue(IProjectData project)
+        {
+            var participantsCount = await _participantsRepository.GetProjectParticipantsCountAsync(project.Id);
+            var resultsCount = await _resultRepository.GetResultsCountAsync(project.Id);
+            var winners = await _winnersRepository.GetWinnersAsync(project.Id);
+
+            var following = await GetProjectFollows(project.Id);
+
+            foreach (var follower in following)
+            {
+                if (_emailsQueue != null)
+                {
+                    var message = NotificationMessageHelper.GenerateArchiveMessage(project, follower, participantsCount, resultsCount, winners);
                     await _emailsQueue.PutMessageAsync(message);
                 }
             }
