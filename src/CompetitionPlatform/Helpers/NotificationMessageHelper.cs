@@ -51,7 +51,7 @@ namespace CompetitionPlatform.Helpers
                 ProjectStatus = Status.Initiative.ToString(),
                 ProjectAuthorName = project.AuthorFullName,
                 ProjectCreatedDate = project.Created,
-                ProjectDescription = project.Description,
+                ProjectDescription = project.Overview,
                 ProjectFirstPrize = project.BudgetFirstPlace,
                 ProjectName = project.Name,
                 ProjectSecondPrize = project.BudgetSecondPlace ?? 0
@@ -90,7 +90,7 @@ namespace CompetitionPlatform.Helpers
                 ProjectAuthorName = project.AuthorFullName,
                 ProjectCompetitionDeadline = project.CompetitionRegistrationDeadline,
                 ProjectCreatedDate = project.Created,
-                ProjectDescription = project.Description,
+                ProjectDescription = project.Overview,
                 ProjectFirstPrize = project.BudgetFirstPlace,
                 ProjectName = project.Name,
                 ProjectSecondPrize = project.BudgetSecondPlace ?? 0
@@ -129,7 +129,7 @@ namespace CompetitionPlatform.Helpers
                 ProjectAuthorName = project.AuthorFullName,
                 ProjectImplementationDeadline = project.ImplementationDeadline,
                 ProjectCreatedDate = project.Created,
-                ProjectDescription = project.Description,
+                ProjectDescription = project.Overview,
                 ProjectFirstPrize = project.BudgetFirstPlace,
                 ProjectName = project.Name,
                 ProjectSecondPrize = project.BudgetSecondPlace ?? 0
@@ -168,7 +168,7 @@ namespace CompetitionPlatform.Helpers
                 ProjectAuthorName = project.AuthorFullName,
                 ProjectVotingDeadline = project.VotingDeadline,
                 ProjectCreatedDate = project.Created,
-                ProjectDescription = project.Description,
+                ProjectDescription = project.Overview,
                 ProjectFirstPrize = project.BudgetFirstPlace,
                 ProjectName = project.Name,
                 ProjectSecondPrize = project.BudgetSecondPlace ?? 0
@@ -263,7 +263,7 @@ namespace CompetitionPlatform.Helpers
                 ProjectAuthorName = project.AuthorFullName,
                 ProjectName = project.Name,
                 ProjectStatus = Status.Archive.ToString(),
-                ProjectDescription = project.Description,
+                ProjectDescription = project.Overview,
                 ProjectFirstPrize = project.BudgetFirstPlace,
                 ProjectSecondPrize = project.BudgetSecondPlace ?? 0,
                 ParticipantCount = participantsCount,
