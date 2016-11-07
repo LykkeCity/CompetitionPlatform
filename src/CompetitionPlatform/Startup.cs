@@ -152,7 +152,7 @@ namespace CompetitionPlatform
                 {
                     AutomaticAuthenticate = true,
                     AutomaticChallenge = true,
-                    ExpireTimeSpan = TimeSpan.FromMinutes(5),
+                    ExpireTimeSpan = TimeSpan.FromMinutes(30),
                     LoginPath = new PathString("/signin"),
                     AccessDeniedPath = "/Home/Error"
                 });
