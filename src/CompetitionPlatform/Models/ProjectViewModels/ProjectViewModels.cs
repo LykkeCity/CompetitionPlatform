@@ -148,8 +148,6 @@ namespace CompetitionPlatform.Models.ProjectViewModels
     public class ProgrammingResource
     {
         public string Name { get; set; }
-
-        [Url]
         public string Link { get; set; }
     }
 }
