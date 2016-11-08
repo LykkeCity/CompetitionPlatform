@@ -98,10 +98,6 @@ namespace CompetitionPlatform.Controllers
         [HttpPost]
         public async Task<IActionResult> SaveProject(ProjectViewModel projectViewModel)
         {
-            var actualResources = projectViewModel.ResourcesList.Where(resource => !string.IsNullOrEmpty(resource.Name) && !string.IsNullOrEmpty(resource.Link)).ToList();
-
-            projectViewModel.ProgrammingResources = JsonConvert.SerializeObject(actualResources);
-
             projectViewModel.Tags = SerializeTags(projectViewModel.Tags);
 
             projectViewModel.ProjectStatus = projectViewModel.Status.ToString();
@@ -110,6 +106,10 @@ namespace CompetitionPlatform.Controllers
 
             if (projectViewModel.Id == null)
             {
+                var actualResources = projectViewModel.ResourcesList.Where(resource => !string.IsNullOrEmpty(resource.Name) && !string.IsNullOrEmpty(resource.Link)).ToList();
+
+                projectViewModel.ProgrammingResources = JsonConvert.SerializeObject(actualResources);
+
                 var user = GetAuthenticatedUser();
 
                 projectViewModel.AuthorId = user.Email;
