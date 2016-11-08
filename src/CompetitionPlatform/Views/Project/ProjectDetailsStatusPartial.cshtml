@@ -37,8 +37,11 @@
 }
 @if (Model.Status == Status.Implementation)
 {
-    <p class="text-muted small_desc">The contest began. You can no longer participate, but will be able to evaluate the results of the competition after @Model.ImplementationDeadline.ToString("MMMM d").</p>
+    <p class="text-muted small_desc">The contest began. You can still participate, and will be able to evaluate the results of the competition after @Model.ImplementationDeadline.ToString("MMMM d").</p>
 
+    <a asp-area="" asp-controller="ProjectDetails" asp-action="AddParticipant" asp-route-id="@Model.ProjectId" type="button" class="btn btn-block btn_participate">
+        <i class="icon icon--participate"></i>Participate
+    </a>
 }
 @if (Model.Status == Status.Voting)
 {
