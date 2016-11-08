@@ -36,6 +36,10 @@ namespace CompetitionPlatform.Models.ProjectViewModels
 
         public List<string> TagsList { get; set; }
 
+        public string ProgrammingResources { get; set; }
+
+        public ProgrammingResource[] ResourcesList { get; set; }
+
         [Required]
         [DataType(DataType.Date)]
         [Display(Name = "Competition Registration")]
@@ -139,6 +143,14 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public Status Status { get; set; }
         public int VotesFor { get; set; }
         public int VotesAgainst { get; set; }
+    }
+
+    public class ProgrammingResource
+    {
+        public string Name { get; set; }
+
+        [Url]
+        public string Link { get; set; }
     }
 }
 

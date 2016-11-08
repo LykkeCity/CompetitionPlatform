@@ -40,6 +40,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
         public string AuthorId { get; set; }
         public string AuthorFullName { get; set; }
         public int ParticipantsCount { get; set; }
+        public string ProgrammingResources { get; set; }
 
         internal void Update(IProjectData src)
         {
@@ -81,7 +82,8 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
                 LastModified = src.Created,
                 AuthorId = src.AuthorId,
                 AuthorFullName = src.AuthorFullName,
-                ParticipantsCount = src.ParticipantsCount
+                ParticipantsCount = src.ParticipantsCount,
+                ProgrammingResources = src.ProgrammingResources
             };
 
             return result;
