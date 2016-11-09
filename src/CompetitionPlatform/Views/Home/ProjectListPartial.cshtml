@@ -18,9 +18,9 @@
                         statusColor = "label--blue";
                         projectCount = (votesCount == 1) ? votesCount + " VOTE" : votesCount + " VOTES";
                         break;
-                    case Status.CompetitionRegistration:
+                    case Status.Registration:
                         statusColor = "label--green";
-                        projectStatus = "COMPETITION REGISTRATION";
+                        //projectStatus = "COMPETITION REGISTRATION";
                         projectCount = (project.ParticipantsCount == 1) ? project.ParticipantsCount + " PARTICIPANT" : project.ParticipantsCount + " PARTICIPANTS";
                         break;
                     case Status.Implementation:
@@ -56,7 +56,7 @@
 
                         <div class="card__footer">
                             <div class="card__actions text-right">
-                                @if (project.Status == Status.CompetitionRegistration)
+                                @if (project.Status == Status.Registration)
                                 {
                                     <a href="" class="action_link action_link--deadline"><i class="icon icon--deadline"></i> @project.CompetitionRegistrationDeadline.ToString("dd.MM.yyyy")</a>
                                 }

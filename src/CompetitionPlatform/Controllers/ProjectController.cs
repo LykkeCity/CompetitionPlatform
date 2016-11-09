@@ -142,7 +142,7 @@ namespace CompetitionPlatform.Controllers
 
                 await _projectRepository.UpdateAsync(projectViewModel);
 
-                if (project.Status != Status.CompetitionRegistration && projectViewModel.Status == Status.CompetitionRegistration)
+                if (project.Status != Status.Registration && projectViewModel.Status == Status.Registration)
                 {
                     await AddCompetitionMailToQueue(project);
                 }
@@ -259,8 +259,15 @@ namespace CompetitionPlatform.Controllers
 
             //var resources = JsonConvert.DeserializeObject<List<ProgrammingResource>>(project.ProgrammingResources);
 
-            project.Status = (Status)Enum.Parse(typeof(Status), project.ProjectStatus, true);
-
+            if (project.ProjectStatus == "CompetitionRegistration")
+            {
+                project.Status = Status.Registration;
+            }
+            else
+            {
+                project.Status = (Status)Enum.Parse(typeof(Status), project.ProjectStatus, true);
+            }
+            
             var comments = await _commentsRepository.GetProjectCommentsAsync(id);
 
             var participants = await _participantsRepository.GetProjectParticipantsAsync(id);
@@ -468,7 +475,7 @@ namespace CompetitionPlatform.Controllers
                 case Status.Initiative:
                     completion = 100;
                     break;
-                case Status.CompetitionRegistration:
+                case Status.Registration:
                     completion = CalculateDateProgressPercent(projectData.Created,
                         projectData.CompetitionRegistrationDeadline);
                     break;

@@ -29,7 +29,7 @@ namespace CompetitionPlatform.ScheduledJobs
                 {
                     case Status.Initiative:
                         break;
-                    case Status.CompetitionRegistration:
+                    case Status.Registration:
                         if (project.CompetitionRegistrationDeadline < DateTime.Today)
                         {
                             project.ProjectStatus = Status.Implementation.ToString();

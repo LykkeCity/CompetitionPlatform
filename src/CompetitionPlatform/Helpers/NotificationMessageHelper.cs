@@ -86,7 +86,7 @@ namespace CompetitionPlatform.Helpers
             {
                 FirstName = GetFirstNameFromFullName(follower.FullName),
                 ProjectId = project.Id,
-                ProjectStatus = Status.CompetitionRegistration.ToString(),
+                ProjectStatus = Status.Registration.ToString(),
                 ProjectAuthorName = project.AuthorFullName,
                 ProjectCompetitionDeadline = project.CompetitionRegistrationDeadline,
                 ProjectCreatedDate = project.Created,

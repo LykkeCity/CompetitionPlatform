@@ -3,7 +3,7 @@
     public enum Status
     {
         Initiative,
-        CompetitionRegistration,
+        Registration,
         Implementation,
         Voting,
         Archive

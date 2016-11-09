@@ -62,7 +62,7 @@ namespace CompetitionPlatform.Controllers
                 projects = projects.Where(x => x.ProjectStatus == projectStatusFilter);
 
             if (!string.IsNullOrEmpty(projectCategoryFilter) && projectCategoryFilter != "All")
-                projects = projects.Where(x => x.Category.Replace(" ","") == projectCategoryFilter);
+                projects = projects.Where(x => x.Category.Replace(" ", "") == projectCategoryFilter);
 
             if (!string.IsNullOrEmpty(projectAuthorId))
                 projects = projects.Where(x => x.AuthorId == projectAuthorId);
@@ -123,7 +123,16 @@ namespace CompetitionPlatform.Controllers
                 };
 
                 if (!string.IsNullOrEmpty(project.ProjectStatus))
-                    compactModel.Status = (Status)Enum.Parse(typeof(Status), project.ProjectStatus, true);
+                {
+                    if (project.ProjectStatus == "CompetitionRegistration")
+                    {
+                        compactModel.Status = Status.Registration;
+                    }
+                    else
+                    {
+                        compactModel.Status = (Status)Enum.Parse(typeof(Status), project.ProjectStatus, true);
+                    }
+                }
 
                 compactModels.Add(compactModel);
             }
