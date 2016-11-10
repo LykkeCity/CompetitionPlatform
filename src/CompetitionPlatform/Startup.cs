@@ -15,7 +15,6 @@ using CompetitionPlatform.ScheduledJobs;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
-using PaulMiami.AspNetCore.Mvc.Recaptcha;
 
 namespace CompetitionPlatform
 {
@@ -96,12 +95,6 @@ namespace CompetitionPlatform
 
                 services.RegisterRepositories(connectionString, Log);
                 JobScheduler.Start(connectionString, Log);
-
-                services.AddRecaptcha(new RecaptchaOptions
-                {
-                    SiteKey = Settings.Recaptcha.SiteKey,
-                    SecretKey = Settings.Recaptcha.SecretKey
-                });
             }
             catch (Exception ex)
             {
@@ -219,12 +212,6 @@ namespace CompetitionPlatform
 
             if (string.IsNullOrEmpty(settings.Notifications.SlackQueueConnString))
                 WriteSettingsReadError(log, "SlackQueueConnString");
-
-            if (string.IsNullOrEmpty(settings.Recaptcha.SiteKey))
-                WriteSettingsReadError(log, "Recaptcha SiteKey");
-
-            if (string.IsNullOrEmpty(settings.Recaptcha.SecretKey))
-                WriteSettingsReadError(log, "Recaptcha SecretKey");
         }
 
         private void WriteSettingsReadError(ILog log, string elementName)

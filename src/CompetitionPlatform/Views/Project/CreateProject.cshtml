@@ -194,13 +194,6 @@
                     </div>
                 </div>*@
 
-                <div class="form-group">
-                    <div class="">
-                        <recaptcha />
-                        <span class="text-danger" id="recaptchaErrorMessage"></span>
-                    </div>
-                </div>
-
                 <div class="form__submit">
                     <div class="row">
                         <div class="col-sm-6">
@@ -215,5 +208,4 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <recaptcha-script validation-message-element-id="recaptchaErrorMessage" />
 }

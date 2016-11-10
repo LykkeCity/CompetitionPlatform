@@ -5,7 +5,6 @@
         public AzureSettings Azure { get; set; }
         public AuthenticationSettings Authentication { get; set; }
         public NotificationsSettings Notifications { get; set; }
-        public RecaptchaSettings Recaptcha { get; set; }
     }
 
     public class AuthenticationSettings
@@ -25,11 +24,5 @@
     {
         public string EmailsQueueConnString { get; set; }
         public string SlackQueueConnString { get; set; }
-    }
-
-    public class RecaptchaSettings
-    {
-        public string SiteKey { get; set; }
-        public string SecretKey { get; set; }
     }
 }
