@@ -106,9 +106,9 @@ namespace CompetitionPlatform.Controllers
 
             if (projectViewModel.Id == null)
             {
-                var actualResources = projectViewModel.ResourcesList.Where(resource => !string.IsNullOrEmpty(resource.Name) && !string.IsNullOrEmpty(resource.Link)).ToList();
+                //var actualResources = projectViewModel.ResourcesList.Where(resource => !string.IsNullOrEmpty(resource.Name) && !string.IsNullOrEmpty(resource.Link)).ToList();
 
-                projectViewModel.ProgrammingResources = JsonConvert.SerializeObject(actualResources);
+                //projectViewModel.ProgrammingResources = JsonConvert.SerializeObject(actualResources);
 
                 var user = GetAuthenticatedUser();
 
