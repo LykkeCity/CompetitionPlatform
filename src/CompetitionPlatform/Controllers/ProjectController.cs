@@ -134,7 +134,8 @@ namespace CompetitionPlatform.Controllers
             else
             {
                 var project = await _projectRepository.GetAsync(projectViewModel.Id);
-                project.Status = (Status)Enum.Parse(typeof(Status), project.ProjectStatus, true);
+
+                project.Status = StatusHelper.GetProjectStatusFromString(project.ProjectStatus);
 
                 projectViewModel.LastModified = DateTime.UtcNow;
 
@@ -147,7 +148,7 @@ namespace CompetitionPlatform.Controllers
                     await AddCompetitionMailToQueue(project);
                 }
 
-                if (project.Status != Status.Implementation && projectViewModel.Status == Status.Implementation)
+                if (project.Status != Status.Submission && projectViewModel.Status == Status.Submission)
                 {
                     await AddImplementationMailToQueue(project);
                 }
@@ -259,15 +260,17 @@ namespace CompetitionPlatform.Controllers
 
             //var resources = JsonConvert.DeserializeObject<List<ProgrammingResource>>(project.ProgrammingResources);
 
-            if (project.ProjectStatus == "CompetitionRegistration")
-            {
-                project.Status = Status.Registration;
-            }
-            else
-            {
-                project.Status = (Status)Enum.Parse(typeof(Status), project.ProjectStatus, true);
-            }
-            
+            //if (project.ProjectStatus == "CompetitionRegistration" || project.ProjectStatus == "Implementation")
+            //{
+            //    project.Status = (project.ProjectStatus == "CompetitionRegistration") ? Status.Registration : Status.Submission;
+            //}
+            //else
+            //{
+            //    project.Status = (Status)Enum.Parse(typeof(Status), project.ProjectStatus, true);
+            //}
+
+            project.Status = StatusHelper.GetProjectStatusFromString(project.ProjectStatus);
+
             var comments = await _commentsRepository.GetProjectCommentsAsync(id);
 
             var participants = await _participantsRepository.GetProjectParticipantsAsync(id);
@@ -479,7 +482,7 @@ namespace CompetitionPlatform.Controllers
                     completion = CalculateDateProgressPercent(projectData.Created,
                         projectData.CompetitionRegistrationDeadline);
                     break;
-                case Status.Implementation:
+                case Status.Submission:
                     completion = CalculateDateProgressPercent(projectData.CompetitionRegistrationDeadline,
                         projectData.ImplementationDeadline);
                     break;

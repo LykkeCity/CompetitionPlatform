@@ -125,7 +125,7 @@ namespace CompetitionPlatform.Helpers
             {
                 FirstName = GetFirstNameFromFullName(follower.FullName),
                 ProjectId = project.Id,
-                ProjectStatus = Status.Implementation.ToString(),
+                ProjectStatus = Status.Submission.ToString(),
                 ProjectAuthorName = project.AuthorFullName,
                 ProjectImplementationDeadline = project.ImplementationDeadline,
                 ProjectCreatedDate = project.Created,

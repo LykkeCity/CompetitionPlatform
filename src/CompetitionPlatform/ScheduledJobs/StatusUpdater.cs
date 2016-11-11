@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using CompetitionPlatform.Data.AzureRepositories.Project;
+using CompetitionPlatform.Helpers;
 using CompetitionPlatform.Models;
 using CompetitionPlatform.Services;
 
@@ -23,7 +24,7 @@ namespace CompetitionPlatform.ScheduledJobs
 
             foreach (var project in projects)
             {
-                project.Status = (Status)Enum.Parse(typeof(Status), project.ProjectStatus, true);
+                project.Status = StatusHelper.GetProjectStatusFromString(project.ProjectStatus);
 
                 switch (project.Status)
                 {
@@ -32,11 +33,11 @@ namespace CompetitionPlatform.ScheduledJobs
                     case Status.Registration:
                         if (project.CompetitionRegistrationDeadline < DateTime.Today)
                         {
-                            project.ProjectStatus = Status.Implementation.ToString();
+                            project.ProjectStatus = Status.Submission.ToString();
                             await _projectRepository.UpdateAsync(project);
                         }
                         break;
-                    case Status.Implementation:
+                    case Status.Submission:
                         if (project.ImplementationDeadline < DateTime.Today)
                         {
                             project.ProjectStatus = Status.Voting.ToString();

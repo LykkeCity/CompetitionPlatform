@@ -1,6 +1,6 @@
 @model CompetitionPlatform.Models.ProjectViewModels.ResultsPartialViewModel
 
-@if (Model.Status == Status.Implementation || Model.Status == Status.Voting)
+@if (Model.Status == Status.Submission || Model.Status == Status.Voting)
 {
     <div class="banner banner--results">
         <img src="~/img/competition/banner-coin.svg" class="pull-right" width="88" alt="banner-coin">

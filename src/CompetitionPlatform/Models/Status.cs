@@ -4,7 +4,7 @@
     {
         Initiative,
         Registration,
-        Implementation,
+        Submission,
         Voting,
         Archive
     }

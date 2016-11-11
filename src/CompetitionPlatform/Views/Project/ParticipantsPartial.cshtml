@@ -19,7 +19,7 @@
                 <td class="text-right">@participant.Registered.ToString("MMMM dd, yyyy hh:mm")</td>
                 @if (participant.Result)
                 {
-                    if (participant.UserId == Model.CurrentUserId && Model.Status == Status.Implementation)
+                    if (participant.UserId == Model.CurrentUserId && Model.Status == Status.Submission)
                     {
                         <td class="text-center">
                             <form asp-controller="ProjectDetails" asp-action="EditResult" enctype="multipart/form-data">

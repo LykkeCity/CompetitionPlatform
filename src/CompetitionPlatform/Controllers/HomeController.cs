@@ -124,14 +124,7 @@ namespace CompetitionPlatform.Controllers
 
                 if (!string.IsNullOrEmpty(project.ProjectStatus))
                 {
-                    if (project.ProjectStatus == "CompetitionRegistration")
-                    {
-                        compactModel.Status = Status.Registration;
-                    }
-                    else
-                    {
-                        compactModel.Status = (Status)Enum.Parse(typeof(Status), project.ProjectStatus, true);
-                    }
+                    compactModel.Status = StatusHelper.GetProjectStatusFromString(project.ProjectStatus);
                 }
 
                 compactModels.Add(compactModel);

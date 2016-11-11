@@ -23,7 +23,7 @@
                         //projectStatus = "COMPETITION REGISTRATION";
                         projectCount = (project.ParticipantsCount == 1) ? project.ParticipantsCount + " PARTICIPANT" : project.ParticipantsCount + " PARTICIPANTS";
                         break;
-                    case Status.Implementation:
+                    case Status.Submission:
                         statusColor = "label--red";
                         projectCount = (project.ParticipantsCount == 1) ? project.ParticipantsCount + " PARTICIPANT" : project.ParticipantsCount + " PARTICIPANTS";
                         break;
@@ -60,7 +60,7 @@
                                 {
                                     <a href="" class="action_link action_link--deadline"><i class="icon icon--deadline"></i> @project.CompetitionRegistrationDeadline.ToString("dd.MM.yyyy")</a>
                                 }
-                                @if (project.Status == Status.Implementation)
+                                @if (project.Status == Status.Submission)
                                 {
                                     <a href="" class="action_link action_link--deadline"><i class="icon icon--deadline"></i> @project.ImplementationDeadline.ToString("dd.MM.yyyy")</a>
                                 }

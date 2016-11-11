@@ -339,7 +339,7 @@ namespace CompetitionPlatform.Controllers
 
             var project = await _projectRepository.GetAsync(id);
 
-            project.Status = (Status)Enum.Parse(typeof(Status), project.ProjectStatus, true);
+            project.Status = StatusHelper.GetProjectStatusFromString(project.ProjectStatus);
 
             var sentMails = await _mailSentRepository.GetFollowAsync();
 
