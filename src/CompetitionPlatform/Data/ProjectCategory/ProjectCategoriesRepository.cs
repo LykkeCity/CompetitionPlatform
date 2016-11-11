@@ -12,11 +12,13 @@ namespace CompetitionPlatform.Data.ProjectCategory
         {
             return new List<string>
             {
+                "Blockchain",
+                "Development",
+                "Design",
+                "Testing",
                 "Finance",
                 "Technology",
                 "Bitcoin",
-                "Mobile",
-                "Payments",
                 "Communications and media"
             };
         }
