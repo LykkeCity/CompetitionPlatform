@@ -260,15 +260,6 @@ namespace CompetitionPlatform.Controllers
 
             //var resources = JsonConvert.DeserializeObject<List<ProgrammingResource>>(project.ProgrammingResources);
 
-            //if (project.ProjectStatus == "CompetitionRegistration" || project.ProjectStatus == "Implementation")
-            //{
-            //    project.Status = (project.ProjectStatus == "CompetitionRegistration") ? Status.Registration : Status.Submission;
-            //}
-            //else
-            //{
-            //    project.Status = (Status)Enum.Parse(typeof(Status), project.ProjectStatus, true);
-            //}
-
             project.Status = StatusHelper.GetProjectStatusFromString(project.ProjectStatus);
 
             var comments = await _commentsRepository.GetProjectCommentsAsync(id);
