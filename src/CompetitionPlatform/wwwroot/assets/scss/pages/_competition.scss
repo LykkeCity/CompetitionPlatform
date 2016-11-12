@@ -1,0 +1,147 @@
+.prize {
+  font-family: $ff;
+
+  &__value {
+    color: rgba(#3F4D60, .6);
+    font-size: 50px;
+  }
+
+  &__title {
+    text-transform: uppercase;
+    font-size: 18px;
+    color: #333333;
+    letter-spacing: 1.79px;
+    line-height: 32px;
+    font-weight: $fw-semi;
+
+    sup {
+      font-size: 60%;
+      margin-right: 5px;
+    }
+  }
+
+  @media all and (max-width: 767px) {
+    &__value {
+      font-size: 32px;
+    }
+    &__title {
+      font-size: 12px;
+      line-height: normal;
+    }
+  }
+}
+
+.page {
+  &--competition_edit {
+    .section--lead {
+      padding-bottom: 10px !important;
+    }
+
+    @media (min-width: 768px) {
+      &.page .section--padding {
+        padding: 50px 0;
+      }
+    }
+  }
+
+  &--competition {
+    .page__title {
+      @include rem(margin, 30px 0 10px !important)
+    }
+
+    h2 {
+      @include rem(margin-bottom, 30px);
+    }
+
+    .page__header {
+      overflow: hidden;
+
+      h1, h2, h3 {
+        margin-bottom: 0;
+      }
+    }
+
+    .tabs_stack {
+      @include rem(margin-right, -22px);
+    }
+    
+    @media all and (max-width: $screen-mobile) {
+      .section--lead {
+        position: relative;
+      }
+
+      .new-project-button {
+        position: absolute;
+        top: 30px;
+        margin-top: 0 !important;
+        right: 15px;
+      }
+    }
+
+    @media all and (max-width: $screen-tablet) {
+      h2 + .btn-circle, .page__header + .btn-circle {
+        @include rem(margin-top, -80px);
+      }
+
+      .page__header {
+        @include rem(padding-right, 70px);
+      }
+    }
+    
+    @media all and (max-width: $screen-landscape) {
+      .tabs_stack {
+        float: none !important;
+        clear: both;
+
+        @include rem(margin-top, 70px);
+        @include clearfix;
+      }
+    }
+  }
+}
+
+.action_follow {
+  @include transition(color .2s ease);
+
+  span {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 0;
+    position: relative;
+    top: -1px;
+  }
+
+  .icon {
+    @include rem(margin-right, 4px);
+  }
+
+  &.active {
+    color: $secondary;
+
+    span {
+      font-size: 0;
+      color: transparent;
+
+      &:before {
+        content: 'Unfollow';
+        color: $secondary;
+
+        @include rem(font-size, 16px);
+      }
+    }
+
+    .icon {
+      color: $blue;
+
+      &:before {
+        content: "\e934";
+      }
+    }
+  }
+}
+
+@media (max-width: 991px) {
+  .navbar-collapse .nav > li.active a.btn {
+    color: #fff !important;
+  }
+}
