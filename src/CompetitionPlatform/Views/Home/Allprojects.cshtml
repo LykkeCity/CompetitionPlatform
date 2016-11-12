@@ -1,0 +1,64 @@
+﻿@model CompetitionPlatform.Models.ProjectViewModels.ProjectListIndexViewModel
+
+@{
+    ViewData["Title"] = "Projects";
+}
+
+<section class="section section--lead section--padding">
+    <div class="container container--extend">
+        <div class="page__header">
+            <h2 class="pull-left">All projects</h2>
+        </div>
+        
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="select form-group" data-control="select">
+                    <label for="projectCategoryFilter" class="select__label control-label">Category:</label>
+                    <div class="select__value"><span class="_value">All</span></div>
+                    <select id="projectCategoryFilter" name="projectCategoryFilter" class="form-control select__elem">
+                        <option value="All">All</option>
+                        @foreach (var category in Model.ProjectCategories)
+                        {
+                            <option value="@category">@category</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="select form-group" data-control="select">
+                    <label for="projectStatusFilter" class="select__label control-label">Status:</label>
+                    <div class="select__value"><span class="_value">All</span></div>
+                    <select id="projectStatusFilter" name="projectStatusFilter" class="form-control select__elem">
+                        <option value="All">All</option>
+                        @foreach (var status in Enum.GetValues(typeof(Status)))
+                        {
+                            <option value=@status>@status</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="select form-group" data-control="select">
+                    <label for="projectPrizeFilter" class="select__label control-label">Prize:</label>
+                    <div class="select__value"><span class="_value">Ascending</span></div>
+                    <select id="projectPrizeFilter" name="projectPrizeFilter" class="form-control select__elem">
+                        <option value=Ascending>Ascending</option>
+                        <option value=Descending>Descending</option>
+                    </select>
+                </div>
+            </div>
+            <div class="pull-right hidden-xs hidden-sm">
+                <a type="button" class="btn btn-circle new-project-button" href="/Project/Create">+</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section section--competition_list">
+    <div class="container container--extend">
+    </div>
+</section>
+
+<section id="projectListResults" class="section section--competition_list">
+    @await Html.PartialAsync("ProjectListPartial", Model)
+</section>
