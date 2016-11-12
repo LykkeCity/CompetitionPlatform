@@ -10,35 +10,42 @@
                     var projectStatus = project.Status.ToString().ToUpper();
                     var projectCount = "";
                     var votesCount = project.VotesFor + project.VotesAgainst;
+                    var commentsCount = (project.CommentsCount == 1) ? project.CommentsCount + " comment" : project.CommentsCount + " comments";
                 }
 
                 @switch (project.Status)
                 {
                     case Status.Initiative:
                         statusColor = "label--blue";
-                        projectCount = (votesCount == 1) ? votesCount + " VOTE" : votesCount + " VOTES";
+                        projectCount = (votesCount == 1) ? votesCount + " vote" : votesCount + " votes";
                         break;
                     case Status.Registration:
                         statusColor = "label--green";
                         //projectStatus = "COMPETITION REGISTRATION";
-                        projectCount = (project.ParticipantsCount == 1) ? project.ParticipantsCount + " PARTICIPANT" : project.ParticipantsCount + " PARTICIPANTS";
+                        projectCount = (project.ParticipantsCount == 1) ? project.ParticipantsCount + " participant" : project.ParticipantsCount + " participants";
                         break;
                     case Status.Submission:
                         statusColor = "label--red";
-                        projectCount = (project.ParticipantsCount == 1) ? project.ParticipantsCount + " PARTICIPANT" : project.ParticipantsCount + " PARTICIPANTS";
+                        projectCount = (project.ParticipantsCount == 1) ? project.ParticipantsCount + " participant" : project.ParticipantsCount + " participants";
                         break;
                     case Status.Voting:
                         statusColor = "label--yellow";
-                        projectCount = (project.ResultsCount == 1) ? project.ResultsCount + " RESULT" : project.ResultsCount + " RESULTS";
+                        projectCount = (project.ResultsCount == 1) ? project.ResultsCount + " result" : project.ResultsCount + " results";
                         break;
                     case Status.Archive:
-                        statusColor = "label--grey";
-                        projectCount = (project.WinnersCount == 1) ? project.WinnersCount + " WINNER" : project.WinnersCount + " WINNERS";
+                        statusColor = "label--gray";
+                        projectCount = (project.WinnersCount == 1) ? project.WinnersCount + " winner" : project.WinnersCount + " winners";
                         break;
                 }
                 <div class="card card--preview">
                     <div class="card__inner">
                         <div class="card__body">
+                            <div class="card__breadcrumbs">
+                                <div class="user_badge__img"><a href=""><img src="~/images/avatar.svg" alt=""></a></div>
+                                <span class="breadcrumb_elem">@project.AuthorFullName</span>
+                                <i class="icon icon--chevron-thin-right"></i>
+                                <a href="/" class="breadcrumb_elem">@project.Category</a>
+                            </div>
                             <div class="card__header">
                                 <div class="card__sum h3 pull-right">$@project.BudgetFirstPlace</div>
                                 <div class="card__title h3">
@@ -46,40 +53,54 @@
                                 </div>
                             </div>
                             <div class="card__desc">
-                                <a href="" class="label @statusColor label--flat">@projectStatus</a>
-                                <span class="votes">@projectCount</span>
+                                <a href="" class="label @statusColor">@projectStatus</a>
+                                @if (project.Status == Status.Registration)
+                                {
+                                    <span class="label label--text @statusColor"><i class="icon icon--deadline_fill"></i> @project.CompetitionRegistrationDeadline.ToString("dd.MM.yyyy")</span>
+                                }
+                                @if (project.Status == Status.Submission)
+                                {
+                                    <span class="label label--text @statusColor"><i class="icon icon--deadline_fill"></i> @project.ImplementationDeadline.ToString("dd.MM.yyyy")</span>
+                                }
+                                @if (project.Status == Status.Voting)
+                                {
+                                    <span class="label label--text @statusColor"><i class="icon icon--deadline_fill"></i> @project.VotingDeadline.ToString("dd.MM.yyyy")</span>
+                                }
                             </div>
                             <p class="card__text">
                                 @project.Overview
                             </p>
+                            <div class="tags_list">
+                                @foreach (var tag in project.Tags)
+                                {
+                                    <div class="tag_item">
+                                        <a href="">@tag</a>
+                                    </div>
+                                }
+                            </div>
                         </div>
 
                         <div class="card__footer">
-                            <div class="card__actions text-right">
-                                @if (project.Status == Status.Registration)
+                            <div class="card__actions">
+                                @if (project.Following)
                                 {
-                                    <a href="" class="action_link action_link--deadline"><i class="icon icon--deadline"></i> @project.CompetitionRegistrationDeadline.ToString("dd.MM.yyyy")</a>
+                                    <a asp-area="" asp-controller="ProjectDetails" asp-action="UnFollowProject" asp-route-id="@project.Id" id="followButton" class="action_link action_follow active pull-right">
+                                        <i class="icon icon--follow"></i> Unfollow
+                                    </a>
                                 }
-                                @if (project.Status == Status.Submission)
+                                else
                                 {
-                                    <a href="" class="action_link action_link--deadline"><i class="icon icon--deadline"></i> @project.ImplementationDeadline.ToString("dd.MM.yyyy")</a>
+                                    <a asp-area="" asp-controller="ProjectDetails" asp-action="FollowProject" asp-route-id="@project.Id" id="followButton" class="action_link action_follow pull-right">
+                                        <i class="icon icon--follow"></i>Follow
+                                    </a>
                                 }
-                                @if (project.Status == Status.Voting)
-                                {
-                                    <a href="" class="action_link action_link--deadline"><i class="icon icon--deadline"></i> @project.VotingDeadline.ToString("dd.MM.yyyy")</a>
-                                }
-                                <a href="" class="action_link action_link--comments"><i class="icon icon--comment"></i> @project.CommentsCount</a>
-                                <a asp-area="" asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.Id" class="action_link action_link--more">
-                                    <i class="icon icon--more"></i>
-                                </a>
-                            </div>
-
-                            <div class="user_badge">
-                                <div class="user_badge__img"><a href=""><img src="~/images/avatar.svg" alt=""></a></div>
-                                <div class="user_badge__info">
-                                    <div class="user_badge__title"><a href="">@project.AuthorFullName</a></div>
-                                    <div class="user_badge__desc">In <a href="">@project.Category</a></div>
-                                </div>
+                                <a asp-area="" asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.Id" class="action_link">Read more</a>
+                                &middot;
+                                <a href="" class="action_link">Share</a>
+                                &middot;
+                                <a href="" class="action_link">@commentsCount</a>
+                                &middot;
+                                <a href="" class="action_link">@projectCount</a>
                             </div>
                         </div>
                     </div>

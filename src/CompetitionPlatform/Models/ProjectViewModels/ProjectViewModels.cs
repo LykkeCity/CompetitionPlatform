@@ -118,6 +118,8 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public DateTime VotingDeadline { get; set; }
         public string AuthorFullName { get; set; }
         public string Category { get; set; }
+        public List<string> Tags { get; set; }
+        public bool Following { get; set; }
     }
 
     public class ProjectFileInfoViewModel
