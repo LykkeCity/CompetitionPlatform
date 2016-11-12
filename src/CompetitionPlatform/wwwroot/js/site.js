@@ -1,23 +1,45 @@
 ﻿$(function () {
     $('#projectStatusFilter')
         .change(function () {
-            $('#projectListResults').load('Home/GetProjectList?projectStatusFilter=' +
+            $('#projectListResults').load('/Home/GetProjectList?projectStatusFilter=' +
                 $('#projectStatusFilter :selected').val() + '&projectCategoryFilter=' +
                 $('#projectCategoryFilter :selected').val().replace(/\s/g, '') + '&projectPrizeFilter=' + $('#projectPrizeFilter :selected').val());
         });
 
     $('#projectCategoryFilter')
         .change(function () {
-            $('#projectListResults').load('Home/GetProjectList?projectStatusFilter=' +
+            $('#projectListResults').load('/Home/GetProjectList?projectStatusFilter=' +
                 $('#projectStatusFilter :selected').val() + '&projectCategoryFilter=' +
                 $('#projectCategoryFilter :selected').val().replace(/\s/g, '') + '&projectPrizeFilter=' + $('#projectPrizeFilter :selected').val());
         });
 
     $('#projectPrizeFilter')
         .change(function () {
-            $('#projectListResults').load('Home/GetProjectList?projectStatusFilter=' +
+            $('#projectListResults').load('/Home/GetProjectList?projectStatusFilter=' +
                 $('#projectStatusFilter :selected').val() + '&projectCategoryFilter=' +
                 $('#projectCategoryFilter :selected').val().replace(/\s/g, '') + '&projectPrizeFilter=' + $('#projectPrizeFilter :selected').val());
+        });
+
+    //myProjects filters
+    $('#myProjectStatusFilter')
+       .change(function () {
+           $('#myProjectListResults').load('/Home/GetMyProjectList?myProjectStatusFilter=' +
+               $('#myProjectStatusFilter :selected').val() + '&myProjectCategoryFilter=' +
+               $('#myProjectCategoryFilter :selected').val().replace(/\s/g, '') + '&myProjectPrizeFilter=' + $('#myProjectPrizeFilter :selected').val());
+       });
+
+    $('#myProjectCategoryFilter')
+        .change(function () {
+            $('#myProjectListResults').load('/Home/GetMyProjectList?myProjectStatusFilter=' +
+                $('#myProjectStatusFilter :selected').val() + '&myProjectCategoryFilter=' +
+                $('#myProjectCategoryFilter :selected').val().replace(/\s/g, '') + '&myProjectPrizeFilter=' + $('#myProjectPrizeFilter :selected').val());
+        });
+
+    $('#myProjectPrizeFilter')
+        .change(function () {
+            $('#myProjectListResults').load('/Home/GetMyProjectList?myProjectStatusFilter=' +
+                $('#myProjectStatusFilter :selected').val() + '&myProjectCategoryFilter=' +
+                $('#myProjectCategoryFilter :selected').val().replace(/\s/g, '') + '&myProjectPrizeFilter=' + $('#myProjectPrizeFilter :selected').val());
         });
 
     $('#voteForButton')
