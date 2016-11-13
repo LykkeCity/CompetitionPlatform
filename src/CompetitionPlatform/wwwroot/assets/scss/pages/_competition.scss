@@ -1,37 +1,94 @@
 .prize {
   font-family: $ff;
 
+  @include rem(margin-bottom, 5px);
+
   &__value {
-    color: rgba(#3F4D60, .6);
-    font-size: 50px;
+    color: $secondary;
+    font-weight: $fw-thin;
+
+    @include rem(font-size, 40px);
   }
 
   &__title {
     text-transform: uppercase;
-    font-size: 18px;
-    color: #333333;
-    letter-spacing: 1.79px;
+    color: $text;
+    letter-spacing: 0.13em;
     line-height: 32px;
     font-weight: $fw-semi;
 
+    @include rem(font-size, 18px);
+    @include rem(line-height, 20px);
+    @include rem(margin-top, 13px);
+
     sup {
       font-size: 60%;
-      margin-right: 5px;
+
+      @include rem(margin-right, 6px);
     }
   }
 
-  @media all and (max-width: 767px) {
-    &__value {
-      font-size: 32px;
-    }
-    &__title {
-      font-size: 12px;
-      line-height: normal;
-    }
+  @media (max-width: $screen-mobile) {
+    text-align: center;
+
+    @include rem(margin-bottom, 20px);
   }
 }
 
 .page {
+  .page__title {
+    @include rem(margin, 30px 0 10px !important)
+  }
+
+  h2 {
+    @include rem(margin-bottom, 30px);
+  }
+
+  .page__header {
+    overflow: hidden;
+
+    h1, h2, h3 {
+      margin-bottom: 0;
+    }
+  }
+
+  .tabs_stack {
+    @include rem(margin-right, -22px);
+  }
+
+  @media all and (max-width: $screen-mobile) {
+    .section--lead {
+      position: relative;
+    }
+
+    .new-project-button {
+      position: absolute;
+      top: 30px;
+      margin-top: 0 !important;
+      right: 15px;
+    }
+  }
+
+  @media all and (max-width: $screen-tablet) {
+    h2 + .btn-circle, .page__header + .btn-circle {
+      @include rem(margin-top, -80px);
+    }
+
+    .page__header {
+      @include rem(padding-right, 70px);
+    }
+  }
+
+  @media all and (max-width: $screen-landscape) {
+    .tabs_stack {
+      float: none !important;
+      clear: both;
+
+      @include rem(margin-top, 70px);
+      @include clearfix;
+    }
+  }
+
   &--competition_edit {
     .section--lead {
       padding-bottom: 10px !important;
@@ -44,60 +101,60 @@
     }
   }
 
-  &--competition {
-    .page__title {
-      @include rem(margin, 30px 0 10px !important)
-    }
-
-    h2 {
-      @include rem(margin-bottom, 30px);
-    }
-
+  &--competition_platform {
     .page__header {
-      overflow: hidden;
+      .page__subtitle {
+        text-align: left;
 
-      h1, h2, h3 {
-        margin-bottom: 0;
+        @include rem(font-size, 22px);
+        @include rem(margin-top, 13px);
+      }
+
+      .label {
+        @include rem(margin-left, 18px);
+      }
+
+      .btn_edit {
+        @include rem(margin-top, 4px);
+        @include rem(min-width, 120px);
       }
     }
 
-    .tabs_stack {
-      @include rem(margin-right, -22px);
-    }
-    
-    @media all and (max-width: $screen-mobile) {
-      .section--lead {
-        position: relative;
-      }
-
-      .new-project-button {
-        position: absolute;
-        top: 30px;
-        margin-top: 0 !important;
-        right: 15px;
-      }
-    }
-
-    @media all and (max-width: $screen-tablet) {
-      h2 + .btn-circle, .page__header + .btn-circle {
-        @include rem(margin-top, -80px);
-      }
-
+    @media (max-width: $screen-tablet) {
       .page__header {
-        @include rem(padding-right, 70px);
-      }
-    }
-    
-    @media all and (max-width: $screen-landscape) {
-      .tabs_stack {
-        float: none !important;
-        clear: both;
+        position: relative;
 
-        @include rem(margin-top, 70px);
-        @include clearfix;
+        .col-sm-4 {
+          position: absolute;
+          top: 0;
+          right: 0;
+          padding: 0;
+        }
+
+        .btn_edit {
+          min-width: 0;
+        }
       }
     }
   }
+}
+
+.section {
+  &--competition_list {
+    .row {
+      font-size: 0;
+
+      > div {
+        display: inline-block;
+        vertical-align: top;
+        float: none;
+      }
+    }
+  }
+}
+
+.card--preview {
+  @include rem(font-size, 18px);
 }
 
 .action_follow {
@@ -140,8 +197,175 @@
   }
 }
 
+.project_links {
+  border-bottom: 1px $border-alt solid;
+
+  @include rem(padding, 5px 0 20px);
+  @include rem(margin-bottom, 34px);
+
+  &__actions {
+    padding-left: 0;
+  }
+
+  .card__actions {
+    padding: 0;
+
+    .action_link {
+      @include rem(padding, 4px 9px);
+      @include rem(margin-right, 10px);
+
+      .icon {
+        @include rem(font-size, 19px);
+        @include rem(margin-right, 9px);
+
+        &--link {
+          @include rem(font-size, 16px);
+        }
+
+        &--envelope {
+          position: relative;
+
+          @include rem(font-size, 18px);
+          @include rem(top, -2px);
+          @include rem(margin-left, -5px);
+        }
+
+        &--follow, &--finance {
+          @include rem(font-size, 16px);
+        }
+      }
+    }
+  }
+}
+
+.btn_participate {
+  @include rem(max-width, 298px);
+  @include rem(padding, 14px 18px 12px);
+  @include rem(margin-bottom, 10px);
+
+  .icon {
+    position: relative;
+
+    @include rem(font-size, 23px);
+    @include rem(margin-right, 3px);
+    @include rem(left, -12px);
+  }
+}
+
+.content {
+  &__right {
+    .user_badge {
+      @include rem(margin-top, 11px);
+      @include rem(margin-bottom, 25px);
+      @include rem(min-height, 90px);
+    }
+  }
+}
+
+._max_width {
+  width: 80% !important;
+}
+
+
+.circle_voting_btn {
+  color: $primary;
+  border: 2px solid $primary;
+  border-radius: 100px;
+  background: #fff;
+  text-align: center;
+  font-weight: $fw-semi;
+
+  @include rem(width, 40px);
+  @include rem(height, 40px);
+  @include transition(all .2s ease);
+
+  &.active, &:hover {
+    background: $primary;
+    color: #fff;
+  }
+}
+
 @media (max-width: 991px) {
   .navbar-collapse .nav > li.active a.btn {
     color: #fff !important;
   }
+}
+
+@media (max-width: $screen-landscape) {
+  .project_links {
+    padding-left: 15px;
+    padding-right: 15px;
+
+    &__share + &__actions {
+      @include rem(margin-top, 20px)
+    }
+
+    &__share {
+      padding: 0;
+    }
+
+    .card__actions {
+      text-align: left !important;
+    }
+  }
+
+  .content__right {
+    padding-top: 30px;
+    border-top: 1px solid $border-alt;
+  }
+
+  .page .nav-tabs {
+    @include rem(margin-bottom, 20px !important);
+  }
+
+  .small_desc {
+    @include rem(margin-top, 30px);
+  }
+}
+
+@media (max-width: $screen-mobile) {
+  .progress {
+    @include rem(margin, 20px 0);
+
+    .row {
+      font-size: 0;
+
+      > .col-xs-6 {
+        float: none;
+        display: inline-block;
+        vertical-align: middle;
+      }
+    }
+
+    &__info {
+      @include rem(font-size, 18px);
+    }
+  }
+
+  .card__actions .action_link {
+    margin-bottom: 6px;
+  }
+
+  .project_links {
+    padding-bottom: 10px;
+  }
+
+  .prize_row {
+     > div {
+      width: 50%;
+    }
+  }
+
+  .content__right .user_badge {
+    min-height: 0;
+  }
+
+  .btn_participate {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+.card__actions .action_link img {
+  @include rem(width, 20px);
 }

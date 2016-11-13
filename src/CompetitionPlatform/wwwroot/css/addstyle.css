@@ -1,3 +1,20 @@
 ﻿.header--new.fixed .page__title {
     display: none!important;
 }
+
+.project-details-category {
+    text-align: left !important;
+}
+
+.header--new.nav-up .nav--header > li > a, .nav-up .header--new .nav--header > li > a, .header--new.fixed .nav--header > li > a {
+        color: #fff!important;
+        opacity: 0.8; }
+
+.clear-hr {
+    width: 100% !important;
+    max-width: 100% !important;
+    border-top-width: 1px;
+    border-top-style: solid;
+    border-top-color: rgb(238, 238, 238);
+    margin-top: 15px;
+}
