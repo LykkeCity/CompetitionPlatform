@@ -353,7 +353,10 @@ namespace CompetitionPlatform.Controllers
                 await _mailSentRepository.SaveFollowAsync(user.Email, id);
             }
 
-            await _projectFollowRepository.SaveAsync(user.Email, user.GetFullName(), id);
+            var follow = await _projectFollowRepository.GetAsync(user.Email, id);
+
+            if (follow == null)
+                await _projectFollowRepository.SaveAsync(user.Email, user.GetFullName(), id);
 
             return RedirectToAction("ProjectDetails", "Project", new { id });
         }
