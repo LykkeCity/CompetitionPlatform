@@ -19,18 +19,18 @@
         color = "green";
         showDeadline = true;
         showParticipantCount = true;
-        deadline = Model.CompetitionRegistrationDeadline.ToString("MMMM dd");
+        deadline = Model.CompetitionRegistrationDeadline.ToString("dd.MM.yyyy");
         //status = "COMPETITION REGISTRATION";
         break;
     case Status.Submission:
         color = "red";
         showDeadline = true;
-        deadline = Model.ImplementationDeadline.ToString("MMMM dd");
+        deadline = Model.ImplementationDeadline.ToString("dd.MM.yyyy");
         break;
     case Status.Voting:
         color = "yellow";
         showDeadline = true;
-        deadline = Model.VotingDeadline.ToString("MMMM dd");
+        deadline = Model.VotingDeadline.ToString("dd.MM.yyyy");
         break;
     case Status.Archive:
         color = "grey";
@@ -54,7 +54,7 @@
                     }
                     @if (showDeadline)
                     {
-                        <li><i class="icon icon--deadline"></i> @deadline</li>
+                        <li><i class="icon icon--deadline_fill"></i> @deadline</li>
                     }
                 </ul>
             </div>

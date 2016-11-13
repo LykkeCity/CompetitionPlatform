@@ -12,6 +12,8 @@
     var modifiedDays = (DateTime.UtcNow - Model.LastModified).Days;
     var createdDaysAgo = "";
     var modifiedDaysAgo = "";
+    var facebookSharingUrl = "https://www.facebook.com/sharer/sharer.php?u=" + Context.Request.Host + Context.Request.Path;
+    var twitterSharingUrl = "https://twitter.com/share?url=" + Context.Request.Host + Context.Request.Path;
 
     if (createdDays == 0 || createdDays == 1)
     {
@@ -30,179 +32,262 @@
     {
         modifiedDaysAgo = " " + modifiedDays + " days ago";
     }
+
+    var checkCompetition = "";
+    var checkSubmission = "";
+    var checkVoting = "";
+
+    var textCompetition = "";
+    var textSubmission = "";
+    var textVoting = "";
+
+    switch (Model.Status)
+    {
+        case Status.Initiative:
+            checkCompetition = "check--inprogress";
+            checkSubmission = "check--inprogress";
+            checkVoting = "check--inprogress";
+            break;
+        case Status.Registration:
+            checkCompetition = "check--inprogress";
+            checkSubmission = "check--inprogress";
+            checkVoting = "check--inprogress";
+            textCompetition = "text--green";
+            break;
+        case Status.Submission:
+            checkCompetition = "check--green";
+            checkSubmission = "check--inprogress";
+            checkVoting = "check--inprogress";
+            textSubmission = "text--red";
+            break;
+        case Status.Voting:
+            checkCompetition = "check--green";
+            checkSubmission = "check--red";
+            checkVoting = "check--inprogress";
+            textVoting = "text--yellow";
+            break;
+        case Status.Archive:
+            checkCompetition = "check--green";
+            checkSubmission = "check--red";
+            checkVoting = "check--yellow";
+            break;
+    }
 }
 
 <section class="section section--lead section--padding">
     <div class="container container--extend">
-        <div class="page__actions row">
-            <div class="pull-right" style="margin-left: 20px; margin-top: -16px;"><a type="button" class="btn btn-circle new-project-button" href="/Project/Create">+</a></div>
-            <div class="edit_page_link pull-right">
-                <a asp-area="" asp-controller="Project" asp-action="Edit" asp-route-id="@Model.Id">
-                    <i class="icon icon--edit"></i> Edit
-                </a>
+        <div class="page__header">
+            <div class="row">
+                <div class="col-sm-8">
+                    <h2>@Model.Name</h2>
+                    <h3 class="page__subtitle mb0 project-details-category">@Model.Category</h3>
+                </div>
+                <div class="col-sm-4 text-right">
+                    <a asp-area="" class="btn btn_edit btn-sm" asp-controller="Project" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+                </div>
             </div>
-            <div class="back_link">
-                <a asp-area="" asp-controller="Home" asp-action="Index">
-                    <i class="icon icon--back"></i> Back to Projects
-                </a>
+        </div>
+
+        <div class="project_links">
+            <div class="row">
+                <div class="col-sm-7 project_links__share">
+                    <div class="card__actions">
+                        <a href="@twitterSharingUrl" class="action_link"><i class="icon icon--tw"></i> Tweet</a>
+                        <a href="@facebookSharingUrl" class="action_link"><i class="icon icon--fb_simple"></i> Share</a>
+                    </div>
+                </div>
+                <div class="col-sm-5 project_links__actions">
+                    <div class="card__actions text-right">
+                        @if (!Model.IsFollowing)
+                        {
+                            <a asp-area="" asp-controller="ProjectDetails" asp-action="FollowProject" asp-route-id="@Model.Id" id="followButton" class="action_link action_follow">
+                                <i class="icon icon--follow"></i>Follow
+                            </a>
+                        }
+                        else
+                        {
+                            <a asp-area="" asp-controller="ProjectDetails" asp-action="UnFollowProject" asp-route-id="@Model.Id" id="followButton" class="action_link action_follow active">
+                                <i class="icon icon--follow"></i>Unfollow
+                            </a>
+                        }
+                    </div>
+                </div>
             </div>
         </div>
         <div class="row">
-            <div class="col-md-8 content__left">
-                <h2>@Model.Name</h2>
-
-                <div class="row">
-                    <div class="col-xs-4">
-                        <div class="prize">
-                            <div class="prize__value">$@Model.BudgetFirstPlace</div>
-                            <div class="prize__title">1<sup>st</sup>Prize</div>
+        <div class="col-md-8 content__left">
+            
+            <div class="row prize_row">
+                <div class="col-xs-3">
+                    <div class="prize">
+                        <div class="prize__value">$@Model.BudgetFirstPlace</div>
+                        <div class="prize__title">1<sup>st</sup>Prize
                         </div>
                     </div>
-                    @if (Model.BudgetSecondPlace != null)
+                </div>
+                @if (Model.BudgetSecondPlace != null)
+                {
+                    <div class="col-xs-3">
+                        <div class="prize">
+                            <div class="prize__value">$@Model.BudgetSecondPlace</div>
+                            <div class="prize__title">2<sup>nd</sup>Prize</div>
+                        </div>
+                    </div>
+                    <div class="col-xs-3">
+                        <div class="prize">
+                            <div class="prize__value">$@Model.BudgetSecondPlace</div>
+                            <div class="prize__title">3<sup>rd</sup>Prize</div>
+                        </div>
+                    </div>
+                    <div class="col-xs-3">
+                        <div class="prize">
+                            <div class="prize__value">$@Model.BudgetSecondPlace</div>
+                            <div class="prize__title">4<sup>th</sup>Prize</div>
+                        </div>
+                    </div>
+                }
+                    @*<div class="col-xs-4">
+                            <div class="icon_with_title">
+                                <a href="">
+                                    <img src="~/img/competition/wallet_icn.svg" width="55" alt="">
+                                    <span>View Project's Wallet</span>
+                                </a>
+                            </div>
+                        </div>*@</div>
+
+            @await Html.PartialAsync("ProjectDetailsStatusBarPartial", Model.StatusBarPartial)
+
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#info" aria-controls="info" role="tab" data-toggle="tab">Info</a></li>
+                <li role="presentation">
+                    <a href="#Participants" aria-controls="participants" role="tab" data-toggle="tab">
+                        Participants <sup>
+                            @Model.ParticipantsPartial.Participants.Count()
+                        </sup>
+                    </a>
+                </li>
+                <li role="presentation">
+                    <a href="#Comments" aria-controls="comments" role="tab" data-toggle="tab">
+                        Comments <sup>
+                            @Model.CommentsPartial.Comments.Count()
+                        </sup>
+                    </a>
+                </li>
+                <li role="presentation">
+                    <a href="#Results" aria-controls="results" role="tab" data-toggle="tab">
+                        Results <sup>
+                            @Model.ResultsPartial.Results.Count()
+                        </sup>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="info">
+                    <div class="text">
+                        <div class="form-group">
+                            <div class="row">
+                                <label asp-for="Overview" class="control-label col-sm-4"></label>
+                            </div>
+                            @Model.Overview
+                        </div>
+                    </div>
+                    <div class="text">
+                        <div class="row">
+                            <label class="control-label col-sm-4">Description</label>
+                        </div>
+                        @Html.Raw(Model.Description)
+                    </div>
+                    @if (Model.FileInfo != null)
                     {
-                        <div class="col-xs-4">
-                            <div class="prize">
-                                <div class="prize__value">$@Model.BudgetSecondPlace</div>
-                                <div class="prize__title">3&times;2<sup>nd</sup>Prize</div>
+                        <div class="asset_link">
+                            @switch (Model.FileInfo.ContentType)
+                            {
+                                case ContentTypesHelper.Xls:
+                                case ContentTypesHelper.Xlsx:
+                                    <div class="asset_link__icon">
+                                        <a href=""><i class="icon icon--xls_file"><span class="path1"></span><span class="path2"></span></i></a>
+                                    </div>
+                                    break;
+                                case ContentTypesHelper.Pdf:
+                                    <div class="asset_link__icon">
+                                        <a href=""><i class="icon icon--pdf_file"><span class="path1"></span><span class="path2"></span></i></a>
+                                    </div>
+                                    break;
+                                case ContentTypesHelper.Jpg:
+                                    <div class="asset_link__icon">
+                                        <a href=""><i class="icon icon--jpg_file"><span class="path1"></span><span class="path2"></span></i></a>
+                                    </div>
+                                    break;
+                                case ContentTypesHelper.Doc:
+                                case ContentTypesHelper.Docx:
+                                    <div class="asset_link__icon">
+                                        <a href=""><i class="icon icon--doc_file"><span class="path1"></span><span class="path2"></span></i></a>
+                                    </div>
+                                    break;
+                                default:
+                                    <div class="asset_link__icon">
+                                        <a href=""><i class="icon icon--pdf_file"><span class="path1"></span><span class="path2"></span></i></a>
+                                    </div>
+                                    break;
+                            }
+                            <div class="asset_link__info">
+                                <div class="asset_link__title">
+                                    <a asp-area="" asp-controller="ProjectDetails" asp-action="DownloadProjectFile" asp-route-id="@Model.Id">@Model.FileInfo.FileName</a>
+                                </div>
+                                @*<div class="asset_link__desc">24.8MB</div>*@
+                                <div class="">
+                                    <a asp-area="" asp-controller="ProjectDetails" asp-action="DownloadProjectFile" asp-route-id="@Model.Id">Download</a>
+                                </div>
                             </div>
                         </div>
                     }
-                    @*<div class="col-xs-4">
-                        <div class="icon_with_title">
-                            <a href="">
-                                <img src="~/img/competition/wallet_icn.svg" width="55" alt="">
-                                <span>View Project's Wallet</span>
-                            </a>
-                        </div>
-                    </div>*@
+                </div>
+                <div role="tabpanel" class="tab-pane" id="Participants">
+                    @if (Model.IsParticipant && Model.Status == Status.Submission && !Model.ParticipantsPartial.HasResult)
+                    {
+                        <a asp-area="" asp-controller="ProjectDetails" asp-action="AddResult" asp-route-id="@Model.Id" class="btn btn-md">
+                            <i class="icon icon--share_result"></i> Add Your Result
+                        </a>
+                        <br>
+                        <br>
+                        <br>
+                    }
+
+                    @await Html.PartialAsync("ParticipantsPartial", Model.ParticipantsPartial)
                 </div>
 
-                @await Html.PartialAsync("ProjectDetailsStatusBarPartial", Model.StatusBarPartial)
+                <div role="tabpanel" class="tab-pane" id="Comments">
+                    @await Html.PartialAsync("CommentsPartial", Model.CommentsPartial)
+                </div>
 
-                <ul class="nav nav-tabs" role="tablist">
-                    <li role="presentation" class="active"><a href="#info" aria-controls="info" role="tab" data-toggle="tab">Info</a></li>
-                    <li role="presentation">
-                        <a href="#Participants" aria-controls="participants" role="tab" data-toggle="tab">
-                            Participants <sup>
-                                @Model.ParticipantsPartial.Participants.Count()
-                            </sup>
-                        </a>
-                    </li>
-                    <li role="presentation">
-                        <a href="#Comments" aria-controls="comments" role="tab" data-toggle="tab">
-                            Comments <sup>
-                                @Model.CommentsPartial.Comments.Count()
-                            </sup>
-                        </a>
-                    </li>
-                    <li role="presentation">
-                        <a href="#Results" aria-controls="results" role="tab" data-toggle="tab">
-                            Results <sup>
-                                @Model.ResultsPartial.Results.Count()
-                            </sup>
-                        </a>
-                    </li>
-                </ul>
-
-                <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane active" id="info">
-                        <div class="text">
-                            <div class="form-group">
-                                <div class="row">
-                                    <label asp-for="Overview" class="control-label col-sm-4"></label>
-                                </div>
-                                @Model.Overview
-                            </div>
-                        </div>
-                        <div class="text">
-                            <div class="row">
-                                <label class="control-label col-sm-4">Description</label>
-                            </div>
-                            @Html.Raw(Model.Description)
-                        </div>
-                        @if (Model.FileInfo != null)
-                        {
-                            <div class="asset_link">
-                                @switch (Model.FileInfo.ContentType)
-                                {
-                                    case ContentTypesHelper.Xls:
-                                    case ContentTypesHelper.Xlsx:
-                                        <div class="asset_link__icon">
-                                            <a href=""><i class="icon icon--xls_file"><span class="path1"></span><span class="path2"></span></i></a>
-                                        </div>
-                                        break;
-                                    case ContentTypesHelper.Pdf:
-                                        <div class="asset_link__icon">
-                                            <a href=""><i class="icon icon--pdf_file"><span class="path1"></span><span class="path2"></span></i></a>
-                                        </div>
-                                        break;
-                                    case ContentTypesHelper.Jpg:
-                                        <div class="asset_link__icon">
-                                            <a href=""><i class="icon icon--jpg_file"><span class="path1"></span><span class="path2"></span></i></a>
-                                        </div>
-                                        break;
-                                    case ContentTypesHelper.Doc:
-                                    case ContentTypesHelper.Docx:
-                                        <div class="asset_link__icon">
-                                            <a href=""><i class="icon icon--doc_file"><span class="path1"></span><span class="path2"></span></i></a>
-                                        </div>
-                                        break;
-                                    default:
-                                        <div class="asset_link__icon">
-                                            <a href=""><i class="icon icon--pdf_file"><span class="path1"></span><span class="path2"></span></i></a>
-                                        </div>
-                                        break;
-                                }
-                                <div class="asset_link__info">
-                                    <div class="asset_link__title">
-                                        <a asp-area="" asp-controller="ProjectDetails" asp-action="DownloadProjectFile" asp-route-id="@Model.Id">@Model.FileInfo.FileName</a>
-                                    </div>
-                                    @*<div class="asset_link__desc">24.8MB</div>*@
-                                    <div class="">
-                                        <a asp-area="" asp-controller="ProjectDetails" asp-action="DownloadProjectFile" asp-route-id="@Model.Id">Download</a>
-                                    </div>
-                                </div>
-                            </div>
-                        }
-                    </div>
-                    <div role="tabpanel" class="tab-pane" id="Participants">
-                        @if (Model.IsParticipant && Model.Status == Status.Submission && !Model.ParticipantsPartial.HasResult)
-                        {
-                            <a asp-area="" asp-controller="ProjectDetails" asp-action="AddResult" asp-route-id="@Model.Id" class="btn btn-md">
-                                <i class="icon icon--share_result"></i> Add Your Result
-                            </a>
-                            <br>
-                            <br>
-                            <br>
-                        }
-
-                        @await Html.PartialAsync("ParticipantsPartial", Model.ParticipantsPartial)
-                    </div>
-
-                    <div role="tabpanel" class="tab-pane" id="Comments">
-                        @await Html.PartialAsync("CommentsPartial", Model.CommentsPartial)
-                    </div>
-
-                    <div role="tabpanel" class="tab-pane" id="Results">
-                        @await Html.PartialAsync("ResultsPartial", Model.ResultsPartial)
-                    </div>
+                <div role="tabpanel" class="tab-pane" id="Results">
+                    @await Html.PartialAsync("ResultsPartial", Model.ResultsPartial)
                 </div>
             </div>
+        </div>
 
             <aside class="col-md-4 content__right">
                 <div class="row">
                     <div class="col-sm-6 col-md-12">
+                        <div class="user_badge">
+                            <div class="user_badge__img"><img src="~/images/avatar.svg" alt=""></div>
+                            <div class="user_badge__info">
+                                <div class="user_badge__title">@Model.AuthorFullName</div>
+                                <div class="user_badge__desc">Creator</div>
+                            </div>
+                        </div>
                         @await Html.PartialAsync("ProjectDetailsStatusPartial", new ProjectDetailsStatusViewModel
-                   {
-                       ProjectId = Model.Id,
-                       Status = Model.Status,
-                       VotesFor = Model.VotesFor,
-                       VotesAgainst = Model.VotesAgainst,
-                       CompetitionRegistrationDeadline = Model.CompetitionRegistrationDeadline,
-                       ImplementationDeadline = Model.ImplementationDeadline,
-                       VotingDeadline = Model.VotingDeadline
-                   })
-                        <div class="btn-group" role="group">
+                        {
+                            ProjectId = Model.Id,
+                            Status = Model.Status,
+                            VotesFor = Model.VotesFor,
+                            VotesAgainst = Model.VotesAgainst,
+                            CompetitionRegistrationDeadline = Model.CompetitionRegistrationDeadline,
+                            ImplementationDeadline = Model.ImplementationDeadline,
+                            VotingDeadline = Model.VotingDeadline
+                        })
+                        @*<div class="btn-group" role="group">
                             <button type="button" class="btn btn-default"><i class="icon icon--finance"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i>Finance</button>
                             @if (!Model.IsFollowing)
                             {
@@ -217,21 +302,39 @@
                                 </a>
                             }
                             <button type="button" class="btn btn-default"><i class="icon--more"></i></button>
-                        </div>
+                        </div>*@
                     </div>
 
                     <div class="col-sm-5 col-sm-offset-1 col-md-offset-0 col-md-12">
-                        <div class="user_badge">
-                            <div class="user_badge__img"><img src="~/images/avatar.svg" alt=""></div>
-                            <div class="user_badge__info">
-                                <div class="user_badge__title">@Model.AuthorFullName.ToUpper()</div>
-                                <div class="user_badge__desc">Creator</div>
-                            </div>
-                        </div>
-
+                        
                         <ul class="list list--info">
-                            <li class="list__item"><div class="text-muted">Created</div><span>@Model.Created.ToString("MMMM dd, yyyy") &middot; @createdDaysAgo</span></li>
-                            <li class="list__item"><div class="text-muted">Updated</div><span>@Model.LastModified.ToString("MMMM dd, yyyy") &middot; @modifiedDaysAgo</span></li>
+                            <li class="list__item">
+                                    <div class="list__icon">
+                                        <span class="check @checkCompetition"></span>
+                                    </div>
+                                    <div class="list__content">
+                                        <div class="title @textCompetition">Registration</div>
+                                        <p>@Model.Created.ToString("MMM d") - @Model.CompetitionRegistrationDeadline.ToString("MMM d")</p>
+                                    </div>
+                            </li>
+                            <li class="list__item _current">
+                                <div class="list__icon">
+                                    <span class="check @checkSubmission"></span>
+                                </div>
+                                <div class="list__content">
+                                    <div class="title @textSubmission">Submissions</div>
+                                    <p>@Model.CompetitionRegistrationDeadline.ToString("MMM d") - @Model.ImplementationDeadline.ToString("MMM d")</p>
+                                </div>
+                            </li>
+                            <li class="list__item">
+                                <div class="list__icon">
+                                    <span class="check @checkVoting"></span>
+                                </div>
+                                <div class="list__content">
+                                    <div class="title @textVoting">Voting</div>
+                                    <p>@Model.ImplementationDeadline.ToString("MMM d") - @Model.VotingDeadline.ToString("MMM d")</p>
+                                </div>
+                            </li>
                         </ul>
 
                     </div>
@@ -254,16 +357,16 @@
                     </div>
 
                     @*<div class="col-sm-5 col-sm-offset-1 col-md-offset-0 col-md-12">
-                        <h5 class="border-bottom">Share</h5>
+                            <h5 class="border-bottom">Share</h5>
 
-                        <div class="sharing">
-                            <a class="sharing__link sharing__link--fb" href="https://www.facebook.com/groups/542506412568917/"><i class="icon icon--facebook_icn"><span class="path1"></span><span class="path2"></span></i></a>
-                            <a class="sharing__link sharing__link--tw" href="https://twitter.com/LykkeCity"><i class="icon icon--twitter_icn"><span class="path1"></span><span class="path2"></span></i></a>
-                        </div>
-                    </div>*@
+                            <div class="sharing">
+                                <a class="sharing__link sharing__link--fb" href="https://www.facebook.com/groups/542506412568917/"><i class="icon icon--facebook_icn"><span class="path1"></span><span class="path2"></span></i></a>
+                                <a class="sharing__link sharing__link--tw" href="https://twitter.com/LykkeCity"><i class="icon icon--twitter_icn"><span class="path1"></span><span class="path2"></span></i></a>
+                            </div>
+                        </div>*@
                 </div>
 
-                <h5 class="border-bottom">Other Projects</h5>
+                <h5 class="border-bottom">Project stream</h5>
 
                 <ul class="list list--text_previews">
                     @foreach (var project in Model.OtherProjects)
