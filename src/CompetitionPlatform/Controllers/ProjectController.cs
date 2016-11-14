@@ -67,12 +67,12 @@ namespace CompetitionPlatform.Controllers
                 return View("CreateProject");
             }
 
-            if (user.Documents.Contains("Selfie") && user.Documents.Contains("IdCard"))
-            {
-                return View("CreateProject");
-            }
+            //if (user.Documents.Contains("Selfie") && user.Documents.Contains("IdCard"))
+            //{
+            //    return View("CreateProject");
+            //}
 
-            return View("AccessDenied");
+            return View("CreateClosed");
         }
 
         [Authorize]
