@@ -103,7 +103,7 @@
         </div>
     </header>
 
-    <article class="content page page--competition">
+    <article class="content page page--competition_platform">
         <div class="page_border"></div>
         @*<nav class="page_nav page__nav">
                 <div class="page_nav__inner">
@@ -115,36 +115,46 @@
             </nav>*@
         @RenderBody()
     </article>
-    <footer class="footer page__footer">
-        <div class="footer__bottom">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xs-6 col-sm-4 hidden-xs text-left pull-left">
-                        <div class="clearfix">
-                            <div class="footer__copy">Ver. @typeof(HomeController).GetTypeInfo().Assembly.GetName().Version.ToString()</div>
-                        </div>
+<footer class="footer page__footer">
+    <div class="footer__bottom">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-6 col-sm-4 hidden-xs text-left pull-left">
+                    <div class="clearfix">
+                        <div class="footer__copy">Ver. @typeof(HomeController).GetTypeInfo().Assembly.GetName().Version.ToString()</div>
                     </div>
-                    <div class="col-xs-6 col-sm-4 text-right pull-right">
-                        <div class="clearfix">
-                            <ul class="social social--footer_alt">
-                                <li><a href="https://www.linkedin.com/company/lykke-ag" target="_blank" class="social__item"><i class="icon_img icon_img--in"></i></a></li>
-                                <li><a href="https://www.facebook.com/groups/542506412568917/" target="_blank" class="social__item"><i class="icon_img icon_img--fb"></i></a></li>
-                                <li><a href="https://twitter.com/LykkeCity" target="_blank" class="social__item"><i class="icon_img icon_img--tw"></i></a></li>
-                                <li><a href="http://instagram.com/lykkecity" target="_blank" class="social__item"><i class="icon_img icon_img--inst"></i></a></li>
-                                <li><a href="https://www.youtube.com/channel/UCmMYipGdKMF0kzfaE-PXsNQ" target="_blank" class="social__item"><i class="icon_img icon_img--yt"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-xs-6 col-sm-4 text-center">
-                        <div class="footer__copy">&copy; Lykke 2016. All rights reserved</div>
-                    </div>
-
                 </div>
+                <div class="col-xs-6 col-sm-4 text-right pull-right">
+                    <div class="clearfix">
+                        <ul class="social social--footer_alt">
+                            <li><a href="https://www.linkedin.com/company/lykke-ag" target="_blank" class="social__item"><i class="icon_img icon_img--in"></i></a></li>
+                            <li><a href="https://www.facebook.com/groups/542506412568917/" target="_blank" class="social__item"><i class="icon_img icon_img--fb"></i></a></li>
+                            <li><a href="https://twitter.com/LykkeCity" target="_blank" class="social__item"><i class="icon_img icon_img--tw"></i></a></li>
+                            <li><a href="http://instagram.com/lykkecity" target="_blank" class="social__item"><i class="icon_img icon_img--inst"></i></a></li>
+                            <li><a href="https://www.youtube.com/channel/UCmMYipGdKMF0kzfaE-PXsNQ" target="_blank" class="social__item"><i class="icon_img icon_img--yt"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-4 text-center">
+                    <div class="footer__copy">&copy; Lykke 2016. All rights reserved</div>
+                </div>
+
             </div>
         </div>
-    </footer>
+    </div>
+</footer>
 
-    <environment names="Development">
+    <a href="/Home/LeaveFeedback" class="btn btn_feedback">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 17 17"><defs><style>
+                                                                              .cls-1 {
+                                                                                  fill: #fff;
+                                                                              }
+        </style></defs>
+        <g id="Layer_2" data-name="Layer 2"><path class="cls-1" d="M2,17a1,1,0,0,1-.95-1.32l1-3A7.12,7.12,0,0,1,0,7.62C0,3.42,3.81,0,8.5,0S17,3.42,17,7.62s-3.81,7.62-8.5,7.62A9.41,9.41,0,0,1,6,14.91l-3.5,2A1,1,0,0,1,2,17ZM8.5,2C4.92,2,2,4.52,2,7.62a5.24,5.24,0,0,0,1.9,4,1,1,0,0,1,.29,1.08l-.4,1.17L5.38,13a1,1,0,0,1,.8-.08,7.35,7.35,0,0,0,2.31.37c3.58,0,6.5-2.52,6.5-5.62S12.08,2,8.5,2Z" id="Layer_1-2" data-name="Layer 1"></path></g></svg>
+        <span>Your Feedback</span>
+    </a>
+
+<environment names="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap-datepicker.js"></script>
