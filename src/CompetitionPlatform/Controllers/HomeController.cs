@@ -26,11 +26,14 @@ namespace CompetitionPlatform.Controllers
         private readonly IProjectFollowRepository _projectFollowRepository;
         private readonly IProjectResultRepository _resultsRepository;
         private readonly IProjectWinnersRepository _winnersRepository;
+        private readonly IUserFeedbackRepository _feedbackRepository;
+        private readonly IUserRolesRepository _userRolesRepository;
 
         public HomeController(IProjectRepository projectRepository, IProjectCommentsRepository commentsRepository,
             IProjectCategoriesRepository categoriesRepository, IProjectParticipantsRepository participantsRepository,
             IProjectFollowRepository projectFollowRepository, IProjectResultRepository resultsRepository,
-            IProjectWinnersRepository winnersRepository)
+            IProjectWinnersRepository winnersRepository, IUserFeedbackRepository feedbackRepository,
+            IUserRolesRepository userRolesRepository)
         {
             _projectRepository = projectRepository;
             _commentsRepository = commentsRepository;
@@ -39,6 +42,8 @@ namespace CompetitionPlatform.Controllers
             _projectFollowRepository = projectFollowRepository;
             _resultsRepository = resultsRepository;
             _winnersRepository = winnersRepository;
+            _feedbackRepository = feedbackRepository;
+            _userRolesRepository = userRolesRepository;
         }
 
         public async Task<IActionResult> Index()
@@ -271,6 +276,43 @@ namespace CompetitionPlatform.Controllers
             };
 
             return View("~/Views/Home/Index.cshtml", viewModel);
+        }
+
+        [Authorize]
+        public IActionResult LeaveFeedback()
+        {
+            return View();
+        }
+
+        [Authorize]
+        public async Task<IActionResult> ViewFeedBack()
+        {
+            var user = GetAuthenticatedUser();
+            var userRole = await _userRolesRepository.GetAsync(user.Email);
+
+            if (userRole == null) return View("AccessDenied");
+
+            var feedback = await _feedbackRepository.GetFeedbacksAsync();
+            feedback = feedback.OrderByDescending(x => x.Created);
+
+            var viewModel = new FeedbackListViewModel
+            {
+                FeedbackList = feedback
+            };
+
+            return View(viewModel);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> SaveFeeback(FeedbackViewModel feedbackViewModel)
+        {
+            var user = GetAuthenticatedUser();
+            feedbackViewModel.Email = user.Email;
+            feedbackViewModel.Created = DateTime.UtcNow;
+
+            await _feedbackRepository.SaveAsync(feedbackViewModel);
+            return RedirectToAction("Index", "Home");
         }
 
         [Authorize]
