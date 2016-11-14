@@ -105,6 +105,7 @@
     .page__header {
       .page__subtitle {
         text-align: left;
+        color: #8C94A0;
 
         @include rem(font-size, 22px);
         @include rem(margin-top, 13px);
@@ -363,6 +364,26 @@
   .btn_participate {
     width: 100%;
     max-width: 100%;
+  }
+}
+
+.btn_feedback {
+  position: fixed;
+  z-index:100;
+  bottom: 0;
+  right: 0;
+
+  @include rem(margin, 8px);
+  @include transition(all .2s ease);
+
+  svg {
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+    top: -1px;
+
+    @include rem(width, 18px);
+    @include rem(margin-right, 4px);
   }
 }
 

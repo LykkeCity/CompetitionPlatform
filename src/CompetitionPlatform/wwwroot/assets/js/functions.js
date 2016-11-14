@@ -76,13 +76,13 @@ $('.action_follow').on('click', function() {
 
 $(window).scroll(function() {
   if($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
-    $('body').find('#launcher').css({
-      bottom: 100
+    $('body').find('#launcher, .btn_feedback').css({
+      bottom: $('.footer').outerHeight()
     })
   }
 
   else {
-    $('body').find('#launcher').css({
+    $('body').find('#launcher, .btn_feedback').css({
       bottom: 0
     })
   }

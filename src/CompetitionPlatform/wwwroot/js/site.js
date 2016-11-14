@@ -71,7 +71,7 @@
 
     barWidth();
 
-    window.onresize = function() {
+    window.onresize = function () {
         barWidth();
     };
 
@@ -107,14 +107,14 @@
 
     $('#msg')
         .bind('blur',
-            function() {
+            function () {
                 if (!$(this).val()) {
                     $(this).parents('.form--message').removeClass('focused');
                     $(this).parents('.message_card__inner').removeAttr('style');
                 }
             })
-        .bind('focus', function() { $(this).parents('.form--message').addClass('focused'); })
-        .keyup(function() {
+        .bind('focus', function () { $(this).parents('.form--message').addClass('focused'); })
+        .keyup(function () {
             if ($(this).val()) {
                 $(this).parents('.form--message').addClass('with_value');
             } else {
@@ -133,4 +133,22 @@
     });
 
     $('#datetimepicker1').datetimepicker();
+
+    $(window).scroll(function () {
+        if ($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
+            $('body')
+                .find('#launcher, .btn_feedback')
+                .css({
+                    bottom: $('.footer').outerHeight()
+                });
+        }
+
+        else {
+            $('body')
+                .find('#launcher, .btn_feedback')
+                .css({
+                    bottom: 0
+                });
+        }
+    });
 });
