@@ -57,6 +57,9 @@ namespace CompetitionPlatform
             services.AddSingleton<IAzureTableStorage<FollowMailSentEntity>>(
                 new AzureTableStorage<FollowMailSentEntity>(connectionString, "FollowMailSent", log));
 
+            services.AddSingleton<IAzureTableStorage<UserFeedbackEntity>>(
+                new AzureTableStorage<UserFeedbackEntity>(connectionString, "UserFeedback", log));
+
             services.AddTransient<IProjectRepository, ProjectRepository>();
             services.AddTransient<IProjectFileRepository, ProjectFileRepository>();
             services.AddTransient<IUsersRepository, UsersRepository>();
@@ -72,6 +75,7 @@ namespace CompetitionPlatform
             services.AddTransient<IUserRolesRepository, UserRolesRepository>();
             services.AddTransient<IProjectWinnersService, ProjectWinnersService>();
             services.AddTransient<IFollowMailSentRepository, FollowMailSentRepository>();
+            services.AddTransient<IUserFeedbackRepository, UserFeedbackRepository>();
         }
 
         public static void RegisterLyykeServices(this IServiceCollection services)
