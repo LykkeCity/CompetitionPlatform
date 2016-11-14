@@ -19,7 +19,8 @@ namespace CompetitionPlatform.Data.ProjectCategory
                 "Finance",
                 "Technology",
                 "Bitcoin",
-                "Communications and media"
+                "Communications and media",
+                "Research"
             };
         }
     }
