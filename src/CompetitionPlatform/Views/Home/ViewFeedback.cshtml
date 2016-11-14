@@ -1,0 +1,27 @@
+@model FeedbackListViewModel
+
+<br />
+<br />
+<br />
+<section class="section section--competition_edit">
+    <div class="container">
+        <div class="content__left">
+            @foreach (var feedback in Model.FeedbackList)
+            {
+                <p>
+                    @feedback.Name
+                </p>
+                <p>
+                    @feedback.Email
+                </p>
+                <p>
+                    @feedback.Created
+                </p>
+                <p>
+                    @feedback.Feedback
+                </p>
+                <hr class="clear-hr"/>
+            }
+        </div>
+    </div>
+</section>

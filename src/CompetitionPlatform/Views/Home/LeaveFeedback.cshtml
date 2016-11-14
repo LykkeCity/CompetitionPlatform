@@ -1,0 +1,38 @@
+@model FeedbackViewModel
+
+<br />
+<br />
+<br />
+<section class="section section--competition_edit">
+    <div class="container">
+        <div class="content__left">
+            <form asp-controller="Home" asp-action="SaveFeeback" enctype="multipart/form-data" class="form form--share_result">
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger" />
+                </div>
+
+                <div class="form-group">
+                    <div class="row">
+                        <label asp-for="Feedback" class="control-label col-sm-4"></label>
+                    </div>
+                    <textarea asp-for="Feedback" class="form-control" rows="7"></textarea>
+                    <span asp-validation-for="Feedback" class="text-danger" />
+                </div>
+                
+                <div class="form__submit">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <button type="submit" class="btn">Send</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
