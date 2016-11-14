@@ -11,6 +11,7 @@
                     var projectCount = "";
                     var votesCount = project.VotesFor + project.VotesAgainst;
                     var commentsCount = (project.CommentsCount == 1) ? project.CommentsCount + " comment" : project.CommentsCount + " comments";
+                    var facebookSharingUrl = "https://www.facebook.com/sharer/sharer.php?u=" + Context.Request.Host + "/Project/ProjectDetails/" + project.Id;
                 }
 
                 @switch (project.Status)
@@ -96,11 +97,11 @@
                                 }
                                 <a asp-area="" asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.Id" class="action_link">Read more</a>
                                 &middot;
-                                <a href="" class="action_link">Share</a>
+                                <a href="@facebookSharingUrl" class="action_link">Share</a>
                                 &middot;
-                                <a href="" class="action_link">@commentsCount</a>
+                                <a asp-area="" asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.Id" class="action_link">@commentsCount</a>
                                 &middot;
-                                <a href="" class="action_link">@projectCount</a>
+                                <div class="action_link cursor-default">@projectCount</div>
                             </div>
                         </div>
                     </div>
