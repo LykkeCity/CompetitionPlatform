@@ -2,12 +2,30 @@
 
 @{
     ViewData["Title"] = "Projects";
+    var createdTab = ViewBag.CreatedProjects;
+    var followingTab = ViewBag.FollowingProjects;
+    var participatingTab = ViewBag.ParticipatingProjects;
+
+    var createdTabActive = createdTab != null && createdTab ? "tab_item--active" : "";
+    var followingTabActive = followingTab != null && followingTab ? "tab_item--active" : "";
+    var participatingTabActive = participatingTab != null && participatingTab ? "tab_item--active" : "";
 }
 
 <section class="section section--lead section--padding">
     <div class="container container--extend">
         <div class="page__header">
             <h2 class="pull-left">My projects</h2>
+            <div class="tabs_stack pull-right">
+                <div class="tab_item @createdTabActive">
+                    <a class="tab_item__link" href="/Home/GetCreatedProjects">Created</a>
+                </div>
+                <div class="tab_item @followingTabActive">
+                    <a class="tab_item__link" href="/Home/GetFollowingProjects">followed</a>
+                </div>
+                <div class="tab_item @participatingTabActive">
+                    <a class="tab_item__link" href="/Home/GetParticipatingProjects">participating</a>
+                </div>
+            </div>
         </div>
         
         <div class="row">

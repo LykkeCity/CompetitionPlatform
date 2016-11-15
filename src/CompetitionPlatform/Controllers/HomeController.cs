@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 using CompetitionPlatform.Models.ProjectViewModels;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 
 namespace CompetitionPlatform.Controllers
@@ -73,12 +74,52 @@ namespace CompetitionPlatform.Controllers
             return PartialView("ProjectListPartial", viewModel);
         }
 
+        [Authorize]
         public async Task<IActionResult> GetMyProjectList(string myProjectStatusFilter, string myProjectCategoryFilter, string myProjectPrizeFilter)
         {
             var user = GetAuthenticatedUser();
             var viewModel = await GetMyProjectListViewModel(userId: user.Email, createdProjects: true, followingProjects: true, participatingProjects: true,
                 myProjectCategoryFilter: myProjectCategoryFilter, myProjectPrizeFilter: myProjectPrizeFilter, myProjectStatusFilter: myProjectStatusFilter);
             return PartialView("ProjectListPartial", viewModel);
+        }
+
+        [Authorize]
+        public async Task<IActionResult> GetFollowingProjects()
+        {
+            ViewBag.FollowingProjects = ViewBag.FollowingProjects != true;
+            ViewBag.ParticipatingProjects = false;
+            ViewBag.CreatedProjects = false;
+
+            var user = GetAuthenticatedUser();
+            var viewModel = await GetMyProjectListViewModel(userId: user.Email, followingProjects: true);
+
+            return View("Myprojects", viewModel);
+        }
+
+        [Authorize]
+        public async Task<IActionResult> GetParticipatingProjects()
+        {
+            ViewBag.ParticipatingProjects = ViewBag.ParticipatingProjects != true;
+            ViewBag.FollowingProjects = false;
+            ViewBag.CreatedProjects = false;
+
+            var user = GetAuthenticatedUser();
+            var viewModel = await GetMyProjectListViewModel(userId: user.Email, participatingProjects: true);
+
+            return View("Myprojects", viewModel);
+        }
+
+        [Authorize]
+        public async Task<IActionResult> GetCreatedProjects()
+        {
+            ViewBag.CreatedProjects = ViewBag.CreatedProjects != true;
+            ViewBag.FollowingProjects = false;
+            ViewBag.ParticipatingProjects = false;
+
+            var user = GetAuthenticatedUser();
+            var viewModel = await GetMyProjectListViewModel(userId: user.Email, createdProjects: true);
+
+            return View("Myprojects", viewModel);
         }
 
         private async Task<ProjectListIndexViewModel> GetProjectListViewModel(string projectStatusFilter = null, string projectCategoryFilter = null,
@@ -137,10 +178,10 @@ namespace CompetitionPlatform.Controllers
 
             var projectCategories = _categoriesRepository.GetCategories();
 
-            if (createdProjects && !string.IsNullOrEmpty(userId))
+            if ((createdProjects || ViewBag.CreatedProjects == true) && !string.IsNullOrEmpty(userId))
                 authoredProjects = authoredProjects.Where(x => x.AuthorId == userId);
 
-            if (followingProjects)
+            if (followingProjects || ViewBag.FollowingProjects == true)
             {
                 foreach (var project in followedProjects.ToList())
                 {
@@ -150,7 +191,7 @@ namespace CompetitionPlatform.Controllers
                 }
             }
 
-            if (participatingProjects)
+            if (participatingProjects || ViewBag.ParticipatingProjects == true)
             {
                 foreach (var project in participatedProjects.ToList())
                 {
@@ -160,7 +201,24 @@ namespace CompetitionPlatform.Controllers
                 }
             }
 
-            var allProjects = authoredProjects.Union(followedProjects).Union(participatedProjects);
+            IEnumerable<IProjectData> allProjects = null;
+
+            if (ViewBag.CreatedProjects == true)
+            {
+                allProjects = authoredProjects;
+            }
+            else if (ViewBag.FollowingProjects == true)
+            {
+                allProjects = followedProjects;
+            }
+            else if (ViewBag.ParticipatingProjects == true)
+            {
+                allProjects = participatedProjects;
+            }
+            else
+            {
+                allProjects = authoredProjects.Union(followedProjects).Union(participatedProjects);
+            }
 
             if (!string.IsNullOrEmpty(myProjectStatusFilter) && myProjectStatusFilter != "All")
                 allProjects = allProjects.Where(x => x.ProjectStatus == myProjectStatusFilter);
