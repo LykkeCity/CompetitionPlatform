@@ -15,7 +15,6 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
         string ProjectStatus { get; set; }
         string Category { get; set; }
         string Tags { get; set; }
-        string ProgrammingResources { get; set; }
         DateTime CompetitionRegistrationDeadline { get; set; }
         DateTime ImplementationDeadline { get; set; }
         DateTime VotingDeadline { get; set; }
@@ -28,6 +27,8 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
         string AuthorId { get; set; }
         string AuthorFullName { get; set; }
         int ParticipantsCount { get; set; }
+        string ProgrammingResourceName { get; set; }
+        string ProgrammingResourceLink { get; set; }
     }
 
     public interface IProjectRepository

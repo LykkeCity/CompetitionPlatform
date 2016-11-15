@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using CompetitionPlatform.Data.AzureRepositories.Project;
@@ -36,9 +37,12 @@ namespace CompetitionPlatform.Models.ProjectViewModels
 
         public List<string> TagsList { get; set; }
 
-        public string ProgrammingResources { get; set; }
+        [Display(Name = "Repository Name")]
+        public string ProgrammingResourceName { get; set; }
 
-        public ProgrammingResource[] ResourcesList { get; set; }
+        [Display(Name = "Link")]
+        [Url]
+        public string ProgrammingResourceLink { get; set; }
 
         [Required]
         [DataType(DataType.Date)]

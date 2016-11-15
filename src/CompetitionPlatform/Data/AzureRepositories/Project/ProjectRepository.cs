@@ -40,7 +40,8 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
         public string AuthorId { get; set; }
         public string AuthorFullName { get; set; }
         public int ParticipantsCount { get; set; }
-        public string ProgrammingResources { get; set; }
+        public string ProgrammingResourceName { get; set; }
+        public string ProgrammingResourceLink { get; set; }
 
         internal void Update(IProjectData src)
         {
@@ -59,6 +60,8 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
             VotesAgainst = src.VotesAgainst;
             LastModified = src.LastModified;
             ParticipantsCount = src.ParticipantsCount;
+            ProgrammingResourceName = src.ProgrammingResourceName;
+            ProgrammingResourceLink = src.ProgrammingResourceLink;
         }
 
         public static ProjectEntity Create(IProjectData src)
@@ -83,7 +86,8 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
                 AuthorId = src.AuthorId,
                 AuthorFullName = src.AuthorFullName,
                 ParticipantsCount = src.ParticipantsCount,
-                ProgrammingResources = src.ProgrammingResources
+                ProgrammingResourceName = src.ProgrammingResourceName,
+                ProgrammingResourceLink = src.ProgrammingResourceLink,
             };
 
             return result;

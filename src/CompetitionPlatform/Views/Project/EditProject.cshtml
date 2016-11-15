@@ -265,6 +265,26 @@
                         </div>
                     </div>
                 </div>
+                
+                <h4 class="form_title">programming resources</h4>
+                <p class="text-muted">You can reference a repository that will help with the development of the project.</p>
+
+                <div class="row">
+                    <div class="col-sm-5">
+                        <div class="form-group">
+                            <label asp-for="ProgrammingResourceName" class="control-label"></label>
+                            <input asp-for="ProgrammingResourceName" class="form-control" />
+                            <span asp-validation-for="ProgrammingResourceName" class="text-danger" />
+                        </div>
+                    </div>
+                    <div class="col-sm-7">
+                        <div class="form-group">
+                            <label asp-for="ProgrammingResourceLink" class="control-label"></label>
+                            <input asp-for="ProgrammingResourceLink" class="form-control" />
+                            <span asp-validation-for="ProgrammingResourceLink" class="text-danger" />
+                        </div>
+                    </div>
+                </div>
 
                 <div class="form__submit">
                     <div class="row">

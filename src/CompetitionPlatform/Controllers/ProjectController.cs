@@ -355,7 +355,9 @@ namespace CompetitionPlatform.Controllers
                 IsParticipant = isParticipant,
                 IsAdmin = isAdmin,
                 IsFollowing = isFollowing,
-                OtherProjects = await GetOtherProjects(project.Id)
+                OtherProjects = await GetOtherProjects(project.Id),
+                ProgrammingResourceName = project.ProgrammingResourceName,
+                ProgrammingResourceLink = project.ProgrammingResourceLink
             };
 
             if (!string.IsNullOrEmpty(project.Tags))

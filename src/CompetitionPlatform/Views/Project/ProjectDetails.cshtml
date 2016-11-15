@@ -363,6 +363,25 @@
                             }
                         </div>
                     </div>
+                    @if (!string.IsNullOrEmpty(Model.ProgrammingResourceName) && !string.IsNullOrEmpty(Model.ProgrammingResourceLink))
+                    {
+                        <div class="col-sm-5 col-sm-offset-1 col-md-offset-0 col-md-12">
+                            <h5 class="border-bottom">Programming resources</h5>
+
+                            <ul class="list list--text_previews">
+                                <li class="list__item">
+                                    <a href="@Model.ProgrammingResourceLink">
+                                        <div class="list__icon">
+                                            <i class="icon icon--github"></i>
+                                        </div>
+                                        <div class="list__content">
+                                            <span class="text-muted">@Model.ProgrammingResourceName</span>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    }
 
                     @*<div class="col-sm-5 col-sm-offset-1 col-md-offset-0 col-md-12">
                             <h5 class="border-bottom">Share</h5>
