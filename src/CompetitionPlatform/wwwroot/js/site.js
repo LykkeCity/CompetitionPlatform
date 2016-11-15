@@ -132,7 +132,14 @@
         $(this).toggleClass('active').siblings('._voting_btn').toggleClass('invisible').parents('.voting_group').toggleClass('voted');
     });
 
-    $('#datetimepicker1').datetimepicker();
+    var clipboard = new Clipboard('._copy_link');
+
+    clipboard.on('success', function (e) {
+
+        e.trigger.innerHTML = e.trigger.getAttribute('aria-label');
+        e.clearSelection();
+        clipboard.destroy();
+    });
 
     $(window).scroll(function () {
         if ($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
@@ -151,4 +158,6 @@
                 });
         }
     });
+
+    $('#datetimepicker1').datetimepicker();
 });
