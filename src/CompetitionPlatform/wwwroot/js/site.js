@@ -23,6 +23,10 @@
     //myProjects filters
     $('#myProjectStatusFilter')
        .change(function () {
+           $('#myProjectsCreatedFilter').removeClass('tab_item--active');
+           $('#myProjectsFollowingFilter').removeClass('tab_item--active');
+           $('#myProjectsParticipatingFilter').removeClass('tab_item--active');
+
            $('#myProjectListResults').load('/Home/GetMyProjectList?myProjectStatusFilter=' +
                $('#myProjectStatusFilter :selected').val() + '&myProjectCategoryFilter=' +
                $('#myProjectCategoryFilter :selected').val().replace(/\s/g, '') + '&myProjectPrizeFilter=' + $('#myProjectPrizeFilter :selected').val());
@@ -30,6 +34,10 @@
 
     $('#myProjectCategoryFilter')
         .change(function () {
+            $('#myProjectsCreatedFilter').removeClass('tab_item--active');
+            $('#myProjectsFollowingFilter').removeClass('tab_item--active');
+            $('#myProjectsParticipatingFilter').removeClass('tab_item--active');
+
             $('#myProjectListResults').load('/Home/GetMyProjectList?myProjectStatusFilter=' +
                 $('#myProjectStatusFilter :selected').val() + '&myProjectCategoryFilter=' +
                 $('#myProjectCategoryFilter :selected').val().replace(/\s/g, '') + '&myProjectPrizeFilter=' + $('#myProjectPrizeFilter :selected').val());
@@ -37,6 +45,10 @@
 
     $('#myProjectPrizeFilter')
         .change(function () {
+            $('#myProjectsCreatedFilter').removeClass('tab_item--active');
+            $('#myProjectsFollowingFilter').removeClass('tab_item--active');
+            $('#myProjectsParticipatingFilter').removeClass('tab_item--active');
+
             $('#myProjectListResults').load('/Home/GetMyProjectList?myProjectStatusFilter=' +
                 $('#myProjectStatusFilter :selected').val() + '&myProjectCategoryFilter=' +
                 $('#myProjectCategoryFilter :selected').val().replace(/\s/g, '') + '&myProjectPrizeFilter=' + $('#myProjectPrizeFilter :selected').val());
