@@ -387,6 +387,10 @@
   }
 }
 
+._copy_link {
+  @include transition(color .2s ease);
+}
+
 .card__actions .action_link img {
   @include rem(width, 20px);
 }

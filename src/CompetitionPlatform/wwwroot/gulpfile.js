@@ -20,7 +20,8 @@ gulp.task('sass', function () {
 
 gulp.task('copy-js-vendors', function () {
   return gulp.src([
-    './node_modules/jquery/dist/jquery.min.js'
+    './node_modules/jquery/dist/jquery.min.js',
+    './node_modules/clipboard/dist/clipboard.min.js'
     ])
     .pipe(gulp.dest('./public/js/vendor'));
 });
