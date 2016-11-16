@@ -52,10 +52,6 @@
     }
   }
 
-  .tabs_stack {
-    @include rem(margin-right, -22px);
-  }
-
   @media all and (max-width: $screen-mobile) {
     .section--lead {
       position: relative;

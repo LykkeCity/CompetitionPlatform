@@ -2731,8 +2731,6 @@ hr.full { margin-left: 0; margin-right: 0; width: 100%; }
 
 .page .page__header h1, .page .page__header h2, .page .page__header h3 { margin-bottom: 0; }
 
-.page .tabs_stack { margin-right: -22px; margin-right: -1.375rem; }
-
 @media all and (max-width: 543px) { .page .section--lead { position: relative; }
   .page .new-project-button { position: absolute; top: 30px; margin-top: 0 !important; right: 15px; } }
 
