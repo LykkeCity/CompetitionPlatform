@@ -87,3 +87,10 @@ $(window).scroll(function() {
     })
   }
 });
+
+// Change hash for page-reload
+$('._go_to_tab').on('shown.bs.tab', function (e) {
+  var href = $(this).attr('href');
+
+  $('.nav-tabs a[href="'+href+'"]').tab('show') ;
+})

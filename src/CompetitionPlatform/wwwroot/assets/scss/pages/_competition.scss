@@ -390,3 +390,13 @@
 .card__actions .action_link img {
   @include rem(width, 20px);
 }
+
+.status_icon {
+  text-align: center;
+
+  &--error {
+    img {
+      @include rem(width, 72px)
+    }
+  }
+}
