@@ -17,6 +17,12 @@
     var twitterSharingUrl = "https://twitter.com/share?url=" + projectUrl;
     var linkedinSharingUrl = "https://www.linkedin.com/cws/share?url=" + projectUrl;
 
+    var fileExtension = "";
+    if (Model.FileInfo != null)
+    {
+        fileExtension = Model.FileInfo.FileName.Split('.').Last();
+    }
+
     if (createdDays == 0 || createdDays == 1)
     {
         createdDaysAgo = (createdDays == 0) ? "today" : "yesterday";
@@ -209,36 +215,29 @@
                         @if (Model.FileInfo != null)
             {
                             <div class="asset_link">
-                                @switch (Model.FileInfo.ContentType)
-                                {
-                                    case ContentTypesHelper.Xls:
-                                    case ContentTypesHelper.Xlsx:
-                                        <div class="asset_link__icon">
-                                            <a href=""><i class="icon icon--xls_file"><span class="path1"></span><span class="path2"></span></i></a>
-                                        </div>
-                                        break;
-                                    case ContentTypesHelper.Pdf:
-                                        <div class="asset_link__icon">
-                                            <a href=""><i class="icon icon--pdf_file"><span class="path1"></span><span class="path2"></span></i></a>
-                                        </div>
-                                        break;
-                                    case ContentTypesHelper.Jpg:
-                                        <div class="asset_link__icon">
-                                            <a href=""><i class="icon icon--jpg_file"><span class="path1"></span><span class="path2"></span></i></a>
-                                        </div>
-                                        break;
-                                    case ContentTypesHelper.Doc:
-                                    case ContentTypesHelper.Docx:
-                                        <div class="asset_link__icon">
-                                            <a href=""><i class="icon icon--doc_file"><span class="path1"></span><span class="path2"></span></i></a>
-                                        </div>
-                                        break;
-                                    default:
-                                        <div class="asset_link__icon">
-                                            <a href=""><i class="icon icon--pdf_file"><span class="path1"></span><span class="path2"></span></i></a>
-                                        </div>
-                                        break;
-                                }
+                                <div class="asset_link__icon">
+
+                                    @switch (fileExtension.ToLower())
+                                    {
+                                        case "pdf":
+                                            <div class="asset_icon asset_icon--red">PDF</div>
+                                            break;
+                                        case "xsl":
+                                        case "xslx":
+                                            <div class="asset_icon asset_icon--green">XLS</div>
+                                            break;
+                                        case "jpg":
+                                            <div class="asset_icon asset_icon--yellow">JPG</div>
+                                            break;
+                                        case "doc":
+                                        case "docx":
+                                            <div class="asset_icon asset_icon--blue">DOC</div>
+                                            break;
+                                        default:
+                                            <div class="asset_icon asset_icon--primary">@fileExtension.ToUpper()</div>
+                                            break;
+                                    }
+                                </div>
                                 <div class="asset_link__info">
                                     <div class="asset_link__title">
                                         <a asp-area="" asp-controller="ProjectDetails" asp-action="DownloadProjectFile" asp-route-id="@Model.Id">@Model.FileInfo.FileName</a>
@@ -253,7 +252,7 @@
                     </div>
                     <div role="tabpanel" class="tab-pane" id="Participants">
                         @if (Model.IsParticipant && Model.Status == Status.Submission && !Model.ParticipantsPartial.HasResult)
-            {
+                        {
                             <a asp-area="" asp-controller="ProjectDetails" asp-action="AddResult" asp-route-id="@Model.Id" class="btn btn-md">
                                 <i class="icon icon--share_result"></i> Add Your Result
                             </a>
@@ -286,15 +285,15 @@
                             </div>
                         </div>
                         @await Html.PartialAsync("ProjectDetailsStatusPartial", new ProjectDetailsStatusViewModel
-       {
-           ProjectId = Model.Id,
-           Status = Model.Status,
-           VotesFor = Model.VotesFor,
-           VotesAgainst = Model.VotesAgainst,
-           CompetitionRegistrationDeadline = Model.CompetitionRegistrationDeadline,
-           ImplementationDeadline = Model.ImplementationDeadline,
-           VotingDeadline = Model.VotingDeadline
-       })
+                   {
+                       ProjectId = Model.Id,
+                       Status = Model.Status,
+                       VotesFor = Model.VotesFor,
+                       VotesAgainst = Model.VotesAgainst,
+                       CompetitionRegistrationDeadline = Model.CompetitionRegistrationDeadline,
+                       ImplementationDeadline = Model.ImplementationDeadline,
+                       VotingDeadline = Model.VotingDeadline
+                   })
                         @*<div class="btn-group" role="group">
                                 <button type="button" class="btn btn-default"><i class="icon icon--finance"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i>Finance</button>
                                 @if (!Model.IsFollowing)
