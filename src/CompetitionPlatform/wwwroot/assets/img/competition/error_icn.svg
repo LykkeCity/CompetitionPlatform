@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="70px" height="62px" viewBox="0 0 70 62" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 41 (35326) - http://www.bohemiancoding.com/sketch -->
+    <title>error_icn</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="01_projects" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="01_projects/01b_auth_failed" transform="translate(-625.000000, -351.000000)">
+            <g id="Group-30">
+                <g id="Group" transform="translate(475.000000, 309.000000)">
+                    <g id="error_icn" transform="translate(149.000000, 40.000000)">
+                        <path d="M34.038918,3.48636806 C35.1219937,1.56090015 36.8809528,1.56613828 37.961082,3.48636806 L70.038918,60.5136319 C71.1219937,62.4390999 70.2022516,64 68.0005854,64 L3.99941455,64 C1.79059889,64 0.880952784,62.4338617 1.96108203,60.5136319 L34.038918,3.48636806 Z" id="Triangle" fill="#FF3E2E"></path>
+                        <path d="M36,45 L36,27 L36,45 Z" id="Path-6" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                        <circle id="Oval-6" fill="#FFFFFF" cx="36" cy="51.5" r="1.5"></circle>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
