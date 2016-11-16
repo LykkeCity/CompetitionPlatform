@@ -41,6 +41,13 @@
         <i class="icon icon--participate"></i>Participate
     </a>
 
+    if (Model.IsParticipant && Model.Status == Status.Submission && !Model.HasResult)
+    {
+        <a asp-area="" asp-controller="ProjectDetails" asp-action="AddResult" asp-route-id="@Model.ProjectId" class="btn btn-block btn_participate">
+            <i class="icon icon--share_result"></i> Add Your Result
+        </a>
+    }
+
     <p class="text-muted small_desc">The contest began. You can still participate, and will be able to evaluate the results of the competition after @Model.ImplementationDeadline.ToString("MMMM d").</p>
 }
 @if (Model.Status == Status.Voting)

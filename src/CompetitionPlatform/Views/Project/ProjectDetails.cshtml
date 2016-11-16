@@ -251,16 +251,6 @@
                         }
                     </div>
                     <div role="tabpanel" class="tab-pane" id="Participants">
-                        @if (Model.IsParticipant && Model.Status == Status.Submission && !Model.ParticipantsPartial.HasResult)
-                        {
-                            <a asp-area="" asp-controller="ProjectDetails" asp-action="AddResult" asp-route-id="@Model.Id" class="btn btn-md">
-                                <i class="icon icon--share_result"></i> Add Your Result
-                            </a>
-                            <br>
-                            <br>
-                            <br>
-                        }
-
                         @await Html.PartialAsync("ParticipantsPartial", Model.ParticipantsPartial)
                     </div>
 
@@ -292,7 +282,9 @@
                        VotesAgainst = Model.VotesAgainst,
                        CompetitionRegistrationDeadline = Model.CompetitionRegistrationDeadline,
                        ImplementationDeadline = Model.ImplementationDeadline,
-                       VotingDeadline = Model.VotingDeadline
+                       VotingDeadline = Model.VotingDeadline,
+                       IsParticipant = Model.IsParticipant,
+                       HasResult = Model.ParticipantsPartial.HasResult
                    })
                         @*<div class="btn-group" role="group">
                                 <button type="button" class="btn btn-default"><i class="icon icon--finance"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i>Finance</button>

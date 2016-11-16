@@ -32,6 +32,8 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public DateTime CompetitionRegistrationDeadline { get; set; }
         public DateTime ImplementationDeadline { get; set; }
         public DateTime VotingDeadline { get; set; }
+        public bool IsParticipant { get; set; }
+        public bool HasResult { get; set; }
     }
 
     public class ProjectParticipateViewModel : IProjectParticipateData
