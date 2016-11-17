@@ -140,10 +140,6 @@
           $('.message_card__inner').css({ height: 'auto' });
       });
 
-    $('._voting_btn').on('click', function () {
-        $(this).toggleClass('active').siblings('._voting_btn').toggleClass('invisible').parents('.voting_group').toggleClass('voted');
-    });
-
     var clipboard = new Clipboard('._copy_link');
 
     clipboard.on('success', function (e) {

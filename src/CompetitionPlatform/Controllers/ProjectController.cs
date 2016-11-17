@@ -246,8 +246,13 @@ namespace CompetitionPlatform.Controllers
             return projectFollows;
         }
 
-        public async Task<IActionResult> ProjectDetails(string id)
+        public async Task<IActionResult> ProjectDetails(string id, bool participantAdded = false)
         {
+            if (participantAdded)
+            {
+                ViewBag.ParticipantAdded = true;
+            }
+
             var viewModel = await GetProjectViewModel(id);
             return View(viewModel);
         }

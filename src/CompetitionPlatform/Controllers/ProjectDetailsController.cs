@@ -217,7 +217,7 @@ namespace CompetitionPlatform.Controllers
                 await _projectRepository.UpdateAsync(project);
             }
 
-            return RedirectToAction("ProjectDetails", "Project", new { id });
+            return RedirectToAction("ProjectDetails", "Project", new { id = id, participantAdded = true });
         }
 
         [Authorize]
