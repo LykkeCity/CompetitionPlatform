@@ -222,16 +222,16 @@
                                         case "pdf":
                                             <div class="asset_icon asset_icon--red">PDF</div>
                                             break;
-                                        case "xsl":
-                                        case "xslx":
-                                            <div class="asset_icon asset_icon--green">XLS</div>
+                                        case "xls":
+                                        case "xlsx":
+                                            <div class="asset_icon asset_icon--green">@fileExtension.ToUpper()</div>
                                             break;
                                         case "jpg":
                                             <div class="asset_icon asset_icon--yellow">JPG</div>
                                             break;
                                         case "doc":
                                         case "docx":
-                                            <div class="asset_icon asset_icon--blue">DOC</div>
+                                            <div class="asset_icon asset_icon--blue">@fileExtension.ToUpper()</div>
                                             break;
                                         default:
                                             <div class="asset_icon asset_icon--primary">@fileExtension.ToUpper()</div>
