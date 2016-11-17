@@ -16,7 +16,7 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public string Name { get; set; }
 
         [Required]
-        [Display(Name = "Overview")]
+        [Display(Name = "Summary")]
         public string Overview { get; set; }
 
         [Required]
