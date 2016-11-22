@@ -26,6 +26,7 @@
 /// <reference path="public/js/vendor/autosize.min.js" />
 /// <reference path="public/js/vendor/bootstrap.min.js" />
 /// <reference path="public/js/vendor/bootstrap-datetimepicker.min.js" />
+/// <reference path="public/js/vendor/bootstrap-select.min.js" />
 /// <reference path="public/js/vendor/clipboard.min.js" />
 /// <reference path="public/js/vendor/fastclick.min.js" />
 /// <reference path="public/js/vendor/html5shiv.js" />

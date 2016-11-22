@@ -1,4 +1,33 @@
-@import "../../node_modules/LykkeFramework/assets/scss/style.scss";
+@import "../../node_modules/LykkeFramework/assets/scss/style-minimal.scss";
+
+// vendors
+@import "../../node_modules/LykkeFramework/assets/scss/vendor/bootstrap-datetimepicker";
+
+// elements
+@import '../../node_modules/LykkeFramework/assets/scss/partials/elements';
+@import '../../node_modules/LykkeFramework/assets/scss/partials/tooltip';
+@import '../../node_modules/LykkeFramework/assets/scss/partials/progress';
+@import '../../node_modules/LykkeFramework/assets/scss/partials/sections';
+@import '../../node_modules/LykkeFramework/assets/scss/partials/table';
+@import '../../node_modules/LykkeFramework/assets/scss/partials/list';
+@import '../../node_modules/LykkeFramework/assets/scss/partials/links';
+@import '../../node_modules/LykkeFramework/assets/scss/partials/labels';
+@import '../../node_modules/LykkeFramework/assets/scss/partials/tags';
+@import '../../node_modules/LykkeFramework/assets/scss/partials/user';
+@import '../../node_modules/LykkeFramework/assets/scss/partials/message';
+@import '../../node_modules/LykkeFramework/assets/scss/partials/tabs';
+@import '../../node_modules/LykkeFramework/assets/scss/partials/card';
+@import '../../node_modules/LykkeFramework/assets/scss/partials/voting';
+@import '../../node_modules/LykkeFramework/assets/scss/partials/banner';
+@import '../../node_modules/LykkeFramework/assets/scss/partials/steps';
+@import '../../node_modules/LykkeFramework/assets/scss/partials/calendar';
+@import '../../node_modules/LykkeFramework/assets/scss/partials/modificators';
+@import '../../node_modules/LykkeFramework/assets/scss/partials/spinner';
+@import '../../node_modules/LykkeFramework/assets/scss/partials/check';
+@import '../../node_modules/LykkeFramework/assets/scss/partials/assets';
+@import '../../node_modules/LykkeFramework/assets/scss/partials/modal';
+@import '../../node_modules/LykkeFramework/assets/scss/partials/status_icon';
+@import '../../node_modules/LykkeFramework/assets/scss/partials/flow';
 
 // optional
 @import 'pages/competition';

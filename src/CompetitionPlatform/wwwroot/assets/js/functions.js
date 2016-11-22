@@ -53,7 +53,7 @@ $(function() {
 
 $(function() {
   //caches a jQuery object containing the header element
-  var header = $(".header");
+  var header = $(".header:not(.header--static)");
   $(window).scroll(function() {
     var scroll = $(window).scrollTop();
 
@@ -63,6 +63,22 @@ $(function() {
       header.removeClass("fixed")
     }
   });
+
+  $('.sticky_header').affix({
+    offset: {
+      top: function () {
+        return (this.top = $('.sticky_header_container').offset().top)
+      }
+    }
+  });
+
+  $('.sticky_header').on('affix.bs.affix', function (e) {
+    var height = $(this).outerHeight()
+    $(this).parents('.sticky_header_container').css({
+      height: height + 1
+    });
+  })
+
 });
 
 $('[data-control="select"] ._value').text($(this).siblings('select').val());
@@ -93,4 +109,4 @@ $('._go_to_tab').on('shown.bs.tab', function (e) {
   var href = $(this).attr('href');
 
   $('.nav-tabs a[href="'+href+'"]').tab('show') ;
-})
+});
