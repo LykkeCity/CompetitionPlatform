@@ -428,5 +428,15 @@ namespace CompetitionPlatform.Controllers
         {
             return typeof(HomeController).GetTypeInfo().Assembly.GetName().Version.ToString();
         }
+
+        public string Throwerror()
+        {
+            var sMessage = "test";
+            if (sMessage.Length > 0)
+            {
+                throw new Exception("something went wrong.");
+            }
+            return sMessage;
+        }
     }
 }

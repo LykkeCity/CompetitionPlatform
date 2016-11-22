@@ -11,6 +11,7 @@ using AzureStorage.Tables;
 using Common.Log;
 using CompetitionPlatform.Authentication;
 using CompetitionPlatform.Data.AzureRepositories.Settings;
+using CompetitionPlatform.Exceptions;
 using CompetitionPlatform.ScheduledJobs;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
@@ -76,17 +77,19 @@ namespace CompetitionPlatform
                 services.AddAuthentication(
                     options => { options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme; });
 
-                services.AddMvc();
-                services.RegisterLyykeServices();
-
                 var notificationEmailsQueueConnString = Settings.Notifications.EmailsQueueConnString;
                 var notificationSlackQueueConnString = Settings.Notifications.SlackQueueConnString;
+
+                var builder = services.AddMvc();
+
+                builder.AddMvcOptions(o => { o.Filters.Add(new GlobalExceptionFilter(Log, notificationSlackQueueConnString)); });
+
+                services.RegisterLyykeServices();
 
                 if (HostingEnvironment.IsProduction() && !string.IsNullOrEmpty(notificationEmailsQueueConnString) &&
                     !string.IsNullOrEmpty(notificationSlackQueueConnString))
                 {
-                    services.RegisterNotificationServices(notificationEmailsQueueConnString,
-                        notificationSlackQueueConnString);
+                    services.RegisterEmailNotificationServices(notificationEmailsQueueConnString);
                 }
                 else
                 {

@@ -94,4 +94,11 @@ namespace CompetitionPlatform.Models
         public int FourthPlaceWinnerScore { get; set; }
         public int FourthPlaceWinnerVotes { get; set; }
     }
+
+    public class SlackMessage
+    {
+        public string Type { get; set; }
+        public string Sender { get; set; }
+        public string Message { get; set; }
+    }
 }

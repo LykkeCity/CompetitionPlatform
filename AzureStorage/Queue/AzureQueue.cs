@@ -1,6 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Queue;
+using Newtonsoft.Json;
 
 namespace AzureStorage.Queue
 {
@@ -21,7 +23,8 @@ namespace AzureStorage.Queue
 
         public Task PutMessageAsync(T itm)
         {
-            var msg = itm.ToString();
+            var msg = typeof(T) == typeof(string) ? itm.ToString() : JsonConvert.SerializeObject(itm);
+
             return _queue.AddMessageAsync(new CloudQueueMessage(msg));
         }
 

@@ -10,6 +10,7 @@ using CompetitionPlatform.Data.AzureRepositories.Result;
 using CompetitionPlatform.Data.AzureRepositories.Vote;
 using CompetitionPlatform.Data.ProjectCategory;
 using CompetitionPlatform.Helpers;
+using CompetitionPlatform.Models;
 using Microsoft.WindowsAzure.Storage.Queue;
 
 namespace CompetitionPlatform
@@ -85,10 +86,14 @@ namespace CompetitionPlatform
             services.AddTransient<ISmsSender, AuthMessageSender>();
         }
 
-        public static void RegisterNotificationServices(this IServiceCollection services, string emailsQueueConnString,
-            string slackQueueConnString)
+        public static void RegisterEmailNotificationServices(this IServiceCollection services, string emailsQueueConnString)
         {
             services.AddSingleton<IAzureQueue<string>>(new AzureQueue<string>(emailsQueueConnString, "emailsqueue"));
+        }
+
+        public static void RegisterSlackNotificationServices(this IServiceCollection services, string slackQueueConnString)
+        {
+            services.AddSingleton<IAzureQueue<SlackMessage>>(new AzureQueue<SlackMessage>(slackQueueConnString, "slack-notifications"));
         }
 
         public static void RegisterInMemoryNotificationServices(this IServiceCollection services)
