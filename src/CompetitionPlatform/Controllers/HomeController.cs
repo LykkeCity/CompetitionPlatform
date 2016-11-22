@@ -419,6 +419,11 @@ namespace CompetitionPlatform.Controllers
             return View("AuthenticationFailed");
         }
 
+        public IActionResult Terms()
+        {
+            return View();
+        }
+
         public string Version()
         {
             return typeof(HomeController).GetTypeInfo().Assembly.GetName().Version.ToString();
