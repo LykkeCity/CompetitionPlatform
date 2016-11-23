@@ -43,7 +43,6 @@ namespace CompetitionPlatform
         private BaseSettings Settings { get; set; }
         public IHostingEnvironment HostingEnvironment { get; }
         private ILog Log { get; set; }
-        private ILog LogRequest { get; set; }
 
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -55,8 +54,6 @@ namespace CompetitionPlatform
             var connectionStringLogs = Configuration["LogsConnString"];
 
             Log = new LogToTable(new AzureTableStorage<LogEntity>(connectionStringLogs, "LogCompPlatform", null));
-
-            LogRequest = new LogToTable(new AzureTableStorage<LogEntity>(connectionStringLogs, "RequestsLogCompPlatform", null));
 
             try
             {
@@ -115,22 +112,6 @@ namespace CompetitionPlatform
             {
                 loggerFactory.AddConsole(Configuration.GetSection("Logging"));
                 loggerFactory.AddDebug();
-
-                app.Use(async (context, next) =>
-                {
-                    var cookies = "";
-
-                    foreach (var cookie in context.Request.Cookies)
-                    {
-                        cookies += "Key -" + cookie.Key;
-                        cookies += "Value -" + cookie.Value;
-                    }
-
-                    LogRequest.WriteInfo("Streams", "Request", context.Request.Path.ToString(), cookies).Wait();
-
-
-                    await next();
-                });
 
                 if (env.IsStaging() || env.IsProduction())
                 {
