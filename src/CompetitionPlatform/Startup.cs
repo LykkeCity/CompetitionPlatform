@@ -150,7 +150,8 @@ namespace CompetitionPlatform
                     AutomaticChallenge = true,
                     ExpireTimeSpan = TimeSpan.FromMinutes(20),
                     LoginPath = new PathString("/signin"),
-                    AccessDeniedPath = "/Home/Error"
+                    AccessDeniedPath = "/Home/Error",
+                    CookieName = "oauth"
                 });
 
                 app.UseOpenIdConnectAuthentication(new OpenIdConnectOptions
