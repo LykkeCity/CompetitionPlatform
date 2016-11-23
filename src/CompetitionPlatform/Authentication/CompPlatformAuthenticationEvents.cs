@@ -58,5 +58,19 @@ namespace CompetitionPlatform.Authentication
             }
             await base.TokenValidated(context);
         }
+
+        public override Task TicketReceived(TicketReceivedContext context)
+        {
+            context.Ticket.Properties.Items.Clear();
+
+            context.Properties.Items.Clear();
+
+            foreach (var principalClaim in context.Ticket.Principal.Claims)
+            {
+                principalClaim.Properties.Clear();
+            }
+
+            return base.TicketReceived(context);
+        }
     }
 }
