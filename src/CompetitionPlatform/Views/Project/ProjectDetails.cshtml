@@ -41,6 +41,10 @@
         modifiedDaysAgo = " " + modifiedDays + " days ago";
     }
 
+    var participantsCount = (!Model.ParticipantsPartial.Participants.Any()) ? "" : Model.ParticipantsPartial.Participants.Count().ToString();
+    var commentsCount = (!Model.CommentsPartial.Comments.Any()) ? "" : Model.CommentsPartial.Comments.Count().ToString();
+    var resultsCount = (!Model.ResultsPartial.Results.Any()) ? "" : Model.ResultsPartial.Results.Count().ToString();
+
     var checkCompetition = "";
     var checkSubmission = "";
     var checkVoting = "";
@@ -174,21 +178,21 @@
                     <li role="presentation">
                         <a href="#Participants" aria-controls="participants" role="tab" data-toggle="tab">
                             Participants <sup>
-                                @Model.ParticipantsPartial.Participants.Count()
+                                @participantsCount
                             </sup>
                         </a>
                     </li>
                     <li role="presentation">
                         <a href="#Comments" aria-controls="comments" role="tab" data-toggle="tab">
                             Comments <sup>
-                                @Model.CommentsPartial.Comments.Count()
+                                @commentsCount
                             </sup>
                         </a>
                     </li>
                     <li role="presentation">
                         <a href="#Results" aria-controls="results" role="tab" data-toggle="tab">
                             Results <sup>
-                                @Model.ResultsPartial.Results.Count()
+                                @resultsCount
                             </sup>
                         </a>
                     </li>
