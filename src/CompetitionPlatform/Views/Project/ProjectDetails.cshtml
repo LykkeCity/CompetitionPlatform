@@ -45,6 +45,23 @@
     var commentsCount = (!Model.CommentsPartial.Comments.Any()) ? "" : Model.CommentsPartial.Comments.Count().ToString();
     var resultsCount = (!Model.ResultsPartial.Results.Any()) ? "" : Model.ResultsPartial.Results.Count().ToString();
 
+    var infoTabActive = "";
+    var commentsTabActive = "";
+    var participantsTabActive = "";
+
+    if (ViewBag.CommentsActive == true)
+    {
+        commentsTabActive = "active";
+    }
+    else if (ViewBag.ParticipantsActive == true)
+    {
+        participantsTabActive = "active";
+    }
+    else
+    {
+        infoTabActive = "active";
+    }
+
     var checkCompetition = "";
     var checkSubmission = "";
     var checkVoting = "";
@@ -174,15 +191,15 @@
                 @await Html.PartialAsync("ProjectDetailsStatusBarPartial", Model.StatusBarPartial)
 
                 <ul class="nav nav-tabs" role="tablist">
-                    <li role="presentation" class="active"><a href="#info" aria-controls="info" role="tab" data-toggle="tab">Info</a></li>
-                    <li role="presentation">
+                    <li role="presentation" class="@infoTabActive"><a href="#info" aria-controls="info" role="tab" data-toggle="tab">Info</a></li>
+                    <li role="presentation" class="@participantsTabActive">
                         <a href="#Participants" aria-controls="participants" role="tab" data-toggle="tab">
                             Participants <sup>
                                 @participantsCount
                             </sup>
                         </a>
                     </li>
-                    <li role="presentation">
+                    <li role="presentation" class="@commentsTabActive">
                         <a href="#Comments" aria-controls="comments" role="tab" data-toggle="tab">
                             Comments <sup>
                                 @commentsCount
@@ -199,7 +216,7 @@
                 </ul>
 
                 <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane active" id="info">
+                    <div role="tabpanel" class="tab-pane @infoTabActive" id="info">
                         <div class="text">
                             <div class="form-group">
                                 <div class="row">
@@ -254,11 +271,11 @@
                             </div>
                         }
                     </div>
-                    <div role="tabpanel" class="tab-pane" id="Participants">
+                    <div role="tabpanel" class="tab-pane @participantsTabActive" id="Participants">
                         @await Html.PartialAsync("ParticipantsPartial", Model.ParticipantsPartial)
                     </div>
 
-                    <div role="tabpanel" class="tab-pane" id="Comments">
+                    <div role="tabpanel" class="tab-pane @commentsTabActive" id="Comments">
                         @await Html.PartialAsync("CommentsPartial", Model.CommentsPartial)
                     </div>
 

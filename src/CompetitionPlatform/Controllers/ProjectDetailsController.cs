@@ -59,7 +59,7 @@ namespace CompetitionPlatform.Controllers
             model.LastModified = model.Created;
 
             await _commentsRepository.SaveAsync(model);
-            return RedirectToAction("ProjectDetails", "Project", new { id = model.ProjectId });
+            return RedirectToAction("ProjectDetails", "Project", new { id = model.ProjectId, commentsActive = true });
         }
 
         public IActionResult GetCommentReplyForm(string commentId, string projectId)

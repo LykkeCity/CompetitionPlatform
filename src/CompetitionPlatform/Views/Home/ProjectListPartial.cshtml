@@ -99,9 +99,10 @@
                                 &middot;
                                 <a href="@facebookSharingUrl" class="action_link">Share</a>
                                 &middot;
-                                <a asp-area="" asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.Id" class="action_link">@commentsCount</a>
+                                <a asp-area="" asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.Id" asp-route-commentsActive=true class="action_link">@commentsCount</a>
                                 &middot;
-                                <div class="action_link cursor-default">@projectCount</div>
+                                @*<div class="action_link cursor-default">@projectCount</div>*@
+                                <a asp-area="" asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.Id" asp-route-participantsActive=true class="action_link">@projectCount</a>
                             </div>
                         </div>
                     </div>
