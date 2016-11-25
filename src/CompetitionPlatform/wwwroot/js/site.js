@@ -65,6 +65,10 @@
             $('#projectVoteResults').load('/ProjectDetails/VoteFor?projectId=' + $('#ProjectId').val());
         });
 
+    $('._voting_btn').on('click', function () {
+        $(this).toggleClass('active').siblings('._voting_btn').toggleClass('invisible').parents('.voting_group').toggleClass('voted');
+    });
+
     $('#voteAgainstButton')
         .click(function () {
             var $this = $(this);
