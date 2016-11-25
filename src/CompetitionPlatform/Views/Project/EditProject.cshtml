@@ -8,17 +8,9 @@
 
 <section class="section section--lead section--padding">
     <div class="container">
-        <div class="page__actions">
-            <div class="pull-right" style="margin-left: 20px; margin-top: -16px;"><a type="button" class="btn btn-circle new-project-button" href="/Project/Create">+</a></div>
-            <div class="back_link">
-                <a asp-area="" asp-controller="Home" asp-action="Index">
-                    <i class="icon icon--back"></i> Back to Projects
-                </a>
-            </div>
-        </div>
         <div class="content__left">
             <div class="pull-right latest_updated">
-                <span class="text-muted">Latest updated</span> @Model.LastModified.ToString("MMMM dd, yyyy")
+                <span class="text-muted">Last updated</span> @Model.LastModified.ToString("MMMM dd, yyyy")
             </div>
             <h2>Edit project</h2>
         </div>
