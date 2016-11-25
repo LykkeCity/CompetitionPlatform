@@ -59,7 +59,7 @@ namespace CompetitionPlatform.Controllers
         public async Task<IActionResult> Create()
         {
             var user = GetAuthenticatedUser();
-            var userRole = await _userRolesRepository.GetAsync(user.Email);
+            var userRole = await _userRolesRepository.GetAsync(user.Email.ToLower());
             ViewBag.ProjectCategories = _categoriesRepository.GetCategories();
 
             if (userRole != null)
@@ -246,11 +246,21 @@ namespace CompetitionPlatform.Controllers
             return projectFollows;
         }
 
-        public async Task<IActionResult> ProjectDetails(string id, bool participantAdded = false)
+        public async Task<IActionResult> ProjectDetails(string id, bool participantAdded = false, bool commentsActive = false, bool participantsActive = false)
         {
             if (participantAdded)
             {
                 ViewBag.ParticipantAdded = true;
+            }
+
+            if (commentsActive)
+            {
+                ViewBag.CommentsActive = true;
+            }
+
+            if (participantsActive)
+            {
+                ViewBag.ParticipantsActive = true;
             }
 
             var viewModel = await GetProjectViewModel(id);
@@ -277,7 +287,7 @@ namespace CompetitionPlatform.Controllers
 
             var participant = (user.Email == null) ? null : await _participantsRepository.GetAsync(id, user.Email);
 
-            var userRole = (user.Email == null) ? null : await _userRolesRepository.GetAsync(user.Email);
+            var userRole = (user.Email == null) ? null : await _userRolesRepository.GetAsync(user.Email.ToLower());
 
             var isAdmin = (userRole != null) && userRole.Role == "ADMIN";
             var isAuthor = (user.Email != null) && user.Email == project.AuthorId;

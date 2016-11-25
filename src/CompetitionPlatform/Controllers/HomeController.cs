@@ -346,7 +346,7 @@ namespace CompetitionPlatform.Controllers
         public async Task<IActionResult> ViewFeedBack()
         {
             var user = GetAuthenticatedUser();
-            var userRole = await _userRolesRepository.GetAsync(user.Email);
+            var userRole = await _userRolesRepository.GetAsync(user.Email.ToLower());
 
             if (userRole == null) return View("AccessDenied");
 

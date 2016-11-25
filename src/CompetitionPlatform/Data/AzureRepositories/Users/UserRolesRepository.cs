@@ -16,7 +16,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Users
 
         public static string GenerateRowKey(string userId)
         {
-            return userId;
+            return userId.ToLower();
         }
 
         public string Role { get; set; }
