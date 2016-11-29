@@ -181,14 +181,6 @@
                             </div>
                         </div>
                     }
-                    @*<div class="col-xs-4">
-                            <div class="icon_with_title">
-                                <a href="">
-                                    <img src="~/img/competition/wallet_icn.svg" width="55" alt="">
-                                    <span>View Project's Wallet</span>
-                                </a>
-                            </div>
-                        </div>*@
                 </div>
 
                 @await Html.PartialAsync("ProjectDetailsStatusBarPartial", Model.StatusBarPartial)
@@ -310,22 +302,6 @@
                        IsParticipant = Model.IsParticipant,
                        HasResult = Model.ParticipantsPartial.HasResult
                    })
-                        @*<div class="btn-group" role="group">
-                                <button type="button" class="btn btn-default"><i class="icon icon--finance"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i>Finance</button>
-                                @if (!Model.IsFollowing)
-                                {
-                                    <a asp-area="" asp-controller="ProjectDetails" asp-action="FollowProject" asp-route-id="@Model.Id" id="followButton" class="btn btn-default">
-                                        <i class="icon icon--follow"></i>Follow
-                                    </a>
-                                }
-                                else
-                                {
-                                    <a asp-area="" asp-controller="ProjectDetails" asp-action="UnFollowProject" asp-route-id="@Model.Id" id="followButton" class="btn btn-default">
-                                        Unfollow
-                                    </a>
-                                }
-                                <button type="button" class="btn btn-default"><i class="icon--more"></i></button>
-                            </div>*@
                     </div>
 
                     <div class="col-sm-5 col-sm-offset-1 col-md-offset-0 col-md-12">
@@ -397,15 +373,6 @@
                             </ul>
                         </div>
                     }
-
-                    @*<div class="col-sm-5 col-sm-offset-1 col-md-offset-0 col-md-12">
-                            <h5 class="border-bottom">Share</h5>
-
-                            <div class="sharing">
-                                <a class="sharing__link sharing__link--fb" href="https://www.facebook.com/groups/542506412568917/"><i class="icon icon--facebook_icn"><span class="path1"></span><span class="path2"></span></i></a>
-                                <a class="sharing__link sharing__link--tw" href="https://twitter.com/LykkeCity"><i class="icon icon--twitter_icn"><span class="path1"></span><span class="path2"></span></i></a>
-                            </div>
-                        </div>*@
                 </div>
 
                 <h5 class="border-bottom">Project stream</h5>
