@@ -20,7 +20,10 @@ namespace CompetitionPlatform.Exceptions
             {
                 _slackMessageQueue = new AzureQueue<SlackMessage>(slackNotificationsConnString, "slack-notifications");
             }
-            _slackMessageQueue = new QueueInMemory<SlackMessage>();
+            else
+            {
+                _slackMessageQueue = new QueueInMemory<SlackMessage>();
+            }
         }
 
         public void OnException(ExceptionContext context)
@@ -34,7 +37,7 @@ namespace CompetitionPlatform.Exceptions
             {
                 Type = "Errors", //Errors, Info
                 Sender = "Lykke Streams",
-                Message = "Message occured in: " + controller + ", " + action + " - " + context.Exception
+                Message = "Occured in: " + controller + "Controller, " + action + " - " + context.Exception.GetType()
             };
 
             _slackMessageQueue.PutMessageAsync(message).Wait();
