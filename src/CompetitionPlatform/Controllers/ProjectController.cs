@@ -339,7 +339,8 @@ namespace CompetitionPlatform.Controllers
             var resultsPartial = new ResultsPartialViewModel
             {
                 Status = project.Status,
-                Results = results
+                Results = results,
+                IsAdmin = isAdmin
             };
 
             var projectViewModel = new ProjectViewModel
