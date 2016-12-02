@@ -21,12 +21,11 @@
                         projectCount = (votesCount == 1) ? votesCount + " vote" : votesCount + " votes";
                         break;
                     case Status.Registration:
-                        statusColor = "label--green";
-                        //projectStatus = "COMPETITION REGISTRATION";
+                        statusColor = "label--blue";
                         projectCount = (project.ParticipantsCount == 1) ? project.ParticipantsCount + " participant" : project.ParticipantsCount + " participants";
                         break;
                     case Status.Submission:
-                        statusColor = "label--red";
+                        statusColor = "label--green";
                         projectCount = (project.ParticipantsCount == 1) ? project.ParticipantsCount + " participant" : project.ParticipantsCount + " participants";
                         break;
                     case Status.Voting:

@@ -81,23 +81,23 @@
             checkCompetition = "check--inprogress";
             checkSubmission = "check--inprogress";
             checkVoting = "check--inprogress";
-            textCompetition = "text--green";
+            textCompetition = "text--blue";
             break;
         case Status.Submission:
-            checkCompetition = "check--green";
+            checkCompetition = "check--blue";
             checkSubmission = "check--inprogress";
             checkVoting = "check--inprogress";
-            textSubmission = "text--red";
+            textSubmission = "text--green";
             break;
         case Status.Voting:
-            checkCompetition = "check--green";
-            checkSubmission = "check--red";
+            checkCompetition = "check--blue";
+            checkSubmission = "check--green";
             checkVoting = "check--inprogress";
             textVoting = "text--yellow";
             break;
         case Status.Archive:
-            checkCompetition = "check--green";
-            checkSubmission = "check--red";
+            checkCompetition = "check--blue";
+            checkSubmission = "check--green";
             checkVoting = "check--yellow";
             break;
     }
