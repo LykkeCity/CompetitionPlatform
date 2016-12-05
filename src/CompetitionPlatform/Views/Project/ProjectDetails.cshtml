@@ -17,6 +17,8 @@
     var twitterSharingUrl = "https://twitter.com/share?url=" + projectUrl;
     var linkedinSharingUrl = "https://www.linkedin.com/cws/share?url=" + projectUrl;
 
+    var facebookImgSharingUrl = "http://www.facebook.com/sharer.php?s=100&amp;p[title]=" + @Model.Name + "&amp;p[summary]=" + Model.Overview + "&amp;p[url]=" + projectUrl + "&amp;p[images][0]=~/images/lykkeshare.png";
+
     var fileExtension = "";
     if (Model.FileInfo != null)
     {
