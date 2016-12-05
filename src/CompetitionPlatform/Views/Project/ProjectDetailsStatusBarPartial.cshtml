@@ -20,7 +20,6 @@
         showDeadline = true;
         showParticipantCount = true;
         deadline = Model.CompetitionRegistrationDeadline.ToString("dd.MM.yyyy");
-        //status = "COMPETITION REGISTRATION";
         break;
     case Status.Submission:
         color = "green";
@@ -48,10 +47,6 @@
             </div>
             <div class="col-sm-6 text-right">
                 <ul class="progress__info">
-                    @*@if (showParticipantCount)
-                    {
-                        <li><i class="icon icon--participate"></i> @participantCount</li>
-                    }*@
                     @if (showDeadline)
                     {
                         <li><i class="icon icon--deadline_fill"></i> @deadline</li>
