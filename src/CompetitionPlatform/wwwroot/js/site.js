@@ -111,7 +111,8 @@
 
     tinymce.init({
         selector: 'textarea.richEditor',
-        plugins: 'link'
+        plugins: 'lists link image media  preview code',
+        toolbar1: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media'
     });
 
     //restyling js
