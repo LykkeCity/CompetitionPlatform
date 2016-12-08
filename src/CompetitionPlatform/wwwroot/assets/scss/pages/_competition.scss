@@ -332,14 +332,26 @@
   text-align: center;
   font-weight: $fw-semi;
 
-  @include rem(width, 40px);
-  @include rem(height, 40px);
+  @include rem(width, 30px);
+  @include rem(height, 30px);
   @include transition(all .2s ease);
 
   &.active, &:hover {
     background: $primary;
     color: #fff;
   }
+}
+
+.btn-plus {
+  min-width: 0;
+  color: #fff !important;
+  background: #ab00ff;
+
+  @include rem(width, 30px);
+  @include rem(height, 30px);
+  @include rem(font-size, 34px);
+  @include rem(line-height, 20px);
+  @include rem(padding, 6px);
 }
 
 @media (max-width: 991px) {
@@ -404,7 +416,7 @@
   }
 
   .project_links {
-    padding-bottom: 10px;
+    @include rem(padding, 0 0 10px);
   }
 
   .prize_row {
@@ -453,6 +465,8 @@
 
 .status_icon {
   text-align: center;
+  line-height: 60px;
+  @include rem(line-height, 62px);
 
   &--error {
     img {
@@ -525,6 +539,11 @@
   }
 }
 
+.action_group {
+  display: inline-block;
+  vertical-align: middle;
+}
+
 @media all and (max-width: $screen-mobile) {
   .col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, .col-md-2, .col-lg-2, .col-xs-3, .col-sm-3, .col-md-3, .col-lg-3, .col-xs-4, .col-sm-4, .col-md-4, .col-lg-4, .col-xs-5, .col-sm-5, .col-md-5, .col-lg-5, .col-xs-6, .col-sm-6, .col-md-6, .col-lg-6, .col-xs-7, .col-sm-7, .col-md-7, .col-lg-7, .col-xs-8, .col-sm-8, .col-md-8, .col-lg-8, .col-xs-9, .col-sm-9, .col-md-9, .col-lg-9, .col-xs-10, .col-sm-10, .col-md-10, .col-lg-10, .col-xs-11, .col-sm-11, .col-md-11, .col-lg-11, .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12 {
     @include rem(padding-left, 15px);
@@ -534,5 +553,201 @@
   .row {
     @include rem(margin-left, -15px);
     @include rem(margin-right, -15px);
+  }
+}
+
+.table {
+  &--board {
+    color: $secondary;
+    letter-spacing: 0;
+    white-space: nowrap;
+
+    @include rem(font-size, 18px);
+    @include rem(line-height, 51px);
+
+    tr {
+      &:hover td {
+        background: transparent;
+      }
+
+      td {
+        cursor: auto;
+
+        @include rem(padding, 9px 20px);
+
+        &:first-child {
+          padding-right: 0;
+        }
+
+        &.board_action {
+          text-align: center;
+        }
+      }
+
+      td, th {
+        line-height: normal;
+
+        &:first-child {
+          @include rem(width, 240px);
+        }
+
+        &:last-child {
+          a {
+            @include rem(font-size, 16px)
+          }
+        }
+
+        &.text-center {
+          text-align: center;
+        }
+      }
+    }
+  }
+
+  &--board_results {
+    .board_winner {
+      .prize__value {
+        @include rem(font-size, 28px);
+      }
+
+      .user_badge--small .user_badge__img {
+        margin-left: 0;
+
+        @include rem(width, 80px);
+        @include rem(height, 80px);
+        @include rem(margin-right, 30px);
+      }
+
+      .user_badge__title {
+        color: $text;
+        letter-spacing: 1.79px;
+        font-weight: $fw-semi;
+        text-transform: uppercase;
+
+        @include rem(font-size, 18px);
+        @include rem(line-height, 32px);
+      }
+    }
+
+    .user_badge--small .user_badge__img {
+      @include rem(width, 60px);
+      @include rem(height, 60px);
+      @include rem(margin, 0 37px 0 14px);
+    }
+
+    .user_badge__title {
+      text-transform: none;
+      font-weight: normal;
+      letter-spacing: normal;
+      color: $secondary;
+      line-height: normal;
+
+      @include rem(margin-bottom, 10px);
+    }
+
+    .board_place {
+      @include rem(width, 80px);
+
+      .icon {
+        @include rem(font-size, 46px);
+      }
+
+      .icon--prize2 {
+        color: rgba($secondary, .35);
+      }
+    }
+
+    .board_name {
+      @include rem(width, 450px);
+    }
+
+    .board_sum {
+      text-align: right;
+    }
+
+    .prize__value {
+      @include rem(font-size, 24px);
+    }
+
+    tr {
+      td {
+        @include rem(padding-top, 20px);
+        @include rem(padding-bottom, 20px);
+
+        &:first-child {
+          vertical-align: top;
+
+          @include rem(width, 80px);
+          @include rem(padding-top, 30px);
+        }
+      }
+    }
+  }
+}
+
+.tab-pane {
+  .text {
+    * {
+      font-family: $ff !important;
+    }
+
+    .control-label {
+      @include rem(font-size, 18px !important);
+    }
+
+    a {
+      background: transparent !important;
+    }
+
+    h1, .h1,
+    h2, .h2,
+    h3, .h3,
+    h4, .h4,
+    h5, .h5,
+    h6, .h6 {
+      font-weight: $fw-semi;
+    }
+
+    h5, .h5 {
+      line-height: 1.67 !important;
+
+      @include rem(font-size, 18px !important);
+    }
+
+    h3, .h3 {
+      line-height: 1.43 !important;
+
+      @include rem(font-size, 28px !important);
+      @include rem(margin-bottom, 18px !important);
+    }
+
+    h2, .h2 {
+      line-height: 1.25 !important;
+
+      @include rem(font-size, 40px !important);
+    }
+
+    h1, .h1 {
+      line-height: 1.2 !important;
+
+      @include rem(font-size, 50px !important);
+      @include rem(margin-bottom, 20px !important);
+    }
+
+    p, ul, ol, li {
+      font-weight: normal !important;
+      font-style: normal !important;
+      font-stretch: normal !important;
+      line-height: 1.67 !important;
+      color: $secondary !important;
+
+      @include rem(font-size, 18px !important);
+      @include rem(margin-bottom, 15px !important);
+      @include rem(margin-top, 0 !important);
+    }
+
+    ul li:before {
+      line-height: normal;
+    }
   }
 }

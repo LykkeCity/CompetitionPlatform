@@ -43,12 +43,10 @@ $(function() {
 
 
 $(function() {
-
   $('#navbar-collapse')
       .on('click', function(e) {
         $('body').toggleClass('menu-collapsed');
       });
-
 });
 
 $(function() {
@@ -104,9 +102,21 @@ $(window).scroll(function() {
   }
 });
 
-// Change hash for page-reload
+
+// Tabs
 $('._go_to_tab').on('shown.bs.tab', function (e) {
   var href = $(this).attr('href');
 
   $('.nav-tabs a[href="'+href+'"]').tab('show') ;
 });
+
+var url = document.location.toString();
+var prefix = '#tab_';
+
+if (url.match('#')) {
+  $('.nav-tabs a[href="#' + url.split(prefix)[1] + '"]').tab('show');
+}
+
+$('.nav-tabs a').on('shown.bs.tab', function (e) {
+  window.location.hash = prefix + e.target.hash.split('#')[1] ;
+})

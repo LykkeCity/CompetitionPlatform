@@ -171,5 +171,38 @@
         }
     });
 
+    $('#navbar-collapse')
+      .on('click', function (e) {
+          $('body').toggleClass('menu-collapsed');
+      });
+
+    //caches a jQuery object containing the header element
+    var header = $('.header:not(.header--static)');
+    $(window).scroll(function () {
+        var scroll = $(window).scrollTop();
+
+        if (scroll >= 10) {
+            header.addClass('fixed');
+        } else {
+            header.removeClass('fixed');
+        }
+    });
+
+    $('.sticky_header').affix({
+        offset: {
+            top: function () {
+                return (this.top = $('.sticky_header_container').offset().top);
+            }
+        }
+    });
+
+    $('.sticky_header').on('affix.bs.affix',
+        function (e) {
+            var height = $(this).outerHeight();
+            $(this).parents('.sticky_header_container').css({
+                height: height + 1
+            });
+        });
+
     $('#datetimepicker1').datetimepicker();
 });

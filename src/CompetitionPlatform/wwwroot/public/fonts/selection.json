@@ -1955,6 +1955,64 @@
     {
       "icon": {
         "paths": [
+          "M810 274l-238 238 238 238-60 60-238-238-238 238-60-60 238-238-238-238 60-60 238 238 238-238z"
+        ],
+        "attrs": [
+          {}
+        ],
+        "isMulticolor": false,
+        "isMulticolor2": false,
+        "tags": [
+          "close"
+        ],
+        "grid": 24
+      },
+      "attrs": [
+        {}
+      ],
+      "properties": {
+        "order": 1,
+        "id": 5,
+        "prevSize": 24,
+        "code": 59714,
+        "name": "close"
+      },
+      "setIdx": 8,
+      "setId": 24,
+      "iconIdx": 0
+    },
+    {
+      "icon": {
+        "paths": [
+          "M726 666l-154-154 154-154-60-60-154 154-154-154-60 60 154 154-154 154 60 60 154-154 154 154zM512 86c236 0 426 190 426 426s-190 426-426 426-426-190-426-426 190-426 426-426z"
+        ],
+        "attrs": [
+          {}
+        ],
+        "isMulticolor": false,
+        "isMulticolor2": false,
+        "tags": [
+          "cancel"
+        ],
+        "grid": 24
+      },
+      "attrs": [
+        {}
+      ],
+      "properties": {
+        "order": 2,
+        "id": 4,
+        "prevSize": 24,
+        "code": 59715,
+        "name": "cancel_round"
+      },
+      "setIdx": 8,
+      "setId": 24,
+      "iconIdx": 1
+    },
+    {
+      "icon": {
+        "paths": [
           "M726 554v-84h-428v84h428zM810 128c46 0 86 40 86 86v596c0 46-40 86-86 86h-596c-46 0-86-40-86-86v-596c0-46 40-86 86-86h596z"
         ],
         "attrs": [
@@ -1979,7 +2037,7 @@
       },
       "setIdx": 8,
       "setId": 24,
-      "iconIdx": 0
+      "iconIdx": 2
     },
     {
       "icon": {
@@ -2008,7 +2066,7 @@
       },
       "setIdx": 8,
       "setId": 24,
-      "iconIdx": 1
+      "iconIdx": 3
     },
     {
       "icon": {
@@ -2037,7 +2095,7 @@
       },
       "setIdx": 8,
       "setId": 24,
-      "iconIdx": 2
+      "iconIdx": 4
     },
     {
       "icon": {
@@ -2066,7 +2124,7 @@
       },
       "setIdx": 8,
       "setId": 24,
-      "iconIdx": 3
+      "iconIdx": 5
     },
     {
       "icon": {
