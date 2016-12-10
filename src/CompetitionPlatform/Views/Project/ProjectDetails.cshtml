@@ -187,7 +187,7 @@
 
                 @await Html.PartialAsync("ProjectDetailsStatusBarPartial", Model.StatusBarPartial)
 
-                <ul class="nav nav-tabs" role="tablist">
+                <ul class="nav nav-tabs" role="tablist" id="projectDetailsTabs">
                     <li role="presentation" class="@infoTabActive"><a href="#info" aria-controls="info" role="tab" data-toggle="tab">Info</a></li>
                     <li role="presentation" class="@participantsTabActive">
                         <a href="#Participants" aria-controls="participants" role="tab" data-toggle="tab">
