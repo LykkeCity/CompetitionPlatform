@@ -1,5 +1,9 @@
 @model CompetitionPlatform.Models.ProjectViewModels.ResultsPartialViewModel
 
+@{
+    var containsFirstPlaceWinner = Model.Winners.Any(x => x.Place == 1);
+}
+
 @if (Model.Status == Status.Submission || Model.Status == Status.Voting)
 {
     <div class="banner banner--results">
@@ -89,6 +93,15 @@
         </div>
     </div>
 
+    <div>
+        @if (!containsFirstPlaceWinner)
+        {
+            <p>
+                For this project, none of the submitted results matched our experts expectations, so we decided not to award the first place prize.
+            </p>
+        }
+    </div>
+
     <div class="table-responsive">
         @{
             var showSecondPlaceIcon = true;
@@ -117,6 +130,7 @@
                                 </div>
                             </div>
                         </td>
+                        <td class="board_result text-center"><a href="@winner.Result">View result</a></td>
                         <td class="board_sum">
                             <div class="prize__value">$ @winner.Budget</div>
                         </td>
@@ -127,10 +141,10 @@
                     <tr>
                         @if (showSecondPlaceIcon)
                         {
-                            <td class="board_place" rowspan="3">
+                            <td class="board_place">
                                 <span class="icon icon--prize2"></span>
                             </td>
-                            showSecondPlaceIcon = false;
+                            //showSecondPlaceIcon = false;
                         }
                         <td class="board_name">
                             <div class="user_badge user_badge--small">
@@ -139,12 +153,13 @@
                                 </div>
                                 <div class="user_badge__info">
                                     <div class="user_badge__title">
-                                        <a href="">@winner.FullName</a>
+                                        <a class="bold" href="">@winner.FullName</a>
                                     </div>
                                     <span class="user_badge__desc">Score: @winner.Score/100 &middot; @winner.Votes votes</span>
                                 </div>
                             </div>
                         </td>
+                        <td class="board_result text-center"><a href="@winner.Result">View result</a></td>
                         <td class="board_sum">
                             <div class="prize__value">$ @winner.Budget</div>
                         </td>
