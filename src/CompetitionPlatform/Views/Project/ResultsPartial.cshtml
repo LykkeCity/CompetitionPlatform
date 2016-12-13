@@ -1,7 +1,11 @@
 @model CompetitionPlatform.Models.ProjectViewModels.ResultsPartialViewModel
 
 @{
-    var containsFirstPlaceWinner = Model.Winners.Any(x => x.Place == 1);
+    var containsFirstPlaceWinner = true;
+    if (Model.Winners != null)
+    {
+        containsFirstPlaceWinner = Model.Winners.Any(x => x.Place == 1);
+    }
 }
 
 @if (Model.Status == Status.Submission || Model.Status == Status.Voting)
@@ -169,4 +173,4 @@
             }
         </table>
     </div>
-}
+            }
