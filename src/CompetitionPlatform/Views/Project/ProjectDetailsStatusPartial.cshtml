@@ -29,17 +29,23 @@
 }
 @if (Model.Status == Status.Registration)
 {
-    <a asp-area="" asp-controller="ProjectDetails" asp-action="AddParticipant" asp-route-id="@Model.ProjectId" type="button" class="btn btn-block btn_participate">
-        <i class="icon icon--participate"></i>Participate
-    </a>
+    if (!Model.IsParticipant)
+    {
+        <a asp-area="" asp-controller="ProjectDetails" asp-action="AddParticipant" asp-route-id="@Model.ProjectId" type="button" class="btn btn-block btn_participate">
+            <i class="icon icon--participate"></i>Participate
+        </a>
+    }
 
     <p class="text-muted small_desc">To participate in the contest with the prize, you must be registered in the competition. Registration can be completed at any time.</p>
 }
 @if (Model.Status == Status.Submission)
 {
-    <a asp-area="" asp-controller="ProjectDetails" asp-action="AddParticipant" asp-route-id="@Model.ProjectId" type="button" class="btn btn-block btn_participate">
-        <i class="icon icon--participate"></i>Participate
-    </a>
+    if (!Model.IsParticipant)
+    {
+        <a asp-area="" asp-controller="ProjectDetails" asp-action="AddParticipant" asp-route-id="@Model.ProjectId" type="button" class="btn btn-block btn_participate">
+            <i class="icon icon--participate"></i>Participate
+        </a>
+    }
 
     if (Model.IsParticipant && Model.Status == Status.Submission && !Model.HasResult)
     {
