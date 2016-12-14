@@ -5,13 +5,13 @@
 <html>
 <head>
     @{
-        var shareImgLink = @Context.Request.Host+ "/images/lykkeshare.png";
+        var shareImgLink = @Context.Request.Host + "/images/lykkeshare.png";
     }
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <meta property="og:image" content="@shareImgLink"/>
-    <meta property="og:image:secure_url" content="@shareImgLink"/>
-    <link rel="image_src" href="@shareImgLink"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta property="og:image" content="@shareImgLink" />
+    <meta property="og:image:secure_url" content="@shareImgLink" />
+    <link rel="image_src" href="@shareImgLink" />
 
     <title>@ViewData["Title"] - LykkeStreams</title>
 
@@ -19,22 +19,36 @@
         @*<link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/css/bootstrap.min.css"
             asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
             asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />*@
-        <link rel="stylesheet" href="~/public/css/vendor/bootstrap-custom.min.css"/>
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-datepicker.css"/>
-        <link rel="stylesheet" href="~/public/css/style.css"/>
-        <link rel="stylesheet" href="~/css/addstyle.css"/>
+        <link rel="stylesheet" href="~/public/css/vendor/bootstrap-custom.min.css" />
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-datepicker.css" />
+        <link rel="stylesheet" href="~/public/css/style.css" />
+        <link rel="stylesheet" href="~/css/addstyle.css" />
     </environment>
     <environment names="Staging,Production">
         @*<link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/css/bootstrap.min.css"
             asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
             asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />*@
-        <link rel="stylesheet" href="~/public/css/vendor/bootstrap-custom.min.css"/>
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-datepicker.css"/>
-        <link rel="stylesheet" href="~/public/css/style.css"/>
-        <link rel="stylesheet" href="~/css/addstyle.css"/>
+        <link rel="stylesheet" href="~/public/css/vendor/bootstrap-custom.min.css" />
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-datepicker.css" />
+        <link rel="stylesheet" href="~/public/css/style.css" />
+        <link rel="stylesheet" href="~/css/addstyle.css" />
     </environment>
 
-    <link rel="shortcut icon" type="image/x-icon" href="~/favicon.ico"/>
+    <link rel="shortcut icon" type="image/x-icon" href="~/favicon.ico" />
+
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-88904729-1', 'auto');
+        ga('send', 'pageview');
+
+    </script>
+
 </head>
 <body class="new_page">
     <header class="header header--new">
