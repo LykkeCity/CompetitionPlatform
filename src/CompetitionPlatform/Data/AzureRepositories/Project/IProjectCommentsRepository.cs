@@ -22,5 +22,6 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
         Task<int> GetProjectCommentsCountAsync(string projectId);
         Task SaveAsync(ICommentData projectCommentData);
         Task UpdateAsync(ICommentData projectCommentData);
+        Task DeleteAsync(string projectId, string commentId);
     }
 }

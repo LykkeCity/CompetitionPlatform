@@ -87,6 +87,14 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
             });
         }
 
+        public async Task DeleteAsync(string projectId, string commentId)
+        {
+            var partitionKey = CommentEntity.GeneratePartitionKey(projectId);
+            var rowKey = CommentEntity.GenerateRowKey(commentId);
+
+            await _projectCommentsTableStorage.DeleteAsync(partitionKey, rowKey);
+        }
+
         public async Task<int> GetProjectCommentsCountAsync(string projectId)
         {
             var comments = await GetProjectCommentsAsync(projectId);
