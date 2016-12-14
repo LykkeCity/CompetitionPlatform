@@ -309,6 +309,15 @@ namespace CompetitionPlatform.Controllers
 
             comments = SortComments(comments);
 
+            var commenterIsModerator = new Dictionary<string, bool>();
+
+            foreach (var comment in comments)
+            {
+                var role = await _userRolesRepository.GetAsync(comment.UserId);
+                var isModerator = role != null && role.Role == "ADMIN";
+                commenterIsModerator.Add(comment.Id, isModerator);
+            }
+
             var statusBarPartial = new ProjectDetailsStatusBarViewModel
             {
                 Status = project.Status,
@@ -325,7 +334,9 @@ namespace CompetitionPlatform.Controllers
                 UserId = project.AuthorId,
                 Comments = comments,
                 IsAdmin = isAdmin,
-                IsAuthor = isAuthor
+                IsAuthor = isAuthor,
+                CommenterIsModerator = commenterIsModerator,
+                ProjectAuthorId = project.AuthorId
             };
 
             var participantsPartial = new ProjectParticipantsPartialViewModel

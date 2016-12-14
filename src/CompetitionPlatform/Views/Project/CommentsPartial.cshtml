@@ -64,9 +64,13 @@ else
                     <div class="message_card__inner">
                         <div class="user_badge__title">
                             <a href="">@comment.FullName</a>
-                            @if (!string.IsNullOrEmpty(comment.ParentId))
+                            @if(comment.UserId == Model.ProjectAuthorId)
                             {
                                 <span class="label label--primary">creator</span>
+                            }
+                            else if (Model.CommenterIsModerator.ContainsKey(comment.Id) && Model.CommenterIsModerator[comment.Id].Equals(true))
+                            {
+                                <span class="label label--blue">moderator</span>
                             }
                             <span class="message_card__date">&middot; @comment.LastModified.ToString("hh:mm tt MMMM dd, yyyy")</span>
                         </div>

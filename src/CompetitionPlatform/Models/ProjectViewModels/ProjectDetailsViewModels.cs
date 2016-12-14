@@ -21,6 +21,8 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public IEnumerable<ICommentData> Comments { get; set; }
         public bool IsAdmin { get; set; }
         public bool IsAuthor { get; set; }
+        public string ProjectAuthorId { get; set; }
+        public Dictionary<string, bool> CommenterIsModerator { get; set; }
     }
 
     public class ProjectDetailsStatusViewModel
