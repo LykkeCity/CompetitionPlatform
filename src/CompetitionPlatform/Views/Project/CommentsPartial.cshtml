@@ -81,8 +81,13 @@ else
                             <div id="@comment.Id"></div>
                             @if (Model.IsAuthor && Model.UserId != comment.UserId)
                             {
-                                <div>
+                                @*<div>
                                     <button id="@comment.Id" class="btn btn--default replyToCommentButton @comment.Id">Reply</button>
+                                </div>*@
+                                <div class="card__actions">
+                                    <button id="@comment.Id" class="action_link replyToCommentButton @comment.Id">Reply</button>
+                                    &middot;
+                                    <a asp-area="" asp-controller="ProjectDetails" asp-action="RemoveComment" asp-route-projectId="@Model.ProjectId" asp-route-commentId=@comment.Id class="action_link">Delete</a>
                                 </div>
                             }
                         </div>

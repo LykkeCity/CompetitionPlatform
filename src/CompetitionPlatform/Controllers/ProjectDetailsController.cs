@@ -28,13 +28,14 @@ namespace CompetitionPlatform.Controllers
         private readonly IProjectFollowRepository _projectFollowRepository;
         private readonly IFollowMailSentRepository _mailSentRepository;
         private readonly IAzureQueue<string> _emailsQueue;
+        private readonly IUserRolesRepository _userRolesRepository;
 
         public ProjectDetailsController(IProjectCommentsRepository commentsRepository, IProjectFileRepository fileRepository,
             IProjectFileInfoRepository fileInfoRepository, IProjectVoteRepository voteRepository,
             IProjectRepository projectRepository, IProjectParticipantsRepository participantsRepository,
             IProjectResultRepository resultRepository, IProjectResultVoteRepository resultVoteRepository,
             IProjectFollowRepository projectFollowRepository, IFollowMailSentRepository mailSentRepository,
-            IAzureQueue<string> emailsQueue)
+            IAzureQueue<string> emailsQueue, IUserRolesRepository userRolesRepository)
         {
             _commentsRepository = commentsRepository;
             _fileRepository = fileRepository;
@@ -47,6 +48,7 @@ namespace CompetitionPlatform.Controllers
             _projectFollowRepository = projectFollowRepository;
             _mailSentRepository = mailSentRepository;
             _emailsQueue = emailsQueue;
+            _userRolesRepository = userRolesRepository;
         }
 
         [Authorize]
@@ -380,6 +382,23 @@ namespace CompetitionPlatform.Controllers
                 result.Score = result.Votes * 100 / totalVotes;
                 await _resultRepository.UpdateAsync(result);
             }
+        }
+
+        [Authorize]
+        public async Task<IActionResult> RemoveComment(string projectId, string commentId)
+        {
+            var user = GetAuthenticatedUser();
+
+            var userRole = (user.Email == null) ? null : await _userRolesRepository.GetAsync(user.Email.ToLower());
+
+            var isAdmin = (userRole != null) && userRole.Role == "ADMIN";
+
+            if (isAdmin)
+            {
+                await _commentsRepository.DeleteAsync(projectId, commentId);
+            }
+
+            return RedirectToAction("ProjectDetails", "Project", new { commentsActive = true, id = projectId });
         }
 
         private CompetitionPlatformUser GetAuthenticatedUser()
