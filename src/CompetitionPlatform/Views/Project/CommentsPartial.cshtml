@@ -64,7 +64,7 @@ else
                     <div class="message_card__inner">
                         <div class="user_badge__title">
                             <a href="">@comment.FullName</a>
-                            @if(comment.UserId == Model.ProjectAuthorId)
+                            @if (comment.UserId == Model.ProjectAuthorId)
                             {
                                 <span class="label label--primary">creator</span>
                             }
@@ -79,15 +79,21 @@ else
                                 @comment.Comment
                             </p>
                             <div id="@comment.Id"></div>
-                            @if (Model.IsAuthor && Model.UserId != comment.UserId)
+                            @if (Model.IsAuthor && Model.UserId != comment.UserId || Model.IsAdmin)
                             {
-                                @*<div>
-                                    <button id="@comment.Id" class="btn btn--default replyToCommentButton @comment.Id">Reply</button>
-                                </div>*@
                                 <div class="card__actions">
-                                    <button id="@comment.Id" class="action_link replyToCommentButton @comment.Id">Reply</button>
-                                    &middot;
-                                    <a asp-area="" asp-controller="ProjectDetails" asp-action="RemoveComment" asp-route-projectId="@Model.ProjectId" asp-route-commentId=@comment.Id class="action_link">Delete</a>
+                                    @if (Model.IsAuthor && Model.UserId != comment.UserId)
+                                    {
+                                        <button id="@comment.Id" class="action_link replyToCommentButton @comment.Id">Reply</button>
+                                    }
+                                    @if (Model.IsAuthor && Model.UserId != comment.UserId && Model.IsAdmin)
+                                    {
+                                        <span>&middot;</span>
+                                    }
+                                    @if (Model.IsAdmin)
+                                    {
+                                        <a asp-area="" asp-controller="ProjectDetails" asp-action="RemoveComment" asp-route-projectId="@Model.ProjectId" asp-route-commentId=@comment.Id class="action_link">Delete</a>
+                                    }
                                 </div>
                             }
                         </div>
