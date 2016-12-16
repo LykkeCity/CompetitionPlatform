@@ -53,7 +53,7 @@ namespace CompetitionPlatform.Services
 
             if (project.BudgetSecondPlace != null)
             {
-                var secondPlaceResults = resultDatas.Take(3).Skip(1);
+                var secondPlaceResults = resultDatas.Skip(1).Take(3);
 
                 foreach (var result in secondPlaceResults)
                 {
