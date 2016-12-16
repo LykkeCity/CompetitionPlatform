@@ -56,7 +56,7 @@
                                 <a href="" class="label @statusColor">@projectStatus</a>
                                 @if (project.Status == Status.Registration)
                                 {
-                                    <span class="label label--text @statusColor"><i class="icon icon--deadline_fill"></i> @project.CompetitionRegistrationDeadline.ToString("dd.MM.yyyy")</span>
+                                    <span class="label label--text @statusColor"><i class="icon icon--deadline_fill"></i> @project.ImplementationDeadline.ToString("dd.MM.yyyy")</span>
                                 }
                                 @if (project.Status == Status.Submission)
                                 {
