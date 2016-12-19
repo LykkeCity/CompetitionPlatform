@@ -128,6 +128,8 @@ namespace CompetitionPlatform.Controllers
         {
             var projects = await _projectRepository.GetProjectsAsync();
 
+            projects = projects.Where(x => x.ProjectStatus != Status.Draft.ToString());
+
             var projectCategories = _categoriesRepository.GetCategories();
 
             if (!string.IsNullOrEmpty(projectStatusFilter) && projectStatusFilter != "All")

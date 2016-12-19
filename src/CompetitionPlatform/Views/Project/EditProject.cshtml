@@ -133,7 +133,10 @@
                                 <select asp-for="@Model.Status" class="form-control">
                                     @foreach (var status in Enum.GetValues(typeof(Status)))
                                     {
-                                        <option value=@status>Status: @status</option>
+                                        if (status.ToString() != Status.Draft.ToString())
+                                        {
+                                            <option value=@status>Status: @status</option>
+                                        }
                                     }
                                 </select>
                             </div>

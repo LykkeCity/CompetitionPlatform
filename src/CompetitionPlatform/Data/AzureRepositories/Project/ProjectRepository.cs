@@ -66,6 +66,8 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
 
         public static ProjectEntity Create(IProjectData src)
         {
+            var projectStatus = src.Status == Status.Draft ? Status.Draft.ToString() : Status.Initiative.ToString();
+
             var result = new ProjectEntity
             {
                 RowKey = Guid.NewGuid().ToString("N"),
@@ -73,7 +75,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
                 Name = src.Name,
                 Overview = src.Overview,
                 Description = src.Description,
-                ProjectStatus = Status.Initiative.ToString(),
+                ProjectStatus = projectStatus,
                 Category = src.Category,
                 Tags = src.Tags,
                 CompetitionRegistrationDeadline = src.CompetitionRegistrationDeadline,

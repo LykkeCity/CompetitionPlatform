@@ -96,7 +96,7 @@ namespace CompetitionPlatform.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> SaveProject(ProjectViewModel projectViewModel)
+        public async Task<IActionResult> SaveProject(ProjectViewModel projectViewModel, bool draft = false)
         {
             projectViewModel.Tags = SerializeTags(projectViewModel.Tags);
 
@@ -109,6 +109,11 @@ namespace CompetitionPlatform.Controllers
                 //var actualResources = projectViewModel.ResourcesList.Where(resource => !string.IsNullOrEmpty(resource.Name) && !string.IsNullOrEmpty(resource.Link)).ToList();
 
                 //projectViewModel.ProgrammingResources = JsonConvert.SerializeObject(actualResources);
+
+                if (draft)
+                {
+                    projectViewModel.Status = Status.Draft;
+                }
 
                 var user = GetAuthenticatedUser();
 

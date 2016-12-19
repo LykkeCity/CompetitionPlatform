@@ -2,6 +2,7 @@
 {
     public enum Status
     {
+        Draft,
         Initiative,
         Registration,
         Submission,
