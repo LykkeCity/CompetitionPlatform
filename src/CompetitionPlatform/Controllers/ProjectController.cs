@@ -110,10 +110,7 @@ namespace CompetitionPlatform.Controllers
 
                 //projectViewModel.ProgrammingResources = JsonConvert.SerializeObject(actualResources);
 
-                if (draft)
-                {
-                    projectViewModel.Status = Status.Draft;
-                }
+                projectViewModel.Status = draft ? Status.Draft : Status.Initiative;
 
                 var user = GetAuthenticatedUser();
 
