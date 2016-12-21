@@ -131,11 +131,21 @@
                             <label class="control-label">Status</label>
                             <div class="form-group" data-control="select">
                                 <select asp-for="@Model.Status" class="form-control">
-                                    @foreach (var status in Enum.GetValues(typeof(Status)))
+                                    @if (Model.Status == Status.Draft)
                                     {
-                                        if (status.ToString() != Status.Draft.ToString())
+                                        foreach (var status in Enum.GetValues(typeof(Status)))
                                         {
                                             <option value=@status>Status: @status</option>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        foreach (var status in Enum.GetValues(typeof(Status)))
+                                        {
+                                            if (status.ToString() != Status.Draft.ToString())
+                                            {
+                                                <option value=@status>Status: @status</option>
+                                            }
                                         }
                                     }
                                 </select>
@@ -260,7 +270,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <h4 class="form_title">programming resources</h4>
                 <p class="text-muted">You can reference a repository that will help with the development of the project.</p>
 
