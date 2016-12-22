@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using AzureStorage.Queue;
 using CompetitionPlatform.Data.AzureRepositories.Project;
@@ -59,6 +58,7 @@ namespace CompetitionPlatform.Controllers
             model.FullName = user.GetFullName();
             model.Created = DateTime.UtcNow;
             model.LastModified = model.Created;
+            model.UserAgent = HttpContext.Request.Headers["User-Agent"].ToString();
 
             await _commentsRepository.SaveAsync(model);
             return RedirectToAction("ProjectDetails", "Project", new { id = model.ProjectId, commentsActive = true });
@@ -98,7 +98,8 @@ namespace CompetitionPlatform.Controllers
             {
                 ProjectId = id,
                 VoterUserId = user.Email,
-                ForAgainst = 1
+                ForAgainst = 1,
+                UserAgent = HttpContext.Request.Headers["User-Agent"].ToString()
             };
 
             var vote = await _voteRepository.GetAsync(id, user.Email);
@@ -136,7 +137,8 @@ namespace CompetitionPlatform.Controllers
             {
                 ProjectId = id,
                 VoterUserId = user.Email,
-                ForAgainst = -1
+                ForAgainst = -1,
+                UserAgent = HttpContext.Request.Headers["User-Agent"].ToString()
             };
 
             var vote = await _voteRepository.GetAsync(id, user.Email);
@@ -207,7 +209,8 @@ namespace CompetitionPlatform.Controllers
                     UserId = user.Email,
                     FullName = user.GetFullName(),
                     Registered = DateTime.UtcNow,
-                    Result = false
+                    Result = false,
+                    UserAgent = HttpContext.Request.Headers["User-Agent"].ToString()
                 };
 
                 await _participantsRepository.SaveAsync(viewModel);
@@ -280,6 +283,8 @@ namespace CompetitionPlatform.Controllers
 
             model.ParticipantFullName = participant.FullName;
 
+            model.UserAgent = HttpContext.Request.Headers["User-Agent"].ToString();
+
             if (result == null)
             {
                 model.Score = 0;
@@ -311,6 +316,8 @@ namespace CompetitionPlatform.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
+            model.UserAgent = HttpContext.Request.Headers["User-Agent"].ToString();
+
             var voterId = GetAuthenticatedUser().Email;
 
             var vote = await _resultVoteRepository.GetAsync(model.ProjectId, model.ParticipantId, voterId);
@@ -341,6 +348,8 @@ namespace CompetitionPlatform.Controllers
 
             var project = await _projectRepository.GetAsync(id);
 
+            var userAgent = HttpContext.Request.Headers["User-Agent"].ToString();
+
             project.Status = StatusHelper.GetProjectStatusFromString(project.ProjectStatus);
 
             var sentMails = await _mailSentRepository.GetFollowAsync();
@@ -358,7 +367,8 @@ namespace CompetitionPlatform.Controllers
             var follow = await _projectFollowRepository.GetAsync(user.Email, id);
 
             if (follow == null)
-                await _projectFollowRepository.SaveAsync(user.Email, user.GetFullName(), id);
+                await _projectFollowRepository.SaveAsync(
+                    new ProjectFollowEntity { UserId = user.Email, FullName = user.GetFullName(), ProjectId = id, UserAgent = userAgent });
 
             return RedirectToAction("ProjectDetails", "Project", new { id });
         }

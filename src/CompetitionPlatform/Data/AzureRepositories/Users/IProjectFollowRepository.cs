@@ -9,11 +9,12 @@ namespace CompetitionPlatform.Data.AzureRepositories.Users
         string FullName { get; set; }
         string UserId { get; set; }
         string ProjectId { get; set; }
+        string UserAgent { get; set; }
     }
 
     public interface IProjectFollowRepository
     {
-        Task SaveAsync(string userId, string fullName, string projectId);
+        Task SaveAsync(IProjectFollowData projectFollowData);
         Task<IProjectFollowData> GetAsync(string userId, string projectId);
         Task<IEnumerable<IProjectFollowData>> GetFollowAsync();
         Task<IProjectFollowData> DeleteAsync(string userId, string projectId);

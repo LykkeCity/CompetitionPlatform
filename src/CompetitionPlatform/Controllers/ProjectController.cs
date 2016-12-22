@@ -116,6 +116,7 @@ namespace CompetitionPlatform.Controllers
 
                 projectViewModel.AuthorId = user.Email;
                 projectViewModel.AuthorFullName = user.GetFullName();
+                projectViewModel.UserAgent = HttpContext.Request.Headers["User-Agent"].ToString();
 
                 projectViewModel.Created = DateTime.UtcNow;
                 projectViewModel.ParticipantsCount = 0;
@@ -140,6 +141,8 @@ namespace CompetitionPlatform.Controllers
                 project.Status = StatusHelper.GetProjectStatusFromString(project.ProjectStatus);
 
                 projectViewModel.LastModified = DateTime.UtcNow;
+
+                projectViewModel.UserAgent = HttpContext.Request.Headers["User-Agent"].ToString();
 
                 projectId = projectViewModel.Id;
 
