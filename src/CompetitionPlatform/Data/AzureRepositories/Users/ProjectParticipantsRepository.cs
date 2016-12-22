@@ -29,7 +29,8 @@ namespace CompetitionPlatform.Data.AzureRepositories.Users
                 UserId = src.UserId,
                 FullName = src.FullName,
                 Registered = src.Registered,
-                Result = src.Result
+                Result = src.Result,
+                UserAgent = src.UserAgent
             };
 
             return result;
@@ -45,6 +46,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Users
         public string FullName { get; set; }
         public DateTime Registered { get; set; }
         public bool Result { get; set; }
+        public string UserAgent { get; set; }
     }
     public class ProjectParticipantsRepository : IProjectParticipantsRepository
     {

@@ -14,6 +14,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
         string ParentId { get; set; }
         DateTime Created { get; set; }
         DateTime LastModified { get; set; }
+        string UserAgent { get; set; }
     }
 
     public interface IProjectCommentsRepository

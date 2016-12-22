@@ -27,6 +27,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
         public string ParentId { get; set; }
         public DateTime Created { get; set; }
         public DateTime LastModified { get; set; }
+        public string UserAgent { get; set; }
 
         public static CommentEntity Create(ICommentData src)
         {
@@ -41,7 +42,8 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
                 FullName = src.FullName,
                 Created = src.Created,
                 LastModified = src.LastModified,
-                ParentId = src.ParentId
+                ParentId = src.ParentId,
+                UserAgent = src.UserAgent
             };
 
             return result;

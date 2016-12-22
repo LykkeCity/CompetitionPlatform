@@ -101,6 +101,8 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public bool IsFollowing { get; set; }
 
         public List<OtherProjectViewModel> OtherProjects { get; set; }
+
+        public string UserAgent { get; set; }
     }
 
     public class ProjectCompactViewModel

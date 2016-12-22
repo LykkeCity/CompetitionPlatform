@@ -13,6 +13,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Result
         DateTime Submitted { get; set; }
         int Score { get; set; }
         int Votes { get; set; }
+        string UserAgent { get; set; }
     }
 
     public interface IProjectResultRepository

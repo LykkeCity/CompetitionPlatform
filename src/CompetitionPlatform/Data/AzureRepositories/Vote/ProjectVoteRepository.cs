@@ -20,6 +20,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Vote
         internal void Update(IProjectVoteData src)
         {
             ForAgainst = src.ForAgainst;
+            UserAgent = src.UserAgent;
         }
 
         public static ProjectVoteEntity Create(IProjectVoteData src)
@@ -28,7 +29,8 @@ namespace CompetitionPlatform.Data.AzureRepositories.Vote
             {
                 RowKey = GenerateRowKey(src.VoterUserId),
                 PartitionKey = GeneratePartitionKey(src.ProjectId),
-                ForAgainst = src.ForAgainst
+                ForAgainst = src.ForAgainst,
+                UserAgent = src.UserAgent
             };
 
             return result;
@@ -37,6 +39,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Vote
         public string ProjectId { get; set; }
         public string VoterUserId { get; set; }
         public int ForAgainst { get; set; }
+        public string UserAgent { get; set; }
     }
 
     public class ProjectVoteRepository : IProjectVoteRepository

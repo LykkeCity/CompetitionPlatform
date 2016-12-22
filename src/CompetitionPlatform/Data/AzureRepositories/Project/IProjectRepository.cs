@@ -29,6 +29,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
         int ParticipantsCount { get; set; }
         string ProgrammingResourceName { get; set; }
         string ProgrammingResourceLink { get; set; }
+        string UserAgent { get; set; }
     }
 
     public interface IProjectRepository

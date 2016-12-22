@@ -42,6 +42,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
         public int ParticipantsCount { get; set; }
         public string ProgrammingResourceName { get; set; }
         public string ProgrammingResourceLink { get; set; }
+        public string UserAgent { get; set; }
 
         internal void Update(IProjectData src)
         {
@@ -62,6 +63,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
             ParticipantsCount = src.ParticipantsCount;
             ProgrammingResourceName = src.ProgrammingResourceName;
             ProgrammingResourceLink = src.ProgrammingResourceLink;
+            UserAgent = src.UserAgent;
         }
 
         public static ProjectEntity Create(IProjectData src)
@@ -90,6 +92,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
                 ParticipantsCount = src.ParticipantsCount,
                 ProgrammingResourceName = src.ProgrammingResourceName,
                 ProgrammingResourceLink = src.ProgrammingResourceLink,
+                UserAgent = src.UserAgent
             };
 
             return result;

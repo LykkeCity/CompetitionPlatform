@@ -23,6 +23,7 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public bool IsAuthor { get; set; }
         public string ProjectAuthorId { get; set; }
         public Dictionary<string, bool> CommenterIsModerator { get; set; }
+        public string UserAgent { get; set; }
     }
 
     public class ProjectDetailsStatusViewModel
@@ -45,6 +46,7 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public string FullName { get; set; }
         public DateTime Registered { get; set; }
         public bool Result { get; set; }
+        public string UserAgent { get; set; }
     }
 
     public class ProjectParticipantsPartialViewModel
@@ -68,6 +70,7 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public DateTime Submitted { get; set; }
         public int Score { get; set; }
         public int Votes { get; set; }
+        public string UserAgent { get; set; }
     }
 
     public class ResultsPartialViewModel
@@ -93,6 +96,7 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public string ProjectId { get; set; }
         public string ParticipantId { get; set; }
         public string VoterUserId { get; set; }
+        public string UserAgent { get; set; }
     }
 
     public class ProjectDetailsStatusBarViewModel

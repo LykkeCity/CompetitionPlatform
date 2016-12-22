@@ -20,6 +20,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Vote
         public string ProjectId { get; set; }
         public string VoterUserId { get; set; }
         public string ParticipantId { get; set; }
+        public string UserAgent { get; set; }
 
         public static ProjectResultVoteEntity Create(IProjectResultVoteData src)
         {
@@ -27,7 +28,8 @@ namespace CompetitionPlatform.Data.AzureRepositories.Vote
             {
                 RowKey = GenerateRowKey(src.ParticipantId, src.VoterUserId),
                 PartitionKey = GeneratePartitionKey(src.ProjectId),
-                ParticipantId = src.ParticipantId
+                ParticipantId = src.ParticipantId,
+                UserAgent = src.UserAgent
             };
 
             return result;

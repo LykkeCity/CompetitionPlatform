@@ -12,6 +12,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Users
         string FullName { get; set; }
         DateTime Registered { get; set; }
         bool Result { get; set; }
+        string UserAgent { get; set; }
     }
 
     public interface IProjectParticipantsRepository

@@ -26,6 +26,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Result
         public DateTime Submitted { get; set; }
         public int Score { get; set; }
         public int Votes { get; set; }
+        public string UserAgent { get; set; }
 
         public static ProjectResultEntity Create(IProjectResultData src)
         {
@@ -38,7 +39,8 @@ namespace CompetitionPlatform.Data.AzureRepositories.Result
                 ParticipantFullName = src.ParticipantFullName,
                 Link = src.Link,
                 Submitted = src.Submitted,
-                Score = src.Score
+                Score = src.Score,
+                UserAgent = src.UserAgent
             };
 
             return result;
@@ -49,6 +51,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Result
             Link = src.Link;
             Score = src.Score;
             Votes = src.Votes;
+            UserAgent = src.UserAgent;
         }
     }
 
