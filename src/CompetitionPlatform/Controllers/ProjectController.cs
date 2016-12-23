@@ -144,6 +144,8 @@ namespace CompetitionPlatform.Controllers
 
                 projectViewModel.UserAgent = HttpContext.Request.Headers["User-Agent"].ToString();
 
+                projectViewModel.ParticipantsCount = project.ParticipantsCount;
+
                 projectId = projectViewModel.Id;
 
                 await _projectRepository.UpdateAsync(projectViewModel);
