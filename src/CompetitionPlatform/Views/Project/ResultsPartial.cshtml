@@ -40,7 +40,7 @@
                     <td class="board_date">@result.Submitted.ToString("MMMM dd, yyyy hh:mm")</td>
                     @if (Model.Status == Status.Voting || Model.IsAdmin)
                     {
-                        <td class="board_result text-center"><a href="@result.Link">View</a></td>
+                        <td class="board_result text-center"><a target="_blank" href="@result.Link">View</a></td>
                     }
                     else
                     {
@@ -134,7 +134,7 @@
                                 </div>
                             </div>
                         </td>
-                        <td class="board_result text-center"><a href="@winner.Result">View result</a></td>
+                        <td class="board_result text-center"><a target="_blank" href="@winner.Result">View result</a></td>
                         <td class="board_sum">
                             <div class="prize__value">$ @winner.Budget</div>
                         </td>
@@ -163,7 +163,7 @@
                                 </div>
                             </div>
                         </td>
-                        <td class="board_result text-center"><a href="@winner.Result">View result</a></td>
+                        <td class="board_result text-center"><a target="_blank" href="@winner.Result">View result</a></td>
                         <td class="board_sum">
                             <div class="prize__value">$ @winner.Budget</div>
                         </td>
