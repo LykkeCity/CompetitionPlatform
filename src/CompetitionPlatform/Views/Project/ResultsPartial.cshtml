@@ -113,6 +113,8 @@
         <table class="table table--board table--board_results">
             @foreach (var winner in Model.Winners)
             {
+                var voteVotes = winner.Votes == 1 ? "vote" : "votes";
+
                 if (winner.Place == 1)
                 {
                     <tr class="board_winner">
@@ -130,7 +132,7 @@
                                     <div class="user_badge__title">
                                         <a href="">@winner.FullName</a>
                                     </div>
-                                    <span class="user_badge__desc">Score: @winner.Score/100 &middot; @winner.Votes votes</span>
+                                    <span class="user_badge__desc">@winner.Votes @voteVotes</span>
                                 </div>
                             </div>
                         </td>
@@ -159,7 +161,7 @@
                                     <div class="user_badge__title">
                                         <a class="bold" href="">@winner.FullName</a>
                                     </div>
-                                    <span class="user_badge__desc">Score: @winner.Score/100 &middot; @winner.Votes votes</span>
+                                    <span class="user_badge__desc">@winner.Votes @voteVotes</span>
                                 </div>
                             </div>
                         </td>
