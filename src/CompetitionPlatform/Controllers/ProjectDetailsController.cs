@@ -316,15 +316,29 @@ namespace CompetitionPlatform.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
+            var project = await _projectRepository.GetAsync(model.ProjectId);
+            var voterId = GetAuthenticatedUser().Email;
+
             model.UserAgent = HttpContext.Request.Headers["User-Agent"].ToString();
 
-            var voterId = GetAuthenticatedUser().Email;
+            string voteType = null;
+            var role = await _userRolesRepository.GetAsync(voterId);
+
+            if (voterId == project.AuthorId)
+            {
+                voteType = "AUTHOR";
+            }
+            else if (role != null && role.Role == "ADMIN")
+            {
+                voteType = "ADMIN";
+            }
 
             var vote = await _resultVoteRepository.GetAsync(model.ProjectId, model.ParticipantId, voterId);
 
             if (vote == null)
             {
                 model.VoterUserId = voterId;
+                model.Type = voteType;
 
                 await _resultVoteRepository.SaveAsync(model);
                 var votes = await _resultVoteRepository.GetProjectResultVotesAsync(model.ProjectId);
