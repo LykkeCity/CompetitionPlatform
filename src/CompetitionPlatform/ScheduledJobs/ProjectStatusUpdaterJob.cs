@@ -4,6 +4,7 @@ using Common.Log;
 using CompetitionPlatform.Data.AzureRepositories.Project;
 using CompetitionPlatform.Data.AzureRepositories.Result;
 using CompetitionPlatform.Data.AzureRepositories.Users;
+using CompetitionPlatform.Data.AzureRepositories.Vote;
 using CompetitionPlatform.Services;
 using Quartz;
 
@@ -27,7 +28,10 @@ namespace CompetitionPlatform.ScheduledJobs
             var winnersRepository =
                 new ProjectWinnersRepository(new AzureTableStorage<WinnerEntity>(connectionString, "Winners", log));
 
-            var winnersService = new ProjectWinnersService(projectRepository, resultRepository, winnersRepository);
+            var resultVotesRepository =
+                new ProjectResultVoteRepository(new AzureTableStorage<ProjectResultVoteEntity>(connectionString, "ProjectResultVotes", log));
+
+            var winnersService = new ProjectWinnersService(projectRepository, resultRepository, winnersRepository, resultVotesRepository);
 
             var statusUpdater = new StatusUpdater(projectRepository, winnersService);
 
