@@ -97,6 +97,7 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public string ParticipantId { get; set; }
         public string VoterUserId { get; set; }
         public string UserAgent { get; set; }
+        public string Type { get; set; }
     }
 
     public class ProjectDetailsStatusBarViewModel
@@ -127,5 +128,6 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public int Votes { get; set; }
         public int Score { get; set; }
         public double? Budget { get; set; }
+        public double WinningScore { get; set; }
     }
 }
