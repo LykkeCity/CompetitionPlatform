@@ -31,7 +31,8 @@ namespace CompetitionPlatform.Data.AzureRepositories.Users
                 Votes = src.Votes,
                 Score = src.Score,
                 Budget = src.Budget,
-                WinnerId = src.WinnerId
+                WinnerId = src.WinnerId,
+                WinningScore = src.WinningScore
             };
 
             return result;
@@ -45,6 +46,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Users
         public int Votes { get; set; }
         public int Score { get; set; }
         public double? Budget { get; set; }
+        public double WinningScore { get; set; }
     }
 
     public class ProjectWinnersRepository : IProjectWinnersRepository

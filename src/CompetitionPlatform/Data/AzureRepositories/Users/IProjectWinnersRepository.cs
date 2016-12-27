@@ -14,6 +14,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Users
         int Votes { get; set; }
         int Score { get; set; }
         double? Budget { get; set; }
+        double WinningScore { get; set; }
     }
 
     public interface IProjectWinnersRepository
