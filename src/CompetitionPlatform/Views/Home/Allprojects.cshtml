@@ -32,7 +32,10 @@
                         <option value="All">All</option>
                         @foreach (var status in Enum.GetValues(typeof(Status)))
                         {
-                            <option value=@status>@status</option>
+                            if (status.ToString() != Status.Draft.ToString())
+                            {
+                                <option value=@status>@status</option>
+                            }
                         }
                     </select>
                 </div>
