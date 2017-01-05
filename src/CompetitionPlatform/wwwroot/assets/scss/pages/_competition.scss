@@ -1,3 +1,74 @@
+.tab-pane {
+  .text {
+    * {
+      font-family: $ff !important;
+    }
+
+    .control-label {
+      @include rem(font-size, 16px !important);
+    }
+
+    .form-group {
+      @include rem(font-size, 30px !important);
+    }
+
+    a {
+      background: transparent !important;
+    }
+
+    h1, .h1,
+    h2, .h2,
+    h3, .h3,
+    h4, .h4,
+    h5, .h5,
+    h6, .h6 {
+      font-weight: $fw-semi;
+    }
+
+    h5, .h5 {
+      line-height: 1.67 !important;
+
+      @include rem(font-size, 18px !important);
+    }
+
+    h3, .h3 {
+      line-height: 1.43 !important;
+
+      @include rem(font-size, 28px !important);
+      @include rem(margin-bottom, 18px !important);
+    }
+
+    h2, .h2 {
+      line-height: 1.25 !important;
+
+      @include rem(font-size, 40px !important);
+    }
+
+    h1, .h1 {
+      line-height: 1.2 !important;
+
+      @include rem(font-size, 50px !important);
+      @include rem(margin-bottom, 20px !important);
+    }
+
+    p, ul, ol, li {
+      font-weight: normal !important;
+      font-style: normal !important;
+      font-stretch: normal !important;
+      line-height: 1.67 !important;
+      color: $secondary !important;
+
+      @include rem(font-size, 18px !important);
+      @include rem(margin-bottom, 15px !important);
+      @include rem(margin-top, 0 !important);
+    }
+
+    ul li:before {
+      line-height: normal;
+    }
+  }
+}
+
 .prize {
   font-family: $ff;
 
@@ -5,7 +76,7 @@
 
   &__value {
     color: $secondary;
-    font-weight: $fw-thin;
+    font-weight: $fw-light;
 
     @include rem(font-size, 40px);
   }
@@ -24,7 +95,7 @@
     sup {
       font-size: 60%;
 
-      @include rem(margin-right, 6px);
+      @include rem(margin-right, 4px);
     }
   }
 
@@ -267,7 +338,7 @@
   .card__actions {
     padding: 0;
 
-    .action_link {
+    .action_link, .action_text {
       @include rem(padding, 4px 9px);
       @include rem(margin-right, 10px);
 
@@ -330,6 +401,7 @@
   border-radius: 100px;
   background: #fff;
   text-align: center;
+  line-height: normal;
   font-weight: $fw-semi;
 
   @include rem(width, 30px);
@@ -362,29 +434,12 @@
 
 @media (max-width: $screen-landscape) {
   .project_links {
-    padding-left: 15px;
-    padding-right: 15px;
-
-    &__share + &__actions {
-      @include rem(margin-top, 20px)
-    }
-
     &__share {
-      padding: 0;
+      white-space: nowrap;
     }
+    &__actions {
 
-    .card__actions {
-      text-align: left !important;
     }
-  }
-
-  .content__right {
-    padding-top: 30px;
-    border-top: 1px solid $border-alt;
-  }
-
-  .page .nav-tabs {
-    @include rem(margin-bottom, 20px !important);
   }
 
   .small_desc {
@@ -393,6 +448,36 @@
 }
 
 @media (max-width: $screen-mobile) {
+  .project_links {
+    border-bottom: 0;
+
+    &__share, &__actions {
+      width: 100%;
+    }
+
+    &__actions {
+      .card__actions {
+        padding-top: 20px;
+
+        .action_link {
+          img, .icon {
+            display: block;
+            margin: 0 auto;
+            text-align: center;
+            margin-bottom: 5px;
+            line-height: 20px;
+            height: 20px;
+          }
+        }
+      }
+    }
+
+    .card__actions {
+      text-align: left !important;
+      border-bottom: 1px solid #EAEDEF;
+      padding-bottom: 20px;
+    }
+  }
   .progress {
     @include rem(margin, 20px 0);
 
@@ -411,27 +496,41 @@
     }
   }
 
-  .card__actions .action_link {
-    margin-bottom: 6px;
-  }
-
   .project_links {
     @include rem(padding, 0 0 10px);
   }
 
-  .prize_row {
-     > div {
-      width: 50%;
-    }
+  .prize {
+    text-align: left;
   }
 
-  .content__right .user_badge {
-    min-height: 0;
+  .prize_row {
+     > div {
+       width: 50%;
+       padding-right: 0;
+    }
   }
 
   .btn_participate {
     width: 100%;
     max-width: 100%;
+  }
+}
+
+@media (max-width: $screen-landscape) {
+  .content__right .user_badge {
+    min-height: 0;
+    margin-top: 0;
+  }
+
+  .project_links .card__actions {
+    .action_link, .action_text {
+      margin-right: 3px !important;
+
+      .icon {
+        margin-right: 0 !important;
+      }
+    }
   }
 }
 
@@ -544,7 +643,19 @@
   vertical-align: middle;
 }
 
+.visible-xxs {
+  display: none;
+}
+
 @media all and (max-width: $screen-mobile) {
+  .hidden-xxs {
+    display: none;
+  }
+
+  .visible-xxs {
+    display: block;
+  }
+
   .col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, .col-md-2, .col-lg-2, .col-xs-3, .col-sm-3, .col-md-3, .col-lg-3, .col-xs-4, .col-sm-4, .col-md-4, .col-lg-4, .col-xs-5, .col-sm-5, .col-md-5, .col-lg-5, .col-xs-6, .col-sm-6, .col-md-6, .col-lg-6, .col-xs-7, .col-sm-7, .col-md-7, .col-lg-7, .col-xs-8, .col-sm-8, .col-md-8, .col-lg-8, .col-xs-9, .col-sm-9, .col-md-9, .col-lg-9, .col-xs-10, .col-sm-10, .col-md-10, .col-lg-10, .col-xs-11, .col-sm-11, .col-md-11, .col-lg-11, .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12 {
     @include rem(padding-left, 15px);
     @include rem(padding-right, 15px);
@@ -553,6 +664,14 @@
   .row {
     @include rem(margin-left, -15px);
     @include rem(margin-right, -15px);
+  }
+
+  .content__right {
+    padding-top: 10px;
+
+    .row > div {
+      width: 100%;
+    }
   }
 }
 
@@ -605,44 +724,28 @@
   }
 
   &--board_results {
-    .board_winner {
-      .prize__value {
-        @include rem(font-size, 28px);
-      }
-
-      .user_badge--small .user_badge__img {
-        margin-left: 0;
-
-        @include rem(width, 80px);
-        @include rem(height, 80px);
-        @include rem(margin-right, 30px);
+    .user_badge--small {
+      .user_badge__img {
+        @include rem(width, 60px);
+        @include rem(height, 60px);
+        @include rem(margin, 0 20px 0 0);
       }
 
       .user_badge__title {
+        text-transform: none;
         color: $text;
-        letter-spacing: 1.79px;
-        font-weight: $fw-semi;
-        text-transform: uppercase;
+        line-height: normal;
 
-        @include rem(font-size, 18px);
-        @include rem(line-height, 32px);
+        @include rem(margin-bottom, 3px);
       }
-    }
 
-    .user_badge--small .user_badge__img {
-      @include rem(width, 60px);
-      @include rem(height, 60px);
-      @include rem(margin, 0 37px 0 14px);
-    }
+      .user_badge__desc {
+        color: rgba($secondary, .8);
+      }
 
-    .user_badge__title {
-      text-transform: none;
-      font-weight: normal;
-      letter-spacing: normal;
-      color: $secondary;
-      line-height: normal;
-
-      @include rem(margin-bottom, 10px);
+      .user_badge__info {
+        @include rem(padding-top, 10px);
+      }
     }
 
     .board_place {
@@ -666,7 +769,7 @@
     }
 
     .prize__value {
-      @include rem(font-size, 24px);
+      @include rem(font-size, 28px);
     }
 
     tr {
@@ -677,77 +780,223 @@
         &:first-child {
           vertical-align: top;
 
-          @include rem(width, 80px);
+          @include rem(width, 55px);
           @include rem(padding-top, 30px);
+        }
+      }
+    }
+
+    @media all and (max-width: $screen-mobile-tiny) {
+
+      tr td {
+        padding: 5px 10px;
+
+        &:first-child {
+          padding-top: 10px;
+        }
+      }
+
+      .user_badge--small .user_badge__img {
+        display: none;
+      }
+
+      .prize__value {
+        font-size: 14px;
+      }
+    }
+  }
+}
+
+.table-container {
+  @include rem(margin-bottom, 40px);
+}
+
+.table {
+  @media all and (max-width: 1090px) {
+    &--board_results {
+      .user_badge--small .user_badge__img {
+        @include rem(width, 40px !important);
+        @include rem(margin, 0 15px 0 0 !important);
+      }
+    }
+    &--board:not(.table--board_results):not(.table--participants) {
+      tr {
+        display: block;
+
+        @include clearfix;
+
+        th {
+          @include rem(line-height, 16px !important);
+        }
+
+        td, th {
+          display: block;
+          float: left;
+
+          @include rem(height, 50px);
+        }
+      }
+
+      .board_name,
+      .board_date{
+        width: 50% !important;
+      }
+
+      .board_date {
+        @include rem(line-height, 30px);
+      }
+
+      .board_result,
+      .board_score,
+      .board_vote,
+      .board_action {
+        width: 25%;
+        border-bottom-width: 4px;
+        text-align: center !important;
+
+        @include rem(line-height, 30px);
+      }
+    }
+  }
+}
+
+.banner {
+  &--results {
+    background: #f5f6f7;
+    border-radius: 3px;
+
+    @include rem(padding, 20px 22px);
+    @include rem(margin-bottom, 40px);
+
+    p:last-of-type, h4 {
+      margin-bottom: 0;
+    }
+
+    img {
+      @include rem(margin-left, 20px);
+    }
+
+    .table-responsive {
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .prize__value {
+      line-height: 1.79;
+      color: $secondary;
+      margin-bottom: 0;
+
+      @include rem(font-size, 28px);
+    }
+
+    .table {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      color: rgba($secondary, .8);
+      table-layout: fixed;
+
+      @include rem(font-size, 16px);
+
+      tr {
+        &:hover td {
+          background: transparent;
+        }
+
+        td {
+          border-top: 0;
+          border-bottom: 0;
+          text-align: center;
+          cursor: auto;
+
+          @include rem(padding, 0 5px);
+
+          span {
+            display: block;
+
+            @include rem(margin-bottom, 5px);
+          }
+        }
+      }
+    }
+
+    @media all and (max-width: $screen-tablet) {
+      .table {
+        table-layout: auto;
+      }
+    }
+
+    @media all and (max-width: $screen-landscape) {
+
+      .table {
+        display: block;
+
+        tr, tbody {
+          display: block;
+        }
+
+        tr {
+          font-size: 0;
+          text-align: center;
+
+          td {
+            display: inline-block;
+            vertical-align: top;
+            width: percentage(1/3);
+            white-space: normal;
+
+            @include rem(font-size, 16px);
+          }
         }
       }
     }
   }
 }
 
-.tab-pane {
-  .text {
-    * {
-      font-family: $ff !important;
-    }
+.content__left .tab-content {
+  @media all and (min-width: $screen-landscape + 1) {
+    @include rem(min-height, 700px)
+  }
+}
 
-    .control-label {
-      @include rem(font-size, 18px !important);
-    }
+.winner_place {
+  position: relative;
+  font-weight: $fw-semi;
+  line-height: 1.67;
+  letter-spacing: -0.3px;
+  text-align: center;
+  color: $gray-light;
+  z-index:2;
+  display: inline-block;
+  vertical-align: top;
 
-    a {
-      background: transparent !important;
-    }
+  @include rem(line-height, 40px);
+  @include rem(width, 34px);
+  @include rem(font-size, 18px);
 
-    h1, .h1,
-    h2, .h2,
-    h3, .h3,
-    h4, .h4,
-    h5, .h5,
-    h6, .h6 {
-      font-weight: $fw-semi;
-    }
+  &:before {
+    font-family: 'icon' !important;
+    content: "\e944";
+    color: $gray-light;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index:0;
 
-    h5, .h5 {
-      line-height: 1.67 !important;
+    @include rem(font-size, 40px);
+    @include rem(line-height, 40px);
+  }
 
-      @include rem(font-size, 18px !important);
-    }
+  span {
+    position: relative;
+    z-index:4;
+  }
 
-    h3, .h3 {
-      line-height: 1.43 !important;
+  &--first {
+    color: $white;
 
-      @include rem(font-size, 28px !important);
-      @include rem(margin-bottom, 18px !important);
-    }
-
-    h2, .h2 {
-      line-height: 1.25 !important;
-
-      @include rem(font-size, 40px !important);
-    }
-
-    h1, .h1 {
-      line-height: 1.2 !important;
-
-      @include rem(font-size, 50px !important);
-      @include rem(margin-bottom, 20px !important);
-    }
-
-    p, ul, ol, li {
-      font-weight: normal !important;
-      font-style: normal !important;
-      font-stretch: normal !important;
-      line-height: 1.67 !important;
-      color: $secondary !important;
-
-      @include rem(font-size, 18px !important);
-      @include rem(margin-bottom, 15px !important);
-      @include rem(margin-top, 0 !important);
-    }
-
-    ul li:before {
-      line-height: normal;
+    &:before {
+      content: "\e945";
+      color: $yellow;
     }
   }
 }

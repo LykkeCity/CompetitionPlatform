@@ -15,7 +15,7 @@ $(window).resize(function() {
     paddingTop: $('.header').outerHeight()
   });
 
-  $('.new_page').css({
+  $('body').css({
     paddingBottom: $('footer').outerHeight()
   })
 }).trigger('resize');
