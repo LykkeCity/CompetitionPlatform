@@ -33,6 +33,7 @@ namespace CompetitionPlatform
             {
                 // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
                 // builder.AddUserSecrets();
+                builder.AddApplicationInsightsSettings(developerMode: true);
             }
 
             Configuration = builder.Build();
@@ -80,6 +81,7 @@ namespace CompetitionPlatform
                 var notificationEmailsQueueConnString = Settings.Notifications.EmailsQueueConnString;
                 var notificationSlackQueueConnString = Settings.Notifications.SlackQueueConnString;
 
+                services.AddApplicationInsightsTelemetry(Configuration);
                 var builder = services.AddMvc();
 
                 builder.AddMvcOptions(o => { o.Filters.Add(new GlobalExceptionFilter(Log, notificationSlackQueueConnString)); });
@@ -108,6 +110,8 @@ namespace CompetitionPlatform
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            app.UseApplicationInsightsRequestTelemetry();
+
             try
             {
                 loggerFactory.AddConsole(Configuration.GetSection("Logging"));
@@ -137,12 +141,14 @@ namespace CompetitionPlatform
                 {
                     app.UseExceptionHandler("/Home/Error");
                 }
-
+                
                 if (env.IsDevelopment())
                 {
                     app.UseDatabaseErrorPage();
                     app.UseBrowserLink();
                 }
+
+                app.UseApplicationInsightsExceptionTelemetry();
 
                 app.UseCookieAuthentication(new CookieAuthenticationOptions
                 {
