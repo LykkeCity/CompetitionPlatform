@@ -110,6 +110,10 @@ namespace CompetitionPlatform.Services
 
             foreach (var result in projectResultDatas)
             {
+                double resultScore = 0;
+                double adminVotesScore = 0;
+                double userVotesScore = 0;
+
                 var resultAdminVotes = resultVoteDatas.Where(x => x.ParticipantId == result.ParticipantId);
                 var resultVotes = projectResultVoteDatas.Where(x => x.ParticipantId == result.ParticipantId && x.Type != "ADMIN" && x.Type != "AUTHOR");
                 var authorVote = voteDatas.FirstOrDefault(x => x.ParticipantId == result.ParticipantId);
@@ -117,10 +121,13 @@ namespace CompetitionPlatform.Services
                 var resultAdminVotesCount = Convert.ToDouble(resultAdminVotes.Count());
                 var resultVotesCount = Convert.ToDouble(resultVotes.Count());
 
-                var adminVotesScore = (resultAdminVotesCount / Convert.ToDouble(adminVotesCount)) * AdminsVoteValue;
-                var userVotesScore = (resultVotesCount / Convert.ToDouble(userVotes)) * CitizensVoteValue;
+                if (adminVotesCount != 0)
+                    adminVotesScore = (resultAdminVotesCount / Convert.ToDouble(adminVotesCount)) * AdminsVoteValue;
 
-                var resultScore = adminVotesScore + userVotesScore;
+                if (userVotes != 0)
+                    userVotesScore = (resultVotesCount / Convert.ToDouble(userVotes)) * CitizensVoteValue;
+
+                resultScore = adminVotesScore + userVotesScore;
 
                 if (authorVote != null)
                     resultScore += AuthorVoteValue;
