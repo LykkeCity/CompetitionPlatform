@@ -96,11 +96,13 @@ namespace CompetitionPlatform.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> SaveProject(ProjectViewModel projectViewModel, bool draft = false)
+        public async Task<IActionResult> SaveProject(ProjectViewModel projectViewModel, bool draft = false, bool enableVoting = false)
         {
             projectViewModel.Tags = SerializeTags(projectViewModel.Tags);
 
             projectViewModel.ProjectStatus = projectViewModel.Status.ToString();
+
+            projectViewModel.SkipVoting = !enableVoting;
 
             string projectId;
 
@@ -167,7 +169,11 @@ namespace CompetitionPlatform.Controllers
 
                 if (project.Status != Status.Archive && projectViewModel.Status == Status.Archive)
                 {
-                    await _winnersService.SaveWinners(projectViewModel.Id);
+                    if (!project.SkipVoting)
+                    {
+                        await _winnersService.SaveWinners(projectViewModel.Id);
+                    }
+
                     await AddArchiveMailToQueue(project);
                 }
 
@@ -253,7 +259,7 @@ namespace CompetitionPlatform.Controllers
             return projectFollows;
         }
 
-        public async Task<IActionResult> ProjectDetails(string id, bool participantAdded = false, bool commentsActive = false, bool participantsActive = false)
+        public async Task<IActionResult> ProjectDetails(string id, bool participantAdded = false, bool commentsActive = false, bool participantsActive = false, bool winnersActive = false)
         {
             if (participantAdded)
             {
@@ -268,6 +274,11 @@ namespace CompetitionPlatform.Controllers
             if (participantsActive)
             {
                 ViewBag.ParticipantsActive = true;
+            }
+
+            if (winnersActive)
+            {
+                ViewBag.WinnersActive = true;
             }
 
             var viewModel = await GetProjectViewModel(id);
@@ -358,7 +369,8 @@ namespace CompetitionPlatform.Controllers
             {
                 Status = project.Status,
                 Results = results,
-                IsAdmin = isAdmin
+                IsAdmin = isAdmin,
+                SkipVoting = project.SkipVoting
             };
 
             var projectViewModel = new ProjectViewModel
@@ -391,7 +403,8 @@ namespace CompetitionPlatform.Controllers
                 IsFollowing = isFollowing,
                 OtherProjects = await GetOtherProjects(project.Id),
                 ProgrammingResourceName = project.ProgrammingResourceName,
-                ProgrammingResourceLink = project.ProgrammingResourceLink
+                ProgrammingResourceLink = project.ProgrammingResourceLink,
+                SkipVoting = project.SkipVoting
             };
 
             if (!string.IsNullOrEmpty(project.Tags))

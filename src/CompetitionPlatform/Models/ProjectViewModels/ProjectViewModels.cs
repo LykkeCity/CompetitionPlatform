@@ -26,15 +26,10 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public string Description { get; set; }
 
         public Status Status { get; set; }
-
         public string ProjectStatus { get; set; }
-
         public string Category { get; set; }
-
         public List<string> ProjectCategories { get; set; }
-
         public string Tags { get; set; }
-
         public List<string> TagsList { get; set; }
 
         [Display(Name = "Repository Name")]
@@ -67,42 +62,25 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public double? BudgetSecondPlace { get; set; }
 
         public int VotesFor { get; set; }
-
         public int VotesAgainst { get; set; }
-
         public IFormFile File { set; get; }
-
         public DateTime Created { get; set; }
-
         public DateTime LastModified { get; set; }
-
         public string AuthorId { get; set; }
-
         public string AuthorFullName { get; set; }
-
         public ProjectCommentPartialViewModel CommentsPartial { get; set; }
-
         public ProjectParticipantsPartialViewModel ParticipantsPartial { get; set; }
-
         public int ParticipantsCount { get; set; }
-
         public ResultsPartialViewModel ResultsPartial { get; set; }
-
         public ProjectDetailsStatusBarViewModel StatusBarPartial { get; set; }
-
         public ProjectFileInfoViewModel FileInfo { get; set; }
-
         public bool IsParticipant { get; set; }
-
         public string ParticipantId { get; set; }
-
         public bool IsAdmin { get; set; }
-
         public bool IsFollowing { get; set; }
-
         public List<OtherProjectViewModel> OtherProjects { get; set; }
-
         public string UserAgent { get; set; }
+        public bool SkipVoting { get; set; }
     }
 
     public class ProjectCompactViewModel
