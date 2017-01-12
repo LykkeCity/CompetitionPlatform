@@ -1,0 +1,122 @@
+@model CompetitionPlatform.Models.ProjectViewModels.ResultsPartialViewModel
+
+@{
+    var containsFirstPlaceWinner = true;
+    if (Model.Winners != null)
+    {
+        containsFirstPlaceWinner = Model.Winners.Any(x => x.Place == 1);
+    }
+}
+
+@if (Model.Status == Status.Archive)
+{
+    <div class="banner banner--results">
+        <div class="banner__content">
+            <div class="table-responsive">
+                <table class="table">
+                    <tr>
+                        <td>
+                            <div class="prize__value">$@Model.BudgetFirstPlace</div>
+                            <span>Prize fund</span>
+                        </td>
+                        <td>
+                            <div class="prize__value">@Model.ParticipantCount</div>
+                            <span>Participants</span>
+                        </td>
+                        <td>
+                            <div class="prize__value">@Model.DaysOfContest</div>
+                            <span>Days of the contest</span>
+                        </td>
+                        <td>
+                            <div class="prize__value">@Model.Results.Count()</div>
+                            <span>Results</span>
+                        </td>
+                        <td>
+                            <div class="prize__value">@Model.Winners.Count()</div>
+                            <span>Winners</span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        @if (!containsFirstPlaceWinner)
+        {
+            <p>
+                For this project, none of the submitted results matched our experts expectations, so we decided not to award the first prize.
+            </p>
+        }
+    </div>
+
+    <div class="table-responsive">
+        @{
+            var showSecondPlaceIcon = true;
+        }
+        <table class="table table--board table--board_results">
+            @foreach (var winner in Model.Winners)
+            {
+                var voteVotes = winner.Votes == 1 ? "vote" : "votes";
+
+                if (winner.Place == 1)
+                {
+                    <tr class="board_winner">
+                        <td class="board_place">
+                            <span class="icon icon--prize">
+                                <span class="path1"></span><span class="path2"></span><span class="path3"></span>
+                            </span>
+                        </td>
+                        <td class="board_name">
+                            <div class="user_badge user_badge--small">
+                                <div class="user_badge__img">
+                                    <a href=""><img src="~/images/avatar.svg" alt=""></a>
+                                </div>
+                                <div class="user_badge__info">
+                                    <div class="user_badge__title">
+                                        <a href="">@winner.FullName</a>
+                                    </div>
+                                    <span class="user_badge__desc">@winner.Votes @voteVotes</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="board_result text-center"><a target="_blank" href="@winner.Result">View result</a></td>
+                        <td class="board_sum">
+                            <div class="prize__value">$ @winner.Budget</div>
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    <tr>
+                        @if (showSecondPlaceIcon)
+                        {
+                            <td class="board_place">
+                                <span class="icon icon--prize2"></span>
+                            </td>
+                            //showSecondPlaceIcon = false;
+                        }
+                        <td class="board_name">
+                            <div class="user_badge user_badge--small">
+                                <div class="user_badge__img">
+                                    <a href=""><img src="~/images/avatar.svg" alt=""></a>
+                                </div>
+                                <div class="user_badge__info">
+                                    <div class="user_badge__title">
+                                        <a class="bold" href="">@winner.FullName</a>
+                                    </div>
+                                    <span class="user_badge__desc">@winner.Votes @voteVotes</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="board_result text-center"><a target="_blank" href="@winner.Result">View result</a></td>
+                        <td class="board_sum">
+                            <div class="prize__value">$ @winner.Budget</div>
+                        </td>
+                    </tr>
+                }
+
+            }
+        </table>
+    </div>
+            }
