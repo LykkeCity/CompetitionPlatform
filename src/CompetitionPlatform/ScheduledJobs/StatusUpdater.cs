@@ -40,7 +40,7 @@ namespace CompetitionPlatform.ScheduledJobs
                     case Status.Submission:
                         if (project.ImplementationDeadline < DateTime.Today)
                         {
-                            project.ProjectStatus = Status.Voting.ToString();
+                            project.ProjectStatus = project.SkipVoting ? Status.Archive.ToString() : Status.Voting.ToString();
                             await _projectRepository.UpdateAsync(project);
                         }
                         break;
