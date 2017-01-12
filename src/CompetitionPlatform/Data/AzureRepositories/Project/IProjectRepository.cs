@@ -30,6 +30,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
         string ProgrammingResourceName { get; set; }
         string ProgrammingResourceLink { get; set; }
         string UserAgent { get; set; }
+        bool SkipVoting { get; set; }
     }
 
     public interface IProjectRepository
