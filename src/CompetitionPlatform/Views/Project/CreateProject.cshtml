@@ -79,14 +79,14 @@
                                 <div class="flow__actions">
                                     <div class="form-group">
                                         <div class="input-group date datetimepicker">
-                                            <input asp-for="VotingDeadline" class="form-control datetimepicker" />
+                                            <input id="votingDeadlineDatepicker" asp-for="VotingDeadline" class="form-control datetimepicker" /> 
                                         </div>
                                     </div>
                                 </div>
                                 <div class="flow__text">
                                     Project Creator should select the best quality project solutions by his own or organize voting process.
                                 </div>
-                                <span asp-validation-for="VotingDeadline" class="text-danger" />
+                                <span asp-validation-for="VotingDeadline" class="text-danger votingDeadlineDatepickerValidation" />
                             </div>
                         </div>
 

@@ -209,5 +209,15 @@
         $('.closed-voting-dropdown').toggleClass('open');
     });
 
+    $('#enableVoting').click(function () {
+        if ($('#enableVoting').is(":checked")) {
+            $('#votingDeadlineDatepicker').show();
+            $('.votingDeadlineDatepickerValidation').show();
+        } else {
+            $('#votingDeadlineDatepicker').hide();
+            $('.votingDeadlineDatepickerValidation').hide();
+        }
+    });
+
     $('#datetimepicker1').datetimepicker();
 });

@@ -349,15 +349,18 @@
                                     <p>@Model.CompetitionRegistrationDeadline.ToString("MMM d") - @Model.ImplementationDeadline.ToString("MMM d")</p>
                                 </div>
                             </li>
-                            <li class="list__item">
-                                <div class="list__icon">
-                                    <span class="check @checkVoting"></span>
-                                </div>
-                                <div class="list__content">
-                                    <div class="title @textVoting">Voting</div>
-                                    <p>@Model.ImplementationDeadline.ToString("MMM d") - @Model.VotingDeadline.ToString("MMM d")</p>
-                                </div>
-                            </li>
+                            @if (!Model.SkipVoting)
+                            {
+                                <li class="list__item">
+                                    <div class="list__icon">
+                                        <span class="check @checkVoting"></span>
+                                    </div>
+                                    <div class="list__content">
+                                        <div class="title @textVoting">Voting</div>
+                                        <p>@Model.ImplementationDeadline.ToString("MMM d") - @Model.VotingDeadline.ToString("MMM d")</p>
+                                    </div>
+                                </li>
+                            }
                         </ul>
 
                     </div>
