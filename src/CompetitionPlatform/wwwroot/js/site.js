@@ -205,5 +205,9 @@
             });
         });
 
+    $('.closed-voting-places').click(function () {
+        $('.closed-voting-dropdown').toggleClass('open');
+    });
+
     $('#datetimepicker1').datetimepicker();
 });
