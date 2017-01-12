@@ -1,3 +1,4 @@
+@using CompetitionPlatform.Data.AzureRepositories.Users
 @model CompetitionPlatform.Models.ProjectViewModels.ResultsPartialViewModel
 
 @{
@@ -6,9 +7,12 @@
     {
         containsFirstPlaceWinner = Model.Winners.Any(x => x.Place == 1);
     }
+
+    var closedVoting = Model.Status == Status.Archive && Model.SkipVoting && Model.IsAdmin;
+    var showResults = Model.Status == Status.Submission || Model.Status == Status.Voting || Model.Status == Status.Archive;
 }
 
-@if (Model.Status == Status.Submission || Model.Status == Status.Voting)
+@if (showResults)
 {
     <div class="banner banner--results">
         <img src="~/img/competition/banner-coin.svg" class="pull-right" width="88" alt="banner-coin">
@@ -18,7 +22,7 @@
         </div>
     </div>
 
-    <div class="table-responsive">
+    <div class="table-container">
         <table class="table table--board">
             <tr>
                 <th class="board_name">Username</th>
@@ -26,7 +30,14 @@
                 <th class="board_result text-center">Result</th>
                 <th class="board_score text-center">Score</th>
                 <th class="board_vote text-center">Vote</th>
-                <th class="board_action"></th>
+                @if (Model.Status == Status.Voting)
+                {
+                    <th class="board_action"></th>
+                }
+                @if (closedVoting)
+                {
+                    <th class="board_action">Prize</th>
+                }
             </tr>
             @foreach (var result in Model.Results)
             {
@@ -58,121 +69,84 @@
                             </form>
                         </td>
                     }
+                    @if (closedVoting)
+                    {
+                        IWinnerData winner = null;
 
+                        var firstPlacePrizeAwarded = false;
+                        var secondPlacePrizeAwarded = false;
+                        var thirdPlacePrizeAwarded = false;
+                        var fourthPlacePrizeAwarded = false;
+
+                        if (Model.Winners != null)
+                        {
+                            winner = Model.Winners.FirstOrDefault(x => x.WinnerId == result.ParticipantId);
+
+                            firstPlacePrizeAwarded = Model.Winners.All(x => x.Place != 1);
+                            secondPlacePrizeAwarded = Model.Winners.All(x => x.Place != 2);
+                            thirdPlacePrizeAwarded = Model.Winners.All(x => x.Place != 3);
+                            fourthPlacePrizeAwarded = Model.Winners.All(x => x.Place != 4);
+                        }
+
+                        <td class="board_action">
+                            <div class="dropdown closed-voting-dropdown">
+                                @if (winner == null)
+                                {
+                                    <button type="button" aria-haspopup="true" aria-expanded="false" class="btn btn-plus dropdown-toggle closed-voting-places" data-toggle="dropdown">+</button>
+                                }
+                                else
+                                {
+                                    <button type="button" aria-haspopup="true" aria-expanded="false" class="circle_voting_btn _vote_plus dropdown-toggle closed-voting-places" data-toggle="dropdown">@winner.Place</button>
+                                }
+
+                                <div class="dropdown-menu dropdown-menu--tiny">
+                                    <ul class="dropdown-list">
+                                        @if (firstPlacePrizeAwarded)
+                                        {
+                                            <li>
+                                                <a asp-area="" asp-controller="ProjectDetails" asp-action="SaveWinner" asp-route-projectId="@result.ProjectId"
+                                                   asp-route-winnerId="@result.ParticipantId" asp-route-fullName="@result.ParticipantFullName" asp-route-place="1"
+                                                   asp-route-result="@result.Link" asp-route-budget="@Model.BudgetFirstPlace">1st prize</a>
+                                            </li>
+                                        }
+                                        @if (secondPlacePrizeAwarded)
+                                        {
+                                            <li>
+                                                <a asp-area="" asp-controller="ProjectDetails" asp-action="SaveWinner" asp-route-projectId="@result.ProjectId"
+                                                   asp-route-winnerId="@result.ParticipantId" asp-route-fullName="@result.ParticipantFullName" asp-route-place="2"
+                                                   asp-route-result="@result.Link" asp-route-budget="@Model.BudgetSecondPlace">2nd prize</a>
+                                            </li>
+                                        }
+                                        @if (thirdPlacePrizeAwarded)
+                                        {
+                                            <li>
+                                                <a asp-area="" asp-controller="ProjectDetails" asp-action="SaveWinner" asp-route-projectId="@result.ProjectId"
+                                                   asp-route-winnerId="@result.ParticipantId" asp-route-fullName="@result.ParticipantFullName" asp-route-place="3"
+                                                   asp-route-result="@result.Link" asp-route-budget="@Model.BudgetSecondPlace">3rd prize</a>
+                                            </li>
+                                        }
+                                        @if (fourthPlacePrizeAwarded)
+                                        {
+                                            <li>
+                                                <a asp-area="" asp-controller="ProjectDetails" asp-action="SaveWinner" asp-route-projectId="@result.ProjectId"
+                                                   asp-route-winnerId="@result.ParticipantId" asp-route-fullName="@result.ParticipantFullName" asp-route-place="4"
+                                                   asp-route-result="@result.Link" asp-route-budget="@Model.BudgetSecondPlace">4th prize</a>
+                                            </li>
+                                        }
+                                        @if (winner != null)
+                                        {
+                                            <li>
+                                                <a asp-area="" asp-controller="ProjectDetails" asp-action="RemoveWinner" asp-route-projectId="@result.ProjectId"
+                                                   asp-route-winnerId="@result.ParticipantId">No prize</a>
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                        </td>
+                    }
                 </tr>
             }
         </table>
     </div>
 }
-@if (Model.Status == Status.Archive)
-{
-    <div class="banner banner--results">
-        <div class="banner__content">
-            <div class="table-responsive">
-                <table class="table">
-                    <tr>
-                        <td>
-                            <div class="prize__value">$@Model.BudgetFirstPlace</div>
-                            <span>Prize fund</span>
-                        </td>
-                        <td>
-                            <div class="prize__value">@Model.ParticipantCount</div>
-                            <span>Participants</span>
-                        </td>
-                        <td>
-                            <div class="prize__value">@Model.DaysOfContest</div>
-                            <span>Days of the contest</span>
-                        </td>
-                        <td>
-                            <div class="prize__value">@Model.Results.Count()</div>
-                            <span>Results</span>
-                        </td>
-                        <td>
-                            <div class="prize__value">@Model.Winners.Count()</div>
-                            <span>Winners</span>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <div>
-        @if (!containsFirstPlaceWinner)
-        {
-            <p>
-                For this project, none of the submitted results matched our experts expectations, so we decided not to award the first prize.
-            </p>
-        }
-    </div>
-
-    <div class="table-responsive">
-        @{
-            var showSecondPlaceIcon = true;
-        }
-        <table class="table table--board table--board_results">
-            @foreach (var winner in Model.Winners)
-            {
-                var voteVotes = winner.Votes == 1 ? "vote" : "votes";
-
-                if (winner.Place == 1)
-                {
-                    <tr class="board_winner">
-                        <td class="board_place">
-                            <span class="icon icon--prize">
-                                <span class="path1"></span><span class="path2"></span><span class="path3"></span>
-                            </span>
-                        </td>
-                        <td class="board_name">
-                            <div class="user_badge user_badge--small">
-                                <div class="user_badge__img">
-                                    <a href=""><img src="~/images/avatar.svg" alt=""></a>
-                                </div>
-                                <div class="user_badge__info">
-                                    <div class="user_badge__title">
-                                        <a href="">@winner.FullName</a>
-                                    </div>
-                                    <span class="user_badge__desc">@winner.Votes @voteVotes</span>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="board_result text-center"><a target="_blank" href="@winner.Result">View result</a></td>
-                        <td class="board_sum">
-                            <div class="prize__value">$ @winner.Budget</div>
-                        </td>
-                    </tr>
-                }
-                else
-                {
-                    <tr>
-                        @if (showSecondPlaceIcon)
-                        {
-                            <td class="board_place">
-                                <span class="icon icon--prize2"></span>
-                            </td>
-                            //showSecondPlaceIcon = false;
-                        }
-                        <td class="board_name">
-                            <div class="user_badge user_badge--small">
-                                <div class="user_badge__img">
-                                    <a href=""><img src="~/images/avatar.svg" alt=""></a>
-                                </div>
-                                <div class="user_badge__info">
-                                    <div class="user_badge__title">
-                                        <a class="bold" href="">@winner.FullName</a>
-                                    </div>
-                                    <span class="user_badge__desc">@winner.Votes @voteVotes</span>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="board_result text-center"><a target="_blank" href="@winner.Result">View result</a></td>
-                        <td class="board_sum">
-                            <div class="prize__value">$ @winner.Budget</div>
-                        </td>
-                    </tr>
-                }
-
-            }
-        </table>
-    </div>
-            }

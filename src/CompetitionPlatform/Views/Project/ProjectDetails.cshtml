@@ -46,10 +46,16 @@
     var participantsCount = (!Model.ParticipantsPartial.Participants.Any()) ? "" : Model.ParticipantsPartial.Participants.Count().ToString();
     var commentsCount = (!Model.CommentsPartial.Comments.Any()) ? "" : Model.CommentsPartial.Comments.Count().ToString();
     var resultsCount = (!Model.ResultsPartial.Results.Any()) ? "" : Model.ResultsPartial.Results.Count().ToString();
+    var winnersCount = "";
+    if (Model.ResultsPartial.Winners != null && Model.ResultsPartial.Winners.Any())
+    {
+        winnersCount = Model.ResultsPartial.Winners.Count().ToString();
+    }
 
     var infoTabActive = "";
     var commentsTabActive = "";
     var participantsTabActive = "";
+    var winnersTabActive = "";
 
     if (ViewBag.CommentsActive == true)
     {
@@ -58,6 +64,10 @@
     else if (ViewBag.ParticipantsActive == true)
     {
         participantsTabActive = "active";
+    }
+    else if (ViewBag.WinnersActive == true)
+    {
+        winnersTabActive = "active";
     }
     else
     {
@@ -210,6 +220,13 @@
                             </sup>
                         </a>
                     </li>
+                    <li role="presentation" class="@winnersTabActive">
+                        <a href="#Winners" aria-controls="results" role="tab" data-toggle="tab">
+                            Winners <sup>
+                                @winnersCount
+                            </sup>
+                        </a>
+                    </li>
                 </ul>
 
                 <div class="tab-content">
@@ -278,6 +295,10 @@
 
                     <div role="tabpanel" class="tab-pane" id="Results">
                         @await Html.PartialAsync("ResultsPartial", Model.ResultsPartial)
+                    </div>
+
+                    <div role="tabpanel" class="tab-pane @winnersTabActive" id="Winners">
+                        @await Html.PartialAsync("WinnersPartial", Model.ResultsPartial)
                     </div>
                 </div>
             </div>
