@@ -23,5 +23,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Users
         Task<IEnumerable<IWinnerData>> GetWinnersAsync(string projectId);
         Task<int> GetWinnersCountAsync(string projectId);
         Task SaveAsync(IWinnerData winnerData);
+        Task UpdateAsync(IWinnerData winnerData);
+        Task DeleteAsync(string projectId, string userId);
     }
 }
