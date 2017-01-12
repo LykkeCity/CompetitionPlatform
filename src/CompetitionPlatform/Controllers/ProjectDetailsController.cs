@@ -28,13 +28,15 @@ namespace CompetitionPlatform.Controllers
         private readonly IFollowMailSentRepository _mailSentRepository;
         private readonly IAzureQueue<string> _emailsQueue;
         private readonly IUserRolesRepository _userRolesRepository;
+        private readonly IProjectWinnersRepository _winnersRepository;
 
         public ProjectDetailsController(IProjectCommentsRepository commentsRepository, IProjectFileRepository fileRepository,
             IProjectFileInfoRepository fileInfoRepository, IProjectVoteRepository voteRepository,
             IProjectRepository projectRepository, IProjectParticipantsRepository participantsRepository,
             IProjectResultRepository resultRepository, IProjectResultVoteRepository resultVoteRepository,
             IProjectFollowRepository projectFollowRepository, IFollowMailSentRepository mailSentRepository,
-            IAzureQueue<string> emailsQueue, IUserRolesRepository userRolesRepository)
+            IAzureQueue<string> emailsQueue, IUserRolesRepository userRolesRepository,
+            IProjectWinnersRepository winnersRepository)
         {
             _commentsRepository = commentsRepository;
             _fileRepository = fileRepository;
@@ -48,6 +50,7 @@ namespace CompetitionPlatform.Controllers
             _mailSentRepository = mailSentRepository;
             _emailsQueue = emailsQueue;
             _userRolesRepository = userRolesRepository;
+            _winnersRepository = winnersRepository;
         }
 
         [Authorize]
@@ -431,6 +434,56 @@ namespace CompetitionPlatform.Controllers
             }
 
             return RedirectToAction("ProjectDetails", "Project", new { commentsActive = true, id = projectId });
+        }
+
+        [Authorize]
+        public async Task<IActionResult> SaveWinner(string projectId, string winnerId, string fullName, int place, string result, double budget)
+        {
+            if (!await CurrentUserIsAdmin()) return View("AccessDenied");
+
+            var existingWinner = await _winnersRepository.GetAsync(projectId, winnerId);
+
+            var winner = new WinnerViewModel
+            {
+                ProjectId = projectId,
+                WinnerId = winnerId,
+                FullName = fullName,
+                Place = place,
+                Result = result,
+                Budget = budget
+            };
+
+            if (existingWinner == null)
+            {
+                await _winnersRepository.SaveAsync(winner);
+            }
+            else
+            {
+                await _winnersRepository.UpdateAsync(winner);
+            }
+
+            return RedirectToAction("ProjectDetails", "Project", new { winnersActive = true, id = projectId });
+        }
+
+        [Authorize]
+        public async Task<IActionResult> RemoveWinner(string projectId, string winnerId)
+        {
+            if (!await CurrentUserIsAdmin()) return View("AccessDenied");
+
+            await _winnersRepository.DeleteAsync(projectId, winnerId);
+
+            return RedirectToAction("ProjectDetails", "Project", new { winnersActive = true, id = projectId });
+        }
+
+        private async Task<bool> CurrentUserIsAdmin()
+        {
+            var user = GetAuthenticatedUser();
+
+            var userRole = (user.Email == null) ? null : await _userRolesRepository.GetAsync(user.Email.ToLower());
+
+            var isAdmin = (userRole != null) && userRole.Role == "ADMIN";
+
+            return isAdmin;
         }
 
         private CompetitionPlatformUser GetAuthenticatedUser()
