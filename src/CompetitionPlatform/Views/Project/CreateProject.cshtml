@@ -25,14 +25,82 @@
     <div class="container">
         <div class="content__left">
             <form asp-action="SaveProject" enctype="multipart/form-data" class="form form--default form--competition_edit">
-                <h4 class="form_title">basic info</h4>
+                
+                <fieldset class="form_fieldset">
+                    <h3>Project Flow</h3>
+
+                    <div class="flow flow--project">
+                        <div class="flow__item">
+                            <div class="flow__icon"></div>
+                            <div class="flow__content">
+                                <div class="flow__title h4">Registration</div>
+                                <div class="flow__actions">
+                                    <div class="form-group">
+                                        <div class="input-group date datetimepicker">
+                                            <input asp-for="CompetitionRegistrationDeadline" class="form-control datetimepicker" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flow__text">
+                                    Lykke members have to summit the project application form to take part in your project. Registration deadline is time when you announce your project and early birds can register. Other participants may register any time from the project start till is implementation deadline.
+                                </div>
+                                <span asp-validation-for="CompetitionRegistrationDeadline" class="text-danger" />
+                            </div>
+                        </div>
+
+                        <div class="flow__item">
+                            <div class="flow__icon"></div>
+                            <div class="flow__content">
+                                <div class="flow__title h4">Submissions</div>
+                                <div class="flow__actions">
+                                    <div class="form-group">
+                                        <div class="input-group date datetimepicker">
+                                            <input asp-for="ImplementationDeadline" class="form-control datetimepicker" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flow__text">
+                                    Participants have to send project results before the implementation deadline.
+                                </div>
+                                <span asp-validation-for="ImplementationDeadline" class="text-danger" />
+                            </div>
+                        </div>
+
+                        <div class="flow__item">
+                            <div class="flow__icon"></div>
+                            <div class="flow__content">
+                                <div class="flow__title h4">
+                                    Voting
+                                    <div class="switcher">
+                                        <input id="enableVoting" name="enableVoting" type="checkbox" class="switcher__elem" value="true" checked="checked" />
+                                        <label for="enableVoting" class="switcher__control"></label>
+                                    </div>
+                                </div>
+                                <div class="flow__actions">
+                                    <div class="form-group">
+                                        <div class="input-group date datetimepicker">
+                                            <input asp-for="VotingDeadline" class="form-control datetimepicker" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flow__text">
+                                    Project Creator should select the best quality project solutions by his own or organize voting process.
+                                </div>
+                                <span asp-validation-for="VotingDeadline" class="text-danger" />
+                            </div>
+                        </div>
+
+                    </div>
+                </fieldset>
+
+                <h3>Project Task</h3>
 
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                 <div class="form-group">
                     <label asp-for="Name" class="control-label"></label>
-                    <input asp-for="Name" class="form-control" />
-                    <span asp-validation-for="Name" class="text-danger" />
+                    <input asp-for="Name" class="form-control"/>
+                    <span asp-validation-for="Name" class="text-danger"/>
                 </div>
 
                 <div class="form-group">
@@ -40,7 +108,7 @@
                         <label asp-for="Overview" class="control-label col-sm-4"></label>
                     </div>
                     <textarea asp-for="Overview" class="form-control" rows="7"></textarea>
-                    <span asp-validation-for="Overview" class="text-danger" />
+                    <span asp-validation-for="Overview" class="text-danger"/>
                 </div>
 
                 <div class="form-group">
@@ -49,7 +117,7 @@
 
                     </div>
                     <textarea asp-for="Description" class="form-control richEditor" rows="10"></textarea>
-                    <span asp-validation-for="Description" class="text-danger" />
+                    <span asp-validation-for="Description" class="text-danger"/>
                 </div>
 
                 <div class="form-group">
@@ -77,37 +145,37 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label class="control-label">Tags (comma separated)</label>
-                            <input asp-for="Tags" class="form-control" />
+                            <input asp-for="Tags" class="form-control"/>
                         </div>
                     </div>
                 </div>
 
-                <h4 class="form_title">deadlines</h4>
+                @*<h4 class="form_title">deadlines</h4>
                 <p class="text-muted">Decide with deadlines for each stage. The project will take place automatically and change the status of the checkpoints.</p>
 
                 <div class="row">
                     <div class="col-sm-4">
                         <div class="form-group">
                             <label class="control-label">Registration</label>
-                            <input asp-for="CompetitionRegistrationDeadline" class="form-control datetimepicker" />
-                            <span asp-validation-for="CompetitionRegistrationDeadline" class="text-danger" />
+                            <input asp-for="CompetitionRegistrationDeadline" class="form-control datetimepicker"/>
+                            <span asp-validation-for="CompetitionRegistrationDeadline" class="text-danger"/>
                         </div>
                     </div>
                     <div class="col-sm-4">
                         <div class="form-group">
                             <label class="control-label">Submission</label>
-                            <input asp-for="ImplementationDeadline" class="form-control datetimepicker" />
-                            <span asp-validation-for="ImplementationDeadline" class="text-danger" />
+                            <input asp-for="ImplementationDeadline" class="form-control datetimepicker"/>
+                            <span asp-validation-for="ImplementationDeadline" class="text-danger"/>
                         </div>
                     </div>
                     <div class="col-sm-4">
                         <div class="form-group">
                             <label asp-for="VotingDeadline" class="control-label"></label>
-                            <input asp-for="VotingDeadline" class="form-control datetimepicker" />
-                            <span asp-validation-for="VotingDeadline" class="text-danger" />
+                            <input asp-for="VotingDeadline" class="form-control datetimepicker"/>
+                            <span asp-validation-for="VotingDeadline" class="text-danger"/>
                         </div>
                     </div>
-                </div>
+                </div>*@
 
                 <h4 class="form_title">budget</h4>
                 <p class="text-muted">Any of the citizens of Lykke City will be able to finance the project. You can enter the estimated budget of the project. You can give the project the entire fund to one winner, and can spread among several.</p>
@@ -121,10 +189,10 @@
                                     <div class="prize__value">$</div>
                                 </div>
                                 <div class="col-sm-11">
-                                    <input asp-for="BudgetFirstPlace" class="form-control" />
+                                    <input asp-for="BudgetFirstPlace" class="form-control"/>
                                 </div>
                             </div>
-                            <span asp-validation-for="BudgetFirstPlace" class="text-danger" />
+                            <span asp-validation-for="BudgetFirstPlace" class="text-danger"/>
                         </div>
                     </div>
                 </div>
@@ -138,34 +206,34 @@
                                     <div class="prize__value">$</div>
                                 </div>
                                 <div class="col-sm-11">
-                                    <input asp-for="BudgetSecondPlace" class="form-control" />
+                                    <input asp-for="BudgetSecondPlace" class="form-control"/>
                                 </div>
                             </div>
-                            <span asp-validation-for="BudgetSecondPlace" class="text-danger" />
+                            <span asp-validation-for="BudgetSecondPlace" class="text-danger"/>
                         </div>
                     </div>
                 </div>
-                
+
                 <h4 class="form_title">programming resources</h4>
                 <p class="text-muted">You can reference a repository that will help with the development of the project.</p>
-                
+
                 <div class="row">
                     <div class="col-sm-5">
                         <div class="form-group">
                             <label asp-for="ProgrammingResourceName" class="control-label"></label>
-                            <input asp-for="ProgrammingResourceName" class="form-control" />
-                            <span asp-validation-for="ProgrammingResourceName" class="text-danger" />
+                            <input asp-for="ProgrammingResourceName" class="form-control"/>
+                            <span asp-validation-for="ProgrammingResourceName" class="text-danger"/>
                         </div>
                     </div>
                     <div class="col-sm-7">
                         <div class="form-group">
                             <label asp-for="ProgrammingResourceLink" class="control-label"></label>
-                            <input asp-for="ProgrammingResourceLink" class="form-control" />
-                            <span asp-validation-for="ProgrammingResourceLink" class="text-danger" />
+                            <input asp-for="ProgrammingResourceLink" class="form-control"/>
+                            <span asp-validation-for="ProgrammingResourceLink" class="text-danger"/>
                         </div>
                     </div>
-                </div>  
-                
+                </div>
+
                 <div class="row">
                     <div>
                         <div class="col-sm-6">
