@@ -179,7 +179,14 @@
                                 <div class="flow__actions">
                                     <div class="form-group">
                                         <div class="input-group date datetimepicker">
-                                            <input id="votingDeadlineDatepicker" asp-for="VotingDeadline" class="form-control datetimepicker" />
+                                            @if (Model.SkipVoting)
+                                            {
+                                                <input id="votingDeadlineDatepicker" asp-for="VotingDeadline" class="form-control datetimepicker" style="display:none"/>
+                                            }
+                                            else
+                                            {
+                                                <input id="votingDeadlineDatepicker" asp-for="VotingDeadline" class="form-control datetimepicker" />
+                                            }
                                         </div>
                                     </div>
                                 </div>
