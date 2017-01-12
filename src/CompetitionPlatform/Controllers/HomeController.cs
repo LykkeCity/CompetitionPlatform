@@ -13,7 +13,6 @@ using Microsoft.AspNetCore.Mvc;
 using CompetitionPlatform.Models.ProjectViewModels;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 
 namespace CompetitionPlatform.Controllers
