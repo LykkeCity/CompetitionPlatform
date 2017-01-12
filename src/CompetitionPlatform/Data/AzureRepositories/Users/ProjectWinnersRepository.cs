@@ -19,6 +19,12 @@ namespace CompetitionPlatform.Data.AzureRepositories.Users
             return userId;
         }
 
+        internal void Update(IWinnerData src)
+        {
+            Place = src.Place;
+            Budget = src.Budget;
+        }
+
         public static WinnerEntity Create(IWinnerData src)
         {
             var result = new WinnerEntity
@@ -82,6 +88,26 @@ namespace CompetitionPlatform.Data.AzureRepositories.Users
         {
             var newEntity = WinnerEntity.Create(winnerData);
             await _winnersStorage.InsertAsync(newEntity);
+        }
+
+        public Task UpdateAsync(IWinnerData winnerData)
+        {
+            var partitionKey = WinnerEntity.GeneratePartitionKey(winnerData.ProjectId);
+            var rowKey = WinnerEntity.GenerateRowKey(winnerData.WinnerId);
+
+            return _winnersStorage.ReplaceAsync(partitionKey, rowKey, itm =>
+            {
+                itm.Update(winnerData);
+                return itm;
+            });
+        }
+
+        public async Task DeleteAsync(string projectId, string userId)
+        {
+            var partitionKey = WinnerEntity.GeneratePartitionKey(projectId);
+            var rowKey = WinnerEntity.GenerateRowKey(userId);
+
+            await _winnersStorage.DeleteAsync(partitionKey, rowKey);
         }
     }
 }
