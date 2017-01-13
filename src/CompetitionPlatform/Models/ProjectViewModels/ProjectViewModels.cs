@@ -80,6 +80,7 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public List<OtherProjectViewModel> OtherProjects { get; set; }
         public string UserAgent { get; set; }
         public bool SkipVoting { get; set; }
+        public bool SkipRegistration { get; set; }
     }
 
     public class ProjectCompactViewModel
