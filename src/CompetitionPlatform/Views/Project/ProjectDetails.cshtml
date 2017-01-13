@@ -330,16 +330,19 @@
                     <div class="col-sm-5 col-sm-offset-1 col-md-offset-0 col-md-12">
 
                         <ul class="list list--info">
-                            <li class="list__item">
-                                <div class="list__icon">
-                                    <span class="check @checkCompetition"></span>
-                                </div>
-                                <div class="list__content">
-                                    <div class="title @textCompetition">Registration</div>
-                                    @*<p>@Model.Created.ToString("MMM d") - @Model.CompetitionRegistrationDeadline.ToString("MMM d")</p>*@
-                                    <p>@Model.Created.ToString("MMM d") - @Model.ImplementationDeadline.ToString("MMM d")</p>
-                                </div>
-                            </li>
+                            @if (!Model.SkipRegistration)
+                            {
+                                <li class="list__item">
+                                    <div class="list__icon">
+                                        <span class="check @checkCompetition"></span>
+                                    </div>
+                                    <div class="list__content">
+                                        <div class="title @textCompetition">Registration</div>
+                                        @*<p>@Model.Created.ToString("MMM d") - @Model.CompetitionRegistrationDeadline.ToString("MMM d")</p>*@
+                                        <p>@Model.Created.ToString("MMM d") - @Model.ImplementationDeadline.ToString("MMM d")</p>
+                                    </div>
+                                </li>
+                            }
                             <li class="list__item _current">
                                 <div class="list__icon">
                                     <span class="check @checkSubmission"></span>
