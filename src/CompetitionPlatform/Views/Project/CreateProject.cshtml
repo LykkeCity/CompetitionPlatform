@@ -33,18 +33,24 @@
                         <div class="flow__item">
                             <div class="flow__icon"></div>
                             <div class="flow__content">
-                                <div class="flow__title h4">Registration</div>
+                                <div class="flow__title h4">
+                                    Registration
+                                    <div class="switcher">
+                                        <input id="enableRegistration" name="enableRegistration" type="checkbox" class="switcher__elem" value="true" checked="checked" />
+                                        <label for="enableRegistration" class="switcher__control"></label>
+                                    </div>
+                                </div>
                                 <div class="flow__actions">
                                     <div class="form-group">
                                         <div class="input-group date datetimepicker">
-                                            <input asp-for="CompetitionRegistrationDeadline" class="form-control datetimepicker" />
+                                            <input id="registrationDeadlineDatepicker" asp-for="CompetitionRegistrationDeadline" class="form-control datetimepicker" />
                                         </div>
                                     </div>
                                 </div>
                                 <div class="flow__text">
                                     Lykke members have to summit the project application form to take part in your project. Registration deadline is time when you announce your project and early birds can register. Other participants may register any time from the project start till is implementation deadline.
                                 </div>
-                                <span asp-validation-for="CompetitionRegistrationDeadline" class="text-danger" />
+                                <span asp-validation-for="CompetitionRegistrationDeadline" class="text-danger registrationDeadlineDatepickerValidation" />
                             </div>
                         </div>
 

@@ -61,37 +61,37 @@
     }
     <div class="container">
         @*<div class="steps">
-            <div class="steps__item steps__item--1 @initiativeCircle">
-                <a href="">
-                    <div class="steps__index">1</div>
-                    <div class="steps__text">Initiative</div>
-                </a>
-            </div>
-            <div class="steps__item steps__item--2 @competitionRegistrationCircle">
-                <a href="">
-                    <div class="steps__index">2</div>
-                    <div class="steps__text">Registration</div>
-                </a>
-            </div>
-            <div class="steps__item steps__item--3 @implementationCircle">
-                <a href="">
-                    <div class="steps__index">3</div>
-                    <div class="steps__text">Submission</div>
-                </a>
-            </div>
-            <div class="steps__item steps__item--3 @votingCircle">
-                <a href="">
-                    <div class="steps__index">4</div>
-                    <div class="steps__text">Voting</div>
-                </a>
-            </div>
-            <div class="steps__item steps__item--4 @archiveCircle">
-                <a href="">
-                    <div class="steps__index">5</div>
-                    <div class="steps__text">Archive</div>
-                </a>
-            </div>
-        </div>*@
+                <div class="steps__item steps__item--1 @initiativeCircle">
+                    <a href="">
+                        <div class="steps__index">1</div>
+                        <div class="steps__text">Initiative</div>
+                    </a>
+                </div>
+                <div class="steps__item steps__item--2 @competitionRegistrationCircle">
+                    <a href="">
+                        <div class="steps__index">2</div>
+                        <div class="steps__text">Registration</div>
+                    </a>
+                </div>
+                <div class="steps__item steps__item--3 @implementationCircle">
+                    <a href="">
+                        <div class="steps__index">3</div>
+                        <div class="steps__text">Submission</div>
+                    </a>
+                </div>
+                <div class="steps__item steps__item--3 @votingCircle">
+                    <a href="">
+                        <div class="steps__index">4</div>
+                        <div class="steps__text">Voting</div>
+                    </a>
+                </div>
+                <div class="steps__item steps__item--4 @archiveCircle">
+                    <a href="">
+                        <div class="steps__index">5</div>
+                        <div class="steps__text">Archive</div>
+                    </a>
+                </div>
+            </div>*@
 
         @if (Model.Status == Status.Initiative)
         {
@@ -117,19 +117,41 @@
     <div class="container">
         <div class="content__left">
             <form asp-action="SaveProject" enctype="multipart/form-data" class="form form--default form--competition_edit">
-                
+
                 <fieldset class="form_fieldset">
                     <h3>Project Flow</h3>
 
                     <div class="flow flow--project">
+
+                        @{
+                            var enableRegistrationChecked = "checked";
+                            if (Model.SkipRegistration)
+                            {
+                                enableRegistrationChecked = "";
+                            }
+                        }
+
                         <div class="flow__item">
                             <div class="flow__icon"></div>
                             <div class="flow__content">
-                                <div class="flow__title h4">Registration</div>
+                                <div class="flow__title h4">
+                                    Registration
+                                    <div class="switcher">
+                                        <input id="enableRegistration" name="enableRegistration" type="checkbox" class="switcher__elem" value="true" @enableRegistrationChecked />
+                                        <label for="enableRegistration" class="switcher__control"></label>
+                                    </div>
+                                </div>
                                 <div class="flow__actions">
                                     <div class="form-group">
                                         <div class="input-group date datetimepicker">
-                                            <input asp-for="CompetitionRegistrationDeadline" class="form-control datetimepicker" />
+                                            @if (Model.SkipRegistration)
+                                            {
+                                                <input id="registrationDeadlineDatepicker" asp-for="CompetitionRegistrationDeadline" class="form-control datetimepicker" style="display: none" />
+                                            }
+                                            else
+                                            {
+                                                <input id="registrationDeadlineDatepicker" asp-for="CompetitionRegistrationDeadline" class="form-control datetimepicker" />
+                                            }
                                         </div>
                                     </div>
                                 </div>
@@ -157,7 +179,7 @@
                                 <span asp-validation-for="ImplementationDeadline" class="text-danger" />
                             </div>
                         </div>
-                        
+
                         @{
                             var enableVotingChecked = "checked";
                             if (Model.SkipVoting)
@@ -181,7 +203,7 @@
                                         <div class="input-group date datetimepicker">
                                             @if (Model.SkipVoting)
                                             {
-                                                <input id="votingDeadlineDatepicker" asp-for="VotingDeadline" class="form-control datetimepicker" style="display:none"/>
+                                                <input id="votingDeadlineDatepicker" asp-for="VotingDeadline" class="form-control datetimepicker" style="display: none" />
                                             }
                                             else
                                             {
@@ -203,9 +225,9 @@
                 <h3>Project Task</h3>
 
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <input asp-for="@Model.Id" type="hidden"/>
-                <input asp-for="@Model.VotesFor" type="hidden"/>
-                <input asp-for="@Model.VotesAgainst" type="hidden"/>
+                <input asp-for="@Model.Id" type="hidden" />
+                <input asp-for="@Model.VotesFor" type="hidden" />
+                <input asp-for="@Model.VotesAgainst" type="hidden" />
 
                 @if (Model.IsAdmin)
                 {
@@ -220,21 +242,20 @@
                                 <select asp-for="@Model.Status" class="form-control">
                                     @if (Model.Status == Status.Draft)
                                     {
-                                        foreach (var status in Enum.GetValues(typeof(Status)))
-                                        {
-                                            <option value=@status>Status: @status</option>
-                                        }
+                                        <option value=@Status.Draft.ToString()>Status: @Status.Draft.ToString()</option>
                                     }
-                                    else
+
+                                    <option value=@Status.Initiative.ToString()>Status: @Status.Initiative.ToString()</option>
+                                    @if (!Model.SkipRegistration)
                                     {
-                                        foreach (var status in Enum.GetValues(typeof(Status)))
-                                        {
-                                            if (status.ToString() != Status.Draft.ToString())
-                                            {
-                                                <option value=@status>Status: @status</option>
-                                            }
-                                        }
+                                        <option value=@Status.Registration.ToString()>Status: @Status.Registration.ToString()</option>
                                     }
+                                    <option value=@Status.Submission.ToString()>Status: @Status.Submission.ToString()</option>
+                                    @if (!Model.SkipVoting)
+                                    {
+                                        <option value=@Status.Voting.ToString()>Status: @Status.Voting.ToString()</option>
+                                    }
+                                    <option value=@Status.Archive.ToString()>Status: @Status.Archive.ToString()</option>
                                 </select>
                             </div>
                         </div>
@@ -243,8 +264,8 @@
 
                 <div class="form-group">
                     <label asp-for="Name" class="control-label"></label>
-                    <input asp-for="Name" class="form-control"/>
-                    <span asp-validation-for="Name" class="text-danger"/>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger" />
                 </div>
 
                 <div class="form-group">
@@ -252,7 +273,7 @@
                         <label asp-for="Overview" class="control-label col-sm-4"></label>
                     </div>
                     <textarea asp-for="Overview" class="form-control" rows="10"></textarea>
-                    <span asp-validation-for="Overview" class="text-danger"/>
+                    <span asp-validation-for="Overview" class="text-danger" />
                 </div>
 
                 <div class="form-group">
@@ -261,7 +282,7 @@
 
                     </div>
                     <textarea asp-for="Description" class="form-control richEditor" rows="10"></textarea>
-                    <span asp-validation-for="Description" class="text-danger"/>
+                    <span asp-validation-for="Description" class="text-danger" />
                 </div>
 
                 <div class="form-group">
@@ -289,37 +310,37 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label class="control-label">Tags (comma separated)</label>
-                            <input asp-for="Tags" class="form-control"/>
+                            <input asp-for="Tags" class="form-control" />
                         </div>
                     </div>
                 </div>
 
                 @*<h4 class="form_title">deadlines</h4>
-                <p class="text-muted">Decide with deadlines for each stage. The project will take place automatically and change the status of the checkpoints.</p>
+                    <p class="text-muted">Decide with deadlines for each stage. The project will take place automatically and change the status of the checkpoints.</p>
 
-                <div class="row">
-                    <div class="col-sm-4">
-                        <div class="form-group">
-                            <label class="control-label">Registration</label>
-                            <input asp-for="CompetitionRegistrationDeadline" class="form-control datetimepicker" />
-                            <span asp-validation-for="CompetitionRegistrationDeadline" class="text-danger" />
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label">Registration</label>
+                                <input asp-for="CompetitionRegistrationDeadline" class="form-control datetimepicker" />
+                                <span asp-validation-for="CompetitionRegistrationDeadline" class="text-danger" />
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="form-group">
-                            <label class="control-label">Submission</label>
-                            <input asp-for="ImplementationDeadline" class="form-control datetimepicker" />
-                            <span asp-validation-for="ImplementationDeadline" class="text-danger" />
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label">Submission</label>
+                                <input asp-for="ImplementationDeadline" class="form-control datetimepicker" />
+                                <span asp-validation-for="ImplementationDeadline" class="text-danger" />
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="form-group">
-                            <label asp-for="VotingDeadline" class="control-label"></label>
-                            <input asp-for="VotingDeadline" class="form-control datetimepicker" />
-                            <span asp-validation-for="VotingDeadline" class="text-danger" />
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label asp-for="VotingDeadline" class="control-label"></label>
+                                <input asp-for="VotingDeadline" class="form-control datetimepicker" />
+                                <span asp-validation-for="VotingDeadline" class="text-danger" />
+                            </div>
                         </div>
-                    </div>
-                </div>*@
+                    </div>*@
 
                 <h4 class="form_title">budget</h4>
                 <p class="text-muted">Any of the citizens of Lykke City will be able to finance the project. You can enter the estimated budget of the project. You can give the project the entire fund to one winner, and can spread among several.</p>
@@ -333,10 +354,10 @@
                                     <div class="prize__value">$</div>
                                 </div>
                                 <div class="col-sm-11">
-                                    <input asp-for="BudgetFirstPlace" class="form-control"/>
+                                    <input asp-for="BudgetFirstPlace" class="form-control" />
                                 </div>
                             </div>
-                            <span asp-validation-for="BudgetFirstPlace" class="text-danger"/>
+                            <span asp-validation-for="BudgetFirstPlace" class="text-danger" />
                         </div>
                     </div>
                 </div>
@@ -350,10 +371,10 @@
                                     <div class="prize__value">$</div>
                                 </div>
                                 <div class="col-sm-11">
-                                    <input asp-for="BudgetSecondPlace" class="form-control"/>
+                                    <input asp-for="BudgetSecondPlace" class="form-control" />
                                 </div>
                             </div>
-                            <span asp-validation-for="BudgetSecondPlace" class="text-danger"/>
+                            <span asp-validation-for="BudgetSecondPlace" class="text-danger" />
                         </div>
                     </div>
                 </div>
@@ -365,15 +386,15 @@
                     <div class="col-sm-5">
                         <div class="form-group">
                             <label asp-for="ProgrammingResourceName" class="control-label"></label>
-                            <input asp-for="ProgrammingResourceName" class="form-control"/>
-                            <span asp-validation-for="ProgrammingResourceName" class="text-danger"/>
+                            <input asp-for="ProgrammingResourceName" class="form-control" />
+                            <span asp-validation-for="ProgrammingResourceName" class="text-danger" />
                         </div>
                     </div>
                     <div class="col-sm-7">
                         <div class="form-group">
                             <label asp-for="ProgrammingResourceLink" class="control-label"></label>
-                            <input asp-for="ProgrammingResourceLink" class="form-control"/>
-                            <span asp-validation-for="ProgrammingResourceLink" class="text-danger"/>
+                            <input asp-for="ProgrammingResourceLink" class="form-control" />
+                            <span asp-validation-for="ProgrammingResourceLink" class="text-danger" />
                         </div>
                     </div>
                 </div>
