@@ -228,5 +228,42 @@
         }
     });
 
+    $('#enableVoting').click(function () {
+        if ($('#enableVoting').is(":checked")) {
+            $('#votingDeadlineDatepicker').val('');
+            $('#votingDeadlineDatepicker').show();
+            $('.votingDeadlineDatepickerValidation').show();
+        } else {
+            $('#votingDeadlineDatepicker').hide();
+            $('.votingDeadlineDatepickerValidation').hide();
+
+            $('#votingDeadlineDatepicker').attr('value', getTodayFormatted());
+        }
+    });
+
+    $('#enableRegistration').click(function () {
+        if ($('#enableRegistration').is(":checked")) {
+            $('#registrationDeadlineDatepicker').val('');
+            $('#registrationDeadlineDatepicker').show();
+            $('.registrationDeadlineDatepickerValidation').show();
+        } else {
+            $('#registrationDeadlineDatepicker').attr('value', getTodayFormatted());
+
+            $('#registrationDeadlineDatepicker').hide();
+            $('.registrationDeadlineDatepickerValidation').hide(); 
+        }
+    });
+
+    function getTodayFormatted() {
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1;
+
+        var yyyy = today.getFullYear();
+        if (dd < 10) { dd = '0' + dd } if (mm < 10) { mm = '0' + mm } today = yyyy + '-' + mm + '-' + dd;
+
+        return today;
+    }
+
     $('#datetimepicker1').datetimepicker();
 });
