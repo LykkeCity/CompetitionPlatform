@@ -96,13 +96,19 @@ namespace CompetitionPlatform.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> SaveProject(ProjectViewModel projectViewModel, bool draft = false, bool enableVoting = false)
+        public async Task<IActionResult> SaveProject(ProjectViewModel projectViewModel, bool draft = false, bool enableVoting = false, bool enableRegistration = false)
         {
             projectViewModel.Tags = SerializeTags(projectViewModel.Tags);
 
             projectViewModel.ProjectStatus = projectViewModel.Status.ToString();
 
             projectViewModel.SkipVoting = !enableVoting;
+            projectViewModel.SkipRegistration = !enableRegistration;
+            if (projectViewModel.CompetitionRegistrationDeadline == DateTime.MinValue)
+                projectViewModel.CompetitionRegistrationDeadline = DateTime.UtcNow.Date;
+
+            if (projectViewModel.VotingDeadline == DateTime.MinValue)
+                projectViewModel.VotingDeadline = DateTime.UtcNow.Date;
 
             string projectId;
 
@@ -404,7 +410,8 @@ namespace CompetitionPlatform.Controllers
                 OtherProjects = await GetOtherProjects(project.Id),
                 ProgrammingResourceName = project.ProgrammingResourceName,
                 ProgrammingResourceLink = project.ProgrammingResourceLink,
-                SkipVoting = project.SkipVoting
+                SkipVoting = project.SkipVoting,
+                SkipRegistration = project.SkipRegistration
             };
 
             if (!string.IsNullOrEmpty(project.Tags))
