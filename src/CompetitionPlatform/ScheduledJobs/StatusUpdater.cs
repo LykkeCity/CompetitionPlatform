@@ -28,24 +28,29 @@ namespace CompetitionPlatform.ScheduledJobs
 
                 switch (project.Status)
                 {
+                    case Status.Draft:
+                        break;
                     case Status.Initiative:
                         break;
                     case Status.Registration:
-                        if (project.CompetitionRegistrationDeadline < DateTime.Today)
+                        //if (project.CompetitionRegistrationDeadline < DateTime.Today)
+                        if (project.CompetitionRegistrationDeadline < DateTime.UtcNow.Date)
                         {
                             project.ProjectStatus = Status.Submission.ToString();
                             await _projectRepository.UpdateAsync(project);
                         }
                         break;
                     case Status.Submission:
-                        if (project.ImplementationDeadline < DateTime.Today)
+                        //if (project.ImplementationDeadline < DateTime.Today)
+                        if (project.ImplementationDeadline < DateTime.UtcNow.Date)
                         {
                             project.ProjectStatus = project.SkipVoting ? Status.Archive.ToString() : Status.Voting.ToString();
                             await _projectRepository.UpdateAsync(project);
                         }
                         break;
                     case Status.Voting:
-                        if (project.VotingDeadline < DateTime.Today)
+                        //if (project.VotingDeadline < DateTime.Today)
+                        if (project.VotingDeadline < DateTime.UtcNow.Date)
                         {
                             project.ProjectStatus = Status.Archive.ToString();
                             await _winnersService.SaveWinners(project.Id);
