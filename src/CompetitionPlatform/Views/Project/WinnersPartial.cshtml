@@ -72,12 +72,21 @@
                                 <div class="user_badge__img">
                                     <a href=""><img src="~/images/avatar.svg" alt=""></a>
                                 </div>
-                                <div class="user_badge__info">
-                                    <div class="user_badge__title">
-                                        <a href="">@winner.FullName</a>
+                                @if (Model.SkipVoting)
+                                {
+                                    <div class="user_badge__info">
+                                        <a class="bold" href="">@winner.FullName</a>
                                     </div>
-                                    <span class="user_badge__desc">@winner.Votes @voteVotes</span>
-                                </div>
+                                }
+                                else
+                                {
+                                    <div class="user_badge__info">
+                                        <div class="user_badge__title">
+                                            <a href="">@winner.FullName</a>
+                                        </div>
+                                        <span class="user_badge__desc">@winner.Votes @voteVotes</span>
+                                    </div>
+                                }
                             </div>
                         </td>
                         <td class="board_result text-center"><a target="_blank" href="@winner.Result">View result</a></td>
@@ -101,12 +110,21 @@
                                 <div class="user_badge__img">
                                     <a href=""><img src="~/images/avatar.svg" alt=""></a>
                                 </div>
-                                <div class="user_badge__info">
-                                    <div class="user_badge__title">
+                                @if (Model.SkipVoting)
+                                {
+                                    <div class="user_badge__info">
                                         <a class="bold" href="">@winner.FullName</a>
                                     </div>
-                                    <span class="user_badge__desc">@winner.Votes @voteVotes</span>
-                                </div>
+                                }
+                                else
+                                {
+                                    <div class="user_badge__info">
+                                        <div class="user_badge__title">
+                                            <a href="">@winner.FullName</a>
+                                        </div>
+                                        <span class="user_badge__desc">@winner.Votes @voteVotes</span>
+                                    </div>
+                                }
                             </div>
                         </td>
                         <td class="board_result text-center"><a target="_blank" href="@winner.Result">View result</a></td>

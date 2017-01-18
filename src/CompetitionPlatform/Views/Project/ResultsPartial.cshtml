@@ -28,15 +28,18 @@
                 <th class="board_name">Username</th>
                 <th class="board_date">reg. and Subm. Date</th>
                 <th class="board_result text-center">Result</th>
-                <th class="board_score text-center">Score</th>
-                <th class="board_vote text-center">Vote</th>
+                @if (!Model.SkipVoting)
+                {
+                    <th class="board_score text-center">Score</th>
+                    <th class="board_vote text-center">Vote</th>
+                }
                 @if (Model.Status == Status.Voting)
                 {
                     <th class="board_action"></th>
                 }
                 @if (closedVoting)
                 {
-                    <th class="board_action">Prize</th>
+                    <th class="board_action text-center">Prize</th>
                 }
             </tr>
             @foreach (var result in Model.Results)
@@ -57,8 +60,11 @@
                     {
                         <td class="text-center"><span class="check check--primary"></span></td>
                     }
-                    <td class="board_score text-center">@result.Score<span class="text-muted">/100</span></td>
-                    <td class="board_vote text-center">@result.Votes</td>
+                    @if (!Model.SkipVoting)
+                    {
+                        <td class="board_score text-center">@result.Score<span class="text-muted">/100</span></td>
+                        <td class="board_vote text-center">@result.Votes</td>
+                    }
                     @if (Model.Status == Status.Voting)
                     {
                         <td class="board_action">
