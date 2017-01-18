@@ -1,4 +1,3 @@
-@import url("https://fonts.googleapis.com/css?family=Roboto:400,500");
 @font-face { font-family: 'Proxima Nova'; src: url("../fonts/ProximaNovaRegular.eot"); /* IE9 Compat Modes */ src: url("../fonts/ProximaNovaRegular.eot?#iefix") format("embedded-opentype"), url("../fonts/ProximaNovaRegular.woff") format("woff"), url("../fonts/ProximaNovaRegular.ttf") format("truetype"), url("../fonts/ProximaNovaRegular.svg#2c1459d58560f08b4b0586fbe80aa4cd") format("svg"); /* Legacy iOS */ font-style: normal; font-weight: 400; }
 
 @font-face { font-family: 'Proxima Nova'; src: url("../fonts/ProximaNova-Semibold.eot"); /* IE9 Compat Modes */ src: url("../fonts/ProximaNova-Semibold.eot?#iefix") format("embedded-opentype"), url("../fonts/ProximaNova-Semibold.woff") format("woff"), url("../fonts/ProximaNova-Semibold.ttf") format("truetype"), url("../fonts/ProximaNova-Semibold.svg#67a6c9f6d7dc8f35ecb08de766ea56f0") format("svg"); /* Legacy iOS */ font-style: normal; font-weight: 600; }
@@ -121,6 +120,8 @@ figcaption { font-weight: normal; font-style: normal; font-stretch: normal; line
 
 .dropdown-menu ol, .dropdown-menu ul, .dropdown-list { list-style: none; padding: 0; margin: 0; }
 
+.dropdown-menu ol li:after, .dropdown-menu ul li:after, .dropdown-list li:after, .dropdown-menu ol li:before, .dropdown-menu ul li:before, .dropdown-list li:before { content: ''; display: none; }
+
 .fs22 { font-size: 22px; font-size: 1.375rem; }
 
 .grayscale { filter: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='grayscale'><feColorMatrix type='matrix' values='0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0'/></filter></svg>#grayscale"); /* Firefox 3.5+ */ filter: gray; /* IE6-9 */ -webkit-filter: grayscale(100%); /* Chrome 19+, Safari 6+, Safari 6+ iOS */ }
@@ -129,7 +130,7 @@ figcaption { font-weight: normal; font-style: normal; font-stretch: normal; line
 
 .mb0 { margin-bottom: 0 !important; }
 
-@font-face { font-family: 'icon'; src: url("../fonts/icon.eot?6akzxn"); src: url("../fonts/icon.eot?6akzxn#iefix") format("embedded-opentype"), url("../fonts/icon.ttf?6akzxn") format("truetype"), url("../fonts/icon.woff?6akzxn") format("woff"), url("../fonts/icon.svg?6akzxn#icon") format("svg"); font-weight: normal; font-style: normal; }
+@font-face { font-family: 'icon'; src: url("../fonts/icon.eot?abnpet"); src: url("../fonts/icon.eot?abnpet#iefix") format("embedded-opentype"), url("../fonts/icon.ttf?abnpet") format("truetype"), url("../fonts/icon.woff?abnpet") format("woff"), url("../fonts/icon.svg?abnpet#icon") format("svg"); font-weight: normal; font-style: normal; }
 
 [class^="icon--"], [class*=" icon--"] { /* use !important to prevent issues with browser extensions that change fonts */ font-family: 'icon' !important; speak: none; font-style: normal; font-weight: normal; font-variant: normal; text-transform: none; line-height: 1; display: inline-block; position: relative; top: -1px; margin-right: 6px; vertical-align: middle; /* Better Font Rendering =========== */ -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-size: 20px; font-size: 1.25rem; margin-right: 6px; margin-right: 0.375rem; }
 
@@ -290,6 +291,8 @@ figcaption { font-weight: normal; font-style: normal; font-stretch: normal; line
 .icon--polygon:before { content: "\e944"; }
 
 .icon--polygon_fill:before { content: "\e945"; }
+
+.icon--download:before { content: "\e949"; }
 
 .store_icon { background-position: center; background-repeat: no-repeat; display: inline-block; vertical-align: middle; position: relative; }
 
@@ -744,6 +747,10 @@ label.error { display: none !important; }
 
 .social--header { position: absolute; left: 0; right: 0; white-space: normal; padding: 0 30px; padding: 0 1.875rem; bottom: 20px; bottom: 1.25rem; }
 
+.social--simple > li > a { display: inline-block; color: rgba(63, 77, 96, 0.8); padding: 5px 0; padding: 0.3125rem 0; }
+
+.social--simple > li > a:hover { color: #3f4d60; }
+
 .social--footer_alt, .social--header { padding: 5px 0; padding: 0.3125rem 0; }
 
 .social--footer_alt .icon, .social--header .icon { margin-right: 0; }
@@ -786,15 +793,15 @@ label.error { display: none !important; }
 
 .dropdown { position: relative; }
 
-.dropdown-menu { position: absolute; left: 50%; top: 100%; box-shadow: 0 5px 5px 0 rgba(63, 77, 96, 0.05), 0 8px 50px 0 rgba(63, 77, 96, 0.4); border-radius: 4px; opacity: 0; visibility: hidden; display: block; float: none; padding: 0; background: #fff; z-index: 20; width: 387px; width: 24.1875rem; margin-left: -193px; margin-left: -12.0625rem; margin-top: 10px; margin-top: 0.625rem; -webkit-transition: opacity 0.3s ease, visibility 0.3s ease; -moz-transition: opacity 0.3s ease, visibility 0.3s ease; -o-transition: opacity 0.3s ease, visibility 0.3s ease; transition: opacity 0.3s ease, visibility 0.3s ease; }
+.dropdown-menu:not(.bootstrap-datetimepicker-widget) { position: absolute; left: 50%; top: 100%; box-shadow: 0 5px 5px 0 rgba(63, 77, 96, 0.05), 0 8px 50px 0 rgba(63, 77, 96, 0.4); border-radius: 4px; opacity: 0; visibility: hidden; display: block; float: none; padding: 0; background: #fff; z-index: 20; width: 387px; width: 24.1875rem; margin-left: -193px; margin-left: -12.0625rem; margin-top: 10px; margin-top: 0.625rem; -webkit-transition: opacity 0.3s ease, visibility 0.3s ease; -moz-transition: opacity 0.3s ease, visibility 0.3s ease; -o-transition: opacity 0.3s ease, visibility 0.3s ease; transition: opacity 0.3s ease, visibility 0.3s ease; }
+
+.dropdown-menu:not(.bootstrap-datetimepicker-widget):after { bottom: 100%; left: 50%; border: solid transparent; content: " "; height: 0; width: 0; position: absolute; pointer-events: none; }
+
+.dropdown-menu:not(.bootstrap-datetimepicker-widget):after { border-color: rgba(255, 255, 255, 0); border-bottom-color: #fff; margin-left: -10px; margin-left: -0.625rem; border-width: 10px; border-width: 0.625rem; }
 
 .dropdown-menu--sm { width: 296px; width: 18.5rem; margin-left: -148px; margin-left: -9.25rem; }
 
 .dropdown-menu--tiny { width: 120px; width: 7.5rem; margin-left: -60px; margin-left: -3.75rem; }
-
-.dropdown-menu:after { bottom: 100%; left: 50%; border: solid transparent; content: " "; height: 0; width: 0; position: absolute; pointer-events: none; }
-
-.dropdown-menu:after { border-color: rgba(255, 255, 255, 0); border-bottom-color: #fff; margin-left: -10px; margin-left: -0.625rem; border-width: 10px; border-width: 0.625rem; }
 
 .dropdown-menu .dropdown__inner { overflow: hidden; padding: 32px 32px 40px; padding: 2rem 2rem 2.5rem; }
 
@@ -1765,6 +1772,8 @@ a.action_link:hover img, button.action_link:hover img { opacity: 1; }
 
 .bootstrap-datetimepicker-widget.dropdown-menu { padding: 10px 16px; padding: 0.625rem 1rem; font-size: 16px; font-size: 1rem; margin: 10px 0; margin: 0.625rem 0; width: 376px; width: 23.5rem; }
 
+.bootstrap-datetimepicker-widget ul li, .bootstrap-datetimepicker-widget ol li { margin-bottom: 0 !important; }
+
 .bootstrap-datetimepicker-widget [class^="icon--"], .bootstrap-datetimepicker-widget [class*=" icon--"] { color: #8c94a0; }
 
 .bootstrap-datetimepicker-widget .fade { opacity: 0; -webkit-transition: opacity 0.15s linear; -moz-transition: opacity 0.15s linear; -o-transition: opacity 0.15s linear; transition: opacity 0.15s linear; }
@@ -1793,7 +1802,7 @@ a.action_link:hover img, button.action_link:hover img { opacity: 1; }
 
 .bootstrap-datetimepicker-widget table td { text-shadow: none !important; }
 
-.bootstrap-datetimepicker-widget table td.active, .bootstrap-datetimepicker-widget table td.active:hover { background: #ab00ff; color: #fff; }
+.bootstrap-datetimepicker-widget table td.active, .bootstrap-datetimepicker-widget table td.active:hover { background: #ab00ff !important; color: #fff; }
 
 .bootstrap-datetimepicker-widget table td.old, .bootstrap-datetimepicker-widget table td.new { color: rgba(63, 77, 96, 0.35); }
 
