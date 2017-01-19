@@ -82,6 +82,10 @@
     var textSubmission = "";
     var textVoting = "";
 
+    var registrationCurrent = "";
+    var submissionCurrent = "";
+    var votingCurrent = "";
+
     switch (Model.Status)
     {
         case Status.Initiative:
@@ -90,22 +94,25 @@
             checkVoting = "check--inprogress";
             break;
         case Status.Registration:
-            checkCompetition = "check--inprogress";
-            checkSubmission = "check--inprogress";
-            checkVoting = "check--inprogress";
-            textCompetition = "text--blue";
-            break;
-        case Status.Submission:
             checkCompetition = "check--blue";
             checkSubmission = "check--inprogress";
             checkVoting = "check--inprogress";
+            textCompetition = "text--blue";
+            registrationCurrent = "_current";
+            break;
+        case Status.Submission:
+            checkCompetition = "check--blue";
+            checkSubmission = "check--green";
+            checkVoting = "check--inprogress";
             textSubmission = "text--green";
+            submissionCurrent = "_current";
             break;
         case Status.Voting:
             checkCompetition = "check--blue";
             checkSubmission = "check--green";
-            checkVoting = "check--inprogress";
+            checkVoting = "check--yellow";
             textVoting = "text--yellow";
+            votingCurrent = "_current";
             break;
         case Status.Archive:
             checkCompetition = "check--blue";
@@ -237,7 +244,7 @@
                         <ul class="list list--info">
                             @if (!Model.SkipRegistration)
                             {
-                                <li class="list__item">
+                                <li class="list__item @registrationCurrent">
                                     <div class="list__icon">
                                         <span class="check @checkCompetition"></span>
                                     </div>
@@ -248,7 +255,7 @@
                                     </div>
                                 </li>
                             }
-                            <li class="list__item _current">
+                            <li class="list__item @submissionCurrent">
                                 <div class="list__icon">
                                     <span class="check @checkSubmission"></span>
                                 </div>
@@ -259,7 +266,7 @@
                             </li>
                             @if (!Model.SkipVoting)
                             {
-                                <li class="list__item">
+                                <li class="list__item @votingCurrent">
                                     <div class="list__icon">
                                         <span class="check @checkVoting"></span>
                                     </div>
