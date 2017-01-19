@@ -172,10 +172,10 @@
         }
     });
 
-    $('#navbar-collapse')
+    $('#mobile-menu-toggle')
       .on('click', function (e) {
-          $('body').toggleClass('menu-collapsed');
-      });
+            $('#navbar-collapse').toggleClass('in');
+        });
 
     //caches a jQuery object containing the header element
     var header = $('.header:not(.header--static)');
