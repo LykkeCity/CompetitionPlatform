@@ -172,6 +172,11 @@
         }
     });
 
+    $('#navbar-collapse')
+      .on('click', function (e) {
+          $('body').toggleClass('menu-collapsed');
+      });
+
     $('#mobile-menu-toggle')
       .on('click', function (e) {
             $('#navbar-collapse').toggleClass('in');
