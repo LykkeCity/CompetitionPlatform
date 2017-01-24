@@ -16,18 +16,12 @@
     <title>@ViewData["Title"] - LykkeStreams</title>
 
     <environment names="Development">
-        @*<link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/css/bootstrap.min.css"
-            asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-            asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />*@
         <link rel="stylesheet" href="~/public/css/vendor/bootstrap-custom.min.css" />
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-datepicker.css" />
         <link rel="stylesheet" href="~/public/css/style.css" />
         <link rel="stylesheet" href="~/css/addstyle.css" />
     </environment>
     <environment names="Staging,Production">
-        @*<link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/css/bootstrap.min.css"
-            asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-            asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />*@
         <link rel="stylesheet" href="~/public/css/vendor/bootstrap-custom.min.css" />
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-datepicker.css" />
         <link rel="stylesheet" href="~/public/css/style.css" />
@@ -215,7 +209,6 @@
     </a>
 
     <environment names="Development">
-        @*<script src="~/lib/jquery/dist/jquery.js"></script>*@
         <script src="~/js/vendor/jquery-1.11.2.min.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap-datepicker.js"></script>
@@ -233,24 +226,14 @@
         <script src="~/js/site.js" asp-append-version="true"></script>
     </environment>
     <environment names="Staging,Production">
-        @*<script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
-                    asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-                    asp-fallback-test="window.jQuery">
-
-            </script>*@
         <script src="~/js/vendor/jquery-1.11.2.min.js"></script>
         <script src="~/js/vendor/bootstrap.min.js"></script>
-        @*<script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/bootstrap.min.js"
-                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
-                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal">
-
-        </script>*@
         <script src="~/js/site.min.js" asp-append-version="true"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap-datepicker.js"></script>
         <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
         <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
         <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
-        
+
         <script src="~/js/vendor/fastclick.min.js"></script>
         <script src="~/js/vendor/jquery.inview.min.js"></script>
         <script src="~/js/functions_landing.js"></script>

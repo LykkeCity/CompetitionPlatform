@@ -60,39 +60,6 @@
 
     }
     <div class="container">
-        @*<div class="steps">
-                <div class="steps__item steps__item--1 @initiativeCircle">
-                    <a href="">
-                        <div class="steps__index">1</div>
-                        <div class="steps__text">Initiative</div>
-                    </a>
-                </div>
-                <div class="steps__item steps__item--2 @competitionRegistrationCircle">
-                    <a href="">
-                        <div class="steps__index">2</div>
-                        <div class="steps__text">Registration</div>
-                    </a>
-                </div>
-                <div class="steps__item steps__item--3 @implementationCircle">
-                    <a href="">
-                        <div class="steps__index">3</div>
-                        <div class="steps__text">Submission</div>
-                    </a>
-                </div>
-                <div class="steps__item steps__item--3 @votingCircle">
-                    <a href="">
-                        <div class="steps__index">4</div>
-                        <div class="steps__text">Voting</div>
-                    </a>
-                </div>
-                <div class="steps__item steps__item--4 @archiveCircle">
-                    <a href="">
-                        <div class="steps__index">5</div>
-                        <div class="steps__text">Archive</div>
-                    </a>
-                </div>
-            </div>*@
-
         @if (Model.Status == Status.Initiative)
         {
             <div class="row">
@@ -314,33 +281,6 @@
                         </div>
                     </div>
                 </div>
-
-                @*<h4 class="form_title">deadlines</h4>
-                    <p class="text-muted">Decide with deadlines for each stage. The project will take place automatically and change the status of the checkpoints.</p>
-
-                    <div class="row">
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <label class="control-label">Registration</label>
-                                <input asp-for="CompetitionRegistrationDeadline" class="form-control datetimepicker" />
-                                <span asp-validation-for="CompetitionRegistrationDeadline" class="text-danger" />
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <label class="control-label">Submission</label>
-                                <input asp-for="ImplementationDeadline" class="form-control datetimepicker" />
-                                <span asp-validation-for="ImplementationDeadline" class="text-danger" />
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <label asp-for="VotingDeadline" class="control-label"></label>
-                                <input asp-for="VotingDeadline" class="form-control datetimepicker" />
-                                <span asp-validation-for="VotingDeadline" class="text-danger" />
-                            </div>
-                        </div>
-                    </div>*@
 
                 <h4 class="form_title">budget</h4>
                 <p class="text-muted">Any of the citizens of Lykke City will be able to finance the project. You can enter the estimated budget of the project. You can give the project the entire fund to one winner, and can spread among several.</p>
