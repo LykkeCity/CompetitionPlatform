@@ -177,11 +177,6 @@
           $('body').toggleClass('menu-collapsed');
       });
 
-    //$('#mobile-menu-toggle')
-    //  .on('click', function (e) {
-    //        $('#navbar-collapse').toggleClass('in');
-    //    });
-
     //caches a jQuery object containing the header element
     var header = $('.header:not(.header--static)');
     $(window).scroll(function () {

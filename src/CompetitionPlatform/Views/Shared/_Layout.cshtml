@@ -216,12 +216,10 @@
 
     <environment names="Development">
         @*<script src="~/lib/jquery/dist/jquery.js"></script>*@
+        <script src="~/js/vendor/jquery-1.11.2.min.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap-datepicker.js"></script>
-
         <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
-
-        <script src="~/js/vendor/jquery-1.11.2.min.js"></script>
         <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
         <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
         <script src="~/js/vendor/bootstrap.min.js"></script>
@@ -236,24 +234,23 @@
     </environment>
     <environment names="Staging,Production">
         @*<script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
-                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-                asp-fallback-test="window.jQuery">
+                    asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                    asp-fallback-test="window.jQuery">
 
-        </script>*@
-        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/bootstrap.min.js"
+            </script>*@
+        <script src="~/js/vendor/jquery-1.11.2.min.js"></script>
+        <script src="~/js/vendor/bootstrap.min.js"></script>
+        @*<script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/bootstrap.min.js"
                 asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
                 asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal">
 
-        </script>
+        </script>*@
         <script src="~/js/site.min.js" asp-append-version="true"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap-datepicker.js"></script>
-
         <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
-
-        <script src="~/js/vendor/jquery-1.11.2.min.js"></script>
         <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
         <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
-        <script src="~/js/vendor/bootstrap.min.js"></script>
+        
         <script src="~/js/vendor/fastclick.min.js"></script>
         <script src="~/js/vendor/jquery.inview.min.js"></script>
         <script src="~/js/functions_landing.js"></script>
