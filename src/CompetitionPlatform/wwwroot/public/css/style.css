@@ -2264,6 +2264,9 @@ a.action_link:hover img, button.action_link:hover img { opacity: 1; }
 
 .btn_feedback svg { display: inline-block; vertical-align: middle; position: relative; top: -1px; width: 18px; width: 1.125rem; margin-right: 4px; margin-right: 0.25rem; }
 
+@media all and (max-width: 543px) { .btn_feedback { overflow: hidden; font-size: 0; letter-spacing: -1000px; padding-left: 10px; padding-right: 10px; }
+  .btn_feedback svg { margin-right: 0; } }
+
 ._copy_link { -webkit-transition: color 0.2s ease; -moz-transition: color 0.2s ease; -o-transition: color 0.2s ease; transition: color 0.2s ease; }
 
 .card__actions .action_link img { width: 20px; width: 1.25rem; }

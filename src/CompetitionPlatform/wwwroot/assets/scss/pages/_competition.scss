@@ -552,6 +552,18 @@
     @include rem(width, 18px);
     @include rem(margin-right, 4px);
   }
+
+  @media all and (max-width: $screen-mobile) {
+    overflow: hidden;
+    font-size: 0;
+    letter-spacing: -1000px;
+    padding-left: 10px;
+    padding-right: 10px;
+
+    svg {
+      margin-right: 0;
+    }
+  }
 }
 
 ._copy_link {
