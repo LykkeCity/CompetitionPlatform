@@ -33,7 +33,6 @@ namespace CompetitionPlatform.ScheduledJobs
                     case Status.Initiative:
                         break;
                     case Status.Registration:
-                        //if (project.CompetitionRegistrationDeadline < DateTime.Today)
                         if (project.CompetitionRegistrationDeadline < DateTime.UtcNow.Date)
                         {
                             project.ProjectStatus = Status.Submission.ToString();
@@ -41,7 +40,6 @@ namespace CompetitionPlatform.ScheduledJobs
                         }
                         break;
                     case Status.Submission:
-                        //if (project.ImplementationDeadline < DateTime.Today)
                         if (project.ImplementationDeadline < DateTime.UtcNow.Date)
                         {
                             project.ProjectStatus = project.SkipVoting ? Status.Archive.ToString() : Status.Voting.ToString();
@@ -49,7 +47,6 @@ namespace CompetitionPlatform.ScheduledJobs
                         }
                         break;
                     case Status.Voting:
-                        //if (project.VotingDeadline < DateTime.Today)
                         if (project.VotingDeadline < DateTime.UtcNow.Date)
                         {
                             project.ProjectStatus = Status.Archive.ToString();
