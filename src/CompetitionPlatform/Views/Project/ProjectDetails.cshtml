@@ -55,6 +55,7 @@
     var infoTabActive = "";
     var commentsTabActive = "";
     var participantsTabActive = "";
+    var resultsTabActive = "";
     var winnersTabActive = "";
 
     if (ViewBag.CommentsActive == true)
@@ -68,6 +69,10 @@
     else if (ViewBag.WinnersActive == true)
     {
         winnersTabActive = "active";
+    }
+    else if (ViewBag.ResultsActive == true)
+    {
+        resultsTabActive = "active";
     }
     else
     {
@@ -227,17 +232,17 @@
                         </div>
 
                         @await Html.PartialAsync("ProjectDetailsStatusPartial", new ProjectDetailsStatusViewModel
-           {
-               ProjectId = Model.Id,
-               Status = Model.Status,
-               VotesFor = Model.VotesFor,
-               VotesAgainst = Model.VotesAgainst,
-               CompetitionRegistrationDeadline = Model.CompetitionRegistrationDeadline,
-               ImplementationDeadline = Model.ImplementationDeadline,
-               VotingDeadline = Model.VotingDeadline,
-               IsParticipant = Model.IsParticipant,
-               HasResult = Model.ParticipantsPartial.HasResult
-           })
+                   {
+                       ProjectId = Model.Id,
+                       Status = Model.Status,
+                       VotesFor = Model.VotesFor,
+                       VotesAgainst = Model.VotesAgainst,
+                       CompetitionRegistrationDeadline = Model.CompetitionRegistrationDeadline,
+                       ImplementationDeadline = Model.ImplementationDeadline,
+                       VotingDeadline = Model.VotingDeadline,
+                       IsParticipant = Model.IsParticipant,
+                       HasResult = Model.ParticipantsPartial.HasResult
+                   })
                     </div>
                     <div class="col-xs-6 col-sm-12">
 
@@ -280,7 +285,7 @@
 
                     </div>
                 </div>
-            </div>  
+            </div>
 
             <div class="col-xs-12 col-sm-8 content__left">
 
@@ -300,7 +305,7 @@
                             </sup>
                         </a>
                     </li>
-                    <li role="presentation">
+                    <li role="presentation" class="@resultsTabActive">
                         <a href="#Results" aria-controls="results" role="tab" data-toggle="tab">
                             Results <sup>
                                 @resultsCount
@@ -379,7 +384,7 @@
                         @await Html.PartialAsync("CommentsPartial", Model.CommentsPartial)
                     </div>
 
-                    <div role="tabpanel" class="tab-pane" id="Results">
+                    <div role="tabpanel" class="tab-pane @resultsTabActive" id="Results">
                         @await Html.PartialAsync("ResultsPartial", Model.ResultsPartial)
                     </div>
 

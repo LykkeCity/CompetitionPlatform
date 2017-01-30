@@ -49,7 +49,14 @@
                             <div class="card__header">
                                 <div class="card__sum h3 pull-right">$@project.BudgetFirstPlace</div>
                                 <div class="card__title h3">
-                                    <a asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.Id">@project.Name</a>
+                                    @if (project.Status == Status.Voting)
+                                    {
+                                        <a asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.Id" asp-route-resultsActive=true>@project.Name</a>
+                                    }
+                                    else
+                                    {
+                                        <a asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.Id">@project.Name</a>
+                                    }
                                 </div>
                             </div>
                             <div class="card__desc">
@@ -94,7 +101,15 @@
                                         <i class="icon icon--follow"></i>Follow
                                     </a>
                                 }
-                                <a asp-area="" asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.Id" class="action_link">Read more</a>
+                                @if (project.Status == Status.Voting)
+                                {
+                                    <a asp-area="" asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.Id" asp-route-resultsActive=true class="action_link">Read more</a>
+                                }
+                                else
+                                {
+                                    <a asp-area="" asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.Id" class="action_link">Read more</a>
+                                }
+
                                 &middot;
                                 <a href="@facebookSharingUrl" class="action_link">Share</a>
                                 &middot;

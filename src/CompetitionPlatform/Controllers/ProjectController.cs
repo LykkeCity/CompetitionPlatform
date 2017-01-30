@@ -265,7 +265,8 @@ namespace CompetitionPlatform.Controllers
             return projectFollows;
         }
 
-        public async Task<IActionResult> ProjectDetails(string id, bool participantAdded = false, bool commentsActive = false, bool participantsActive = false, bool winnersActive = false)
+        public async Task<IActionResult> ProjectDetails(string id, bool participantAdded = false, bool commentsActive = false,
+            bool participantsActive = false, bool resultsActive = false, bool winnersActive = false)
         {
             if (participantAdded)
             {
@@ -285,6 +286,11 @@ namespace CompetitionPlatform.Controllers
             if (winnersActive)
             {
                 ViewBag.WinnersActive = true;
+            }
+
+            if (resultsActive)
+            {
+                ViewBag.ResultsActive = true;
             }
 
             var viewModel = await GetProjectViewModel(id);
