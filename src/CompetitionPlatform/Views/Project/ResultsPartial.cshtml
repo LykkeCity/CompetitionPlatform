@@ -44,6 +44,9 @@
             </tr>
             @foreach (var result in Model.Results)
             {
+
+                var userVotedForResult = Model.UserVotedForResults.ContainsKey(result.ParticipantId) && Model.UserVotedForResults[result.ParticipantId].Equals(true);
+
                 <tr>
                     <td class="board_name">
                         <div class="user_badge user_badge--small">
@@ -71,9 +74,17 @@
                             <form asp-controller="ProjectDetails" asp-action="VoteForResult" enctype="multipart/form-data">
                                 <input type="hidden" name="ProjectId" value="@result.ProjectId">
                                 <input type="hidden" name="ParticipantId" value="@result.ParticipantId">
-                                <input type="submit" value="+1" class="circle_voting_btn _vote_plus" />
-                            </form>
-                        </td>
+                                @if (userVotedForResult)
+                                {
+                                    <input type="submit" value="+1" class="circle_voting_btn _vote_plus voting-button-filled" />
+                                }
+                                else
+                                {
+                                    <input type="submit" value="+1" class="circle_voting_btn _vote_plus" />
+                                }
+
+                                </form>
+                            </td>
                     }
                     @if (closedVoting)
                     {

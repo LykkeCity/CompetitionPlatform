@@ -7,6 +7,7 @@ using AzureStorage.Queue;
 using CompetitionPlatform.Data.AzureRepositories.Project;
 using CompetitionPlatform.Data.AzureRepositories.Result;
 using CompetitionPlatform.Data.AzureRepositories.Users;
+using CompetitionPlatform.Data.AzureRepositories.Vote;
 using CompetitionPlatform.Data.ProjectCategory;
 using CompetitionPlatform.Helpers;
 using CompetitionPlatform.Models;
@@ -33,13 +34,15 @@ namespace CompetitionPlatform.Controllers
         private readonly IUserRolesRepository _userRolesRepository;
         private readonly IProjectWinnersService _winnersService;
         private readonly IAzureQueue<string> _emailsQueue;
+        private readonly IProjectResultVoteRepository _resultVoteRepository;
 
         public ProjectController(IProjectRepository projectRepository, IProjectCommentsRepository commentsRepository,
             IProjectFileRepository fileRepository, IProjectFileInfoRepository fileInfoRepository,
             IProjectParticipantsRepository participantsRepository, IProjectCategoriesRepository categoriesRepository,
             IProjectResultRepository resultRepository, IProjectFollowRepository projectFollowRepository,
             IProjectWinnersRepository winnersRepository, IUserRolesRepository userRolesRepository,
-            IProjectWinnersService winnersService, IAzureQueue<string> emailsQueue)
+            IProjectWinnersService winnersService, IAzureQueue<string> emailsQueue,
+            IProjectResultVoteRepository resultVoteRepository)
         {
             _projectRepository = projectRepository;
             _commentsRepository = commentsRepository;
@@ -53,6 +56,7 @@ namespace CompetitionPlatform.Controllers
             _userRolesRepository = userRolesRepository;
             _winnersService = winnersService;
             _emailsQueue = emailsQueue;
+            _resultVoteRepository = resultVoteRepository;
         }
 
         [Authorize]
@@ -265,8 +269,8 @@ namespace CompetitionPlatform.Controllers
             return projectFollows;
         }
 
-        public async Task<IActionResult> ProjectDetails(string id, bool participantAdded = false,bool votedForResult = false, bool votedTwice = false,
-            bool commentsActive = false,bool participantsActive = false, bool resultsActive = false, bool winnersActive = false)
+        public async Task<IActionResult> ProjectDetails(string id, bool participantAdded = false, bool votedForResult = false, bool votedTwice = false,
+            bool commentsActive = false, bool participantsActive = false, bool resultsActive = false, bool winnersActive = false)
         {
             if (participantAdded)
             {
@@ -358,6 +362,17 @@ namespace CompetitionPlatform.Controllers
                 commenterIsModerator.Add(comment.Id, isModerator);
             }
 
+            var userVotedForResults = new Dictionary<string, bool>();
+            var resultVotes = await _resultVoteRepository.GetProjectResultVotesAsync(project.Id);
+
+            foreach (var result in results)
+            {
+                var match =
+                    resultVotes.FirstOrDefault(x => x.ParticipantId == result.ParticipantId && x.VoterUserId == user.Email);
+
+                userVotedForResults.Add(result.ParticipantId, match != null && user.Email != null);
+            }
+
             var statusBarPartial = new ProjectDetailsStatusBarViewModel
             {
                 Status = project.Status,
@@ -392,7 +407,8 @@ namespace CompetitionPlatform.Controllers
                 Status = project.Status,
                 Results = results,
                 IsAdmin = isAdmin,
-                SkipVoting = project.SkipVoting
+                SkipVoting = project.SkipVoting,
+                UserVotedForResults = userVotedForResults
             };
 
             var projectViewModel = new ProjectViewModel

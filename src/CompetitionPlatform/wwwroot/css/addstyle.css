@@ -18,3 +18,8 @@
     border-top-color: rgb(238, 238, 238);
     margin-top: 15px;
 }
+
+.voting-button-filled {
+    background: #ab00ff;
+    color: #fff;
+}

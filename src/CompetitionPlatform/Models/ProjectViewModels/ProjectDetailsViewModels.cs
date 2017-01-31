@@ -77,6 +77,7 @@ namespace CompetitionPlatform.Models.ProjectViewModels
     {
         public Status Status { get; set; }
         public IEnumerable<IProjectResultData> Results { get; set; }
+        public Dictionary<string, bool> UserVotedForResults { get; set; }
         public double BudgetFirstPlace { get; set; }
         public double? BudgetSecondPlace { get; set; }
         public int ParticipantCount { get; set; }
