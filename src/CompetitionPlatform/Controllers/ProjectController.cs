@@ -265,12 +265,17 @@ namespace CompetitionPlatform.Controllers
             return projectFollows;
         }
 
-        public async Task<IActionResult> ProjectDetails(string id, bool participantAdded = false, bool commentsActive = false,
-            bool participantsActive = false, bool resultsActive = false, bool winnersActive = false)
+        public async Task<IActionResult> ProjectDetails(string id, bool participantAdded = false,bool votedForResult = false,
+            bool commentsActive = false,bool participantsActive = false, bool resultsActive = false, bool winnersActive = false)
         {
             if (participantAdded)
             {
                 ViewBag.ParticipantAdded = true;
+            }
+
+            if (votedForResult)
+            {
+                ViewBag.VotedForResult = true;
             }
 
             if (commentsActive)
