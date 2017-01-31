@@ -226,6 +226,38 @@
 
     </div>
 
+    <div class="modal modal--message fade" id="modal_voted_twice" tabindex="-1" role="dialog">
+
+        <div class="modal_valign">
+            <div class="modal_valign__row">
+                <div class="modal_valign__cell">
+
+                    <div class="modal__dialog" role="document">
+                        <div class="modal__content">
+                            <button type="button" class="close visible-xs" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+                            <div class="modal__header">
+                                <div class="status_icon status_icon--error"><img src="~/img/competition/error_icn.svg" alt=""></div>
+                            </div>
+
+                            <div class="modal__body">
+                                <h3>You have already voted!</h3>
+                                <div class="text">
+                                    <p>Your cannot vote twice for the same result!</p>
+                                </div>
+                            </div>
+                            <div class="modal__footer">
+                                <button type="button" class="btn btn-block" data-dismiss="modal">OK</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
     <a href="/Home/LeaveFeedback" class="btn btn_feedback">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 17 17">
             <defs>

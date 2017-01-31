@@ -353,9 +353,11 @@ namespace CompetitionPlatform.Controllers
 
                 await _resultRepository.UpdateAsync(result);
                 await CalculateScores(totalVotes, model.ProjectId);
+
+                return RedirectToAction("ProjectDetails", "Project", new { id = model.ProjectId, resultsActive = true, votedForResult = true });
             }
 
-            return RedirectToAction("ProjectDetails", "Project", new { id = model.ProjectId, resultsActive = true, votedForResult = true });
+            return RedirectToAction("ProjectDetails", "Project", new { id = model.ProjectId, resultsActive = true, votedTwice = true });
         }
 
         [Authorize]
