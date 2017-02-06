@@ -48,7 +48,6 @@
     "Microsoft.Extensions.Options.ConfigurationExtensions": "1.1.0",
     "Microsoft.IdentityModel.Protocols.OpenIdConnect": "2.0.0",
     "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.1.0",
-    "BundlerMinifier.Core": "2.2.306",
     "Lykke.EmailContentGenerator": "1.0.2",
     "Lykke.EmailSenderProducer": "1.0.3",
     "Lykke.Common": "1.1.4",
@@ -57,6 +56,7 @@
   },
 
   "tools": {
+    "BundlerMinifier.Core": "2.2.301",
     "Microsoft.AspNetCore.Razor.Tools": "1.0.0-preview2-final",
     "Microsoft.AspNetCore.Server.IISIntegration.Tools": "1.0.0-preview2-final",
     "Microsoft.EntityFrameworkCore.Tools": "1.0.0-preview2-final",
