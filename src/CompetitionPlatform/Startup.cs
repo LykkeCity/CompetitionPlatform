@@ -70,8 +70,6 @@ namespace CompetitionPlatform
 
             CheckSettings(Settings, Log);
 
-            
-
             try
             {
                 // Add framework services.
