@@ -356,8 +356,21 @@ namespace CompetitionPlatform.Controllers
 
                 return RedirectToAction("ProjectDetails", "Project", new { id = model.ProjectId, resultsActive = true, votedForResult = true });
             }
+            else
+            {
+                await _resultVoteRepository.DeleteAsync(model.ProjectId, model.ParticipantId, voterId);
+                var votes = await _resultVoteRepository.GetProjectResultVotesAsync(model.ProjectId);
 
-            return RedirectToAction("ProjectDetails", "Project", new { id = model.ProjectId, resultsActive = true, votedTwice = true });
+                var totalVotes = votes.Count();
+                var result = await _resultRepository.GetAsync(model.ProjectId, model.ParticipantId);
+
+                result.Votes -= 1;
+
+                await _resultRepository.UpdateAsync(result);
+                await CalculateScores(totalVotes, model.ProjectId);
+
+                return RedirectToAction("ProjectDetails", "Project", new { id = model.ProjectId, resultsActive = true, votedTwice = true });
+            }
         }
 
         [Authorize]
@@ -408,7 +421,14 @@ namespace CompetitionPlatform.Controllers
 
             foreach (var result in results)
             {
-                result.Score = result.Votes * 100 / totalVotes;
+                if (totalVotes == 0)
+                {
+                    result.Score = 0;
+                }
+                else
+                {
+                    result.Score = result.Votes * 100 / totalVotes;
+                }
                 await _resultRepository.UpdateAsync(result);
             }
         }
