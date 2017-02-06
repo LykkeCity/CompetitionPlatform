@@ -17,5 +17,6 @@ namespace CompetitionPlatform.Data.AzureRepositories.Vote
         Task SaveAsync(IProjectResultVoteData projectResultVoteData);
         Task<IProjectResultVoteData> GetAsync(string projectId, string participantId, string voterId);
         Task<IEnumerable<IProjectResultVoteData>> GetProjectResultVotesAsync(string projectId);
+        Task DeleteAsync(string projectId, string participantId, string voterId);
     }
 }

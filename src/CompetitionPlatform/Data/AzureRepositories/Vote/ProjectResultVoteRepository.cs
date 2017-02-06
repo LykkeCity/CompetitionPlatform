@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AzureStorage;
 using Microsoft.WindowsAzure.Storage.Table;
@@ -66,6 +67,14 @@ namespace CompetitionPlatform.Data.AzureRepositories.Vote
             var rowKey = ProjectResultVoteEntity.GenerateRowKey(participantId, voterId);
 
             return await _projectResultVoteTableStorage.GetDataAsync(partitionKey, rowKey);
+        }
+
+        public async Task DeleteAsync(string projectId, string participantId, string voterId)
+        {
+            var partitionKey = ProjectResultVoteEntity.GeneratePartitionKey(projectId);
+            var rowKey = ProjectResultVoteEntity.GenerateRowKey(participantId, voterId);
+
+            await _projectResultVoteTableStorage.DeleteAsync(partitionKey, rowKey);
         }
     }
 }
