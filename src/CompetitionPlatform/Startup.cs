@@ -224,6 +224,9 @@ namespace CompetitionPlatform
 
             if (string.IsNullOrEmpty(settings.Notifications.SlackQueueConnString))
                 WriteSettingsReadError(log, "SlackQueueConnString");
+
+            if (string.IsNullOrEmpty(settings.EmailServiceBusSettingsUrl))
+                WriteSettingsReadError(log, "EmailServiceBusSettingsUrl");
         }
 
         private void WriteSettingsReadError(ILog log, string elementName)
