@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using AzureStorage.Tables;
+using AzureStorage;
 using Microsoft.WindowsAzure.Storage.Table;
 
 namespace CompetitionPlatform.Data.AzureRepositories.Users
@@ -42,9 +41,9 @@ namespace CompetitionPlatform.Data.AzureRepositories.Users
 
     public class UserFeedbackRepository : IUserFeedbackRepository
     {
-        private readonly IAzureTableStorage<UserFeedbackEntity> _userFeedbackTableStorage;
+        private readonly INoSQLTableStorage<UserFeedbackEntity> _userFeedbackTableStorage;
 
-        public UserFeedbackRepository(IAzureTableStorage<UserFeedbackEntity> userFeedbackTableStorage)
+        public UserFeedbackRepository(INoSQLTableStorage<UserFeedbackEntity> userFeedbackTableStorage)
         {
             _userFeedbackTableStorage = userFeedbackTableStorage;
         }

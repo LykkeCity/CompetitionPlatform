@@ -26,7 +26,7 @@ namespace CompetitionPlatform.Controllers
         private readonly IProjectResultVoteRepository _resultVoteRepository;
         private readonly IProjectFollowRepository _projectFollowRepository;
         private readonly IFollowMailSentRepository _mailSentRepository;
-        private readonly IAzureQueue<string> _emailsQueue;
+        private readonly IQueueExt _emailsQueue;
         private readonly IUserRolesRepository _userRolesRepository;
         private readonly IProjectWinnersRepository _winnersRepository;
 
@@ -35,7 +35,7 @@ namespace CompetitionPlatform.Controllers
             IProjectRepository projectRepository, IProjectParticipantsRepository participantsRepository,
             IProjectResultRepository resultRepository, IProjectResultVoteRepository resultVoteRepository,
             IProjectFollowRepository projectFollowRepository, IFollowMailSentRepository mailSentRepository,
-            IAzureQueue<string> emailsQueue, IUserRolesRepository userRolesRepository,
+            IQueueExt emailsQueue, IUserRolesRepository userRolesRepository,
             IProjectWinnersRepository winnersRepository)
         {
             _commentsRepository = commentsRepository;

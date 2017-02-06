@@ -1,17 +1,15 @@
-﻿using CompetitionPlatform.Data.AzureRepositories.Project;
+﻿using AzureStorage;
+using AzureStorage.Blob;
+using CompetitionPlatform.Data.AzureRepositories.Project;
 using CompetitionPlatform.Data.AzureRepositories.Users;
 using Microsoft.Extensions.DependencyInjection;
 using Common.Log;
 using CompetitionPlatform.Services;
 using AzureStorage.Tables;
-using AzureStorage.Blobs;
 using AzureStorage.Queue;
 using CompetitionPlatform.Data.AzureRepositories.Result;
 using CompetitionPlatform.Data.AzureRepositories.Vote;
 using CompetitionPlatform.Data.ProjectCategory;
-using CompetitionPlatform.Helpers;
-using CompetitionPlatform.Models;
-using Microsoft.WindowsAzure.Storage.Queue;
 
 namespace CompetitionPlatform
 {
@@ -19,46 +17,46 @@ namespace CompetitionPlatform
     {
         public static void RegisterRepositories(this IServiceCollection services, string connectionString, ILog log)
         {
-            services.AddSingleton<IAzureTableStorage<ProjectEntity>>(
+            services.AddSingleton<INoSQLTableStorage<ProjectEntity>>(
                    new AzureTableStorage<ProjectEntity>(connectionString, "Projects", log));
 
-            services.AddSingleton<IAzureBlob>(
+            services.AddSingleton<IBlobStorage>(
                 new AzureBlobStorage(connectionString));
 
-            services.AddSingleton<IAzureTableStorage<UserEntity>>(
+            services.AddSingleton<INoSQLTableStorage<UserEntity>>(
                 new AzureTableStorage<UserEntity>(connectionString, "Users", log));
 
-            services.AddSingleton<IAzureTableStorage<CommentEntity>>(
+            services.AddSingleton<INoSQLTableStorage<CommentEntity>>(
                 new AzureTableStorage<CommentEntity>(connectionString, "ProjectComments", log));
 
-            services.AddSingleton<IAzureTableStorage<ProjectFileInfoEntity>>(
+            services.AddSingleton<INoSQLTableStorage<ProjectFileInfoEntity>>(
                 new AzureTableStorage<ProjectFileInfoEntity>(connectionString, "ProjectFilesInfo", log));
 
-            services.AddSingleton<IAzureTableStorage<ProjectVoteEntity>>(
+            services.AddSingleton<INoSQLTableStorage<ProjectVoteEntity>>(
                 new AzureTableStorage<ProjectVoteEntity>(connectionString, "ProjectVotes", log));
 
-            services.AddSingleton<IAzureTableStorage<ProjectParticipateEntity>>(
+            services.AddSingleton<INoSQLTableStorage<ProjectParticipateEntity>>(
                 new AzureTableStorage<ProjectParticipateEntity>(connectionString, "ProjectParticipants", log));
 
-            services.AddSingleton<IAzureTableStorage<ProjectResultEntity>>(
+            services.AddSingleton<INoSQLTableStorage<ProjectResultEntity>>(
                 new AzureTableStorage<ProjectResultEntity>(connectionString, "ProjectResults", log));
 
-            services.AddSingleton<IAzureTableStorage<ProjectResultVoteEntity>>(
+            services.AddSingleton<INoSQLTableStorage<ProjectResultVoteEntity>>(
                 new AzureTableStorage<ProjectResultVoteEntity>(connectionString, "ProjectResultVotes", log));
 
-            services.AddSingleton<IAzureTableStorage<ProjectFollowEntity>>(
+            services.AddSingleton<INoSQLTableStorage<ProjectFollowEntity>>(
                 new AzureTableStorage<ProjectFollowEntity>(connectionString, "ProjectFollows", log));
 
-            services.AddSingleton<IAzureTableStorage<WinnerEntity>>(
+            services.AddSingleton<INoSQLTableStorage<WinnerEntity>>(
                 new AzureTableStorage<WinnerEntity>(connectionString, "Winners", log));
 
-            services.AddSingleton<IAzureTableStorage<UserRoleEntity>>(
+            services.AddSingleton<INoSQLTableStorage<UserRoleEntity>>(
                 new AzureTableStorage<UserRoleEntity>(connectionString, "UserRoles", log));
 
-            services.AddSingleton<IAzureTableStorage<FollowMailSentEntity>>(
+            services.AddSingleton<INoSQLTableStorage<FollowMailSentEntity>>(
                 new AzureTableStorage<FollowMailSentEntity>(connectionString, "FollowMailSent", log));
 
-            services.AddSingleton<IAzureTableStorage<UserFeedbackEntity>>(
+            services.AddSingleton<INoSQLTableStorage<UserFeedbackEntity>>(
                 new AzureTableStorage<UserFeedbackEntity>(connectionString, "UserFeedback", log));
 
             services.AddTransient<IProjectRepository, ProjectRepository>();
@@ -86,19 +84,19 @@ namespace CompetitionPlatform
             services.AddTransient<ISmsSender, AuthMessageSender>();
         }
 
-        public static void RegisterEmailNotificationServices(this IServiceCollection services, string emailsQueueConnString)
-        {
-            services.AddSingleton<IAzureQueue<string>>(new AzureQueue<string>(emailsQueueConnString, "emailsqueue"));
-        }
+        //public static void RegisterEmailNotificationServices(this IServiceCollection services, string emailsQueueConnString)
+        //{
+        //    services.AddSingleton<IAzureQueue<string>>(new AzureQueue<string>(emailsQueueConnString, "emailsqueue"));
+        //}
 
         public static void RegisterSlackNotificationServices(this IServiceCollection services, string slackQueueConnString)
         {
-            services.AddSingleton<IAzureQueue<SlackMessage>>(new AzureQueue<SlackMessage>(slackQueueConnString, "slack-notifications"));
+            services.AddSingleton<IQueueExt>(new AzureQueueExt(slackQueueConnString, "slack-notifications"));
         }
 
         public static void RegisterInMemoryNotificationServices(this IServiceCollection services)
         {
-            services.AddSingleton<IAzureQueue<string>>(new QueueInMemory<string>());
+            services.AddSingleton<IQueueExt>(new QueueExtInMemory());
         }
     }
 }

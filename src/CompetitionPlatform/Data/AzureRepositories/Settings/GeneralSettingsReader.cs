@@ -1,5 +1,5 @@
 ﻿using System.Text;
-using AzureStorage.Blobs;
+using AzureStorage.Blob;
 using Common;
 
 namespace CompetitionPlatform.Data.AzureRepositories.Settings

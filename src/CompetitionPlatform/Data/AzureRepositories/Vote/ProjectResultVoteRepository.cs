@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using AzureStorage.Tables;
+using AzureStorage;
 using Microsoft.WindowsAzure.Storage.Table;
 
 namespace CompetitionPlatform.Data.AzureRepositories.Vote
@@ -41,9 +41,9 @@ namespace CompetitionPlatform.Data.AzureRepositories.Vote
 
     public class ProjectResultVoteRepository : IProjectResultVoteRepository
     {
-        private readonly IAzureTableStorage<ProjectResultVoteEntity> _projectResultVoteTableStorage;
+        private readonly INoSQLTableStorage<ProjectResultVoteEntity> _projectResultVoteTableStorage;
 
-        public ProjectResultVoteRepository(IAzureTableStorage<ProjectResultVoteEntity> projectResultVoteTableStorage)
+        public ProjectResultVoteRepository(INoSQLTableStorage<ProjectResultVoteEntity> projectResultVoteTableStorage)
         {
             _projectResultVoteTableStorage = projectResultVoteTableStorage;
         }

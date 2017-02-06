@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using AzureStorage.Tables;
+using AzureStorage;
 using Microsoft.WindowsAzure.Storage.Table;
 
 namespace CompetitionPlatform.Data.AzureRepositories.Users
@@ -36,9 +36,9 @@ namespace CompetitionPlatform.Data.AzureRepositories.Users
 
     public class FollowMailSentRepository : IFollowMailSentRepository
     {
-        private readonly IAzureTableStorage<FollowMailSentEntity> _mailSentStorage;
+        private readonly INoSQLTableStorage<FollowMailSentEntity> _mailSentStorage;
 
-        public FollowMailSentRepository(IAzureTableStorage<FollowMailSentEntity> mailSentStorage)
+        public FollowMailSentRepository(INoSQLTableStorage<FollowMailSentEntity> mailSentStorage)
         {
             _mailSentStorage = mailSentStorage;
         }

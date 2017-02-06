@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AzureStorage;
 using Microsoft.WindowsAzure.Storage.Table;
-using AzureStorage.Tables;
 
 namespace CompetitionPlatform.Data.AzureRepositories.Users
 {
@@ -57,9 +56,9 @@ namespace CompetitionPlatform.Data.AzureRepositories.Users
 
     public class ProjectWinnersRepository : IProjectWinnersRepository
     {
-        private readonly IAzureTableStorage<WinnerEntity> _winnersStorage;
+        private readonly INoSQLTableStorage<WinnerEntity> _winnersStorage;
 
-        public ProjectWinnersRepository(IAzureTableStorage<WinnerEntity> winnersStorage)
+        public ProjectWinnersRepository(INoSQLTableStorage<WinnerEntity> winnersStorage)
         {
             _winnersStorage = winnersStorage;
         }

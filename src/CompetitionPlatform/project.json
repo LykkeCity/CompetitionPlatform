@@ -23,8 +23,6 @@
       "version": "1.0.0-preview2-final",
       "type": "build"
     },
-    "AzureStorage": "1.0.0-*",
-    "Common": "1.0.0-*",
     "Newtonsoft.Json": "9.0.1",
     "Quartz": "3.0.0-alpha2",
     "PaulMiami.AspNetCore.Mvc.Recaptcha": "1.1.1",
@@ -50,7 +48,12 @@
     "Microsoft.Extensions.Options.ConfigurationExtensions": "1.1.0",
     "Microsoft.IdentityModel.Protocols.OpenIdConnect": "2.0.0",
     "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.1.0",
-    "BundlerMinifier.Core": "2.2.306"
+    "BundlerMinifier.Core": "2.2.306",
+    "Lykke.EmailContentGenerator": "1.0.2",
+    "Lykke.EmailSenderProducer": "1.0.3",
+    "Lykke.Common": "1.1.4",
+    "Lykke.AzureStorage": "1.2.6",
+    "iTextSharp.LGPLv2.Core": "1.2.3"
   },
 
   "tools": {

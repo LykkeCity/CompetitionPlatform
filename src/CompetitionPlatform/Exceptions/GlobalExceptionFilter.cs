@@ -10,7 +10,7 @@ namespace CompetitionPlatform.Exceptions
     public class GlobalExceptionFilter : IExceptionFilter, IDisposable
     {
         private readonly ILog _log;
-        private readonly IAzureQueue<SlackMessage> _slackMessageQueue;
+        private readonly IQueueExt _slackMessageQueue;
 
         public GlobalExceptionFilter(ILog log, string slackNotificationsConnString)
         {
@@ -18,11 +18,11 @@ namespace CompetitionPlatform.Exceptions
 
             if (!string.IsNullOrEmpty(slackNotificationsConnString))
             {
-                _slackMessageQueue = new AzureQueue<SlackMessage>(slackNotificationsConnString, "slack-notifications");
+                _slackMessageQueue = new AzureQueueExt(slackNotificationsConnString, "slack-notifications");
             }
             else
             {
-                _slackMessageQueue = new QueueInMemory<SlackMessage>();
+                _slackMessageQueue = new QueueExtInMemory();
             }
         }
 
@@ -31,7 +31,7 @@ namespace CompetitionPlatform.Exceptions
             var controller = context.RouteData.Values["controller"];
             var action = context.RouteData.Values["action"];
 
-            _log.WriteError("Exception", "LykkeStreams", $"Controller: {controller}, action: {action}", context.Exception).Wait();
+            _log.WriteErrorAsync("Exception", "LykkeStreams", $"Controller: {controller}, action: {action}", context.Exception).Wait();
 
             var message = new SlackMessage
             {

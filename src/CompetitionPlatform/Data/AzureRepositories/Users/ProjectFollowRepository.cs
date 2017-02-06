@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using AzureStorage.Tables;
+using AzureStorage;
 using Microsoft.WindowsAzure.Storage.Table;
 
 namespace CompetitionPlatform.Data.AzureRepositories.Users
@@ -43,9 +43,9 @@ namespace CompetitionPlatform.Data.AzureRepositories.Users
     }
     public class ProjectFollowRepository : IProjectFollowRepository
     {
-        private readonly IAzureTableStorage<ProjectFollowEntity> _projectFollowTableStorage;
+        private readonly INoSQLTableStorage<ProjectFollowEntity> _projectFollowTableStorage;
 
-        public ProjectFollowRepository(IAzureTableStorage<ProjectFollowEntity> projectFollowTableStorage)
+        public ProjectFollowRepository(INoSQLTableStorage<ProjectFollowEntity> projectFollowTableStorage)
         {
             _projectFollowTableStorage = projectFollowTableStorage;
         }

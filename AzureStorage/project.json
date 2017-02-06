@@ -2,7 +2,7 @@
   "version": "1.0.0-*",
 
   "dependencies": {
-    "Common": "1.0.0-*",
+    "Lykke.Common": "1.1.4",
     "NETStandard.Library": "1.6.1",
     "WindowsAzure.Storage": "8.0.1"
   },

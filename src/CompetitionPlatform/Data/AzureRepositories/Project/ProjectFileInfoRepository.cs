@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using AzureStorage.Tables;
+using AzureStorage;
 using Microsoft.WindowsAzure.Storage.Table;
 
 namespace CompetitionPlatform.Data.AzureRepositories.Project
@@ -36,9 +36,9 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
 
     public class ProjectFileInfoRepository : IProjectFileInfoRepository
     {
-        private readonly IAzureTableStorage<ProjectFileInfoEntity> _projectFileInfoTableStorage;
+        private readonly INoSQLTableStorage<ProjectFileInfoEntity> _projectFileInfoTableStorage;
 
-        public ProjectFileInfoRepository(IAzureTableStorage<ProjectFileInfoEntity> projectFileInfoTableStorage)
+        public ProjectFileInfoRepository(INoSQLTableStorage<ProjectFileInfoEntity> projectFileInfoTableStorage)
         {
             _projectFileInfoTableStorage = projectFileInfoTableStorage;
         }

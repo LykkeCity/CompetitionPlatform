@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AzureStorage.Tables;
+using AzureStorage;
 using Microsoft.WindowsAzure.Storage.Table;
 
 namespace CompetitionPlatform.Data.AzureRepositories.Project
@@ -58,9 +58,9 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
 
     public class ProjectCommentsRepository : IProjectCommentsRepository
     {
-        private readonly IAzureTableStorage<CommentEntity> _projectCommentsTableStorage;
+        private readonly INoSQLTableStorage<CommentEntity> _projectCommentsTableStorage;
 
-        public ProjectCommentsRepository(IAzureTableStorage<CommentEntity> projectCommentsTableStorage)
+        public ProjectCommentsRepository(INoSQLTableStorage<CommentEntity> projectCommentsTableStorage)
         {
             _projectCommentsTableStorage = projectCommentsTableStorage;
         }

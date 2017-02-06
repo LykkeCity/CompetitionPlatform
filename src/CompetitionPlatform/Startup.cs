@@ -63,12 +63,15 @@ namespace CompetitionPlatform
             }
             catch (Exception ex)
             {
-                Log.WriteError("Startup", "ReadSettingsFile", "Reading Settings File", ex).Wait();
+                Log.WriteErrorAsync("Startup", "ReadSettingsFile", "Reading Settings File", ex).Wait();
             }
 
             var connectionString = Settings.Azure.StorageConnString;
 
             CheckSettings(Settings, Log);
+
+            
+
             try
             {
                 // Add framework services.
@@ -88,22 +91,22 @@ namespace CompetitionPlatform
 
                 services.RegisterLyykeServices();
 
-                if (HostingEnvironment.IsProduction() && !string.IsNullOrEmpty(notificationEmailsQueueConnString) &&
-                    !string.IsNullOrEmpty(notificationSlackQueueConnString))
-                {
-                    services.RegisterEmailNotificationServices(notificationEmailsQueueConnString);
-                }
-                else
-                {
+                //if (HostingEnvironment.IsProduction() && !string.IsNullOrEmpty(notificationEmailsQueueConnString) &&
+                //    !string.IsNullOrEmpty(notificationSlackQueueConnString))
+                //{
+                //    services.RegisterEmailNotificationServices(notificationEmailsQueueConnString);
+                //}
+                //else
+                //{
                     services.RegisterInMemoryNotificationServices();
-                }
+                //}
 
                 services.RegisterRepositories(connectionString, Log);
                 JobScheduler.Start(connectionString, Log);
             }
             catch (Exception ex)
             {
-                Log.WriteError("Startup", "RegisterServices", "Registering Repositories and services", ex).Wait();
+                Log.WriteErrorAsync("Startup", "RegisterServices", "Registering Repositories and services", ex).Wait();
             }
         }
 
@@ -195,7 +198,7 @@ namespace CompetitionPlatform
             }
             catch (Exception ex)
             {
-                Log.WriteError("Startup", "Configure", "Configuring App and Authentication", ex).Wait();
+                Log.WriteErrorAsync("Startup", "Configure", "Configuring App and Authentication", ex).Wait();
             }
         }
 
@@ -225,7 +228,7 @@ namespace CompetitionPlatform
 
         private void WriteSettingsReadError(ILog log, string elementName)
         {
-            log.WriteError("Startup:ReadSettings", "Read " + elementName, elementName + " Missing or Empty",
+            log.WriteErrorAsync("Startup:ReadSettings", "Read " + elementName, elementName + " Missing or Empty",
                 new Exception(elementName + " is missing from the settings file!")).Wait();
         }
     }

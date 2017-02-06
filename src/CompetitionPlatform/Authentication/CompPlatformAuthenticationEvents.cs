@@ -15,7 +15,7 @@ namespace CompetitionPlatform.Authentication
     public class CompPlatformAuthenticationEvents : OpenIdConnectEvents
     {
         private readonly IRegisterMailSentRepository _mailSentRepository;
-        private readonly IAzureQueue<string> _emailsQueue;
+        private readonly IQueueExt _emailsQueue;
 
         public CompPlatformAuthenticationEvents(ILog log, IHostingEnvironment hostingEnvironment, string connString, string emailsQueueConnString)
         {
@@ -23,11 +23,11 @@ namespace CompetitionPlatform.Authentication
 
             if (hostingEnvironment.IsProduction() && !string.IsNullOrEmpty(emailsQueueConnString))
             {
-                _emailsQueue = new AzureQueue<string>(emailsQueueConnString, "emailsqueue");
+                _emailsQueue = new AzureQueueExt(emailsQueueConnString, "emailsqueue");
             }
             else
             {
-                _emailsQueue = new QueueInMemory<string>();
+                _emailsQueue = new QueueExtInMemory();
             }
         }
 

@@ -1,16 +1,16 @@
-﻿using AzureStorage.Blobs;
-using System.IO;
+﻿using System.IO;
 using System.Threading.Tasks;
+using AzureStorage;
 
 namespace CompetitionPlatform.Data.AzureRepositories.Project
 {
     public class ProjectFileRepository : IProjectFileRepository
     {
-        private readonly IAzureBlob _blobStorage;
+        private readonly IBlobStorage _blobStorage;
 
         private const string ContainerName = "projectfiles";
 
-        public ProjectFileRepository(IAzureBlob blobStorage)
+        public ProjectFileRepository(IBlobStorage blobStorage)
         {
             _blobStorage = blobStorage;
         }

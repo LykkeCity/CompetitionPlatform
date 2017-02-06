@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AzureStorage.Tables;
+﻿using System.Threading.Tasks;
+using AzureStorage;
 using Microsoft.WindowsAzure.Storage.Table;
 
 namespace CompetitionPlatform.Data.AzureRepositories.Users
@@ -24,9 +21,9 @@ namespace CompetitionPlatform.Data.AzureRepositories.Users
 
     public class UserRolesRepository : IUserRolesRepository
     {
-        private readonly IAzureTableStorage<UserRoleEntity> _userRoleTableStorage;
+        private readonly INoSQLTableStorage<UserRoleEntity> _userRoleTableStorage;
 
-        public UserRolesRepository(IAzureTableStorage<UserRoleEntity> userRoleTableStorage)
+        public UserRolesRepository(INoSQLTableStorage<UserRoleEntity> userRoleTableStorage)
         {
             _userRoleTableStorage = userRoleTableStorage;
         }

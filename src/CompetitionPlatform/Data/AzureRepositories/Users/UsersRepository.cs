@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using AzureStorage.Tables;
+using AzureStorage;
 using Microsoft.WindowsAzure.Storage.Table;
 
 namespace CompetitionPlatform.Data.AzureRepositories.Users
@@ -76,9 +75,9 @@ namespace CompetitionPlatform.Data.AzureRepositories.Users
 
     public class UsersRepository : IUsersRepository
     {
-        private readonly IAzureTableStorage<UserEntity> _tableStorage;
+        private readonly INoSQLTableStorage<UserEntity> _tableStorage;
 
-        public UsersRepository(IAzureTableStorage<UserEntity> tableStorage)
+        public UsersRepository(INoSQLTableStorage<UserEntity> tableStorage)
         {
             _tableStorage = tableStorage;
         }

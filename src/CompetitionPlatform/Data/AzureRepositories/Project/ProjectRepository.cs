@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AzureStorage;
 using CompetitionPlatform.Models;
 using Microsoft.WindowsAzure.Storage.Table;
-using AzureStorage.Tables;
 
 namespace CompetitionPlatform.Data.AzureRepositories.Project
 {
@@ -107,9 +107,9 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
 
     public class ProjectRepository : IProjectRepository
     {
-        private readonly IAzureTableStorage<ProjectEntity> _projectsTableStorage;
+        private readonly INoSQLTableStorage<ProjectEntity> _projectsTableStorage;
 
-        public ProjectRepository(IAzureTableStorage<ProjectEntity> projectsTableStorage)
+        public ProjectRepository(INoSQLTableStorage<ProjectEntity> projectsTableStorage)
         {
             _projectsTableStorage = projectsTableStorage;
         }

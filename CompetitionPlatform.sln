@@ -14,10 +14,6 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "CompetitionPlatform", "src\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{FC407B0C-D286-4C44-B9B9-936434CF0760}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Common", "Common\Common.xproj", "{04DFCF94-7867-4DA9-9902-08673044267F}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "AzureStorage", "AzureStorage\AzureStorage.xproj", "{14467E8D-2B3E-4B0A-8787-86D096D01F42}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,14 +24,6 @@ Global
 		{6A3B572A-67B5-4E08-97E0-84B0CC9AA4FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6A3B572A-67B5-4E08-97E0-84B0CC9AA4FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6A3B572A-67B5-4E08-97E0-84B0CC9AA4FB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{04DFCF94-7867-4DA9-9902-08673044267F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{04DFCF94-7867-4DA9-9902-08673044267F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{04DFCF94-7867-4DA9-9902-08673044267F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{04DFCF94-7867-4DA9-9902-08673044267F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{14467E8D-2B3E-4B0A-8787-86D096D01F42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{14467E8D-2B3E-4B0A-8787-86D096D01F42}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{14467E8D-2B3E-4B0A-8787-86D096D01F42}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{14467E8D-2B3E-4B0A-8787-86D096D01F42}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -43,7 +31,5 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{6A3B572A-67B5-4E08-97E0-84B0CC9AA4FB} = {C6B4D0F5-8E90-4927-A21D-EFCB3DD857D3}
 		{FC407B0C-D286-4C44-B9B9-936434CF0760} = {C6B4D0F5-8E90-4927-A21D-EFCB3DD857D3}
-		{04DFCF94-7867-4DA9-9902-08673044267F} = {FC407B0C-D286-4C44-B9B9-936434CF0760}
-		{14467E8D-2B3E-4B0A-8787-86D096D01F42} = {FC407B0C-D286-4C44-B9B9-936434CF0760}
 	EndGlobalSection
 EndGlobal

@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AzureStorage.Tables;
+﻿using System.Threading.Tasks;
+using AzureStorage;
 using Microsoft.WindowsAzure.Storage.Table;
 
 namespace CompetitionPlatform.Data.AzureRepositories.Users
@@ -36,9 +33,9 @@ namespace CompetitionPlatform.Data.AzureRepositories.Users
 
     public class RegisterMailSentRepository : IRegisterMailSentRepository
     {
-        private readonly IAzureTableStorage<RegisterMailSentEntity> _mailSentStorage;
+        private readonly INoSQLTableStorage<RegisterMailSentEntity> _mailSentStorage;
 
-        public RegisterMailSentRepository(IAzureTableStorage<RegisterMailSentEntity> mailSentStorage)
+        public RegisterMailSentRepository(INoSQLTableStorage<RegisterMailSentEntity> mailSentStorage)
         {
             _mailSentStorage = mailSentStorage;
         }
