@@ -60,18 +60,40 @@
                                 </div>
                             </div>
                             <div class="card__desc">
-                                <a href="" class="label @statusColor">@projectStatus</a>
                                 @if (project.Status == Status.Registration)
                                 {
-                                    <span class="label label--text @statusColor"><i class="icon icon--deadline_fill"></i> @project.ImplementationDeadline.ToString("dd.MM.yyyy")</span>
+                                    <span href="" class="label label--blue"><i class="icon icon--deadline_fill"></i> @projectStatus @project.CompetitionRegistrationDeadline.ToString("dd.MM.yyyy")</span>
+                                    <span class="label label--text label--gray">Submission @project.ImplementationDeadline.ToString("dd.MM.yyyy")</span>
                                 }
-                                @if (project.Status == Status.Submission)
+                                else if (project.Status == Status.Submission)
                                 {
-                                    <span class="label label--text @statusColor"><i class="icon icon--deadline_fill"></i> @project.ImplementationDeadline.ToString("dd.MM.yyyy")</span>
+                                    var daysLeft = (project.ImplementationDeadline - DateTime.UtcNow.Date).Days;
+                                    var daysLeftText = "";
+
+
+                                    if (daysLeft == 1)
+                                    {
+                                        daysLeftText = "ends in " + daysLeft + " day";
+                                    }
+                                    else if (daysLeft == 0)
+                                    {
+                                        daysLeftText = "ends today";
+                                    }
+                                    else
+                                    {
+                                        daysLeftText = "ends in " + daysLeft + " days";
+                                    }
+
+                                    <span href="" class="label label--green"><i class="icon icon--deadline_fill"></i> @projectStatus @project.ImplementationDeadline.ToString("dd.MM.yyyy")</span>
+                                    <span class="label label--text label--gray">@daysLeftText</span>
                                 }
-                                @if (project.Status == Status.Voting)
+                                else if (project.Status == Status.Voting)
                                 {
-                                    <span class="label label--text @statusColor"><i class="icon icon--deadline_fill"></i> @project.VotingDeadline.ToString("dd.MM.yyyy")</span>
+                                    <span href="" class="label label--yellow"><i class="icon icon--deadline_fill"></i> @projectStatus @project.VotingDeadline.ToString("dd.MM.yyyy")</span>
+                                }
+                                else
+                                {
+                                    <span href="" class="label @statusColor">@projectStatus</span>
                                 }
                             </div>
                             <p class="card__text">
