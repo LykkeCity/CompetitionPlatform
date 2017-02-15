@@ -408,7 +408,8 @@ namespace CompetitionPlatform.Controllers
                 Results = results,
                 IsAdmin = isAdmin,
                 SkipVoting = project.SkipVoting,
-                UserVotedForResults = userVotedForResults
+                UserVotedForResults = userVotedForResults,
+                SubmissionsDeadline = project.ImplementationDeadline
             };
 
             var projectViewModel = new ProjectViewModel

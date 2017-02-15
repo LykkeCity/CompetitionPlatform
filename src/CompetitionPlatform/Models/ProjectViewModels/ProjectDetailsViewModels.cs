@@ -85,6 +85,7 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public IEnumerable<IWinnerData> Winners { get; set; }
         public bool IsAdmin { get; set; }
         public bool SkipVoting { get; set; }
+        public DateTime SubmissionsDeadline { get; set; }
     }
 
     public class EditResultViewModel

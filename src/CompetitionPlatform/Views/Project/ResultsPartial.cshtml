@@ -15,10 +15,16 @@
 @if (showResults)
 {
     <div class="banner banner--results">
-        <img src="~/img/competition/banner-coin.svg" class="pull-right" width="88" alt="banner-coin">
+        <img src="~/img/competition/winner-voting-icn.svg" class="pull-left" width="80" alt="banner-coin">
         <div class="banner__content">
             <h4>Help us determine the winner!</h4>
-            <p>Check the completed task, participants of the contest and choose the best result. You can cast votes for the various participants.</p>
+            <p>
+                Check the completed task, participants of the contest and choose the best result. You can cast votes for the various participants. 
+                @if (Model.Status != Status.Voting && Model.Status != Status.Archive)
+                {
+                    <span>Voting will open after @Model.SubmissionsDeadline.ToString("MMMM d, yyyy.")</span>
+                }
+            </p>
         </div>
     </div>
 
@@ -83,8 +89,8 @@
                                     <input type="submit" value="+1" class="circle_voting_btn _vote_plus" />
                                 }
 
-                                </form>
-                            </td>
+                            </form>
+                        </td>
                     }
                     @if (closedVoting)
                     {
