@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="82px" height="71px" viewBox="0 0 82 71" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 42 (36781) - http://www.bohemiancoding.com/sketch -->
+    <title>7F6B9479-2C1F-4803-89BB-D4C73D4E0C29</title>
+    <desc>Created with sketchtool.</desc>
+    <defs>
+        <linearGradient x1="50%" y1="-3.33066907e-14%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#FFCB48" offset="0%"></stop>
+            <stop stop-color="#FFAE2C" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="02_project" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="02_project/05a_results" transform="translate(-77.000000, -736.000000)">
+            <g id="winner_voting_icn" transform="translate(78.000000, 737.000000)">
+                <g id="Group-20-Copy">
+                    <path d="M9,34 L29,34 L29,65.994357 C29,66.5497583 28.5956028,66.790863 28.1125667,66.5410574 L19,61.8284271 L9.88743329,66.5410574 C9.39731742,66.7945244 9,66.5584559 9,65.994357 L9,34 Z" id="Rectangle-7-Copy" stroke="#333333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#FFFFFF" transform="translate(19.000000, 50.500000) rotate(45.000000) translate(-19.000000, -50.500000) "></path>
+                    <path d="M51,34 L71,34 L71,65.994357 C71,66.5497583 70.5956028,66.790863 70.1125667,66.5410574 L61,61.8284271 L51.8874333,66.5410574 C51.3973174,66.7945244 51,66.5584559 51,65.994357 L51,34 Z" id="Rectangle-7-Copy" stroke="#333333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#FFFFFF" transform="translate(61.000000, 50.500000) rotate(-45.000000) translate(-61.000000, -50.500000) "></path>
+                    <g id="lykke_coins_icn" transform="translate(8.000000, 0.000000)">
+                        <g id="token_design_icn">
+                            <g id="comisssion_free_icn">
+                                <g>
+                                    <circle id="Oval-5-Copy-4" stroke="#333333" stroke-width="2" fill="#FFFFFF" cx="32" cy="32" r="32"></circle>
+                                    <ellipse id="Oval-5-Copy-6" fill="url(#linearGradient-1)" cx="32" cy="32" rx="27" ry="27"></ellipse>
+                                </g>
+                            </g>
+                        </g>
+                        <g id="Group-10-Copy" transform="translate(31.646447, 30.387628) rotate(15.000000) translate(-31.646447, -30.387628) translate(23.146447, 20.887628)"></g>
+                    </g>
+                </g>
+                <path d="M55,45.0653691 C55,39.6642991 44.0508158,38.9134871 44.0508158,36.3686032 C44.0508158,32.8298989 47.5896499,33.829166 48.1020564,25.194409 C48.521414,18.1291509 42.8233345,17 40.0004249,17 C37.1766655,17 31.5134262,18.1274749 31.8979436,25.194409 C32.364463,33.7591963 35.9487593,32.8298989 35.9487593,36.3686032 C35.9487593,38.9134871 25,39.6642991 25,45.0653691" id="Stroke-2" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+            </g>
+        </g>
+    </g>
+</svg>

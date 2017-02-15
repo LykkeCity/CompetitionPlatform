@@ -120,3 +120,41 @@ if (url.match('#')) {
 $('.nav-tabs a').on('shown.bs.tab', function (e) {
   window.location.hash = prefix + e.target.hash.split('#')[1] ;
 })
+
+$(function() {
+  $('[data-toggle="popover"]').popover({
+    container: 'body',
+    html: true
+  });
+
+  $('[data-toggle="switcher"]').click(function () {
+    var target = $(this).data('target');
+
+    $(target).animate({
+      height: "toggle",
+      opacity: "toggle"
+    }, "fast");
+  });
+})
+
+$(function() {
+  var $fileuploadBtn = $('.fileupload__btn'),
+    $field = $fileuploadBtn.siblings('.fileupload__field'),
+    $notice = $fileuploadBtn.siblings('.fileupload__notice');
+
+  $fileuploadBtn.on('click', function() {
+    $field.click()
+
+    setTimeout(function() {
+      if ( $field.val() ) {
+        $notice.text($field.val().split('\\').pop())
+      }
+    }, 1);
+
+    $field.change(function() {
+      var files = [], fileArr, filename;
+      filename = $(this).val().split('\\').pop();
+      $notice.text( filename ).attr('title', filename)
+    });
+  })
+});
