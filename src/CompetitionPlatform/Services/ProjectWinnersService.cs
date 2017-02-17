@@ -104,7 +104,8 @@ namespace CompetitionPlatform.Services
                     WinningScore = firstPlaceWinner.Value
                 };
 
-                await _winnersRepository.SaveAsync(firstWinner);
+                if (await WinnerIsEligible(firstWinner.ProjectId, firstWinner.WinnerId))
+                    await _winnersRepository.SaveAsync(firstWinner);
             }
 
             if (project.BudgetSecondPlace != null)
@@ -126,9 +127,21 @@ namespace CompetitionPlatform.Services
                         WinningScore = winner.Value
                     };
 
-                    await _winnersRepository.SaveAsync(secondWinner);
+                    if (await WinnerIsEligible(secondWinner.ProjectId, secondWinner.WinnerId))
+                        await _winnersRepository.SaveAsync(secondWinner);
                 }
             }
+        }
+
+        private async Task<bool> WinnerIsEligible(string projectId, string participantId)
+        {
+            var votes = await _resultVoteRepository.GetProjectResultVotesAsync(projectId);
+            var projectResultVoteDatas = votes as IList<IProjectResultVoteData> ?? votes.ToList();
+
+            var adminVotes = projectResultVoteDatas.Where(x => x.Type == "ADMIN" && x.ParticipantId == participantId);
+            var authorVotes = projectResultVoteDatas.Where(x => x.Type == "AUTHOR" && x.ParticipantId == participantId);
+
+            return adminVotes.Any() && authorVotes.Any();
         }
     }
 }
