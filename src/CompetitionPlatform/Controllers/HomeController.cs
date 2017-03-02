@@ -429,5 +429,13 @@ namespace CompetitionPlatform.Controllers
         {
             return typeof(HomeController).GetTypeInfo().Assembly.GetName().Version.ToString();
         }
+
+        public async Task<string> ActiveProjectsCount()
+        {
+            var projects = await _projectRepository.GetProjectsAsync();
+            projects = projects.Where(x => x.ProjectStatus != Status.Initiative.ToString() && x.ProjectStatus != Status.Archive.ToString());
+
+            return projects.Count().ToString();
+        }
     }
 }
