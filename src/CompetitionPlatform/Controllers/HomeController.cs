@@ -433,7 +433,9 @@ namespace CompetitionPlatform.Controllers
         public async Task<string> ActiveProjectsCount()
         {
             var projects = await _projectRepository.GetProjectsAsync();
-            projects = projects.Where(x => x.ProjectStatus != Status.Initiative.ToString() && x.ProjectStatus != Status.Archive.ToString());
+            projects = projects.Where(x => x.ProjectStatus != Status.Initiative.ToString() &&
+                                           x.ProjectStatus != Status.Archive.ToString() &&
+                                           x.ProjectStatus != Status.Draft.ToString());
 
             return projects.Count().ToString();
         }
