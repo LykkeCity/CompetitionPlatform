@@ -68,6 +68,8 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
             UserAgent = src.UserAgent;
             SkipVoting = src.SkipVoting;
             SkipRegistration = src.SkipRegistration;
+            AuthorId = src.AuthorId;
+            AuthorFullName = src.AuthorFullName;
         }
 
         public static ProjectEntity Create(IProjectData src)

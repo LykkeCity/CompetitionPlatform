@@ -339,6 +339,28 @@
                     </div>
                 </div>
 
+                @if (Model.IsAdmin)
+            {
+                <h4 class="form_title">project author</h4>
+
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <div class="form-group">
+                                <label asp-for="AuthorId" class="control-label"></label>
+                                <input asp-for="AuthorId" class="form-control" />
+                                <span asp-validation-for="AuthorId" class="text-danger" />
+                            </div>
+                        </div>
+                        <div class="col-sm-7">
+                            <div class="form-group">
+                                <label asp-for="AuthorFullName" class="control-label"></label>
+                                <input asp-for="AuthorFullName" class="form-control" />
+                                <span asp-validation-for="AuthorFullName" class="text-danger" />
+                            </div>
+                        </div>
+                    </div>
+                }
+
                 <div class="form__submit">
                     <div class="row">
                         <div class="col-sm-6">

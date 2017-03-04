@@ -65,7 +65,13 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public IFormFile File { set; get; }
         public DateTime Created { get; set; }
         public DateTime LastModified { get; set; }
+
+        [Required]
+        [Display(Name = "Author Email")]
         public string AuthorId { get; set; }
+
+        [Required]
+        [Display(Name = "Author Full Name")]
         public string AuthorFullName { get; set; }
         public ProjectCommentPartialViewModel CommentsPartial { get; set; }
         public ProjectParticipantsPartialViewModel ParticipantsPartial { get; set; }
