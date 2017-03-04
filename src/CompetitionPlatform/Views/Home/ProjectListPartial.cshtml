@@ -16,6 +16,9 @@
 
                 @switch (project.Status)
                 {
+                    case Status.Draft:
+                        statusColor = "label--flat label--gray";
+                        break;
                     case Status.Initiative:
                         statusColor = "label--blue";
                         projectCount = (votesCount == 1) ? votesCount + " vote" : votesCount + " votes";
