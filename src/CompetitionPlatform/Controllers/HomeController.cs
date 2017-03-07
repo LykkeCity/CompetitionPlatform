@@ -55,6 +55,7 @@ namespace CompetitionPlatform.Controllers
         public async Task<IActionResult> Allprojects()
         {
             var viewModel = await GetProjectListViewModel();
+            viewModel.Projects = viewModel.Projects.OrderBy(x => x.Status).ThenBy(x => x.BudgetFirstPlace);
             return View(viewModel);
         }
 
