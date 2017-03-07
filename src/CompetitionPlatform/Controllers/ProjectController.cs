@@ -87,11 +87,6 @@ namespace CompetitionPlatform.Controllers
                 }
             }
 
-            //if (user.Documents.Contains("Selfie") && user.Documents.Contains("IdCard"))
-            //{
-            //    return View("CreateProject");
-            //}
-
             return View("CreateClosed");
         }
 
