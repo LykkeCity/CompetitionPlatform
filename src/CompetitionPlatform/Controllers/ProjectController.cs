@@ -96,12 +96,13 @@ namespace CompetitionPlatform.Controllers
             var user = GetAuthenticatedUser();
 
             var viewModel = await GetProjectViewModel(id);
+            viewModel.IsAuthor = viewModel.AuthorId == user.Email;
 
             if (viewModel.IsAdmin)
             {
                 return View("EditProject", viewModel);
             }
-            if (viewModel.Status == Status.Initiative && viewModel.AuthorId == user.Email)
+            if ((viewModel.Status == Status.Initiative || viewModel.Status == Status.Draft) && viewModel.AuthorId == user.Email)
             {
                 return View("EditProject", viewModel);
             }
@@ -160,6 +161,12 @@ namespace CompetitionPlatform.Controllers
             else
             {
                 var project = await _projectRepository.GetAsync(projectViewModel.Id);
+
+                if (projectViewModel.AuthorId == null)
+                    projectViewModel.AuthorId = project.AuthorId;
+
+                if (projectViewModel.AuthorFullName == null)
+                    projectViewModel.AuthorFullName = project.AuthorFullName;
 
                 project.Status = StatusHelper.GetProjectStatusFromString(project.ProjectStatus);
 

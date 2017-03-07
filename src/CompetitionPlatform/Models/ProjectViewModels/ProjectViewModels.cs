@@ -82,6 +82,7 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public bool IsParticipant { get; set; }
         public string ParticipantId { get; set; }
         public bool IsAdmin { get; set; }
+        public bool IsAuthor { get; set; }
         public bool IsFollowing { get; set; }
         public List<OtherProjectViewModel> OtherProjects { get; set; }
         public string UserAgent { get; set; }
