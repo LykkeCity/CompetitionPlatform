@@ -60,6 +60,7 @@ namespace CompetitionPlatform
             {
                 Settings = GeneralSettingsReader.ReadGeneralSettings<BaseSettings>(settingsConnectionString,
                     settingsContainer, settingsFileName);
+                services.AddSingleton(Settings);
             }
             catch (Exception ex)
             {

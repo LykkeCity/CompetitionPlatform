@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using AzureStorage.Queue;
 using CompetitionPlatform.Data.AzureRepositories.Project;
 using CompetitionPlatform.Data.AzureRepositories.Result;
+using CompetitionPlatform.Data.AzureRepositories.Settings;
 using CompetitionPlatform.Data.AzureRepositories.Users;
 using CompetitionPlatform.Data.AzureRepositories.Vote;
 using CompetitionPlatform.Data.ProjectCategory;
@@ -35,6 +38,7 @@ namespace CompetitionPlatform.Controllers
         private readonly IProjectWinnersService _winnersService;
         private readonly IQueueExt _emailsQueue;
         private readonly IProjectResultVoteRepository _resultVoteRepository;
+        private readonly BaseSettings _settings;
 
         public ProjectController(IProjectRepository projectRepository, IProjectCommentsRepository commentsRepository,
             IProjectFileRepository fileRepository, IProjectFileInfoRepository fileInfoRepository,
@@ -42,7 +46,7 @@ namespace CompetitionPlatform.Controllers
             IProjectResultRepository resultRepository, IProjectFollowRepository projectFollowRepository,
             IProjectWinnersRepository winnersRepository, IUserRolesRepository userRolesRepository,
             IProjectWinnersService winnersService, IQueueExt emailsQueue,
-            IProjectResultVoteRepository resultVoteRepository)
+            IProjectResultVoteRepository resultVoteRepository, BaseSettings settings)
         {
             _projectRepository = projectRepository;
             _commentsRepository = commentsRepository;
@@ -57,6 +61,7 @@ namespace CompetitionPlatform.Controllers
             _winnersService = winnersService;
             _emailsQueue = emailsQueue;
             _resultVoteRepository = resultVoteRepository;
+            _settings = settings;
         }
 
         [Authorize]
@@ -64,11 +69,22 @@ namespace CompetitionPlatform.Controllers
         {
             var user = GetAuthenticatedUser();
             var userRole = await _userRolesRepository.GetAsync(user.Email.ToLower());
+
             ViewBag.ProjectCategories = _categoriesRepository.GetCategories();
 
             if (userRole != null)
             {
                 return View("CreateProject");
+            }
+
+            if (!string.IsNullOrEmpty(user.Email))
+            {
+                var kycStatus = await GetUserKycStatus(user.Email);
+
+                if (kycStatus == "\"Ok\"")
+                {
+                    return View("CreateProject");
+                }
             }
 
             //if (user.Documents.Contains("Selfie") && user.Documents.Contains("IdCard"))
@@ -613,6 +629,27 @@ namespace CompetitionPlatform.Controllers
         private CompetitionPlatformUser GetAuthenticatedUser()
         {
             return ClaimsHelper.GetUser(User.Identity);
+        }
+
+        private async Task<string> GetUserKycStatus(string email)
+        {
+            var authLink = _settings.Authentication.Authority;
+            var appId = _settings.Authentication.ClientId;
+
+            var webRequest = (HttpWebRequest)WebRequest.Create(authLink + "/getkycstatus?email=" + email);
+            webRequest.Method = "GET";
+            webRequest.ContentType = "text/html";
+            webRequest.Headers["application_id"] = appId;
+            var webResponse = await webRequest.GetResponseAsync();
+
+            using (var receiveStream = webResponse.GetResponseStream())
+            {
+                using (var sr = new StreamReader(receiveStream))
+                {
+                    return await sr.ReadToEndAsync();
+                }
+
+            }
         }
     }
 }
