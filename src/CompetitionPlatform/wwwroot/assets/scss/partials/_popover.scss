@@ -1,0 +1,19 @@
+.popover {
+  white-space: normal;
+  text-align: left;
+  max-width: none;
+
+  @include rem(width, 520px);
+}
+
+.popover-content {
+  @include rem(padding, 20px);
+}
+
+.popover-content {
+  display: none;
+
+  .popover & {
+    display: block;
+  }
+}

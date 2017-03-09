@@ -1,0 +1,251 @@
+.user_profile {
+  @include rem(margin-bottom, 10px);
+
+  &__desc {
+    h5, .h5 {
+      @include rem(margin, 20px 0 2px)
+    }
+
+    .prize__value {
+      @include rem(margin-bottom, 8px);
+    }
+  }
+
+  .action_follow {
+    @include rem(margin-bottom, 12px);
+  }
+
+  .user_badge {
+    &__img {
+      @include rem(width, 160px);
+      @include rem(height, 160px);
+      @include rem(margin-right, 40px);
+    }
+    
+    &__content {
+      overflow: hidden;
+
+      @include rem(padding-top, 18px);
+      @include rem(padding-right, 20px);
+    }
+
+    h1, h2, .h1, .h2 {
+      @include rem(margin-bottom, 8px !important);
+    }
+
+    .hint {
+      @include rem(margin-bottom, 12px);
+
+      a {
+        color: rgba($secondary, .8);
+
+        &:hover {
+          color: $secondary;
+        }
+      }
+    }
+
+    &__contacts {
+      @include rem(margin-top, 32px);
+
+      .btn {
+        @include rem(margin-right, 13px);
+        @include rem(margin-bottom, 10px);
+        @include rem(padding-left, 28px);
+        @include rem(padding-right, 28px);
+      }
+    }
+  }
+
+  .social {
+    overflow: hidden;
+    display: inline-block;
+    vertical-align: middle;
+
+    @include rem(margin-bottom, 10px);
+
+    &__item {
+      color: $gray-dark;
+      display: inline-block;
+      vertical-align: middle;
+
+      @include rem(margin-right, 0px);
+      @include rem(padding, 10px);
+
+      .icon {
+        margin-right: 0;
+      }
+
+      &:last-child {
+        margin-right: 0;
+      }
+
+      &:hover {
+        color: $secondary;
+      }
+    }
+  }
+
+  .middot {
+    @include rem(margin, 0 3px);
+  }
+
+  @media all and (max-width: $screen-landscape) {
+    .user_badge {
+      &__img {
+        @include rem(width, 100px);
+        @include rem(height, 100px);
+      }
+
+      &__content {
+        @include rem(padding-top, 0);
+      }
+
+      &__contacts {
+        .btn {
+          float: none;
+          margin-bottom: 10px;
+        }
+      }
+    }
+  }
+
+  @media all and (max-width: $screen-mobile) {
+    .user_badge {
+      text-align: center;
+
+      h1, h2, .h1, .h2 {
+        text-align: center;
+      }
+
+      .action_follow {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      &__img {
+        float: none;
+        margin-left: auto;
+        margin-right: auto;
+
+        @include rem(margin-bottom, 10px);
+        @include rem(width, 160px);
+        @include rem(height, 160px);
+      }
+
+      &__content {
+        padding-right: 0;
+      }
+
+      &__contacts .btn {
+        margin-right: 0;
+      }
+    }
+
+    .social {
+      display: block;
+    }
+  }
+}
+
+
+.achievements {
+  font-size: 0;
+
+  @include rem(padding, 13px 0);
+}
+
+.achievement_icon {
+  display: inline-block;
+  vertical-align: middle;
+  background-position: center 49%;
+  background-repeat: no-repeat;
+  border-radius: 100px;
+
+  @include rem(width, 40px);
+  @include rem(height, 40px);
+  @include rem(margin-right, 10px);
+  @include rem(background-size, 20px);
+  @include color-modifier(background-color);
+
+  &:last-child {
+    margin-right: 0;
+  }
+
+  &--blue { background-image: url(../img/competition/achievement_type_1.svg) }
+  &--green {
+    background-image: url(../img/competition/achievement_type_2.svg);
+    @include rem(background-size, 24px);
+  }
+  &--gray { background-image: url(../img/competition/achievement_type_4.svg) }
+  &--yellow {
+    background-image: url(../img/competition/achievement_type_3.svg);
+    @include rem(background-size, 24px);
+  }
+
+  &--red {
+    background-image: url(../img/competition/achievement_type_5.svg);
+    @include rem(background-size, 24px);
+  }
+}
+
+.page--profile {
+  .message_card {
+    padding-left: 0;
+    padding-right: 0;
+
+    .card__actions {
+      @include rem(padding-bottom, 22px);
+
+      .action_text {
+        line-height: normal;
+        padding-right: 0;
+      }
+
+      .action_link {
+        line-height: normal;
+        color: $secondary;
+
+        &:hover {
+          color: rgba($secondary, .8);
+        }
+      }
+    }
+  }
+
+  @media all and (max-width: $screen-landscape) {
+    .page__header {
+      padding-right: 0 !important;
+    }
+  }
+}
+
+.modal {
+  &--send_message {
+    .modal__dialog {
+      @include rem(width, 570px);
+      max-width: 100%;
+    }
+
+    textarea.form-control {
+      @include rem(height, 275px);
+    }
+  }
+
+  &__footer {
+    .btn--flat {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.btn--flat.btn--default {
+  border: 0;
+  color: #8C94A0;
+}
+
+.user_badge__title {
+  .hint {
+    font-weight: normal;
+  }
+}

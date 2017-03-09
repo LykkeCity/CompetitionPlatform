@@ -11,9 +11,11 @@ var wH = $(window).height(),
 FastClick.attach(document.body);
 
 $(window).resize(function() {
-  $('.content').css({
-    paddingTop: $('.header').outerHeight()
-  });
+  setTimeout(function() {
+    $('.header_container').css({
+      height: $('.header').outerHeight()
+    });
+  }, 10);
 
   $('body').css({
     paddingBottom: $('footer').outerHeight()
@@ -50,18 +52,6 @@ $(function() {
 });
 
 $(function() {
-  //caches a jQuery object containing the header element
-  var header = $(".header:not(.header--static)");
-  $(window).scroll(function() {
-    var scroll = $(window).scrollTop();
-
-    if (scroll >= 10) {
-      header.addClass("fixed");
-    } else {
-      header.removeClass("fixed")
-    }
-  });
-
   $('.sticky_header').affix({
     offset: {
       top: function () {
@@ -76,7 +66,6 @@ $(function() {
       height: height + 1
     });
   })
-
 });
 
 $('[data-control="select"] ._value').text($(this).siblings('select').val());
@@ -119,12 +108,24 @@ if (url.match('#')) {
 
 $('.nav-tabs a').on('shown.bs.tab', function (e) {
   window.location.hash = prefix + e.target.hash.split('#')[1] ;
-})
+});
 
 $(function() {
+  var is_touch_device = ("ontouchstart" in window) || window.DocumentTouch && document instanceof DocumentTouch;
+
   $('[data-toggle="popover"]').popover({
-    container: 'body',
-    html: true
+    trigger: is_touch_device ? 'click' : 'focus',
+    container: this.parentNode,
+    html: true,
+    content: function () {
+      if (!$(this).data('data-content')) {
+        return $(this).next('.popover-content').html();
+      }
+    }
+  });
+
+  $(document).on('blur','[data-toggle="popover"]', function() {
+    $(this).popover('hide');
   });
 
   $('[data-toggle="switcher"]').click(function () {

@@ -1,0 +1,240 @@
+.rating_item {
+  display: inline-block;
+  vertical-align: middle;
+  color: #B2B8BF;
+  font-style: normal;
+  position: relative;
+
+  @include rem(font-size, 14px);
+
+  &:before {
+    font-family: 'icon' !important;
+    content: "\e94d";
+    position: relative;
+    top: -2px;
+    display: block;
+  }
+
+  &--active {
+    color: $yellow !important;
+  }
+
+  &--half {
+    &:before {
+      z-index: 2;
+      overflow: hidden;
+      width: 48%;
+    }
+
+    &:after {
+      z-index: 0;
+      font-family: 'icon' !important;
+      content: "\e94d";
+      color: #EBEDEF !important;
+      position: absolute;
+      left: 0;
+      top: -2px;
+    }
+  }
+
+  .rating & {
+    @include rem(font-size, 18px);
+    @include rem(line-height, 16px);
+
+    &:before,
+    &:after {
+      top: 0;
+    }
+  }
+}
+
+.rating_table {
+  font-feature-settings: "tnum";
+
+  @include rem(margin-bottom, 75px);
+
+  tr td {
+    background: transparent !important;
+    cursor: auto;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  &__info {
+    color: rgba($secondary, 1);
+
+    @include rem(font-size, 16px);
+    @include rem(line-height, 24px);
+
+    td {
+      border-top: 0 !important;
+      border-bottom: 1px solid #EBEDEF !important;
+
+      @include rem(padding, 0 20px 20px 0 !important);
+    }
+  }
+
+  &__main {
+    td {
+      border: 0 !important;
+      border-top: 1px solid #EBEDEF !important;
+
+      @include rem(padding, 20px 20px 0 0 !important);
+
+      &:first-child {
+        vertical-align: top;
+        border-bottom: 1px solid #EBEDEF !important;
+      }
+
+      &[colspan] {
+        border-bottom: 0 !important;
+      }
+    }
+  }
+
+  &__text {
+    @include rem(margin-bottom, 4px);
+  }
+
+  &__desc {
+    color: rgba($secondary, .6);
+    letter-spacing: 0;
+  }
+
+  &__img {
+    display: block;
+
+    @include rem(width, 60px);
+    @include rem(height, 60px);
+
+    img {
+      border-radius: 100px;
+
+      @include rem(width, 60px);
+      @include rem(height, 60px);
+    }
+  }
+
+  &__title {
+    font-weight: $fw-semi;
+    color: #333;
+    letter-spacing: 0;
+
+    @include rem(font-size, 18px);
+    @include rem(line-height, 30px);
+
+    a {
+      color: inherit;
+    }
+  }
+
+  &__total {
+    color: #333;
+    letter-spacing: 0;
+    position: relative;
+
+    @include rem(font-size, 28px);
+    @include rem(line-height, 40px);
+
+    .rating_item {
+      color: #B2B8BF;
+
+      @include rem(font-size, 20px);
+    }
+  }
+}
+
+.rating_total {
+  @include clearfix;
+
+  &__value {
+    float: left;
+    text-align: center;
+
+    @include rem(padding, 10px 10px 0);
+    @include rem(margin-right, 20px);
+  }
+
+  &__box {
+    background: #B2B8BF;
+    border-radius: $border-radius;
+    color: #fff;
+
+    @include rem(font-size, 16px);
+    @include rem(margin-bottom, 15px);
+    @include rem(padding, 30px 10px);
+    @include rem(width, 120px);
+    @include rem(height, 120px);
+
+    ._accent {
+      font-weight: $fw-semi;
+      letter-spacing: 0;
+      display: block;
+
+      @include rem(font-size, 40px);
+      @include rem(line-height, 40px);
+    }
+  }
+  
+  &__content {
+    overflow: hidden;
+
+    h4 {
+      text-transform: none;
+      letter-spacing: normal;
+
+      @include rem(font-size, 18px);
+      @include rem(line-height, 20px);
+      @include rem(margin-bottom, 20px);
+    }
+  }
+
+  &__table {
+    @include rem(font-size, 16px);
+    @include rem(line-height, 24px);
+
+    .hint {
+      @include rem(margin-left, 5px);
+    }
+
+    tr {
+      td {
+        border: 0 !important;
+
+        @include rem(padding-left, 20px);
+        @include rem(padding-bottom, 11px);
+
+        &:first-child {
+          padding-left: 0;
+          color: rgba($secondary, .8);
+        }
+      }
+    }
+  }
+
+  &--active {
+    .rating_total__box {
+      background: $yellow;
+    }
+
+    .rating_item {
+      color: $yellow;
+    }
+  }
+}
+
+.rating_progress {
+  background: #EBEDEF;
+  border-radius: $border-radius;
+
+  @include rem(width, 120px);
+  @include rem(height, 4px);
+
+  &__bar {
+    height: 100%;
+    border-radius: $border-radius;
+    background: $yellow;
+  }
+}

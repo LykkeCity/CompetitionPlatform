@@ -1,0 +1,135 @@
+.message_card--form {
+  textarea.form-control {
+    min-height: 130px;
+  }
+}
+
+.focused .message_card--form .message_card__inner {
+  @include rem(height, 164px);
+}
+
+.messages_list {
+  @include rem(margin-bottom, 40px);
+}
+
+.message_card {
+  margin-bottom: 0;
+
+  &--accent {
+    @include rem(margin-bottom, 15px);
+
+    .card__actions {
+      border-bottom: 0;
+      padding-bottom: 0 !important;
+    }
+  }
+
+  &--deleted {
+    .message_card__message {
+      color: $gray-dark;
+
+      p {
+        color: $gray-dark;
+      }
+    }
+  }
+
+  .message_card {
+    margin-bottom: 0;
+
+    @include rem(margin-left, -20px);
+  }
+}
+
+.message_card__inner + .message_card {
+  @include rem(margin-top, 15px);
+}
+
+.message_card__message {
+  textarea.form-control {
+    @include rem(margin-top, 20px);
+  }
+
+  .card__actions {
+    color: rgba($secondary, .6);
+    margin-top: 0;
+
+    @include rem(padding, 10px 0);
+    @include rem(margin-left, -4px);
+  }
+}
+
+.message_actions {
+  .text--gray {
+    color: rgba($secondary, .6);
+    font-weight: normal;
+
+    @include rem(padding, 14px 0);
+  }
+}
+
+@media (max-width: $screen-mobile) {
+  .message_actions {
+    .row > div {
+      width: 100%;
+      float: none;
+    }
+
+    .text-right {
+      text-align: left !important;
+    }
+
+    .btn {
+      float: right;
+    }
+
+    .text--gray {
+      padding: 4px 0;
+      margin-bottom: 10px;
+    }
+  }
+
+  .form--message.focused {
+    padding-bottom: 90px;
+  }
+}
+
+.message_card__inner {
+  .label--text {
+    margin-left: 0;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .middot {
+    font-weight: normal;
+    color: rgba($secondary, .6);
+
+    @include rem(margin, 0 4px)
+  }
+}
+
+.label--text {
+  letter-spacing: 0.89px;
+
+  .icon {
+    @include rem(font-size, 14px)
+  }
+}
+
+.label--dark {
+  color: $secondary !important;
+}
+
+.user_badge--small {
+  .user_badge__img {
+    @include rem(width, 40px);
+    @include rem(height, 40px);
+    @include rem(margin-right, 20px);
+  }
+
+  .user_badge__info,
+  .user_badge__message {
+    @include rem(padding-top, 9px);
+  }
+}

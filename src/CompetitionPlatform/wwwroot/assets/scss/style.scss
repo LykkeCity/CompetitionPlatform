@@ -1,4 +1,5 @@
 @import "../../node_modules/LykkeFramework/assets/scss/style-minimal.scss";
+@import "../../node_modules/LykkeFramework/assets/scss/style-necessaries.scss";
 
 // vendors
 @import "../../node_modules/LykkeFramework/assets/scss/vendor/bootstrap-datetimepicker";
@@ -32,3 +33,7 @@
 
 // optional
 @import 'pages/competition';
+@import 'pages/user_profile';
+@import 'partials/popover';
+@import 'partials/rating';
+@import 'partials/messages';
