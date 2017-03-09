@@ -1,5 +1,5 @@
 ﻿.header--new.fixed .page__title {
-    display: none!important;
+    display: none !important;
 }
 
 .project-details-category {
@@ -7,8 +7,9 @@
 }
 
 .header--new.nav-up .nav--header > li > a, .nav-up .header--new .nav--header > li > a, .header--new.fixed .nav--header > li > a {
-        color: #fff!important;
-        opacity: 0.8; }
+    color: #fff !important;
+    opacity: 0.8;
+}
 
 .clear-hr {
     width: 100% !important;
@@ -22,4 +23,8 @@
 .voting-button-filled {
     background: #ab00ff;
     color: #fff;
+}
+
+.content {
+    padding-top: 0 !important;
 }
