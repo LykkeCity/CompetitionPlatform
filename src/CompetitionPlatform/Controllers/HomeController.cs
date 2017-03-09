@@ -426,6 +426,11 @@ namespace CompetitionPlatform.Controllers
             return View();
         }
 
+        public IActionResult Faq()
+        {
+            return View();
+        }
+
         public string Version()
         {
             return typeof(HomeController).GetTypeInfo().Assembly.GetName().Version.ToString();
