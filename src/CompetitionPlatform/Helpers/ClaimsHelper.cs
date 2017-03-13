@@ -37,5 +37,19 @@ namespace CompetitionPlatform.Helpers
 
             return user;
         }
+
+        public static string GetFirstName(IIdentity identity)
+        {
+            var claimsIdentity = (ClaimsIdentity) identity;
+            var claims = claimsIdentity.Claims;
+
+            var claimsList = claims as IList<Claim> ?? claims.ToList();
+
+            var firstName = claimsList.Where(c => c.Type == ClaimTypes.GivenName)
+                .Select(c => c.Value)
+                .SingleOrDefault();
+
+            return firstName;
+        }
     }
 }

@@ -135,36 +135,37 @@
                         <div class="header_logo__title">Streams</div>
                     </a>
                 </div>
+
                 <div class="header__actions header_actions pull-right">
                     <div class="header_actions__login header_login pull-right">
-                        <div href="">
-
-                            @if (ClaimsHelper.GetUser(User.Identity).Email == null)
-                            {
-                                <a asp-area="" asp-controller="Home" asp-action="SignIn" class="header_login__title">Sign In</a>
-                            }
-                            else
-                            {
-                                if (User.Identity.IsAuthenticated)
-                                {
-                                    <div class="header_user">
-                                        <div class="header_user__img">
-                                            <img src="~/public/img/user_default.svg" width="40" alt="user_image">
-                                        </div>
-                                        <ul class="nav nav--header pull-right">
-                                            <li class="pull-right">
-                                                <div class="header_login__title dropdown__control" href="">@ClaimsHelper.GetUser(User.Identity).GetFullName()</div>
-                                                <div class="dropdown__container">
-                                                    <ul class="dropdown__nav">
-                                                        <li><a asp-controller="Home" asp-action="LogOut" asp-route-id="">Sign Out</a></li>
-                                                    </ul>
-                                                </div>
-                                            </li>
-                                        </ul>
+                        @if (ClaimsHelper.GetUser(User.Identity).Email == null)
+                        {
+                            <div class="header_user">
+                                <a asp-area="" asp-controller="Home" asp-action="SignIn" class="header_login__title">
+                                    <div class="header_login__title">Sign in</div>
+                                </a>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="header_user dropdown__control">
+                                <a>
+                                    <div class="header_user__img">
+                                        <img src="~/public/img/user_default.svg" width="40" alt="user_image">
                                     </div>
-                                }
-                            }
-                        </div>
+
+                                    <div class="header_login__title">@ClaimsHelper.GetFirstName(User.Identity)</div>
+                                </a>
+                            </div>
+
+                            <div class="dropdown__container">
+                                <ul class="dropdown__nav">
+                                    <li>
+                                        <a asp-controller="Home" asp-action="LogOut" asp-route-id="">Sign Out</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        }
                     </div>
                 </div>
             </div>

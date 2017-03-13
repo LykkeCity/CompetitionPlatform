@@ -2887,3 +2887,15 @@ a.action_link:hover img, button.action_link:hover img { opacity: 1; }
 .user_badge--small .user_badge__img { width: 40px; width: 2.5rem; height: 40px; height: 2.5rem; margin-right: 20px; margin-right: 1.25rem; }
 
 .user_badge--small .user_badge__info, .user_badge--small .user_badge__message { padding-top: 9px; padding-top: 0.5625rem; }
+
+.header_actions__login { position: relative; }
+
+.dropdown__container { visibility: hidden; margin-left: -87px; }
+
+.dropdown__container:hover { opacity: 1 !important; visibility: visible !important; pointer-events: all; -webkit-transform: translate(0, 0) !important; -moz-transform: translate(0, 0) !important; -ms-transform: translate(0, 0) !important; -o-transform: translate(0, 0) !important; transform: translate(0, 0) !important; }
+
+.dropdown__control:hover + .dropdown__container { opacity: 1; visibility: visible; pointer-events: all; -webkit-transform: translate(0, 0); -moz-transform: translate(0, 0); -ms-transform: translate(0, 0); -o-transform: translate(0, 0); transform: translate(0, 0); }
+
+.dropdown__nav { width: 175px; text-align: left; border-radius: 3px; padding: 10px; }
+
+.dropdown__nav li a { width: 100%; }

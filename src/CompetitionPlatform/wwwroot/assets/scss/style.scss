@@ -37,3 +37,39 @@
 @import 'partials/popover';
 @import 'partials/rating';
 @import 'partials/messages';
+
+.header_actions__login {
+  position: relative;
+}
+
+.dropdown__container {
+  visibility: hidden;
+  margin-left: -87px;
+
+  &:hover {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: all;
+
+    @include transform(translate(0,0) !important)
+  }
+}
+
+.dropdown__control:hover + .dropdown__container {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: all;
+
+  @include transform(translate(0,0))
+}
+
+.dropdown__nav {
+  width: 175px;
+  text-align: left;
+  border-radius: 3px;
+  padding: 10px;
+
+  li a {
+    width: 100%;
+  }
+}
