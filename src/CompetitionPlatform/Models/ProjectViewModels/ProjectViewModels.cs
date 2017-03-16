@@ -8,6 +8,8 @@ namespace CompetitionPlatform.Models.ProjectViewModels
 {
     public class ProjectViewModel : IProjectData
     {
+        [Required]
+        [Display(Name = "Project Url")]
         public string Id { get; set; }
 
         [Required]

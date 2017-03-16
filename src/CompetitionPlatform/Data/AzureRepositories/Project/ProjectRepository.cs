@@ -78,7 +78,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
 
             var result = new ProjectEntity
             {
-                RowKey = Guid.NewGuid().ToString("N"),
+                RowKey = src.Id,
                 PartitionKey = GeneratePartitionKey(),
                 Name = src.Name,
                 Overview = src.Overview,
@@ -122,8 +122,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
             var rowKey = ProjectEntity.GenerateRowKey(id);
 
             var project = await _projectsTableStorage.GetDataAsync(partitionKey, rowKey);
-
-            return ChangeNullWithDefault(project);
+            return project == null ? null : ChangeNullWithDefault(project);
         }
 
         public async Task<IEnumerable<IProjectData>> GetProjectsAsync()

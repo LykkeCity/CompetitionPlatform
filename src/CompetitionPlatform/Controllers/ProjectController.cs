@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AzureStorage.Queue;
 using CompetitionPlatform.Data.AzureRepositories.Project;
@@ -126,14 +127,19 @@ namespace CompetitionPlatform.Controllers
             if (projectViewModel.VotingDeadline == DateTime.MinValue)
                 projectViewModel.VotingDeadline = DateTime.UtcNow.Date;
 
-            string projectId;
+            var idValid = Regex.IsMatch(projectViewModel.Id, @"^[a-zA-Z0-9]+$");
 
-            if (projectViewModel.Id == null)
+            if (!idValid)
             {
-                //var actualResources = projectViewModel.ResourcesList.Where(resource => !string.IsNullOrEmpty(resource.Name) && !string.IsNullOrEmpty(resource.Link)).ToList();
+                ViewBag.ProjectCategories = _categoriesRepository.GetCategories();
+                ModelState.AddModelError("Id", "Project Url can contain only letters and numbers!");
+                return View("CreateProject", projectViewModel);
+            }
 
-                //projectViewModel.ProgrammingResources = JsonConvert.SerializeObject(actualResources);
+            var project = await _projectRepository.GetAsync(projectViewModel.Id);
 
+            if (project == null)
+            {
                 projectViewModel.Status = draft ? Status.Draft : Status.Initiative;
 
                 var user = GetAuthenticatedUser();
@@ -145,7 +151,7 @@ namespace CompetitionPlatform.Controllers
                 projectViewModel.Created = DateTime.UtcNow;
                 projectViewModel.ParticipantsCount = 0;
 
-                projectId = await _projectRepository.SaveAsync(projectViewModel);
+                var projectId = await _projectRepository.SaveAsync(projectViewModel);
 
                 if (_emailsQueue != null)
                 {
@@ -158,57 +164,76 @@ namespace CompetitionPlatform.Controllers
 
                 return RedirectToAction("Index", "Home");
             }
-            else
+            ViewBag.ProjectCategories = _categoriesRepository.GetCategories();
+            ModelState.AddModelError("Id", "Project with that Project URL already exists!");
+            return View("CreateProject", projectViewModel);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> SaveEditedProject(ProjectViewModel projectViewModel, bool draft = false,
+            bool enableVoting = false, bool enableRegistration = false)
+        {
+            projectViewModel.Tags = SerializeTags(projectViewModel.Tags);
+
+            projectViewModel.ProjectStatus = projectViewModel.Status.ToString();
+
+            projectViewModel.SkipVoting = !enableVoting;
+            projectViewModel.SkipRegistration = !enableRegistration;
+            if (projectViewModel.CompetitionRegistrationDeadline == DateTime.MinValue)
+                projectViewModel.CompetitionRegistrationDeadline = DateTime.UtcNow.Date;
+
+            if (projectViewModel.VotingDeadline == DateTime.MinValue)
+                projectViewModel.VotingDeadline = DateTime.UtcNow.Date;
+
+            var project = await _projectRepository.GetAsync(projectViewModel.Id);
+
+            if (projectViewModel.AuthorId == null)
+                projectViewModel.AuthorId = project.AuthorId;
+
+            if (projectViewModel.AuthorFullName == null)
+                projectViewModel.AuthorFullName = project.AuthorFullName;
+
+            project.Status = StatusHelper.GetProjectStatusFromString(project.ProjectStatus);
+
+            projectViewModel.LastModified = DateTime.UtcNow;
+
+            projectViewModel.UserAgent = HttpContext.Request.Headers["User-Agent"].ToString();
+
+            projectViewModel.ParticipantsCount = project.ParticipantsCount;
+
+            var projectId = projectViewModel.Id;
+
+            await _projectRepository.UpdateAsync(projectViewModel);
+
+            if (project.Status != Status.Registration && projectViewModel.Status == Status.Registration)
             {
-                var project = await _projectRepository.GetAsync(projectViewModel.Id);
-
-                if (projectViewModel.AuthorId == null)
-                    projectViewModel.AuthorId = project.AuthorId;
-
-                if (projectViewModel.AuthorFullName == null)
-                    projectViewModel.AuthorFullName = project.AuthorFullName;
-
-                project.Status = StatusHelper.GetProjectStatusFromString(project.ProjectStatus);
-
-                projectViewModel.LastModified = DateTime.UtcNow;
-
-                projectViewModel.UserAgent = HttpContext.Request.Headers["User-Agent"].ToString();
-
-                projectViewModel.ParticipantsCount = project.ParticipantsCount;
-
-                projectId = projectViewModel.Id;
-
-                await _projectRepository.UpdateAsync(projectViewModel);
-
-                if (project.Status != Status.Registration && projectViewModel.Status == Status.Registration)
-                {
-                    await AddCompetitionMailToQueue(project);
-                }
-
-                if (project.Status != Status.Submission && projectViewModel.Status == Status.Submission)
-                {
-                    await AddImplementationMailToQueue(project);
-                }
-
-                if (project.Status != Status.Voting && projectViewModel.Status == Status.Voting)
-                {
-                    await AddVotingMailToQueue(project);
-                }
-
-                if (project.Status != Status.Archive && projectViewModel.Status == Status.Archive)
-                {
-                    if (!project.SkipVoting)
-                    {
-                        await _winnersService.SaveWinners(projectViewModel.Id);
-                    }
-
-                    await AddArchiveMailToQueue(project);
-                }
-
-                await SaveProjectFile(projectViewModel.File, projectId);
-
-                return RedirectToAction("ProjectDetails", "Project", new { id = projectViewModel.Id });
+                await AddCompetitionMailToQueue(project);
             }
+
+            if (project.Status != Status.Submission && projectViewModel.Status == Status.Submission)
+            {
+                await AddImplementationMailToQueue(project);
+            }
+
+            if (project.Status != Status.Voting && projectViewModel.Status == Status.Voting)
+            {
+                await AddVotingMailToQueue(project);
+            }
+
+            if (project.Status != Status.Archive && projectViewModel.Status == Status.Archive)
+            {
+                if (!project.SkipVoting)
+                {
+                    await _winnersService.SaveWinners(projectViewModel.Id);
+                }
+
+                await AddArchiveMailToQueue(project);
+            }
+
+            await SaveProjectFile(projectViewModel.File, projectId);
+
+            return RedirectToAction("ProjectDetails", "Project", new { id = projectViewModel.Id });
         }
 
         private async Task AddCompetitionMailToQueue(IProjectData project)
