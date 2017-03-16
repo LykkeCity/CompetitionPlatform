@@ -132,7 +132,7 @@ namespace CompetitionPlatform.Controllers
             if (!idValid)
             {
                 ViewBag.ProjectCategories = _categoriesRepository.GetCategories();
-                ModelState.AddModelError("Id", "Project Url can contain only letters and numbers!");
+                ModelState.AddModelError("Id", "Project Url can only contain letters and numbers!");
                 return View("CreateProject", projectViewModel);
             }
 
@@ -165,7 +165,7 @@ namespace CompetitionPlatform.Controllers
                 return RedirectToAction("Index", "Home");
             }
             ViewBag.ProjectCategories = _categoriesRepository.GetCategories();
-            ModelState.AddModelError("Id", "Project with that Project URL already exists!");
+            ModelState.AddModelError("Id", "Project with that Project Url already exists!");
             return View("CreateProject", projectViewModel);
         }
 
