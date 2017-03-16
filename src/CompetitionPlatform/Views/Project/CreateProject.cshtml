@@ -30,20 +30,36 @@
                     <h3>Project Flow</h3>
 
                     <div class="flow flow--project">
+
+                        @{
+                            var enableRegistrationChecked = "checked";
+                            if (Model != null && Model.SkipRegistration)
+                            {
+                                enableRegistrationChecked = "";
+                            }
+                        }
+
                         <div class="flow__item">
                             <div class="flow__icon"></div>
                             <div class="flow__content">
                                 <div class="flow__title h4">
                                     Registration
                                     <div class="switcher">
-                                        <input id="enableRegistration" name="enableRegistration" type="checkbox" class="switcher__elem" value="true" checked="checked" />
+                                        <input id="enableRegistration" name="enableRegistration" type="checkbox" class="switcher__elem" value="true" @enableRegistrationChecked />
                                         <label for="enableRegistration" class="switcher__control"></label>
                                     </div>
                                 </div>
                                 <div class="flow__actions">
                                     <div class="form-group">
                                         <div class="input-group date datetimepicker">
-                                            <input id="registrationDeadlineDatepicker" asp-for="CompetitionRegistrationDeadline" class="form-control datetimepicker" />
+                                            @if (Model != null && Model.SkipRegistration)
+                                            {
+                                                <input id="registrationDeadlineDatepicker" asp-for="CompetitionRegistrationDeadline" class="form-control datetimepicker" style="display: none" />
+                                            }
+                                            else
+                                            {
+                                                <input id="registrationDeadlineDatepicker" asp-for="CompetitionRegistrationDeadline" class="form-control datetimepicker" />
+                                            }
                                         </div>
                                     </div>
                                 </div>
@@ -72,20 +88,35 @@
                             </div>
                         </div>
 
+                        @{
+                            var enableVotingChecked = "checked";
+                            if (Model != null && Model.SkipVoting)
+                            {
+                                enableVotingChecked = "";
+                            }
+                        }
+
                         <div class="flow__item">
                             <div class="flow__icon"></div>
                             <div class="flow__content">
                                 <div class="flow__title h4">
                                     Voting
                                     <div class="switcher">
-                                        <input id="enableVoting" name="enableVoting" type="checkbox" class="switcher__elem" value="true" checked="checked" />
+                                        <input id="enableVoting" name="enableVoting" type="checkbox" class="switcher__elem" value="true" @enableVotingChecked />
                                         <label for="enableVoting" class="switcher__control"></label>
                                     </div>
                                 </div>
                                 <div class="flow__actions">
                                     <div class="form-group">
                                         <div class="input-group date datetimepicker">
-                                            <input id="votingDeadlineDatepicker" asp-for="VotingDeadline" class="form-control datetimepicker" />
+                                            @if (Model != null && Model.SkipVoting)
+                                            {
+                                                <input id="votingDeadlineDatepicker" asp-for="VotingDeadline" class="form-control datetimepicker" style="display: none" />
+                                            }
+                                            else
+                                            {
+                                                <input id="votingDeadlineDatepicker" asp-for="VotingDeadline" class="form-control datetimepicker" />
+                                            }
                                         </div>
                                     </div>
                                 </div>
@@ -219,7 +250,7 @@
                         </div>
                     </div>
                 </div>
-
+                
                 <div class="row">
                     <div>
                         <div class="col-sm-6">
