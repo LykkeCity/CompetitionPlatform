@@ -54,6 +54,10 @@ namespace CompetitionPlatform.Controllers
 
         public async Task<IActionResult> Allprojects()
         {
+            ViewBag.AllProjects = ViewBag.AllProjects != true;
+            ViewBag.MyProjects = false;
+            ViewBag.Faq = false;
+
             var viewModel = await GetProjectListViewModel();
             viewModel.Projects = viewModel.Projects.OrderBy(x => x.Status).ThenBy(x => x.BudgetFirstPlace);
             return View(viewModel);
@@ -62,6 +66,10 @@ namespace CompetitionPlatform.Controllers
         [Authorize]
         public async Task<IActionResult> Myprojects()
         {
+            ViewBag.MyProjects = ViewBag.MyProjects != true;
+            ViewBag.AllProjects = false;
+            ViewBag.Faq = false;
+
             var user = GetAuthenticatedUser();
             var viewModel = await GetMyProjectListViewModel(userId: user.Email, createdProjects: true, followingProjects: true, participatingProjects: true);
 
@@ -87,6 +95,7 @@ namespace CompetitionPlatform.Controllers
         public async Task<IActionResult> GetFollowingProjects()
         {
             ViewBag.FollowingProjects = ViewBag.FollowingProjects != true;
+            ViewBag.MyProjects = true;
             ViewBag.ParticipatingProjects = false;
             ViewBag.CreatedProjects = false;
 
@@ -100,6 +109,7 @@ namespace CompetitionPlatform.Controllers
         public async Task<IActionResult> GetParticipatingProjects()
         {
             ViewBag.ParticipatingProjects = ViewBag.ParticipatingProjects != true;
+            ViewBag.MyProjects = true;
             ViewBag.FollowingProjects = false;
             ViewBag.CreatedProjects = false;
 
@@ -113,6 +123,7 @@ namespace CompetitionPlatform.Controllers
         public async Task<IActionResult> GetCreatedProjects()
         {
             ViewBag.CreatedProjects = ViewBag.CreatedProjects != true;
+            ViewBag.MyProjects = true;
             ViewBag.FollowingProjects = false;
             ViewBag.ParticipatingProjects = false;
 
@@ -428,6 +439,10 @@ namespace CompetitionPlatform.Controllers
 
         public IActionResult Faq()
         {
+            ViewBag.Faq = ViewBag.Faq != true;
+            ViewBag.MyProjects = false;
+            ViewBag.AllProjects = false;
+
             return View();
         }
 
