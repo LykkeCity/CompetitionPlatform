@@ -366,6 +366,11 @@ namespace CompetitionPlatform.Controllers
 
             var comments = await _commentsRepository.GetProjectCommentsAsync(id);
 
+            foreach (var comment in comments)
+            {
+                comment.Comment = Regex.Replace(comment.Comment, @"\r\n?|\n", "<br />");
+            }
+
             var participants = await _participantsRepository.GetProjectParticipantsAsync(id);
 
             var results = await _resultRepository.GetResultsAsync(id);

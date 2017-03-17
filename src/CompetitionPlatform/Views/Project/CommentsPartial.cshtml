@@ -76,7 +76,7 @@ else
                         </div>
                         <div class="message_card__message">
                             <p>
-                                @comment.Comment
+                                @Html.Raw(comment.Comment)
                             </p>
                             <div id="@comment.Id"></div>
                             @if (Model.IsAuthor && Model.UserId != comment.UserId || Model.IsAdmin)
