@@ -435,12 +435,14 @@ namespace CompetitionPlatform.Controllers
         [HttpGet]
         public async Task<IActionResult> LogOut()
         {
+            var redirectUrl = Request.Headers["Referer"].ToString();
+
             if (User.Identity.IsAuthenticated)
             {
                 await HttpContext.Authentication.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
                 await HttpContext.Authentication.SignOutAsync("OpenIdConnect");
             }
-            return RedirectToAction("Index", "Home");
+            return Redirect(redirectUrl);
         }
 
         private CompetitionPlatformUser GetAuthenticatedUser()
