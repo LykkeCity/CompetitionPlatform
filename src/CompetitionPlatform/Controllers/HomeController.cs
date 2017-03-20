@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 using CompetitionPlatform.Models.ProjectViewModels;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 
 namespace CompetitionPlatform.Controllers
@@ -386,9 +387,29 @@ namespace CompetitionPlatform.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        [Authorize]
+
         public IActionResult SignIn()
         {
+            var redirectUrl = Request.Headers["Referer"].ToString();
+
+            Response.Cookies.Append("redirectUrl", redirectUrl, new CookieOptions()
+            {
+                Expires = DateTime.Now.AddDays(1)
+            });
+
+            return RedirectToAction("DoSignIn", "Home");
+        }
+
+
+        [Authorize]
+        public IActionResult DoSignIn()
+        {
+            if (Request.Cookies.ContainsKey("redirectUrl"))
+            {
+                var path = Request.Cookies["redirectUrl"];
+                return Redirect(path);
+            }
+
             return RedirectToAction("Index", "Home");
         }
 
