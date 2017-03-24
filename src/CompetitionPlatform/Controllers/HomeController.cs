@@ -407,9 +407,11 @@ namespace CompetitionPlatform.Controllers
             if (Request.Cookies.ContainsKey("redirectUrl"))
             {
                 var path = Request.Cookies["redirectUrl"];
-                return Redirect(path);
+                if (!string.IsNullOrEmpty(path))
+                {
+                    return Redirect(path);
+                }
             }
-
             return RedirectToAction("Index", "Home");
         }
 
@@ -442,7 +444,12 @@ namespace CompetitionPlatform.Controllers
                 await HttpContext.Authentication.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
                 await HttpContext.Authentication.SignOutAsync("OpenIdConnect");
             }
-            return Redirect(redirectUrl);
+
+            if (!string.IsNullOrEmpty(redirectUrl))
+            {
+                return Redirect(redirectUrl);
+            }
+            return RedirectToAction("Index", "Home");
         }
 
         private CompetitionPlatformUser GetAuthenticatedUser()
