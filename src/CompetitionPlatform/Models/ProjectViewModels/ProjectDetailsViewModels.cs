@@ -14,6 +14,7 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public string ProjectId { get; set; }
         public string UserId { get; set; }
         public string FullName { get; set; }
+        [Required]
         public string Comment { get; set; }
         public string ParentId { get; set; }
         public DateTime Created { get; set; }

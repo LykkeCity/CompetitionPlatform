@@ -79,10 +79,10 @@ else
                                 @Html.Raw(comment.Comment)
                             </p>
                             <div id="@comment.Id"></div>
-                            @if (Model.IsAuthor && Model.UserId != comment.UserId || Model.IsAdmin)
+                            @if (Model.UserId != comment.UserId || Model.IsAdmin)
                             {
                                 <div class="card__actions">
-                                    @if (Model.IsAuthor && Model.UserId != comment.UserId)
+                                    @if (!string.IsNullOrEmpty(Model.UserId) && Model.UserId != comment.UserId)
                                     {
                                         <button id="@comment.Id" class="action_link replyToCommentButton @comment.Id">Reply</button>
                                     }
