@@ -82,7 +82,7 @@ else
                             @if (Model.UserId != comment.UserId || Model.IsAdmin)
                             {
                                 <div class="card__actions">
-                                    @if (!string.IsNullOrEmpty(Model.UserId) && Model.UserId != comment.UserId)
+                                    @if (!string.IsNullOrEmpty(Model.UserId) && Model.UserId != comment.UserId && string.IsNullOrEmpty(comment.ParentId))
                                     {
                                         <button id="@comment.Id" class="action_link replyToCommentButton @comment.Id">Reply</button>
                                     }
