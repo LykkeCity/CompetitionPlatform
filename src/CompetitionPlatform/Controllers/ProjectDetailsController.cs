@@ -63,7 +63,10 @@ namespace CompetitionPlatform.Controllers
             model.LastModified = model.Created;
             model.UserAgent = HttpContext.Request.Headers["User-Agent"].ToString();
 
-            await _commentsRepository.SaveAsync(model);
+            if (!string.IsNullOrEmpty(model.Comment))
+            {
+                await _commentsRepository.SaveAsync(model);
+            }
             return RedirectToAction("ProjectDetails", "Project", new { id = model.ProjectId, commentsActive = true });
         }
 
