@@ -127,12 +127,12 @@ namespace CompetitionPlatform.Controllers
             if (projectViewModel.VotingDeadline == DateTime.MinValue)
                 projectViewModel.VotingDeadline = DateTime.UtcNow.Date;
 
-            var idValid = Regex.IsMatch(projectViewModel.Id, @"^[a-z0-9]+$");
+            var idValid = Regex.IsMatch(projectViewModel.Id, @"^[a-z0-9-]+$");
 
             if (!idValid)
             {
                 ViewBag.ProjectCategories = _categoriesRepository.GetCategories();
-                ModelState.AddModelError("Id", "Project Url can only contain lowercase letters and numbers!");
+                ModelState.AddModelError("Id", "Project Url can only contain lowercase letters, numbers and the dash symbol!");
                 return View("CreateProject", projectViewModel);
             }
 
