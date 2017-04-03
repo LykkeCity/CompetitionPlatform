@@ -50,7 +50,7 @@ namespace CompetitionPlatform.Controllers
         public async Task<IActionResult> Index()
         {
             var viewModel = await GetProjectListViewModel(currentProjects: true);
-            viewModel.Projects = viewModel.Projects.OrderByDescending(x => x.Status).ThenBy(x => x.BudgetFirstPlace);
+            viewModel.Projects = viewModel.Projects.OrderByDescending(x => x.Status).ThenByDescending(x => x.BudgetFirstPlace);
             return View(viewModel);
         }
 
@@ -338,7 +338,7 @@ namespace CompetitionPlatform.Controllers
             var following = follows.Where(f => f.UserId == user.Email).ToList();
 
             var filtered = projects
-                   .Where(x => following.Any(y => y.ProjectId == x.Id));
+                .Where(x => following.Any(y => y.ProjectId == x.Id));
 
             var compactModels = await GetCompactProjectsList(filtered);
 
