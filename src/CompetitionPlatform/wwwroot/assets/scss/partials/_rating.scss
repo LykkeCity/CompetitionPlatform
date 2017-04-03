@@ -46,6 +46,91 @@
       top: 0;
     }
   }
+
+  .rating--circle & {
+    @include rem(padding-right, 10px);
+
+    &:before {
+      background: #CFD2D7;
+      border-radius: 100px;
+      text-align: center;
+      cursor: pointer;
+
+      @include rem(width, 36px);
+      @include rem(height, 36px);
+      @include rem(line-height, 36px);
+      @include transition(background $transition-default);
+    }
+
+    &--active {
+      &:before {
+        background: $yellow;
+      }
+
+      ~ .rating_item {
+        &:before {
+          background: #CFD2D7;
+        }
+
+        &.rating_item--active:before {
+          background: $yellow;
+        }
+      }
+    }
+
+    &__total {
+      color: $text;
+      letter-spacing: 0;
+      display: inline-block;
+      vertical-align: middle;
+      text-align: center;
+
+      @include rem(width, 20px);
+      @include rem(font-size, 28px);
+      @include rem(line-height, 30px);
+    }
+
+    &:before {
+      color: $white;
+    }
+  }
+}
+
+.rating {
+  &--circle {
+    cursor: default;
+    font-size: 0;
+
+    &:hover {
+      .rating_item {
+        &:before {
+          background: $yellow !important
+        }
+      }
+    }
+
+    .rating_item {
+      &--active {
+        &:before {
+          background: $yellow;
+        }
+
+        ~ .rating_item:before {
+          background: #CFD2D7;
+        }
+      }
+
+      &:hover {
+        &:before {
+          background: $yellow !important;
+        }
+
+        ~ .rating_item:before {
+          background: #CFD2D7 !important;
+        }
+      }
+    }
+  }
 }
 
 .rating_table {
@@ -68,7 +153,7 @@
     @include rem(font-size, 16px);
     @include rem(line-height, 24px);
 
-    td {
+    > td {
       border-top: 0 !important;
       border-bottom: 1px solid #EBEDEF !important;
 
@@ -144,6 +229,94 @@
       @include rem(font-size, 20px);
     }
   }
+  
+  @media all and (max-width: 1150px) {
+    border-top: 1px solid $border-alt;
+
+    tr, tbody {
+      display: block;
+
+      @include clearfix;
+    }
+    td, th {
+      display: block;
+      float: left;
+      border-bottom: 0 !important;
+      border-top: 0 !important;
+    }
+
+    &__img {
+      @include rem(width, 40px);
+      @include rem(height, 40px);
+
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    &__title {
+      @include rem(margin-top, 5px);
+    }
+
+    &__buttons {
+      clear: left;
+    }
+
+    &__buttons,
+    &__total {
+      float: none !important;
+      display: inline-block !important;
+      vertical-align: middle;
+    }
+
+    &__main {
+      td {
+        @include rem(padding, 20px 10px 0 0 !important);
+
+        &:first-child {
+          border-bottom: 0 !important;
+        }
+      }
+    }
+
+    &__value {
+      width: 25%;
+      margin-right: -4px;
+    }
+
+    &__desc {
+      width: auto;
+      margin-right: -4px;
+
+      ~ .rating_table__desc {
+        @include rem(padding-left, 30px !important)
+      }
+    }
+
+    &__info {
+      @include rem(margin-top, 10px);
+
+      border-bottom: 1px solid $border-alt;
+    }
+  }
+
+  @media all and (max-width: 360px) {
+    th, td {
+      display: inline-block;
+      vertical-align: top;
+    }
+
+    &__desc,
+    &__value {
+      width: 50%;
+      padding-left: 0 !important;
+    }
+
+    .rating_table__desc ~ .rating_table__desc {
+      padding-left: 0 !important;
+    }
+  }
 }
 
 .rating_total {
@@ -202,6 +375,7 @@
     tr {
       td {
         border: 0 !important;
+        padding: 0;
 
         @include rem(padding-left, 20px);
         @include rem(padding-bottom, 11px);
@@ -219,7 +393,8 @@
       background: $yellow;
     }
 
-    .rating_item {
+    .rating_item.rating_item--active,
+    .rating_total__value .rating_item {
       color: $yellow;
     }
   }

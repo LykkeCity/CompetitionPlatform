@@ -189,11 +189,9 @@
   }
 }
 
-.page--profile {
-  .message_card {
-    padding-left: 0;
-    padding-right: 0;
-
+.page--profile,
+.page--result {
+  .message_card:not(.message_card--form) {
     .card__actions {
       @include rem(padding-bottom, 22px);
 
@@ -216,6 +214,18 @@
   @media all and (max-width: $screen-landscape) {
     .page__header {
       padding-right: 0 !important;
+    }
+  }
+
+  @media all and (max-width: $screen-mobile) {
+    .message_card:not(.message_card--form) {
+      padding-left: 0;
+      padding-right: 0;
+      background: transparent !important;
+
+      .message_card {
+        margin-left: 0;
+      }
     }
   }
 }
@@ -248,4 +258,8 @@
   .hint {
     font-weight: normal;
   }
+}
+
+.message_card__date {
+  display: inline-block;
 }

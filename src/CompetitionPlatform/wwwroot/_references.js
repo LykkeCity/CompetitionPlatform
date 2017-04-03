@@ -30,6 +30,7 @@
 /// <reference path="public/js/vendor/clipboard.min.js" />
 /// <reference path="public/js/vendor/fastclick.min.js" />
 /// <reference path="public/js/vendor/html5shiv.js" />
+/// <reference path="public/js/vendor/jquery.fancybox.min.js" />
 /// <reference path="public/js/vendor/jquery.min.js" />
 /// <reference path="public/js/vendor/locale_ru.js" />
 /// <reference path="public/js/vendor/moment.min.js" />
