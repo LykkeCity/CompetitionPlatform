@@ -126,9 +126,90 @@
             </div>
         </header>*@
 
+    <aside class="menu_overlay"></aside>
+
+    <aside class="sidebar_menu">
+        <div class="sidebar_menu__inner">
+            <div class="sidebar_menu__header">
+                <button class="btn btn--icon btn_close_menu">
+                    <i class="icon icon--close"></i>
+                </button>
+                <div class="header_logo">
+                    <a href="/">
+                        <img class="header_logo__img" src="img/lykke_new.svg" height="40" alt="lykke_logo">
+                    </a>
+                </div>
+            </div>
+
+            <div class="sidebar_menu__body">
+                <ul class="main_projects_list">
+                    <li class="main_projects_list__item">
+                        <a href="" class="main_projects_list__link">
+                            <div class="main_projects_list__img">
+                                <img src="~/public/img/lykke_wallet_logo.svg" alt="lykke_wallet_logo" width="50">
+                            </div>
+                            <div class="main_projects_list__content">
+                                <div class="main_projects_list__title">Lykke<span>Wallet</span></div>
+                                <div class="main_projects_list__text">
+                                    Trade FX and Digital Assets
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+
+                    <li class="main_projects_list__item">
+                        <a href="https://streams.lykke.com/" target="_blank" class="main_projects_list__link">
+                            <div class="main_projects_list__img">
+                                <img src="~/public/img/streams_logo.svg" alt="streams_logo" width="50">
+                            </div>
+                            <div class="main_projects_list__content">
+                                <div class="main_projects_list__title">Lykke<span>Streams</span></div>
+                                <div class="main_projects_list__text">
+                                    Collaboration platform. Here the great ideas meet bright minds
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+
+                    <li class="main_projects_list__item">
+                        <a href="https://blockchainexplorer.lykke.com/" target="_blank" class="main_projects_list__link">
+                            <div class="main_projects_list__img">
+                                <img src="~/public/img/bl_explorer_logo.svg" alt="bl_explorer_logo" width="50">
+                            </div>
+                            <div class="main_projects_list__content">
+                                <div class="main_projects_list__title">Blockchain<span>Explorer</span></div>
+                                <div class="main_projects_list__text">
+                                    Explore the Blockchain. Search transaction, assets, addresses or blocks
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+
+            </div>
+
+            <div class="sidebar_menu__footer">
+                <ul class="social">
+                    <li><a href="https://www.facebook.com/groups/542506412568917/" target="_blank" class="social__item"><i class="icon icon--fb_simple"></i><span> Facebook</span></a></li>
+                    <li><a href="https://twitter.com/LykkeCity" target="_blank" class="social__item"><i class="icon icon--tw"></i><span> Twitter</span></a></li>
+                    <li><a href="http://instagram.com/lykkecity" target="_blank" class="social__item"><i class="icon icon--instagram"></i><span> Instagram</span></a></li>
+                    <li><a href="https://www.youtube.com/channel/UCmMYipGdKMF0kzfaE-PXsNQ" target="_blank" class="social__item"><i class="icon icon--youtube"></i><span> Youtube</span></a></li>
+                    <li><a href="https://www.linkedin.com/company/lykke-ag" target="_blank" class="social__item"><i class="icon icon--linkedin-icn"></i><span> Linkedin</span></a></li>
+                    <li><a href="https://www.reddit.com/r/lykke/" target="_blank" class="social__item"><i class="icon icon--reddit"></i><span> Reddit</span></a></li>
+                    <li><a href="https://t.co/TmjMYnQD7T" target="_blank" class="social__item"><i class="icon icon--telegram"></i><span> Telegram</span></a></li>
+                </ul>
+            </div>
+        </div>
+    </aside>
+
     <div class="header_container">
         <header class="header">
             <div class="container">
+                <div class="header__menu_button">
+                    <button class="btn btn_menu btn--icon" type="button">
+                        <span></span>
+                    </button>
+                </div>
                 <div class="header__logo header_logo">
                     <a href="/">
                         <img class="header_logo__img" src="~/public/img/streams_logo.png" height="36" alt="lykke_logo">
@@ -352,6 +433,7 @@
         <script src="~/public/js/vendor/moment.min.js"></script>
         <script src="~/js/vendor/bootstrap-datetimepicker.min.js"></script>
         <script src="~/public/js/vendor/clipboard.min.js"></script>
+        <script src="~/public/js/functions.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
     </environment>
     <environment names="Staging,Production">
@@ -370,6 +452,7 @@
         <script src="~/public/js/vendor/moment.min.js"></script>
         <script src="~/js/vendor/bootstrap-datetimepicker.min.js"></script>
         <script src="~/public/js/vendor/clipboard.min.js"></script>
+        <script src="~/public/js/functions.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
     </environment>
 
