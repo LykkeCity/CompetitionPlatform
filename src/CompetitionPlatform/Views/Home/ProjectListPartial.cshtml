@@ -100,7 +100,16 @@
                                 }
                             </div>
                             <p class="card__text">
-                                @project.Overview
+                                @if (project.Overview.Length > 268)
+                                {
+                                    var overview = project.Overview.Substring(0, Math.Min(project.Overview.Length, 265)) + "...";
+                                    @overview;
+                                }
+                                else
+                                {
+                                    @project.Overview
+                                }
+
                             </p>
                             <div class="tags_list">
                                 @foreach (var tag in project.Tags)
