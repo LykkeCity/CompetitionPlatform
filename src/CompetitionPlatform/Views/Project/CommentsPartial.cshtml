@@ -90,7 +90,7 @@ else
                                     {
                                         <span>&middot;</span>
                                     }
-                                    @if (Model.IsAdmin)
+                                    @if (Model.IsAdmin && !comment.Deleted)
                                     {
                                         <a asp-area="" asp-controller="ProjectDetails" asp-action="RemoveComment" asp-route-projectId="@Model.ProjectId" asp-route-commentId=@comment.Id class="action_link">Delete</a>
                                     }

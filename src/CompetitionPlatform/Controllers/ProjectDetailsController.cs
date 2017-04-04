@@ -447,15 +447,12 @@ namespace CompetitionPlatform.Controllers
 
             if (isAdmin)
             {
-                var projectComments = await _commentsRepository.GetProjectCommentsAsync(projectId);
+                var comment = await _commentsRepository.GetCommentAsync(projectId, commentId);
 
-                await _commentsRepository.DeleteAsync(projectId, commentId);
+                comment.Comment = "[This Comment Has Been Removed]";
+                comment.Deleted = true;
 
-                foreach (var comment in projectComments)
-                {
-                    if (comment.ParentId == commentId)
-                        await _commentsRepository.DeleteAsync(projectId, comment.Id);
-                }
+                await _commentsRepository.UpdateAsync(comment, projectId);
             }
 
             return RedirectToAction("ProjectDetails", "Project", new { commentsActive = true, id = projectId });
