@@ -512,7 +512,7 @@ figcaption { font-weight: normal; font-style: normal; font-stretch: normal; line
 
 .sidebar_menu__footer { position: absolute; bottom: 0; left: 0; right: 15px; background: #fff; padding: 20px 15px 54px 30px; padding: 1.25rem 0.9375rem 3.375rem 1.875rem; }
 
-.sidebar_menu .social { text-align: left; }
+.sidebar_menu .social { text-align: left !important; }
 
 .sidebar_menu .social li { float: left; width: 50%; }
 
