@@ -46,86 +46,6 @@
     </script>
 </head>
 <body class="new_page">
-    @*<header class="header">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xs-2 col-sm-3">
-                        <a href="/" class="logo header__logo">
-                            <img src="~/img/lykke_new.svg" height="38" alt="" />
-                            <span class="header__title">Streams</span>
-                        </a>
-                    </div>
-                    <div class="col-xs-10 col-sm-9 col-md-6 text-center">
-                        <button type="button" class="navbar-toggle collapsed btn btn--stroke pull-right" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false">
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                        <div class="collapse navbar-collapse" id="navbar-collapse">
-                            <div class="t-simulate">
-                                <div class="t-row">
-                                    <div class="t-cell">
-                                        <ul class="nav nav--header">
-                                            <li>
-                                                <a asp-area="" asp-controller="Home" asp-action="Allprojects">All projects</a>
-                                            </li>
-                                            <li>
-                                                <a asp-area="" asp-controller="Home" asp-action="Myprojects">My projects</a>
-                                                <a type="button" class="btn btn-circle new-project-button btn-sm" href="/Project/Create">+</a>
-                                            </li>
-                                        </ul>
-                                        @if (ClaimsHelper.GetUser(User.Identity).Email == null)
-                                        {
-                                            <a asp-area="" asp-controller="Home" asp-action="SignIn" class="visible-xs-inline-block visible-sm-inline-block btn">Sign In</a>
-                                        }
-                                        else
-                                        {
-                                            <a asp-area="" asp-controller="Home" asp-action="LogOut" class="visible-xs-inline-block visible-sm-inline-block btn">Sign Out</a>
-                                        }
-                                    </div>
-                                </div>
-                            </div>
-                            <ul class="social social--header visible-xs visible-sm">
-                                <li><a href="https://www.facebook.com/groups/542506412568917/" target="_blank" class="social__item"><i class="icon icon--fb_simple"></i></a></li>
-                                <li><a href="https://twitter.com/LykkeCity" target="_blank" class="social__item"><i class="icon icon--tw"></i></a></li>
-                                <li><a href="http://instagram.com/lykkecity" target="_blank" class="social__item"><i class="icon icon--instagram"></i></a></li>
-                                <li><a href="https://www.youtube.com/channel/UCmMYipGdKMF0kzfaE-PXsNQ" target="_blank" class="social__item"><i class="icon icon--youtube"></i></a></li>
-                                <li><a href="https://www.linkedin.com/company/lykke-ag" target="_blank" class="social__item"><i class="icon icon--linkedin-icn"></i></a></li>
-                                <li><a href="https://www.reddit.com/r/lykke/" target="_blank" class="social__item"><i class="icon icon--reddit"></i></a></li>
-                                <li><a href="https://t.co/TmjMYnQD7T" target="_blank" class="social__item"><i class="icon icon--telegram"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    @if (ClaimsHelper.GetUser(User.Identity).Email == null)
-                    {
-                        <div class="col-sm-3 hidden-xs hidden-sm">
-                            <a asp-area="" asp-controller="Home" asp-action="SignIn" class="btn btn-link pull-right">Sign In</a>
-                        </div>
-                    }
-                    else
-                    {
-                        <div class="col-md-3 hidden-xs hidden-sm">
-                            <div class="navbar-right">
-                                @if (User.Identity.IsAuthenticated)
-                                {
-                                    <ul class="nav nav--header pull-right">
-                                        <li class="pull-right">
-                                            <a class="dropdown__control" href="">@ClaimsHelper.GetUser(User.Identity).GetFullName()</a>
-                                            <div class="dropdown__container">
-                                                <ul class="dropdown__nav">
-                                                    <li><a asp-controller="Home" asp-action="LogOut" asp-route-id="">Sign Out</a></li>
-                                                </ul>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                }
-                            </div>
-                        </div>
-                    }
-                </div>
-            </div>
-        </header>*@
-
     <aside class="menu_overlay"></aside>
 
     <aside class="sidebar_menu">
@@ -216,13 +136,20 @@
                         <div class="header_logo__title">Streams</div>
                     </a>
                 </div>
-
                 <div class="header__actions header_actions pull-right">
+                    @if (ClaimsHelper.GetUser(User.Identity).Email != null)
+            {
+                        <div class="header_actions__logout visible-xs pull-right">
+                            <a asp-controller="Home" asp-action="LogOut" asp-route-id="" class="btn btn--icon btn_logout">
+                                <i class="icon icon--exit"></i>
+                            </a>
+                        </div>
+                    }
                     <div class="header_actions__login header_login pull-right">
                         @if (ClaimsHelper.GetUser(User.Identity).Email == null)
                         {
-                            <div class="header_user">
-                                <a asp-area="" asp-controller="Home" asp-action="SignIn" class="header_login__title">
+                            <div class="header_user dropdown__control">
+                                <a asp-area="" asp-controller="Home" asp-action="SignIn">
                                     <div class="header_login__title">Sign in</div>
                                 </a>
                             </div>
@@ -230,13 +157,11 @@
                         else
                         {
                             <div class="header_user dropdown__control">
-                                <a>
-                                    <div class="header_user__img">
-                                        <img src="~/public/img/user_default.svg" width="40" alt="user_image">
-                                    </div>
+                                <div class="header_user__img">
+                                    <img src="~/public/img/user_default.svg" width="40" alt="user_image">
+                                </div>
 
-                                    <div class="header_login__title">@ClaimsHelper.GetFirstName(User.Identity)</div>
-                                </a>
+                                <div class="header_login__title">@ClaimsHelper.GetFirstName(User.Identity)</div>
                             </div>
 
                             <div class="dropdown__container">
