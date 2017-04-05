@@ -162,7 +162,7 @@ namespace CompetitionPlatform.Controllers
 
                 await SaveProjectFile(projectViewModel.File, projectId);
 
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("ProjectDetails", "Project", new { id = projectId });
             }
             ViewBag.ProjectCategories = _categoriesRepository.GetCategories();
             ModelState.AddModelError("Id", "Project with that Project Url already exists!");
