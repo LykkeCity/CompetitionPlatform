@@ -100,9 +100,9 @@
                                 }
                             </div>
                             <p class="card__text">
-                                @if (project.Overview.Length > 268)
+                                @if (project.Overview.Length > 255)
                                 {
-                                    var overview = project.Overview.Substring(0, Math.Min(project.Overview.Length, 265)) + "...";
+                                    var overview = project.Overview.Substring(0, Math.Min(project.Overview.Length, 252)) + "...";
                                     @overview;
                                 }
                                 else
