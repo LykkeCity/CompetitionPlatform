@@ -448,10 +448,7 @@ namespace CompetitionPlatform.Controllers
             if (isAdmin)
             {
                 var comment = await _commentsRepository.GetCommentAsync(projectId, commentId);
-
-                comment.Comment = "[This Comment Has Been Removed]";
                 comment.Deleted = true;
-
                 await _commentsRepository.UpdateAsync(comment, projectId);
             }
 

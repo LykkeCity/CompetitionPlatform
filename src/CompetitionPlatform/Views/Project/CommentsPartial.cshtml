@@ -76,7 +76,16 @@ else
                         </div>
                         <div class="message_card__message">
                             <p>
-                                @Html.Raw(comment.Comment)
+                                @if (comment.Deleted)
+                                {
+                                    const string deletedComment = "[Comment was deleted]";
+                                    @deletedComment
+                                }
+                                else
+                                {
+                                    @Html.Raw(comment.Comment)
+                                }
+
                             </p>
                             <div id="@comment.Id"></div>
                             @if (Model.UserId != comment.UserId || Model.IsAdmin)
