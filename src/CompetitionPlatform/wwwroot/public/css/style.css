@@ -2309,10 +2309,6 @@ a.action_link:hover img, button.action_link:hover img { opacity: 1; }
   .prize__value { font-size: 36px; line-height: 50px; }
   .prize__title { margin-top: 2px; } }
 
-.page .page__title { margin: 30px 0 10px !important; margin: 1.875rem 0 0.625rem !important; }
-
-.page h2 { margin-bottom: 30px; margin-bottom: 1.875rem; }
-
 .page .page__header { overflow: hidden; }
 
 .page .page__header h1, .page .page__header h2, .page .page__header h3 { margin-bottom: 0; }
@@ -2357,9 +2353,11 @@ a.action_link:hover img, button.action_link:hover img { opacity: 1; }
   .page--competition_platform .page__header .col-sm-4 { position: absolute; top: 0; right: 0; padding: 0; }
   .page--competition_platform .page__header .btn_edit { min-width: 0; } }
 
-.section--competition_list .row { font-size: 0; }
+.section--competition_list_main .container { width: 1060px; }
 
-.section--competition_list .row > div { display: inline-block; vertical-align: top; float: none; }
+.section--competition_list_main .card--preview { margin-bottom: 50px; margin-bottom: 3.125rem; }
+
+.section--competition_list_main .card--preview .card__body { height: auto; }
 
 .section--competition_form .container { width: 805px; }
 
@@ -2823,19 +2821,61 @@ a.action_link:hover img, button.action_link:hover img { opacity: 1; }
 
 .nav_scroll .nav-tabs { margin-right: 0 !important; }
 
-.play_video_container { text-align: center; margin: 24px 0; margin: 1.5rem 0; }
+.play_video_container { text-align: center; position: relative; margin: 24px 0; margin: 1.5rem 0; }
 
-.play_video_container .btn { height: 40px; height: 2.5rem; width: 60px; width: 3.75rem; line-height: 20px; line-height: 1.25rem; }
+.play_video_container .btn { position: absolute; z-index: 2; left: 0; right: 0; top: 50%; margin: -30px auto 0; margin: -1.875rem auto 0; height: 60px; height: 3.75rem; width: 60px; width: 3.75rem; line-height: 40px; line-height: 2.5rem; }
 
-.play_video_container img { margin-right: -2px; margin-right: -0.125rem; width: 13px; width: 0.8125rem; }
+.play_video_container .btn img { margin-right: -2px; margin-right: -0.125rem; width: 20px; width: 1.25rem; }
 
 .play_video_container span { font-weight: 600; line-height: normal; color: inherit; text-transform: uppercase; font-size: 13px; font-size: 0.8125rem; letter-spacing: 2px; letter-spacing: 0.125rem; margin-left: 10px; margin-left: 0.625rem; }
+
+.play_video_container .play_video_preview { display: block; height: 100%; }
 
 .play_video_container a { color: #333333; }
 
 .play_video_container a:hover { color: #ab00ff; }
 
-@media all and (max-width: 767px) { .play_video_container .btn { line-height: 25px; line-height: 1.5625rem; } }
+@media all and (max-width: 767px) { .play_video_container .btn { line-height: 44px; line-height: 2.75rem; } }
+
+.section_header { border-bottom: 1px solid #EBEDEF; padding-top: 10px; padding-top: 0.625rem; padding-bottom: 14px; padding-bottom: 0.875rem; margin-bottom: 30px; margin-bottom: 1.875rem; }
+
+.section_header h3, .section_header h4, .section_header h5 { margin-bottom: 0; line-height: 32px; line-height: 2rem; }
+
+.section_header__link { font-weight: 600; margin: 7px 0; margin: 0.4375rem 0; }
+
+.competition_list__main { margin-bottom: 60px; margin-bottom: 3.75rem; }
+
+@media all and (min-width: 768px) { .competition_list__main { padding-right: 45px; padding-right: 2.8125rem; } }
+
+.competition_list__block { margin-bottom: 60px; margin-bottom: 3.75rem; }
+
+.users_list .user_badge, .simple_list .user_badge { margin-bottom: 25px; margin-bottom: 1.5625rem; }
+
+.users_list .user_badge:last-child, .simple_list .user_badge:last-child { margin-bottom: 0; }
+
+.users_list .user_badge--small .user_badge__info, .simple_list .user_badge--small .user_badge__info { padding-top: 0; }
+
+.users_list .user_badge a, .simple_list .user_badge a { display: inline-block; }
+
+.users_list .user_badge .user_badge__desc, .simple_list .user_badge .user_badge__desc { color: rgba(63, 77, 96, 0.6); margin-top: 3px; margin-top: 0.1875rem; }
+
+.users_list .user_badge .user_badge__desc a, .simple_list .user_badge .user_badge__desc a { color: inherit; }
+
+.users_list .user_badge .user_badge__desc a:hover, .simple_list .user_badge .user_badge__desc a:hover { color: #3F4D60; }
+
+.users_list .user_badge .card__sum, .simple_list .user_badge .card__sum { margin-top: 8px; margin-top: 0.5rem; }
+
+@media all and (max-width: 767px) { .users_list { overflow: hidden; white-space: nowrap; margin-left: -30px; margin-right: -30px; }
+  .users_list .card__sum { font-size: 18px; }
+  .users_list .user_badge--small { width: 150px; display: inline-block; vertical-align: top; padding-right: 20px; }
+  .users_list .user_badge--small .user_badge__title { font-size: 13px; line-height: 16px; }
+  .users_list .user_badge--small .user_badge__desc { font-size: 12px; line-height: 16px; margin-top: 8px; }
+  .users_list .user_badge--small .user_badge__img { margin-right: 0; width: 50px; height: 50px; margin-bottom: 16px; float: none; }
+  .users_list .user_badge--small .user_badge__img img { width: 50px; height: 50px; }
+  .users_list__inner { padding-left: 30px; padding-right: 30px; overflow: hidden; overflow-x: auto; } }
+
+@media all and (max-width: 543px) { .users_list { margin-left: -15px; margin-right: -15px; }
+  .users_list__inner { padding-left: 15px; padding-right: 15px; } }
 
 .user_profile { margin-bottom: 10px; margin-bottom: 0.625rem; }
 
