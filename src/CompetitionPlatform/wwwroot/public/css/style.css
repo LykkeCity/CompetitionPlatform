@@ -2825,21 +2825,33 @@ a.action_link:hover img, button.action_link:hover img { opacity: 1; }
 
 .nav_scroll .nav-tabs { margin-right: 0 !important; }
 
-.play_video_container { text-align: center; position: relative; margin: 24px 0; margin: 1.5rem 0; }
+.play_video_container { text-align: center; margin: 24px 0; margin: 1.5rem 0; }
 
-.play_video_container .btn { position: absolute; z-index: 2; left: 0; right: 0; top: 50%; margin: -30px auto 0; margin: -1.875rem auto 0; height: 60px; height: 3.75rem; width: 60px; width: 3.75rem; line-height: 40px; line-height: 2.5rem; }
+.play_video_container .btn { height: 40px; height: 2.5rem; width: 60px; width: 3.75rem; line-height: 20px; line-height: 1.25rem; }
 
-.play_video_container .btn img { margin-right: -2px; margin-right: -0.125rem; width: 20px; width: 1.25rem; }
+.play_video_container img { margin-right: -2px; margin-right: -0.125rem; width: 13px; width: 0.8125rem; }
 
 .play_video_container span { font-weight: 600; line-height: normal; color: inherit; text-transform: uppercase; font-size: 13px; font-size: 0.8125rem; letter-spacing: 2px; letter-spacing: 0.125rem; margin-left: 10px; margin-left: 0.625rem; }
-
-.play_video_container .play_video_preview { display: block; height: 100%; }
 
 .play_video_container a { color: #333333; }
 
 .play_video_container a:hover { color: #ab00ff; }
 
-@media all and (max-width: 767px) { .play_video_container .btn { line-height: 44px; line-height: 2.75rem; } }
+.play_video_preview { text-align: center; position: relative; margin: 24px 0; margin: 1.5rem 0; }
+
+.play_video_preview .btn { position: absolute; z-index: 2; left: 0; right: 0; top: 50%; margin: -30px auto 0; margin: -1.875rem auto 0; height: 60px; height: 3.75rem; width: 60px; width: 3.75rem; line-height: 40px; line-height: 2.5rem; }
+
+.play_video_preview .btn img { margin-right: -2px; margin-right: -0.125rem; width: 20px; width: 1.25rem; }
+
+.play_video_preview span { font-weight: 600; line-height: normal; color: inherit; text-transform: uppercase; font-size: 13px; font-size: 0.8125rem; letter-spacing: 2px; letter-spacing: 0.125rem; margin-left: 10px; margin-left: 0.625rem; }
+
+.play_video_preview__link { display: block; height: 100%; }
+
+.play_video_preview a { color: #333333; }
+
+.play_video_preview a:hover { color: #ab00ff; }
+
+@media all and (max-width: 767px) { .play_video_preview .btn { line-height: 44px; line-height: 2.75rem; } }
 
 .section_header { border-bottom: 1px solid #EBEDEF; padding-top: 10px; padding-top: 0.625rem; padding-bottom: 14px; padding-bottom: 0.875rem; margin-bottom: 30px; margin-bottom: 1.875rem; }
 

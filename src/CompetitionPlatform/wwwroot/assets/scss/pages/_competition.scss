@@ -1812,6 +1812,42 @@
 
 .play_video_container {
   text-align: center;
+
+  @include rem(margin, 24px 0);
+
+  .btn {
+    @include rem(height, 40px);
+    @include rem(width, 60px);
+    @include rem(line-height, 20px);
+  }
+
+  img {
+    @include rem(margin-right, -2px);
+    @include rem(width, 13px);
+  }
+
+  span {
+    font-weight: $fw-semi;
+    line-height: normal;
+    color: inherit;
+    text-transform: uppercase;
+
+    @include rem(font-size, 13px);
+    @include rem(letter-spacing, 2px);
+    @include rem(margin-left, 10px);
+  }
+
+  a {
+    color: $text;
+
+    &:hover {
+      color: $primary;
+    }
+  }
+}
+
+.play_video_preview {
+  text-align: center;
   position: relative;
 
   @include rem(margin, 24px 0);
@@ -1845,7 +1881,7 @@
     @include rem(margin-left, 10px);
   }
 
-  .play_video_preview {
+  &__link {
     display: block;
     height: 100%;
   }
