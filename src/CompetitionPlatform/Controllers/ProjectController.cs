@@ -206,6 +206,30 @@ namespace CompetitionPlatform.Controllers
 
             await _projectRepository.UpdateAsync(projectViewModel);
 
+            var idValid = false;
+
+            if (!string.IsNullOrEmpty(projectViewModel.ProjectUrl))
+                idValid = Regex.IsMatch(projectViewModel.ProjectUrl, @"^[a-z0-9-]+$");
+
+            if (!idValid)
+            {
+                projectViewModel.ProjectCategories = _categoriesRepository.GetCategories();
+                ModelState.AddModelError("ProjectUrl",
+                    "Project Url can only contain lowercase letters, numbers and the dash symbol!");
+                return View("EditProject", projectViewModel);
+            }
+
+            if (projectViewModel.ProjectUrl != projectId)
+            {
+                projectViewModel.Id = projectViewModel.ProjectUrl;
+                projectViewModel.Created = DateTime.UtcNow;
+
+                await _projectRepository.SaveAsync(projectViewModel);
+                await _projectRepository.DeleteAsync(projectId);
+
+                return RedirectToAction("ProjectDetails", "Project", new { id = projectViewModel.ProjectUrl });
+            }
+
             if (project.Status != Status.Registration && projectViewModel.Status == Status.Registration)
             {
                 await AddCompetitionMailToQueue(project);
@@ -525,6 +549,8 @@ namespace CompetitionPlatform.Controllers
 
             if (projectViewModel.Status == Status.Archive)
                 projectViewModel = await PopulateResultsViewModel(projectViewModel);
+
+            projectViewModel.ProjectUrl = project.Id;
 
             return projectViewModel;
         }
