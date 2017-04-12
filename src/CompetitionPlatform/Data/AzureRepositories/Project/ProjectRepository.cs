@@ -157,6 +157,14 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
             });
         }
 
+        public async Task DeleteAsync(string id)
+        {
+            var partitionKey = ProjectEntity.GeneratePartitionKey();
+            var rowKey = ProjectEntity.GenerateRowKey(id);
+
+            await _projectsTableStorage.DeleteAsync(partitionKey, rowKey);
+        }
+
         private ProjectEntity ChangeNullWithDefault(ProjectEntity projectData)
         {
             if (projectData.Overview == null) projectData.Overview = "Overview was not provided";

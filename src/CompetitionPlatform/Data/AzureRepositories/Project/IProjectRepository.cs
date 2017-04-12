@@ -40,5 +40,6 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
         Task<IEnumerable<IProjectData>> GetProjectsAsync();
         Task<string> SaveAsync(IProjectData projectData);
         Task UpdateAsync(IProjectData projectData);
+        Task DeleteAsync(string id);
     }
 }
