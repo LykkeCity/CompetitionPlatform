@@ -217,12 +217,12 @@ namespace CompetitionPlatform.Controllers
             }
             else
             {
-                return await EditWithProjectUrlError(projectViewModel, "Project Url cannot be empty!");
+                return await EditWithProjectUrlError(projectViewModel.Id, "Project Url cannot be empty!");
             }
 
             if (!idValid)
             {
-                return await EditWithProjectUrlError(projectViewModel, "Project Url can only contain lowercase letters, numbers and the dash symbol!");
+                return await EditWithProjectUrlError(projectViewModel.Id, "Project Url can only contain lowercase letters, numbers and the dash symbol!");
             }
 
             if (projectViewModel.ProjectUrl != projectId)
@@ -233,12 +233,12 @@ namespace CompetitionPlatform.Controllers
                 }
                 else
                 {
-                    return await EditWithProjectUrlError(projectViewModel, "Project Url cannot be empty!");
+                    return await EditWithProjectUrlError(projectViewModel.Id, "Project Url cannot be empty!");
                 }
 
                 if (!idValid)
                 {
-                    return await EditWithProjectUrlError(projectViewModel, "Project Url can only contain lowercase letters, numbers and the dash symbol!");
+                    return await EditWithProjectUrlError(projectViewModel.Id, "Project Url can only contain lowercase letters, numbers and the dash symbol!");
                 }
 
                 var projectExists = await _projectRepository.GetAsync(projectViewModel.ProjectUrl);
@@ -740,11 +740,12 @@ namespace CompetitionPlatform.Controllers
             }
         }
 
-        private async Task<IActionResult> EditWithProjectUrlError(ProjectViewModel model, string errorText)
+        private async Task<IActionResult> EditWithProjectUrlError(string projectId, string errorText)
         {
-            model.ProjectCategories = _categoriesRepository.GetCategories();
+            var projectViewModel = await GetProjectViewModel(projectId);
+            projectViewModel.ProjectCategories = _categoriesRepository.GetCategories();
             ModelState.AddModelError("ProjectUrl", errorText);
-            return View("EditProject", model);
+            return View("EditProject", projectViewModel);
         }
     }
 }
