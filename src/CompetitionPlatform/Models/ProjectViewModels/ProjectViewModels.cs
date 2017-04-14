@@ -12,7 +12,6 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         [Display(Name = "Project Url")]
         public string Id { get; set; }
 
-        [Required]
         [Display(Name = "Project Url")]
         public string ProjectUrl { get; set; }
 

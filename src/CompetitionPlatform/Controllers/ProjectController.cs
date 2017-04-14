@@ -127,12 +127,12 @@ namespace CompetitionPlatform.Controllers
             if (projectViewModel.VotingDeadline == DateTime.MinValue)
                 projectViewModel.VotingDeadline = DateTime.UtcNow.Date;
 
-            var idValid = Regex.IsMatch(projectViewModel.Id, @"^[a-z0-9-]+$");
+            var idValid = Regex.IsMatch(projectViewModel.Id, @"^[a-z0-9-]+$") && !string.IsNullOrEmpty(projectViewModel.Id);
 
             if (!idValid)
             {
                 ViewBag.ProjectCategories = _categoriesRepository.GetCategories();
-                ModelState.AddModelError("Id", "Project Url can only contain lowercase letters, numbers and the dash symbol!");
+                ModelState.AddModelError("Id", "Project Url can only contain lowercase letters, numbers and the dash symbol and cannot be empty!");
                 return View("CreateProject", projectViewModel);
             }
 
@@ -174,6 +174,9 @@ namespace CompetitionPlatform.Controllers
         public async Task<IActionResult> SaveEditedProject(ProjectViewModel projectViewModel, bool draft = false,
             bool enableVoting = false, bool enableRegistration = false)
         {
+            if (projectViewModel.ProjectUrl == null)
+                projectViewModel.ProjectUrl = projectViewModel.Id;
+
             projectViewModel.Tags = SerializeTags(projectViewModel.Tags);
 
             projectViewModel.ProjectStatus = projectViewModel.Status.ToString();
@@ -209,18 +212,42 @@ namespace CompetitionPlatform.Controllers
             var idValid = false;
 
             if (!string.IsNullOrEmpty(projectViewModel.ProjectUrl))
+            {
                 idValid = Regex.IsMatch(projectViewModel.ProjectUrl, @"^[a-z0-9-]+$");
+            }
+            else
+            {
+                return await EditWithProjectUrlError(projectViewModel, "Project Url cannot be empty!");
+            }
 
             if (!idValid)
             {
-                projectViewModel.ProjectCategories = _categoriesRepository.GetCategories();
-                ModelState.AddModelError("ProjectUrl",
-                    "Project Url can only contain lowercase letters, numbers and the dash symbol!");
-                return View("EditProject", projectViewModel);
+                return await EditWithProjectUrlError(projectViewModel, "Project Url can only contain lowercase letters, numbers and the dash symbol!");
             }
 
             if (projectViewModel.ProjectUrl != projectId)
             {
+                if (!string.IsNullOrEmpty(projectViewModel.ProjectUrl))
+                {
+                    idValid = Regex.IsMatch(projectViewModel.ProjectUrl, @"^[a-z0-9-]+$");
+                }
+                else
+                {
+                    return await EditWithProjectUrlError(projectViewModel, "Project Url cannot be empty!");
+                }
+
+                if (!idValid)
+                {
+                    return await EditWithProjectUrlError(projectViewModel, "Project Url can only contain lowercase letters, numbers and the dash symbol!");
+                }
+
+                var projectExists = await _projectRepository.GetAsync(projectViewModel.ProjectUrl);
+
+                if (projectExists != null)
+                {
+                    return await EditWithProjectUrlError(projectViewModel, "Project with that Project Url already exists!");
+                }
+
                 projectViewModel.Id = projectViewModel.ProjectUrl;
                 projectViewModel.Created = DateTime.UtcNow;
 
@@ -711,6 +738,13 @@ namespace CompetitionPlatform.Controllers
                 }
 
             }
+        }
+
+        private async Task<IActionResult> EditWithProjectUrlError(ProjectViewModel model, string errorText)
+        {
+            model.ProjectCategories = _categoriesRepository.GetCategories();
+            ModelState.AddModelError("ProjectUrl", errorText);
+            return View("EditProject", model);
         }
     }
 }
