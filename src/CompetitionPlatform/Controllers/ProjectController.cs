@@ -245,7 +245,7 @@ namespace CompetitionPlatform.Controllers
 
                 if (projectExists != null)
                 {
-                    return await EditWithProjectUrlError(projectViewModel, "Project with that Project Url already exists!");
+                    return await EditWithProjectUrlError(projectViewModel.Id, "Project with that Project Url already exists!");
                 }
 
                 projectViewModel.Id = projectViewModel.ProjectUrl;
