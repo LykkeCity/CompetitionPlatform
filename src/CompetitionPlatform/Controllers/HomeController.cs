@@ -479,7 +479,18 @@ namespace CompetitionPlatform.Controllers
 
         public string Version()
         {
-            return typeof(HomeController).GetTypeInfo().Assembly.GetName().Version.ToString();
+            return GetCurrentVersion();
+        }
+
+        [HttpGet("~/isalive")]
+        public IActionResult IsAlive()
+        {
+            var version = new VersionModel
+            {
+                Version = GetCurrentVersion()
+            };
+
+            return Json(version);
         }
 
         public async Task<string> ActiveProjectsCount()
@@ -490,6 +501,11 @@ namespace CompetitionPlatform.Controllers
                                            x.ProjectStatus != Status.Draft.ToString());
 
             return projects.Count().ToString();
+        }
+
+        private string GetCurrentVersion()
+        {
+            return typeof(HomeController).GetTypeInfo().Assembly.GetName().Version.ToString();
         }
     }
 }
