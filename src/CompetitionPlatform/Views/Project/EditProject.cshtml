@@ -224,6 +224,11 @@
                                     }
                                     <option value=@Status.Archive.ToString()>Status: @Status.Archive.ToString()</option>
                                 </select>
+                                <span class="text-danger field-validation-error">
+                                    <span class="field-validation-error">
+                                        @Html.ValidationMessageFor(x => x.Status)
+                                    </span>
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -244,8 +249,6 @@
                                     {
                                         <option value=@Status.Initiative.ToString()>Status: @Status.Initiative.ToString()</option>
                                     }
-                                    
-                                    
                                 </select>
                             </div>
                         </div>

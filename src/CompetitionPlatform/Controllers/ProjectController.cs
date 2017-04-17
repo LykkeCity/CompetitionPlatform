@@ -206,8 +206,11 @@ namespace CompetitionPlatform.Controllers
             projectViewModel.ParticipantsCount = project.ParticipantsCount;
 
             var projectId = projectViewModel.Id;
+            var statusAndUrlChanged = projectViewModel.Status != Status.Draft &&
+                                      projectViewModel.ProjectUrl != projectId;
 
-            await _projectRepository.UpdateAsync(projectViewModel);
+            if (!statusAndUrlChanged)
+                await _projectRepository.UpdateAsync(projectViewModel);
 
             var idValid = false;
 
@@ -227,6 +230,16 @@ namespace CompetitionPlatform.Controllers
 
             if (projectViewModel.ProjectUrl != projectId)
             {
+                if (projectViewModel.Status != Status.Draft)
+                {
+                    var oldProjUrl = projectViewModel.ProjectUrl;
+                    projectViewModel = await GetProjectViewModel(projectId);
+                    projectViewModel.ProjectUrl = oldProjUrl;
+                    projectViewModel.ProjectCategories = _categoriesRepository.GetCategories();
+                    ModelState.AddModelError("Status", "Status cannot be changed while changing Project Url!");
+                    return View("EditProject", projectViewModel);
+                }
+
                 if (!string.IsNullOrEmpty(projectViewModel.ProjectUrl))
                 {
                     idValid = Regex.IsMatch(projectViewModel.ProjectUrl, @"^[a-z0-9-]+$");
