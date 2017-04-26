@@ -17,6 +17,8 @@ namespace CompetitionPlatform
     {
         public static void RegisterRepositories(this IServiceCollection services, string connectionString, ILog log)
         {
+            services.AddSingleton(log);
+
             services.AddSingleton<INoSQLTableStorage<ProjectEntity>>(
                    new AzureTableStorage<ProjectEntity>(connectionString, "Projects", log));
 
