@@ -1,4 +1,5 @@
-﻿using Lykke.EmailSenderProducer.Interfaces;
+﻿using System.Collections.Generic;
+using Lykke.EmailSenderProducer.Interfaces;
 
 namespace CompetitionPlatform.Data.AzureRepositories.Settings
 {
@@ -9,6 +10,8 @@ namespace CompetitionPlatform.Data.AzureRepositories.Settings
         public NotificationsSettings Notifications { get; set; }
 
         public string EmailServiceBusSettingsUrl { get; set; }
+
+        public List<string> ProjectCreateNotificationReceiver { get; set; }
     }
 
     public class AuthenticationSettings
