@@ -51,7 +51,7 @@
     <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="2.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="1.1.0" />
     <PackageReference Include="Lykke.EmailContentGenerator" Version="1.0.2" />
-    <PackageReference Include="Lykke.EmailSenderProducer" Version="1.0.3" />
+    <PackageReference Include="Lykke.EmailSenderProducer" Version="1.0.4" />
     <PackageReference Include="Lykke.Common" Version="1.1.4" />
     <PackageReference Include="Lykke.AzureStorage" Version="1.2.6" />
     <PackageReference Include="iTextSharp.LGPLv2.Core" Version="1.2.3" />
