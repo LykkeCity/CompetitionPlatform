@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AzureStorage.Queue;
+using Common.Log;
 using CompetitionPlatform.Data.AzureRepositories.Project;
 using CompetitionPlatform.Data.AzureRepositories.Result;
 using CompetitionPlatform.Data.AzureRepositories.Settings;
@@ -17,6 +19,8 @@ using CompetitionPlatform.Helpers;
 using CompetitionPlatform.Models;
 using CompetitionPlatform.Models.ProjectViewModels;
 using CompetitionPlatform.Services;
+using Lykke.EmailSenderProducer;
+using Lykke.EmailSenderProducer.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -40,6 +44,7 @@ namespace CompetitionPlatform.Controllers
         private readonly IQueueExt _emailsQueue;
         private readonly IProjectResultVoteRepository _resultVoteRepository;
         private readonly BaseSettings _settings;
+        private readonly ILog _log;
 
         public ProjectController(IProjectRepository projectRepository, IProjectCommentsRepository commentsRepository,
             IProjectFileRepository fileRepository, IProjectFileInfoRepository fileInfoRepository,
@@ -47,7 +52,8 @@ namespace CompetitionPlatform.Controllers
             IProjectResultRepository resultRepository, IProjectFollowRepository projectFollowRepository,
             IProjectWinnersRepository winnersRepository, IUserRolesRepository userRolesRepository,
             IProjectWinnersService winnersService, IQueueExt emailsQueue,
-            IProjectResultVoteRepository resultVoteRepository, BaseSettings settings)
+            IProjectResultVoteRepository resultVoteRepository, BaseSettings settings,
+            ILog log)
         {
             _projectRepository = projectRepository;
             _commentsRepository = commentsRepository;
@@ -63,6 +69,7 @@ namespace CompetitionPlatform.Controllers
             _emailsQueue = emailsQueue;
             _resultVoteRepository = resultVoteRepository;
             _settings = settings;
+            _log = log;
         }
 
         [Authorize]
@@ -153,6 +160,11 @@ namespace CompetitionPlatform.Controllers
 
                 var projectId = await _projectRepository.SaveAsync(projectViewModel);
 
+                if (projectViewModel.Status == Status.Initiative)
+                {
+                    await SendProjectCreateNotification(projectViewModel);
+                }
+
                 if (_emailsQueue != null)
                 {
                     var message = NotificationMessageHelper.ProjectCreatedMessage(user.Email, user.GetFullName(),
@@ -211,6 +223,11 @@ namespace CompetitionPlatform.Controllers
 
             if (!statusAndUrlChanged)
                 await _projectRepository.UpdateAsync(projectViewModel);
+
+            if (project.Status == Status.Draft && projectViewModel.Status == Status.Initiative)
+            {
+                await SendProjectCreateNotification(projectViewModel);
+            }
 
             var idValid = false;
 
@@ -759,6 +776,27 @@ namespace CompetitionPlatform.Controllers
             projectViewModel.ProjectCategories = _categoriesRepository.GetCategories();
             ModelState.AddModelError("ProjectUrl", errorText);
             return View("EditProject", projectViewModel);
+        }
+
+        private async Task SendProjectCreateNotification(IProjectData model)
+        {
+            var httpClient = new HttpClient();
+            var settingsString = await httpClient.GetStringAsync(_settings.EmailServiceBusSettingsUrl);
+            var serviceBusSettings = JsonConvert.DeserializeObject<EmailServiceBusSettings>(settingsString);
+            var emailProducer = new EmailSenderProducer(serviceBusSettings.EmailServiceBus, _log);
+
+            var message = new EmailMessage
+            {
+                Body = "New Project was created. Project name - " + model.Name + ", Project author - " + model.AuthorFullName +
+                ", Project Link - https://streams.lykke.com/Project/ProjectDetails/" + model.Id,
+                Subject = "New Project Created!",
+                IsHtml = false
+            };
+
+            foreach (var email in _settings.ProjectCreateNotificationReceiver)
+            {
+                await emailProducer.SendEmailAsync(email, message, "Lykke Notifications");
+            }
         }
     }
 }
