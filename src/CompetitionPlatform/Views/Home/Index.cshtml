@@ -7,26 +7,222 @@
 <section class="section section--lead section--padding">
     <div class="container container--extend">
         <h1 class="text-center page__title">Lykke<span>Streams</span></h1>
-        <h3 class="page__subtitle mb0">Here the great ideas meet bright minds</h3>
-        
-        <div class="play_video_container">
-            <a class="btn_play" data-fancybox href="https://www.youtube.com/watch?v=TCXK4AV-E1Q&feature=youtu.be">
-                <div class="btn btn--primary btn-sm"><img src="img/play.svg" width="13" alt="play"></div>
-                <span>Watch video</span>
-            </a>
-        </div>
+        <h2 class="h3 page__subtitle mb0">Is Helping the Great Ideas to Meet the Bright Minds</h2>
     </div>
 </section>
 
-<section class="section section--competition_list">
-    <div class="container container--extend">
+<section class="section section--competition_list_main">
+    <div class="container">
 
-        <div class="section_header">
-            <h3 class="section_header__title">Current Projects</h3>
+        <div class="row">
+            <div class="competition_list__main col-sm-8">
+                <div class="section_header">
+                    <h3 class="section_header__title">Current Projects</h3>
+                </div>
+
+                @foreach (var project in Model.Projects)
+                {
+                    var statusColor = "";
+                    var projectStatus = project.Status.ToString().ToUpper();
+                    var projectCount = "";
+                    var votesCount = project.VotesFor + project.VotesAgainst;
+                    var commentsCount = (project.CommentsCount == 1) ? project.CommentsCount + " comment" : project.CommentsCount + " comments";
+                    var facebookSharingUrl = "https://www.facebook.com/sharer/sharer.php?u=" + Context.Request.Host + "/Project/ProjectDetails/" + project.Id;
+
+                    switch (project.Status)
+                    {
+                        case Status.Draft:
+                            statusColor = "label--flat label--gray";
+                            break;
+                        case Status.Initiative:
+                            statusColor = "label--blue";
+                            projectCount = (votesCount == 1) ? votesCount + " vote" : votesCount + " votes";
+                            break;
+                        case Status.Registration:
+                            statusColor = "label--blue";
+                            projectCount = (project.ParticipantsCount == 1) ? project.ParticipantsCount + " participant" : project.ParticipantsCount + " participants";
+                            break;
+                        case Status.Submission:
+                            statusColor = "label--green";
+                            projectCount = (project.ParticipantsCount == 1) ? project.ParticipantsCount + " participant" : project.ParticipantsCount + " participants";
+                            break;
+                        case Status.Voting:
+                            statusColor = "label--yellow";
+                            projectCount = (project.ResultsCount == 1) ? project.ResultsCount + " result" : project.ResultsCount + " results";
+                            break;
+                        case Status.Archive:
+                            statusColor = "label--gray";
+                            projectCount = (project.WinnersCount == 1) ? project.WinnersCount + " winner" : project.WinnersCount + " winners";
+                            break;
+                    }
+
+                    <div class="card card--preview">
+                        <div class="card__inner">
+                            <div class="card__body">
+                                <div class="card__breadcrumbs">
+                                    <div class="user_badge__img"><a href=""><img src="~/public/img/user_default.svg" alt=""></a></div>
+                                    <span class="breadcrumb_elem">@project.AuthorFullName</span>
+                                    <i class="icon icon--chevron-thin-right"></i>
+                                    <span class="breadcrumb_elem">@project.Category</span>
+                                </div>
+                                <div class="card__header">
+                                    <div class="card__sum h3 pull-right">$@project.BudgetFirstPlace</div>
+                                    <div class="card__title h3">
+                                        @if (project.Status == Status.Voting)
+                                        {
+                                            <a asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.Id" asp-route-resultsActive=true>@project.Name</a>
+                                        }
+                                        else
+                                        {
+                                            <a asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.Id">@project.Name</a>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="card__desc">
+                                    @if (project.Status == Status.Registration)
+                                    {
+                                        <span href="" class="label label--blue"><i class="icon icon--deadline_fill"></i> @projectStatus @project.CompetitionRegistrationDeadline.ToString("dd.MM.yyyy")</span>
+                                        <span class="label label--text label--gray">Submission @project.ImplementationDeadline.ToString("dd.MM.yyyy")</span>
+                                    }
+                                    else if (project.Status == Status.Submission)
+                                    {
+                                        var daysLeft = (project.ImplementationDeadline - DateTime.UtcNow.Date).Days;
+                                        var daysLeftText = "";
+
+
+                                        if (daysLeft == 1)
+                                        {
+                                            daysLeftText = "ends in " + daysLeft + " day";
+                                        }
+                                        else if (daysLeft == 0)
+                                        {
+                                            daysLeftText = "ends today";
+                                        }
+                                        else
+                                        {
+                                            daysLeftText = "ends in " + daysLeft + " days";
+                                        }
+
+                                        <span href="" class="label label--green"><i class="icon icon--deadline_fill"></i> @projectStatus @project.ImplementationDeadline.ToString("dd.MM.yyyy")</span>
+                                        <span class="label label--text label--gray">@daysLeftText</span>
+                                    }
+                                    else if (project.Status == Status.Voting)
+                                    {
+                                        <span href="" class="label label--yellow"><i class="icon icon--deadline_fill"></i> @projectStatus @project.VotingDeadline.ToString("dd.MM.yyyy")</span>
+                                    }
+                                    else
+                                    {
+                                        <span href="" class="label @statusColor">@projectStatus</span>
+                                    }
+                                </div>
+                                <p class="card__text">
+                                    @if (project.Overview.Length > 255)
+                                    {
+                                        var overview = project.Overview.Substring(0, Math.Min(project.Overview.Length, 252)) + "...";
+                                        @overview;
+                                    }
+                                    else
+                                    {
+                                        @project.Overview
+                                    }
+                                </p>
+                                <div class="tags_list">
+                                    @foreach (var tag in project.Tags)
+                                    {
+                                        <div class="tag_item"><a href="">@tag</a></div>
+                                    }
+                                </div>
+                            </div>
+                            <div class="card__footer">
+                                <div class="card__actions">
+                                    @if (project.Following)
+                                    {
+                                        <a asp-area="" asp-controller="ProjectDetails" asp-action="UnFollowProject" asp-route-id="@project.Id" id="followButton" class="action_link action_follow active pull-right">
+                                            <i class="icon icon--follow"></i>Unfollow
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a asp-area="" asp-controller="ProjectDetails" asp-action="FollowProject" asp-route-id="@project.Id" id="followButton" class="action_link action_follow pull-right">
+                                            <i class="icon icon--follow"></i>Follow
+                                        </a>
+                                    }
+                                    @if (project.Status == Status.Voting)
+                                    {
+                                        <a asp-area="" asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.Id" asp-route-resultsActive=true class="action_link">Read more</a>
+                                    }
+                                    else
+                                    {
+                                        <a asp-area="" asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.Id" class="action_link">Read more</a>
+                                    }
+                                    &middot;
+                                    <a href="@facebookSharingUrl" class="action_link">Share</a>
+                                    &middot;
+                                    <a asp-area="" asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.Id" asp-route-commentsActive=true class="action_link">@commentsCount</a>
+                                    &middot;
+                                    <a asp-area="" asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.Id" asp-route-participantsActive=true class="action_link">@projectCount</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="competition_list__block col-xs-12 col-sm-4 pull-right">
+                <div class="section_header">
+                    <h4 class="h4_uppercase section_header__title">Winners</h4>
+                </div>
+
+                <div class="users_list">
+                    <div class="users_list__inner">
+                        @foreach (var latestWinner in Model.LatestWinners)
+                        {
+                            <div class="user_badge user_badge--small">
+                                <div class="user_badge__img"><span><img src="~/public/img/user_default.svg" alt="user"></span></div>
+                                <div class="user_badge__info">
+                                    <div class="user_badge__title"><span>@latestWinner.Name</span></div>
+                                    <div class="user_badge__desc">
+                                        <a asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@latestWinner.ProjectId">@latestWinner.ProjectName</a>
+                                    </div>
+                                    <div class="card__sum h3">$@latestWinner.Amount</div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="competition_list__block col-xs-12 col-sm-4 pull-right">
+                <div class="section_header">
+                    <h4 class="h4_uppercase section_header__title">Just finished</h4>
+                </div>
+
+                <div class="simple_list">
+                    @foreach (var justFinishedProject in Model.JustFinishedProjects)
+                    {
+                        var numberOfWinners = justFinishedProject.NumberOfWinners == 1 ? "1 winner" : justFinishedProject.NumberOfWinners + " winners";
+
+                        <div class="user_badge user_badge--small">
+                            <div class="user_badge__info">
+                                <div class="user_badge__title">
+                                    <a asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@justFinishedProject.ProjectId">@justFinishedProject.ProjectName</a>
+                                </div>
+                                <div class="user_badge__desc">$@justFinishedProject.Amount &middot; @numberOfWinners </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="competition_list__block col-xs-12 col-sm-4 pull-right">
+                <div class="section_header">
+                    <h4 class="h4_uppercase section_header__title">About Streams</h4>
+                </div>
+
+                <div class="play_video_preview">
+                    <a class="play_video_preview__link" data-fancybox href="https://www.youtube.com/watch?v=TCXK4AV-E1Q&feature=youtu.be">
+                        <div class="btn btn--primary btn-sm"><img src="img/play.svg" width="13" alt="play"></div>
+                        <img src="~/public/img/competition/richard-intro@2x.jpg" class="img-responsive" alt="video-preview">
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
-</section>
-
-<section id="projectListResults" class="section section--competition_list">
-    @await Html.PartialAsync("ProjectListPartial", Model)
 </section>
