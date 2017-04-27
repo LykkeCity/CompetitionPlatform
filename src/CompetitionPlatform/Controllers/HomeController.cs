@@ -51,6 +51,8 @@ namespace CompetitionPlatform.Controllers
         {
             var viewModel = await GetProjectListViewModel(currentProjects: true);
             viewModel.Projects = viewModel.Projects.OrderByDescending(x => x.Status).ThenByDescending(x => x.BudgetFirstPlace);
+            viewModel.LatestWinners = await GetLatestWinners();
+            viewModel.JustFinishedProjects = await GetJustFinishedProjects();
             return View(viewModel);
         }
 
@@ -506,6 +508,63 @@ namespace CompetitionPlatform.Controllers
         private string GetCurrentVersion()
         {
             return typeof(HomeController).GetTypeInfo().Assembly.GetName().Version.ToString();
+        }
+
+        private async Task<List<LatestWinner>> GetLatestWinners()
+        {
+            var latestWinners = new List<LatestWinner>();
+
+            var projects = await _projectRepository.GetProjectsAsync();
+            var archiveProjects = projects.Where(x => x.ProjectStatus == Status.Archive.ToString()).OrderByDescending(x => x.VotingDeadline);
+
+            foreach (var project in archiveProjects)
+            {
+                var winners = await _winnersRepository.GetWinnersAsync(project.Id);
+                foreach (var winner in winners)
+                {
+                    if (winner.Budget != null)
+                        latestWinners.Add(
+                            new LatestWinner
+                            {
+                                Name = winner.FullName,
+                                ProjectId = project.Id,
+                                ProjectName = project.Name,
+                                Amount = (double)winner.Budget
+                            });
+
+                    if (latestWinners.Count == 5) break;
+                }
+
+            }
+            return latestWinners;
+        }
+
+        private async Task<List<JustFinishedProject>> GetJustFinishedProjects()
+        {
+            var justFinishedProjects = new List<JustFinishedProject>();
+
+            var projects = await _projectRepository.GetProjectsAsync();
+            var archiveProjects = projects.Where(x => x.ProjectStatus == Status.Archive.ToString()).OrderByDescending(x => x.VotingDeadline);
+
+            foreach (var project in archiveProjects)
+            {
+                var winners = await _winnersRepository.GetWinnersAsync(project.Id);
+
+                var amount = winners.Where(winner => winner.Budget != null).Sum(winner => (double) winner.Budget);
+
+                justFinishedProjects.Add(
+                    new JustFinishedProject
+                    {
+                        ProjectName = project.Name,
+                        ProjectId = project.Id,
+                        Amount = amount,
+                        NumberOfWinners = winners.Count()
+                    });
+
+                if (justFinishedProjects.Count == 5) break;
+            }
+
+            return justFinishedProjects;
         }
     }
 }
