@@ -131,17 +131,15 @@
     <div class="container container--extend">
         <div class="page__header">
             <div class="row">
-                <div class="col-sm-8">
+                <div class="col-sm-8 automargin text-center">
                     <h2>@Model.Name</h2>
-                    <h3 class="page__subtitle mb0 project-details-category">@Model.Category</h3>
+                    <h3 class="page__subtitle">@Model.Category</h3>
                 </div>
-                @if (Model.CommentsPartial.IsAuthor || Model.IsAdmin)
-                {
-                    <div class="col-sm-4 text-right">
-                        <a asp-area="" class="btn btn_edit btn-sm" asp-controller="Project" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
-                    </div>
-                }
             </div>
+            @if (Model.CommentsPartial.IsAuthor || Model.IsAdmin)
+            {
+                <a asp-area="" asp-controller="Project" asp-action="Edit" asp-route-id="@Model.Id"><button class="btn btn-sm btn_edit">Edit</button></a>
+            }
         </div>
 
         <div class="project_links">
