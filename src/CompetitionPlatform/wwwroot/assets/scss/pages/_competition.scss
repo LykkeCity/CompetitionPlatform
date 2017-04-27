@@ -229,8 +229,12 @@
 
   &--competition_platform {
     .page__header {
+      padding-right: 0;
+      position: relative;
+
+      @include rem(padding, 0 60px);
+
       .page__subtitle {
-        text-align: left;
         color: #8C94A0;
 
         @include rem(font-size, 22px);
@@ -242,24 +246,24 @@
       }
 
       .btn_edit {
-        @include rem(margin-top, 4px);
-        @include rem(min-width, 120px);
+        position: absolute;
+        right: 0;
+
+        @include rem(top, 10px);
       }
     }
 
     @media (max-width: $screen-tablet) {
       .page__header {
         position: relative;
-
-        .col-sm-4 {
-          position: absolute;
-          top: 0;
-          right: 0;
-          padding: 0;
-        }
+        padding: 0;
+        overflow: visible;
 
         .btn_edit {
           min-width: 0;
+          top: 100%;
+          margin-top: 10px;
+          
         }
       }
     }
@@ -685,6 +689,7 @@
     top: 0;
 
     @include rem(padding-top, 15px);
+    @include rem(top, 91px);
 
     .container {
       padding-left: 15px;
@@ -723,6 +728,17 @@
       display: inline-block;
       vertical-align: middle;
     }
+
+    &.border {
+      border-bottom: 1px solid $border-alt;
+
+      @include rem(margin-bottom, 20px);
+      @include rem(padding-bottom, 15px);
+
+      h3 {
+        margin-bottom: 0;
+      }
+    }
   }
 
   &--fund {
@@ -752,6 +768,36 @@
     @include rem(font-size, 16px);
     @include rem(line-height, 24px);
     @include rem(margin-bottom, 18px)
+  }
+
+  .radio-inline {
+    @include rem(padding, 4px 0);
+  }
+
+  .radio {
+    margin-bottom: 0;
+
+    .control-label {
+      margin-bottom: 0;
+      line-height: normal;
+    }
+  }
+}
+
+.radio-inline {
+  cursor: auto;
+  padding-left: 0;
+
+  .radio {
+    @include rem(margin-right, 25px);
+
+    .control-label {
+      line-height: normal;
+    }
+
+    &:last-child {
+      margin-right: 0;
+    }
   }
 }
 
@@ -948,6 +994,21 @@
 }
 
 .table {
+  &--participants {
+    .user_badge--small {
+      .user_badge__img {
+        @include rem(width, 30px);
+        @include rem(height, 30px);
+        @include rem(margin-right, 12px);
+      }
+
+      .user_badge__info {
+        @include rem(font-size, 18px);
+        @include rem(padding-top, 3px);
+      }
+    }
+  }
+
   @media all and (max-width: 1090px) {
     &--board_results {
       .user_badge--small .user_badge__img {
@@ -1390,55 +1451,6 @@
           width: 50%;
           min-width: 0 !important;
         }
-      }
-    }
-  }
-}
-
-.checkbox {
-  &--custom {
-    overflow: hidden;
-
-    input[type="checkbox"] {
-      position: absolute;
-      left: -100px;
-      top: -100px;
-      opacity: 0;
-      visibility: hidden;
-
-      &:checked {
-        + .control-label {
-          &:after {
-            background: $primary;
-            border-color: $primary;
-          }
-        }
-      }
-    }
-
-    .control-label {
-      position: relative;
-      margin-bottom: 0;
-
-      @include rem(padding-left, 32px);
-
-      &:after {
-        font-family: icon;
-        content: "\e90b";
-        background: #fff;
-        border: 1px solid #cfd2d7;
-        position: absolute;
-        left: 0;
-        top: 2px;
-        border-radius: $border-radius;
-        color: #fff;
-        text-align: center;
-
-        @include rem(font-size, 14px);
-        @include rem(line-height, 18px);
-        @include rem(width, 20px);
-        @include rem(height, 20px);
-        @include transition(all $transition-default);
       }
     }
   }
@@ -1924,6 +1936,10 @@
 .competition_list__main {
   @include rem(margin-bottom, 60px);
 
+  @media all and (max-width: $screen-landscape) {
+    min-height: 0 !important;
+  }
+
   @media all and (min-width: $screen-landscape + 1) {
     @include rem(padding-right, 45px);
   }
@@ -2032,4 +2048,127 @@
       padding-right: 15px;
     }
   }
+}
+
+.btn.btn_create_project .icon {
+  margin-right: -1px;
+}
+
+.section--padding_bottom {
+  @include rem(padding-bottom, 70px);
+}
+
+.extend_block {
+  @include rem(margin, 60px 0);
+}
+
+
+.table {
+  &--experts {
+    .user_badge--small {
+      line-height: 1.2;
+
+      .user_badge__info {
+        font-weight: $fw-semi;
+        color: $text;
+
+        @include rem(font-size, 18px);
+        @include rem(padding-top, 6px);
+      }
+    }
+
+    .btn--icon .icon {
+      @include rem(font-size, 16px);
+    }
+
+    tr {
+      &:first-child {
+        td {
+          border-top: 1px solid $border-alt;
+        }
+      }
+
+      td {
+        background: transparent !important;
+        cursor: auto;
+        line-height: 1.5;
+        padding-left: 0;
+        color: rgba($secondary, .6);
+        border-color: $border-alt;
+
+        @include rem(font-size, 16px);
+        @include rem(padding-top, 10px);
+        @include rem(padding-bottom, 10px);
+
+        &:first-child {
+          width: 300px;
+        }
+      }
+    }
+
+    a {
+      color: inherit;
+    }
+
+    @media all and (max-width: $screen-mobile) {
+      display: block;
+
+      tbody, tr, td {
+        display: block;
+      }
+
+      tr {
+        border-bottom: 1px solid $border-alt;
+        position: relative;
+        padding: 9px 0 9px 45px;
+
+        &:first-child {
+          border-top: 1px solid $border-alt;
+        }
+
+        td {
+          border-bottom: 0;
+          border-top: 0 !important;
+          padding: 0;
+          font-size: 13px;
+          white-space: normal;
+          line-height: normal;
+        }
+      }
+
+      .user_badge {
+        &__img {
+          position: absolute;
+          left: 0;
+          top: 9px;
+        }
+
+        &__info {
+          padding-top: 0 !important;
+          font-size: 13px;
+        }
+      }
+    }
+  }
+}
+
+.checkbox {
+  .control-label {
+    margin-bottom: 0;
+  }
+}
+
+.form-control {
+  &--transparent {
+    border: 0;
+    border-radius: 0;
+    height: 30px;
+    padding: 3px 0;
+    font-weight: normal;
+  }
+}
+
+.expert_input {
+  padding-top: 0 !important;
+  position: relative;
 }

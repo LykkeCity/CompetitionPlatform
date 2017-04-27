@@ -60,6 +60,11 @@
 }
 
 .message_actions {
+  .checkbox,
+  .switcher{
+    @include rem(padding, 8px 0);
+  }
+
   .text--gray {
     color: rgba($secondary, .6);
     font-weight: normal;
@@ -121,15 +126,102 @@
   color: $secondary !important;
 }
 
-.user_badge--small {
-  .user_badge__img {
-    @include rem(width, 40px);
-    @include rem(height, 40px);
-    @include rem(margin-right, 20px);
+.message_card--form {
+  textarea.form-control {
+    min-height: 130px;
   }
 
-  .user_badge__info,
-  .user_badge__message {
-    @include rem(padding-top, 9px);
+  .user_badge--small .user_badge__info, .user_badge--small .user_badge__message {
+    @include rem(padding-top, 8px);
+  }
+}
+
+.focused .message_card--form .message_card__inner {
+  @include rem(height, 164px);
+}
+
+.messages_list {
+  @include rem(margin-bottom, 40px);
+}
+
+.message_card {
+  margin-bottom: 0;
+
+  .user_badge--small {
+    .user_badge__img {
+      @include rem(width, 40px);
+      @include rem(height, 40px);
+      @include rem(margin-right, 20px);
+    }
+
+    .user_badge__info,
+    .user_badge__message {
+      @include rem(padding-top, 5px);
+    }
+  }
+
+  &--accent {
+    @include rem(margin-bottom, 15px);
+
+    .card__actions {
+      border-bottom: 0;
+      padding-bottom: 0 !important;
+    }
+  }
+
+  &--deleted {
+    .message_card__message {
+      color: $gray-dark;
+
+      p {
+        color: $gray-dark;
+      }
+    }
+  }
+
+  .message_card {
+    margin-bottom: 0;
+
+    @include rem(margin-left, -20px);
+  }
+}
+
+.message_card__inner + .message_card {
+  @include rem(margin-top, 15px);
+}
+
+.message_card__message {
+  textarea.form-control {
+    @include rem(margin-top, 20px);
+  }
+
+  .card__actions {
+    color: rgba($secondary, .6);
+    margin-top: 0;
+
+    @include rem(padding, 10px 0);
+    @include rem(margin-left, -4px);
+  }
+}
+
+.block_header {
+  @include clearfix;
+  @include rem(margin-bottom, 40px);
+
+  .btn {
+    .icon {
+      position: relative;
+      top: -1px;
+    }
+  }
+
+  h2,h3,h4 {
+    margin-bottom: 0;
+
+    span {
+      font-weight: normal;
+
+      @include rem(margin-left, 5px)
+    }
   }
 }

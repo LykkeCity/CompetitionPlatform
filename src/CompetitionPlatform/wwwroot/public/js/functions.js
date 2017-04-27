@@ -208,8 +208,11 @@ function initStickyHeader() {
   });
 
   $sticky.on('affix.bs.affix', function (e) {
-    var height = $(this).outerHeight()
-    $(this).parents($sticky_container).css({
+    var height = $(this).outerHeight();
+    $(this).css({
+      top: $('.header').outerHeight()
+    });
+    $(this).closest($sticky_container).css({
       height: height + 1
     });
   })
@@ -237,6 +240,17 @@ function initFileUpload() {
   })
 }
 
+function updateMainHeight() {
+  $(window).resize(function() {
+    var h = 0;
+    $('.competition_list__block').each(function(){ h+=$(this).outerHeight() });
+
+    $('.competition_list__main').css({
+      minHeight: h
+    })
+  }).trigger('resize')
+}
+
 $(document).ready(function() {
   initEventsOnResize();
   initEventsOnClick();
@@ -250,4 +264,5 @@ $(document).ready(function() {
   initSmoothScroll();
   initAffix();
   initFileUpload();
+  updateMainHeight();
 });

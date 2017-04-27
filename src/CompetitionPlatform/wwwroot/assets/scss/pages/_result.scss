@@ -184,3 +184,13 @@
     display: none;
   }
 }
+
+.popover {
+  .rating_total__content {
+    @include rem(padding-top, 8px);
+
+    h4 {
+      @include rem(margin-bottom, 13px);
+    }
+  }
+}
