@@ -532,9 +532,9 @@ namespace CompetitionPlatform.Controllers
                                 Amount = (double)winner.Budget
                             });
                 }
-                if (latestWinners.Count >= 5) break;
+                if (latestWinners.Count >= 4) break;
             }
-            return latestWinners.Take(5).ToList();
+            return latestWinners.Take(4).ToList();
         }
 
         private async Task<List<JustFinishedProject>> GetJustFinishedProjects()
@@ -559,7 +559,7 @@ namespace CompetitionPlatform.Controllers
                         NumberOfWinners = winners.Count()
                     });
 
-                if (justFinishedProjects.Count == 5) break;
+                if (justFinishedProjects.Count == 4) break;
             }
 
             return justFinishedProjects;
