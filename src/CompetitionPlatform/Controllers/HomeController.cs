@@ -531,12 +531,10 @@ namespace CompetitionPlatform.Controllers
                                 ProjectName = project.Name,
                                 Amount = (double)winner.Budget
                             });
-
-                    if (latestWinners.Count == 5) break;
                 }
-
+                if (latestWinners.Count >= 5) break;
             }
-            return latestWinners;
+            return latestWinners.Take(5).ToList();
         }
 
         private async Task<List<JustFinishedProject>> GetJustFinishedProjects()
@@ -550,7 +548,7 @@ namespace CompetitionPlatform.Controllers
             {
                 var winners = await _winnersRepository.GetWinnersAsync(project.Id);
 
-                var amount = winners.Where(winner => winner.Budget != null).Sum(winner => (double) winner.Budget);
+                var amount = winners.Where(winner => winner.Budget != null).Sum(winner => (double)winner.Budget);
 
                 justFinishedProjects.Add(
                     new JustFinishedProject
