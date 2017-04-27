@@ -128,6 +128,8 @@ namespace CompetitionPlatform.Models.ProjectViewModels
     {
         public List<string> ProjectCategories { get; set; }
         public IEnumerable<ProjectCompactViewModel> Projects { get; set; }
+        public List<LatestWinner> LatestWinners { get; set; }
+        public List<JustFinishedProject> JustFinishedProjects { get; set; }
     }
 
     public class ProjectVoteViewModel
@@ -147,6 +149,22 @@ namespace CompetitionPlatform.Models.ProjectViewModels
     {
         public string Name { get; set; }
         public string Link { get; set; }
+    }
+
+    public class LatestWinner
+    {
+        public string Name { get; set; }
+        public string ProjectId { get; set; }
+        public string ProjectName { get; set; }
+        public double Amount { get; set; }
+    }
+
+    public class JustFinishedProject
+    {
+        public string ProjectId { get; set; }
+        public string ProjectName { get; set; }
+        public double Amount { get; set; }
+        public int NumberOfWinners { get; set; }
     }
 }
 
