@@ -10,13 +10,15 @@
 
 @if (Model.Status == Status.Archive)
 {
+    var prizeFund = Model.Winners.Where(winner => winner.Budget != null).Sum(winner => (double) winner.Budget);
+
     <div class="banner banner--results">
         <div class="banner__content">
             <div class="table-responsive">
                 <table class="table">
                     <tr>
                         <td>
-                            <div class="prize__value">$@Model.BudgetFirstPlace</div>
+                            <div class="prize__value">$@prizeFund</div>
                             <span>Prize fund</span>
                         </td>
                         <td>
