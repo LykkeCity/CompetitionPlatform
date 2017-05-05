@@ -1,0 +1,8 @@
+﻿version: '2'
+services:
+  competitionplatform:
+    image: competitionplatform
+    environment:
+      - SettingsUrl=${SettingsUrl}
+    ports:
+      - "80:80"
