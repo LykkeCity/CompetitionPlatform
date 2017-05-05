@@ -751,8 +751,8 @@ namespace CompetitionPlatform.Controllers
 
         private async Task<string> GetUserKycStatus(string email)
         {
-            var authLink = _settings.Authentication.Authority;
-            var appId = _settings.Authentication.ClientId;
+            var authLink = _settings.LykkeStreams.Authentication.Authority;
+            var appId = _settings.LykkeStreams.Authentication.ClientId;
 
             var webRequest = (HttpWebRequest)WebRequest.Create(authLink + "/getkycstatus?email=" + email);
             webRequest.Method = "GET";
@@ -780,10 +780,10 @@ namespace CompetitionPlatform.Controllers
 
         private async Task SendProjectCreateNotification(IProjectData model)
         {
-            var httpClient = new HttpClient();
-            var settingsString = await httpClient.GetStringAsync(_settings.EmailServiceBusSettingsUrl);
-            var serviceBusSettings = JsonConvert.DeserializeObject<EmailServiceBusSettings>(settingsString);
-            var emailProducer = new EmailSenderProducer(serviceBusSettings.EmailServiceBus, _log);
+            //var httpClient = new HttpClient();
+            //var settingsString = await httpClient.GetStringAsync(_settings.EmailServiceBusSettingsUrl);
+            //var serviceBusSettings = JsonConvert.DeserializeObject<EmailServiceBusSettings>(settingsString);
+            var emailProducer = new EmailSenderProducer(_settings.EmailServiceBus, _log);
 
             var message = new EmailMessage
             {
@@ -793,7 +793,7 @@ namespace CompetitionPlatform.Controllers
                 IsHtml = false
             };
 
-            foreach (var email in _settings.ProjectCreateNotificationReceiver)
+            foreach (var email in _settings.LykkeStreams.ProjectCreateNotificationReceiver)
             {
                 await emailProducer.SendEmailAsync(email, message, "Lykke Notifications");
             }

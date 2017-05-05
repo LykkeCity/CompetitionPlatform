@@ -5,13 +5,9 @@ namespace CompetitionPlatform.Data.AzureRepositories.Settings
 {
     public class BaseSettings
     {
-        public AzureSettings Azure { get; set; }
-        public AuthenticationSettings Authentication { get; set; }
-        public NotificationsSettings Notifications { get; set; }
-
-        public string EmailServiceBusSettingsUrl { get; set; }
-
-        public List<string> ProjectCreateNotificationReceiver { get; set; }
+        public SlackNotificationSettings SlackNotifications { get; set; }
+        public StreamsSettings LykkeStreams { get; set; }
+        public EmailServiceBus EmailServiceBus { get; set; }
     }
 
     public class AuthenticationSettings
@@ -25,17 +21,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Settings
     public class AzureSettings
     {
         public string StorageConnString { get; set; }
-    }
-
-    public class NotificationsSettings
-    {
-        public string EmailsQueueConnString { get; set; }
-        public string SlackQueueConnString { get; set; }
-    }
-
-    public class EmailServiceBusSettings
-    {
-        public EmailServiceBus EmailServiceBus;
+        public string StorageLogConnString { get; set; }
     }
 
     public class EmailServiceBus : IServiceBusEmailSettings
@@ -44,5 +30,24 @@ namespace CompetitionPlatform.Data.AzureRepositories.Settings
         public string QueueName { get; set; }
         public string NamespaceUrl { get; set; }
         public string PolicyName { get; set; }
+    }
+
+    public class SlackNotificationSettings
+    {
+        public SlackNotificationsAzureSettings AzureQueue { get; set; }
+        public int ThrottlingLimitSeconds { get; set; }
+    }
+
+    public class SlackNotificationsAzureSettings
+    {
+        public string ConnectionString { get; set; }
+        public string QueueName { get; set; }
+    }
+
+    public class StreamsSettings
+    {
+        public AzureSettings Azure { get; set; }
+        public AuthenticationSettings Authentication { get; set; }
+        public List<string> ProjectCreateNotificationReceiver { get; set; }
     }
 }

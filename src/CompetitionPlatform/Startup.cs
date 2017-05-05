@@ -49,17 +49,19 @@ namespace CompetitionPlatform
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var settingsConnectionString = Configuration["SettingsConnString"];
-            var settingsContainer = Configuration["SettingsContainerName"];
-            var settingsFileName = Configuration["SettingsFileName"];
+            //var settingsConnectionString = Configuration["SettingsConnString"];
+            //var settingsContainer = Configuration["SettingsContainerName"];
+            //var settingsFileName = Configuration["SettingsFileName"];
             var connectionStringLogs = Configuration["LogsConnString"];
+
+            var settingsUrl = Configuration["SettingsUrl"];
 
             Log = new LogToTable(new AzureTableStorage<LogEntity>(connectionStringLogs, "LogCompPlatform", null));
 
             try
             {
-                Settings = GeneralSettingsReader.ReadGeneralSettings<BaseSettings>(settingsConnectionString,
-                    settingsContainer, settingsFileName);
+                //Settings = GeneralSettingsReader.ReadGeneralSettings<BaseSettings>(settingsConnectionString, settingsContainer, settingsFileName);
+                Settings = GeneralSettingsReader.ReadGeneralSettingsFromUrl<BaseSettings>(settingsUrl);
                 services.AddSingleton(Settings);
             }
             catch (Exception ex)
@@ -67,7 +69,7 @@ namespace CompetitionPlatform
                 Log.WriteErrorAsync("Startup", "ReadSettingsFile", "Reading Settings File", ex).Wait();
             }
 
-            var connectionString = Settings.Azure.StorageConnString;
+            var connectionString = Settings.LykkeStreams.Azure.StorageConnString;
 
             CheckSettings(Settings, Log);
 
@@ -80,8 +82,8 @@ namespace CompetitionPlatform
                 services.AddAuthentication(
                     options => { options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme; });
 
-                var notificationEmailsQueueConnString = Settings.Notifications.EmailsQueueConnString;
-                var notificationSlackQueueConnString = Settings.Notifications.SlackQueueConnString;
+                //var notificationEmailsQueueConnString = "";
+                var notificationSlackQueueConnString = Settings.SlackNotifications.AzureQueue.ConnectionString;
 
                 services.AddApplicationInsightsTelemetry(Configuration);
                 var builder = services.AddMvc();
@@ -168,19 +170,19 @@ namespace CompetitionPlatform
 
                     // Note: these settings must match the application details
                     // inserted in the database at the server level.
-                    ClientId = Settings.Authentication.ClientId,
-                    ClientSecret = Settings.Authentication.ClientSecret,
-                    PostLogoutRedirectUri = Settings.Authentication.PostLogoutRedirectUri,
+                    ClientId = Settings.LykkeStreams.Authentication.ClientId,
+                    ClientSecret = Settings.LykkeStreams.Authentication.ClientSecret,
+                    PostLogoutRedirectUri = Settings.LykkeStreams.Authentication.PostLogoutRedirectUri,
                     CallbackPath = "/auth",
 
                     // Use the authorization code flow.
                     ResponseType = OpenIdConnectResponseType.Code,
-                    Events = new CompPlatformAuthenticationEvents(Log, HostingEnvironment, Settings.Azure.StorageConnString, Settings.Notifications.EmailsQueueConnString),
+                    Events = new CompPlatformAuthenticationEvents(Log, HostingEnvironment, Settings.LykkeStreams.Azure.StorageConnString),
 
                     // Note: setting the Authority allows the OIDC client middleware to automatically
                     // retrieve the identity provider's configuration and spare you from setting
                     // the different endpoints URIs or the token validation parameters explicitly.
-                    Authority = Settings.Authentication.Authority,
+                    Authority = Settings.LykkeStreams.Authentication.Authority,
                     Scope = { "email profile" }
                 });
 
@@ -203,29 +205,32 @@ namespace CompetitionPlatform
 
         private void CheckSettings(BaseSettings settings, ILog log)
         {
-            if (string.IsNullOrEmpty(settings.Azure.StorageConnString))
+            if (string.IsNullOrEmpty(settings.LykkeStreams.Azure.StorageConnString))
                 WriteSettingsReadError(log, "StorageConnString");
 
-            if (string.IsNullOrEmpty(settings.Authentication.ClientId))
+            if (string.IsNullOrEmpty(settings.LykkeStreams.Authentication.ClientId))
                 WriteSettingsReadError(log, "ClientId");
 
-            if (string.IsNullOrEmpty(settings.Authentication.ClientSecret))
+            if (string.IsNullOrEmpty(settings.LykkeStreams.Authentication.ClientSecret))
                 WriteSettingsReadError(log, "ClientSecret");
 
-            if (string.IsNullOrEmpty(settings.Authentication.PostLogoutRedirectUri))
+            if (string.IsNullOrEmpty(settings.LykkeStreams.Authentication.PostLogoutRedirectUri))
                 WriteSettingsReadError(log, "PostLogoutRedirectUri");
 
-            if (string.IsNullOrEmpty(settings.Authentication.Authority))
+            if (string.IsNullOrEmpty(settings.LykkeStreams.Authentication.Authority))
                 WriteSettingsReadError(log, "Authority");
 
-            if (string.IsNullOrEmpty(settings.Notifications.EmailsQueueConnString))
-                WriteSettingsReadError(log, "EmailsQueueConnString");
+            if(string.IsNullOrEmpty(settings.EmailServiceBus.Key))
+                WriteSettingsReadError(log, "EmailServiceBus-Key");
 
-            if (string.IsNullOrEmpty(settings.Notifications.SlackQueueConnString))
-                WriteSettingsReadError(log, "SlackQueueConnString");
+            if (string.IsNullOrEmpty(settings.EmailServiceBus.NamespaceUrl))
+                WriteSettingsReadError(log, "EmailServiceBus-NamespaceUrl");
 
-            if (string.IsNullOrEmpty(settings.EmailServiceBusSettingsUrl))
-                WriteSettingsReadError(log, "EmailServiceBusSettingsUrl");
+            if (string.IsNullOrEmpty(settings.EmailServiceBus.PolicyName))
+                WriteSettingsReadError(log, "EmailServiceBus-PolicyName");
+
+            if (string.IsNullOrEmpty(settings.EmailServiceBus.QueueName))
+                WriteSettingsReadError(log, "EmailServiceBus-QueueName");
         }
 
         private void WriteSettingsReadError(ILog log, string elementName)

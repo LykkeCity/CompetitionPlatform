@@ -15,20 +15,19 @@ namespace CompetitionPlatform.Authentication
     public class CompPlatformAuthenticationEvents : OpenIdConnectEvents
     {
         private readonly IRegisterMailSentRepository _mailSentRepository;
-        private readonly IQueueExt _emailsQueue;
 
-        public CompPlatformAuthenticationEvents(ILog log, IHostingEnvironment hostingEnvironment, string connString, string emailsQueueConnString)
+        public CompPlatformAuthenticationEvents(ILog log, IHostingEnvironment hostingEnvironment, string connString)
         {
             _mailSentRepository = new RegisterMailSentRepository(new AzureTableStorage<RegisterMailSentEntity>(connString, "RegisterMailSent", log));
 
-            if (hostingEnvironment.IsProduction() && !string.IsNullOrEmpty(emailsQueueConnString))
-            {
-                _emailsQueue = new AzureQueueExt(emailsQueueConnString, "emailsqueue");
-            }
-            else
-            {
-                _emailsQueue = new QueueExtInMemory();
-            }
+            //if (hostingEnvironment.IsProduction() && !string.IsNullOrEmpty(emailsQueueConnString))
+            //{
+            //    _emailsQueue = new AzureQueueExt(emailsQueueConnString, "emailsqueue");
+            //}
+            //else
+            //{
+            //    _emailsQueue = new QueueExtInMemory();
+            //}
         }
 
         public override Task RemoteFailure(FailureContext context)
@@ -52,7 +51,7 @@ namespace CompetitionPlatform.Authentication
                    .Select(c => c.Value).SingleOrDefault();
 
                 var message = NotificationMessageHelper.GenerateRegistrationMessage(firstName, email);
-                await _emailsQueue.PutMessageAsync(message);
+                //await _emailsQueue.PutMessageAsync(message);
 
                 await _mailSentRepository.SaveRegisterAsync(email);
             }
