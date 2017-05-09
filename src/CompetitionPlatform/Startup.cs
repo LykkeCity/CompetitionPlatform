@@ -193,16 +193,16 @@ namespace CompetitionPlatform
                 WriteSettingsReadError(log, "StorageConnString");
 
             if (string.IsNullOrEmpty(settings.LykkeStreams.Authentication.ClientId))
-                WriteSettingsReadError(log, "ClientId");
+                WriteSettingsReadError(log, "Authentication-ClientId");
 
             if (string.IsNullOrEmpty(settings.LykkeStreams.Authentication.ClientSecret))
-                WriteSettingsReadError(log, "ClientSecret");
+                WriteSettingsReadError(log, "Authentication-ClientSecret");
 
             if (string.IsNullOrEmpty(settings.LykkeStreams.Authentication.PostLogoutRedirectUri))
-                WriteSettingsReadError(log, "PostLogoutRedirectUri");
+                WriteSettingsReadError(log, "Authentication-PostLogoutRedirectUri");
 
             if (string.IsNullOrEmpty(settings.LykkeStreams.Authentication.Authority))
-                WriteSettingsReadError(log, "Authority");
+                WriteSettingsReadError(log, "Authentication-Authority");
 
             if(string.IsNullOrEmpty(settings.EmailServiceBus.Key))
                 WriteSettingsReadError(log, "EmailServiceBus-Key");
