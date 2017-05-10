@@ -1,7 +1,7 @@
 ﻿version: '2'
 services:
   competitionplatform:
-    image: lykkex/competitionplatform
+    image: lykkex/streams
     environment:
       - SettingsUrl=${SettingsUrl}
     ports:
