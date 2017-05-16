@@ -431,6 +431,13 @@ namespace CompetitionPlatform.Controllers
                 ViewBag.ResultsActive = true;
             }
 
+            var projectExists = await _projectRepository.GetAsync(id);
+
+            if (projectExists == null)
+            {
+                return View("ProjectNotFound");
+            }
+
             var viewModel = await GetProjectViewModel(id);
             return View(viewModel);
         }
