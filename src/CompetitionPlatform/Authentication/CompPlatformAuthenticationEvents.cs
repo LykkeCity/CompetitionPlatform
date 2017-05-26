@@ -15,11 +15,12 @@ namespace CompetitionPlatform.Authentication
     public class CompPlatformAuthenticationEvents : OpenIdConnectEvents
     {
         private readonly IRegisterMailSentRepository _mailSentRepository;
+        private readonly ILog _log;
 
         public CompPlatformAuthenticationEvents(ILog log, IHostingEnvironment hostingEnvironment, string connString)
         {
             _mailSentRepository = new RegisterMailSentRepository(new AzureTableStorage<RegisterMailSentEntity>(connString, "RegisterMailSent", log));
-
+            _log = log;
             //if (hostingEnvironment.IsProduction() && !string.IsNullOrEmpty(emailsQueueConnString))
             //{
             //    _emailsQueue = new AzureQueueExt(emailsQueueConnString, "emailsqueue");
@@ -32,6 +33,8 @@ namespace CompetitionPlatform.Authentication
 
         public override Task RemoteFailure(FailureContext context)
         {
+            _log.WriteErrorAsync("Authentication", "RemoteFailure", context.Failure.Message + context.Failure.InnerException, context.Failure).Wait();
+
             context.HandleResponse();
             context.Response.Redirect("/Home/AuthenticationFailed");
 
