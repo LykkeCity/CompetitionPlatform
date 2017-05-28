@@ -142,6 +142,11 @@ namespace CompetitionPlatform
                     app.UseBrowserLink();
                 }
 
+                app.UseForwardedHeaders(new ForwardedHeadersOptions
+                {
+                    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+                });
+
                 app.UseApplicationInsightsExceptionTelemetry();
 
                 app.UseCookieAuthentication(new CookieAuthenticationOptions
