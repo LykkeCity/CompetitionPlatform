@@ -149,7 +149,7 @@ namespace CompetitionPlatform
 
                 app.UseOpenIdConnectAuthentication(new OpenIdConnectOptions
                 {
-                    RequireHttpsMetadata = false,
+                    RequireHttpsMetadata = true,
                     SaveTokens = true,
 
                     // Note: these settings must match the application details
