@@ -15,6 +15,7 @@ using CompetitionPlatform.Exceptions;
 using CompetitionPlatform.ScheduledJobs;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 
 namespace CompetitionPlatform
@@ -101,6 +102,11 @@ namespace CompetitionPlatform
                 //{
                     services.RegisterInMemoryNotificationServices();
                 //}
+
+                services.Configure<ForwardedHeadersOptions>(options =>
+                {
+                    options.ForwardedHeaders = ForwardedHeaders.XForwardedProto;
+                });
 
                 services.RegisterRepositories(connectionString, Log);
                 JobScheduler.Start(connectionString, Log);
