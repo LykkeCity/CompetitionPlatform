@@ -60,8 +60,8 @@
                         <div class="card__inner">
                             <div class="card__body">
                                 <div class="card__breadcrumbs">
-                                    <div class="user_badge__img"><span><img src="~/public/img/user_default.svg" alt=""></span></div>
-                                    <span class="breadcrumb_elem">@project.AuthorFullName</span>
+                                    <div class="user_badge__img"><a href="/userprofile/@project.AuthorId"><img src="~/public/img/user_default.svg" alt=""></a></div>
+                                    <a href="/userprofile/@project.AuthorId" class="breadcrumb_elem">@project.AuthorFullName</a>
                                     <i class="icon icon--chevron-thin-right"></i>
                                     <span class="breadcrumb_elem">@project.Category</span>
                                 </div>
@@ -179,7 +179,7 @@
                             <div class="user_badge user_badge--small">
                                 <div class="user_badge__img"><span><img src="~/public/img/user_default.svg" alt="user"></span></div>
                                 <div class="user_badge__info">
-                                    <div class="user_badge__title"><span>@latestWinner.Name</span></div>
+                                    <div class="user_badge__title"><a href="/userprofile/@latestWinner.UserId">@latestWinner.Name</a></div>
                                     <div class="user_badge__desc">
                                         <a asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@latestWinner.ProjectId">@latestWinner.ProjectName</a>
                                     </div>
