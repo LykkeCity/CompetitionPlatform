@@ -1,0 +1,24 @@
+﻿@model List<CompetitionPlatform.Models.UserProfile.UserProfileCommentData>
+    <div class="messages_list">
+        @foreach (var comment in Model)
+        {
+            <div class="message_card">
+                <div class="user_badge user_badge--small">
+                    <div class="user_badge__img"><a href=""><img src="~/images/avatar.svg" alt=""></a></div>
+                    <div class="user_badge__message">
+                        <div class="message_card__inner">
+                            <div class="user_badge__title"><span>@comment.FullName</span> <span class="message_card__date">&middot; @comment.LastModified.ToString("hh:mm tt MMMM dd, yyyy")</span></div>
+                            <div class="message_card__message">
+                                <p>@comment.Comment</p>
+                                <div class="card__actions">
+                                    <span class="action_text">Posted in</span>
+                                    <a asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@comment.ProjectId" asp-route-commentsActive=true>@comment.ProjectName</a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        }
+    </div>

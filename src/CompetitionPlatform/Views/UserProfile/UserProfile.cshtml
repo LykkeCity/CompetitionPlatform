@@ -1,0 +1,102 @@
+﻿@model CompetitionPlatform.Models.UserProfile.UserProfileViewModel
+
+@{
+    ViewData["Title"] = "Projects";
+    var fullName = Model.Profile.FirstName + " " + Model.Profile.LastName;
+}
+
+<section class="section section--lead section--padding">
+    <div class="container container--extend">
+        <div class="page__header">
+            <div class="user_profile">
+                <div class="row">
+                    <div class="col-sm-8 user_profile__main">
+                        <div class="user_badge">
+                            <div class="user_badge__img">
+                                <img src="~/assets/img/competition/user_default.svg" alt="user_image" width="160">
+                            </div>
+                            <div class="user_badge__content">
+                                <h1 class="h2">@fullName</h1>
+                                @if (!string.IsNullOrEmpty(Model.Profile.Website))
+                                {
+                                    <div class="hint">
+                                        <a href="">@Model.Profile.Website</a>
+                                    </div>
+                                }
+
+                                <p>@Model.Profile.Bio</p>
+
+                                <div class="user_badge__contacts">
+                                    <div class="social">
+                                        @if (!string.IsNullOrEmpty(Model.Profile.TwitterLink))
+                                        {
+                                            <a href="@Model.Profile.TwitterLink" class="social__item"><i class="icon icon--tw"></i></a>
+                                        }
+                                        @if (!string.IsNullOrEmpty(Model.Profile.FacebookLink))
+                                        {
+                                            <a href="@Model.Profile.FacebookLink" class="social__item"><i class="icon icon--fb_simple"></i></a>
+                                        }
+                                        @if (!string.IsNullOrEmpty(Model.Profile.GithubLink))
+                                        {
+                                            <a href="@Model.Profile.GithubLink" class="social__item"><i class="icon icon--github"></i></a>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 user_profile__desc">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <h5>Won</h5>
+                                <div class="prize__value">$@Model.WinningsSum</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="col-xs-12 content__left">
+
+                <div class="nav_scroll">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active"><a href="#participated" aria-controls="participated" role="tab" data-toggle="tab">Participated <sup>@Model.ParticipatedProjects.Count</sup></a></li>
+                        <li role="presentation"><a href="#won" aria-controls="won" role="tab" data-toggle="tab">Won <sup>@Model.WonProjects.Count</sup></a></li>
+                        <li role="presentation"><a href="#created" aria-controls="created" role="tab" data-toggle="tab">Created <sup>@Model.CreatedProjects.Count</sup></a></li>
+                        <li role="presentation"><a href="#comments" aria-controls="comments" role="tab" data-toggle="tab">Comments <sup>@Model.Comments.Count</sup></a></li>
+                    </ul>
+                </div>
+
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="participated">
+                        <div class="row">
+                            @await Html.PartialAsync("ProfileProjectListPartial", Model.ParticipatedProjects)
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="won">
+                        <div class="row">
+                            @await Html.PartialAsync("ProfileProjectListPartial", Model.WonProjects)
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="created">
+                        <div class="row">
+                            @await Html.PartialAsync("ProfileProjectListPartial", Model.CreatedProjects)
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="comments">
+                        <div class="row">
+                            <div class="col-sm-8 automargin">
+                                <div class="messages_list">
+                                    @await Html.PartialAsync("ProfileCommentsListPartial", Model.Comments)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
