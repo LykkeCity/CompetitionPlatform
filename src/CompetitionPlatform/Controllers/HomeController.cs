@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace CompetitionPlatform.Controllers
 {
@@ -484,15 +485,22 @@ namespace CompetitionPlatform.Controllers
             return GetCurrentVersion();
         }
 
-        [HttpGet("~/isalive")]
-        public IActionResult IsAlive()
+        [HttpGet("~/api/isalive")]
+        public string Get()
         {
-            var version = new VersionModel
+            var response =  new IsAliveResponse
             {
-                Version = GetCurrentVersion()
+                Version =
+                    Microsoft.Extensions.PlatformAbstractions.PlatformServices.Default.Application.ApplicationVersion,
+                Env = Environment.GetEnvironmentVariable("ENV_INFO")
             };
 
-            return Json(version);
+            var formatSettings = new JsonSerializerSettings
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            };
+
+            return JsonConvert.SerializeObject(response);
         }
 
         public async Task<string> ActiveProjectsCount()
