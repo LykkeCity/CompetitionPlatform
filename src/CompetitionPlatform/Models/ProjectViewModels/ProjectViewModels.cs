@@ -113,6 +113,7 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public DateTime ImplementationDeadline { get; set; }
         public DateTime VotingDeadline { get; set; }
         public string AuthorFullName { get; set; }
+        public string AuthorId { get; set; }
         public string Category { get; set; }
         public List<string> Tags { get; set; }
         public bool Following { get; set; }
@@ -154,6 +155,7 @@ namespace CompetitionPlatform.Models.ProjectViewModels
     public class LatestWinner
     {
         public string Name { get; set; }
+        public string UserId { get; set; }
         public string ProjectId { get; set; }
         public string ProjectName { get; set; }
         public double Amount { get; set; }
