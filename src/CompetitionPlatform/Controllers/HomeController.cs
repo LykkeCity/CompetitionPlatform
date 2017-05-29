@@ -586,7 +586,7 @@ namespace CompetitionPlatform.Controllers
             var email = GetAuthenticatedUser().Email;
             var id = await GetUserIdByEmail(email);
 
-            return Redirect(_settings.LykkeStreams.Authentication.Authority + "/userprofile/" + id);
+            return Redirect(_settings.LykkeStreams.Authentication.Authority + "userprofile/" + id);
         }
 
         private async Task<string> GetUserIdByEmail(string email)
@@ -594,7 +594,7 @@ namespace CompetitionPlatform.Controllers
             var authLink = _settings.LykkeStreams.Authentication.Authority;
             var appId = _settings.LykkeStreams.Authentication.ClientId;
 
-            var webRequest = (HttpWebRequest)WebRequest.Create(authLink + "/getidbyemail?email=" + email);
+            var webRequest = (HttpWebRequest)WebRequest.Create(authLink + "getidbyemail?email=" + email);
             webRequest.Method = "GET";
             webRequest.ContentType = "text/html";
             webRequest.Headers["application_id"] = appId;
@@ -615,7 +615,7 @@ namespace CompetitionPlatform.Controllers
             var authLink = _settings.LykkeStreams.Authentication.Authority;
             var appId = _settings.LykkeStreams.Authentication.ClientId;
 
-            var webRequest = (HttpWebRequest)WebRequest.Create(authLink + "/getemailbyid?id=" + id);
+            var webRequest = (HttpWebRequest)WebRequest.Create(authLink + "getemailbyid?id=" + id);
             webRequest.Method = "GET";
             webRequest.ContentType = "text/html";
             webRequest.Headers["application_id"] = appId;
@@ -730,7 +730,7 @@ namespace CompetitionPlatform.Controllers
             var authLink = _settings.LykkeStreams.Authentication.Authority;
             var appId = _settings.LykkeStreams.Authentication.ClientId;
 
-            var webRequest = (HttpWebRequest)WebRequest.Create(authLink + "/getuserprofilebyid?id=" + id);
+            var webRequest = (HttpWebRequest)WebRequest.Create(authLink + "getuserprofilebyid?id=" + id);
             webRequest.Method = "GET";
             webRequest.ContentType = "text/html";
             webRequest.Headers["application_id"] = appId;

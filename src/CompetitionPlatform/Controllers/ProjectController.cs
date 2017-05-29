@@ -761,7 +761,7 @@ namespace CompetitionPlatform.Controllers
             var authLink = _settings.LykkeStreams.Authentication.Authority;
             var appId = _settings.LykkeStreams.Authentication.ClientId;
 
-            var webRequest = (HttpWebRequest)WebRequest.Create(authLink + "/getkycstatus?email=" + email);
+            var webRequest = (HttpWebRequest)WebRequest.Create(authLink + "getkycstatus?email=" + email);
             webRequest.Method = "GET";
             webRequest.ContentType = "text/html";
             webRequest.Headers["application_id"] = appId;
