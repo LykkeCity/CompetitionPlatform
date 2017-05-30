@@ -16,10 +16,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using CompetitionPlatform.Data.AzureRepositories.Settings;
-using System.Net;
-using System.IO;
-using CompetitionPlatform.Models.UserProfile;
 
 namespace CompetitionPlatform.Controllers
 {
@@ -34,13 +30,12 @@ namespace CompetitionPlatform.Controllers
         private readonly IProjectWinnersRepository _winnersRepository;
         private readonly IUserFeedbackRepository _feedbackRepository;
         private readonly IUserRolesRepository _userRolesRepository;
-        private readonly BaseSettings _settings;
 
         public HomeController(IProjectRepository projectRepository, IProjectCommentsRepository commentsRepository,
             IProjectCategoriesRepository categoriesRepository, IProjectParticipantsRepository participantsRepository,
             IProjectFollowRepository projectFollowRepository, IProjectResultRepository resultsRepository,
             IProjectWinnersRepository winnersRepository, IUserFeedbackRepository feedbackRepository,
-            IUserRolesRepository userRolesRepository, BaseSettings settings)
+            IUserRolesRepository userRolesRepository)
         {
             _projectRepository = projectRepository;
             _commentsRepository = commentsRepository;
@@ -51,7 +46,6 @@ namespace CompetitionPlatform.Controllers
             _winnersRepository = winnersRepository;
             _feedbackRepository = feedbackRepository;
             _userRolesRepository = userRolesRepository;
-            _settings = settings;
         }
 
         public async Task<IActionResult> Index()
@@ -317,7 +311,6 @@ namespace CompetitionPlatform.Controllers
                     ResultsCount = resultsCount,
                     WinnersCount = winnersCount,
                     AuthorFullName = project.AuthorFullName,
-                    AuthorId = await GetUserIdByEmail(project.AuthorId),
                     Category = project.Category,
                     Tags = tagsList,
                     Following = following
@@ -495,7 +488,7 @@ namespace CompetitionPlatform.Controllers
         [HttpGet("~/api/isalive")]
         public string Get()
         {
-            var response = new IsAliveResponse
+            var response =  new IsAliveResponse
             {
                 Version =
                     Microsoft.Extensions.PlatformAbstractions.PlatformServices.Default.Application.ApplicationVersion,
@@ -542,7 +535,6 @@ namespace CompetitionPlatform.Controllers
                             new LatestWinner
                             {
                                 Name = winner.FullName,
-                                UserId = await GetUserIdByEmail(winner.WinnerId),
                                 ProjectId = project.Id,
                                 ProjectName = project.Name,
                                 Amount = (double)winner.Budget
@@ -579,219 +571,6 @@ namespace CompetitionPlatform.Controllers
             }
 
             return justFinishedProjects;
-        }
-
-        public async Task<IActionResult> RedirectToUserProfile()
-        {
-            var email = GetAuthenticatedUser().Email;
-            var id = await GetUserIdByEmail(email);
-
-            return Redirect(_settings.LykkeStreams.Authentication.Authority + "userprofile/" + id);
-        }
-
-        private async Task<string> GetUserIdByEmail(string email)
-        {
-            var authLink = _settings.LykkeStreams.Authentication.Authority;
-            var appId = _settings.LykkeStreams.Authentication.ClientId;
-
-            var webRequest = (HttpWebRequest)WebRequest.Create(authLink + "getidbyemail?email=" + email);
-            webRequest.Method = "GET";
-            webRequest.ContentType = "text/html";
-            webRequest.Headers["application_id"] = appId;
-            var webResponse = await webRequest.GetResponseAsync();
-
-            using (var receiveStream = webResponse.GetResponseStream())
-            {
-                using (var sr = new StreamReader(receiveStream))
-                {
-                    var userId = await sr.ReadToEndAsync();
-                    return JsonConvert.DeserializeObject(userId).ToString();
-                }
-            }
-        }
-
-        private async Task<string> GetUserEmailById(string id)
-        {
-            var authLink = _settings.LykkeStreams.Authentication.Authority;
-            var appId = _settings.LykkeStreams.Authentication.ClientId;
-
-            var webRequest = (HttpWebRequest)WebRequest.Create(authLink + "getemailbyid?id=" + id);
-            webRequest.Method = "GET";
-            webRequest.ContentType = "text/html";
-            webRequest.Headers["application_id"] = appId;
-            var webResponse = await webRequest.GetResponseAsync();
-
-            using (var receiveStream = webResponse.GetResponseStream())
-            {
-                using (var sr = new StreamReader(receiveStream))
-                {
-                    var userId = await sr.ReadToEndAsync();
-                    return JsonConvert.DeserializeObject(userId).ToString();
-                }
-            }
-        }
-
-        [HttpGet("~/userprofile/{id}")]
-        public async Task<IActionResult> DisplayUserProfile(string id)
-        {
-            var email = await GetUserEmailById(id);
-
-            var profilestring = await GetUserProfile(id);
-            var profile = JsonConvert.DeserializeObject<UserProfile>(profilestring);
-
-            var projects = await _projectRepository.GetProjectsAsync();
-
-            var userProfileViewModel = new UserProfileViewModel
-            {
-                Profile = profile,
-                WinningsSum = await GetUserWinnigsSum(email),
-                CreatedProjects = await GetCreatedProjects(email),
-                ParticipatedProjects = await GetParticipatedProjects(email),
-                WonProjects = await GetWonProjects(email),
-                Comments = await GetUserComments(email)
-            };
-
-            return View("~/Views/UserProfile/UserProfile.cshtml", userProfileViewModel);
-        }
-
-        private async Task<List<ProjectCompactViewModel>> GetParticipatedProjects(string userId)
-        {
-            var participatedProjects = new List<IProjectData>();
-
-            var projects = await _projectRepository.GetProjectsAsync();
-
-            foreach (var project in projects)
-            {
-                if (project.ProjectStatus != Status.Draft.ToString())
-                {
-                    var participants = await _participantsRepository.GetProjectParticipantsAsync(project.Id);
-
-                    foreach (var participant in participants)
-                    {
-                        if (participant.UserId == userId)
-                        {
-                            participatedProjects.Add(project);
-                        }
-                    }
-                }
-            }
-
-            return await GetCompactProjectsList(participatedProjects);
-        }
-
-        private async Task<List<ProjectCompactViewModel>> GetWonProjects(string userId)
-        {
-            var wonProjects = new List<IProjectData>();
-
-            var projects = await _projectRepository.GetProjectsAsync();
-
-            foreach (var project in projects)
-            {
-                if (project.ProjectStatus != Status.Draft.ToString())
-                {
-                    var winners = await _winnersRepository.GetWinnersAsync(project.Id);
-
-                    foreach (var winner in winners)
-                    {
-                        if (winner.WinnerId == userId)
-                        {
-                            wonProjects.Add(project);
-                        }
-                    }
-                }
-            }
-
-            return await GetCompactProjectsList(wonProjects);
-        }
-
-        private async Task<List<ProjectCompactViewModel>> GetCreatedProjects(string userId)
-        {
-            var createdProjects = new List<IProjectData>();
-
-            var projects = await _projectRepository.GetProjectsAsync();
-
-            foreach (var project in projects)
-            {
-                if (project.ProjectStatus != Status.Draft.ToString())
-                {
-                    if (project.AuthorId == userId)
-                    {
-                        createdProjects.Add(project);
-                    }
-                }
-
-            }
-
-            return await GetCompactProjectsList(createdProjects);
-        }
-
-        private async Task<string> GetUserProfile(string id)
-        {
-            var authLink = _settings.LykkeStreams.Authentication.Authority;
-            var appId = _settings.LykkeStreams.Authentication.ClientId;
-
-            var webRequest = (HttpWebRequest)WebRequest.Create(authLink + "getuserprofilebyid?id=" + id);
-            webRequest.Method = "GET";
-            webRequest.ContentType = "text/html";
-            webRequest.Headers["application_id"] = appId;
-            var webResponse = await webRequest.GetResponseAsync();
-
-            using (var receiveStream = webResponse.GetResponseStream())
-            {
-                using (var sr = new StreamReader(receiveStream))
-                {
-                    var userId = await sr.ReadToEndAsync();
-                    return JsonConvert.DeserializeObject(userId).ToString();
-                }
-            }
-        }
-
-        private async Task<double> GetUserWinnigsSum(string email)
-        {
-            double sum = 0;
-
-            var projects = await _projectRepository.GetProjectsAsync();
-
-            foreach (var project in projects)
-            {
-                var winners = await _winnersRepository.GetWinnersAsync(project.Id);
-                foreach (var winner in winners)
-                {
-                    if (winner.WinnerId == email)
-                        sum += (double)winner.Budget;
-                }
-            }
-
-            return sum;
-        }
-
-        private async Task<List<UserProfileCommentData>> GetUserComments(string email)
-        {
-            var userComments = new List<UserProfileCommentData>();
-
-            var projects = await _projectRepository.GetProjectsAsync();
-
-            foreach (var project in projects)
-            {
-                var comments = await _commentsRepository.GetProjectCommentsAsync(project.Id);
-
-                foreach (var comment in comments)
-                {
-                    if (comment.UserId == email && !comment.Deleted)
-                    {
-                        userComments.Add(new UserProfileCommentData
-                        {
-                            ProjectName = project.Name,
-                            ProjectId = project.Id,
-                            Comment = comment.Comment,
-                            FullName = comment.FullName,
-                            LastModified = comment.LastModified
-                        });
-                    }
-                }
-            }
-
-            return userComments;
         }
     }
 }
