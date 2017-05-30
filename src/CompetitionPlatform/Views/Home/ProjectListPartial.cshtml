@@ -50,7 +50,11 @@
                                 <a href="/" class="breadcrumb_elem">@project.Category</a>
                             </div>
                             <div class="card__header">
-                                <div class="card__sum h3 pull-right">$@project.BudgetFirstPlace</div>
+                                @if (project.BudgetFirstPlace != 0)
+                                {
+                                    <div class="card__sum h3 pull-right">$@project.BudgetFirstPlace</div>
+                                }
+
                                 <div class="card__title h3">
                                     @if (project.Status == Status.Voting)
                                     {

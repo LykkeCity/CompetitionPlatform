@@ -173,58 +173,46 @@
         </div>
         <div class="row">
             <div class="col-xs-12 col-sm-8 content__left">
-
-                <div class="row prize_row">
-                    <div class="col-xs-3">
-                        <div class="prize">
-                            <div class="prize__value">$@Model.BudgetFirstPlace</div>
-                            <div class="prize__title">
-                                1<sup>st</sup>Prize
-                            </div>
-                        </div>
-                    </div>
-                    @if (Model.BudgetSecondPlace != null)
-            {
-                        <div class="col-xs-3 hidden-xxs">
+                @if (Model.BudgetFirstPlace != 0)
+                {
+                    <div class="row prize_row">
+                        <div class="col-xs-3">
                             <div class="prize">
-                                <div class="prize__value">$@Model.BudgetSecondPlace</div>
-                                <div class="prize__title">2<sup>nd</sup>Prize</div>
+                                <div class="prize__value">$@Model.BudgetFirstPlace</div>
+                                <div class="prize__title">
+                                    1<sup>st</sup>Prize
+                                </div>
                             </div>
                         </div>
-                        <div class="col-xs-3 hidden-xxs">
-                            <div class="prize">
-                                <div class="prize__value">$@Model.BudgetSecondPlace</div>
-                                <div class="prize__title">2<sup>nd</sup>Prize</div>
-                            </div>
-                        </div>
-                        <div class="col-xs-3 hidden-xxs">
-                            <div class="prize">
-                                <div class="prize__value">$@Model.BudgetSecondPlace</div>
-                                <div class="prize__title">2<sup>nd</sup>Prize</div>
-                            </div>
-                        </div>
-
-                        @*<div class="col-xs-3 hidden-xxs">
+                        @if (Model.BudgetSecondPlace != null)
+                        {
+                            <div class="col-xs-3 hidden-xxs">
                                 <div class="prize">
                                     <div class="prize__value">$@Model.BudgetSecondPlace</div>
-                                    <div class="prize__title">3<sup>rd</sup>Prize</div>
+                                    <div class="prize__title">2<sup>nd</sup>Prize</div>
                                 </div>
                             </div>
                             <div class="col-xs-3 hidden-xxs">
                                 <div class="prize">
                                     <div class="prize__value">$@Model.BudgetSecondPlace</div>
-                                    <div class="prize__title">4<sup>th</sup>Prize</div>
+                                    <div class="prize__title">2<sup>nd</sup>Prize</div>
                                 </div>
-                            </div>*@
-                        <div class="col-xs-3 visible-xxs">
-                            <div class="prize">
-                                <div class="prize__value">$@Model.BudgetSecondPlace</div>
-                                @*<div class="prize__title">2<sup>nd</sup>, 3<sup>rd</sup>, 4<sup>th</sup>Prize</div>*@
-                                <div class="prize__title">2<sup>nd</sup>Prize</div>
                             </div>
-                        </div>
-                    }
-                </div>
+                            <div class="col-xs-3 hidden-xxs">
+                                <div class="prize">
+                                    <div class="prize__value">$@Model.BudgetSecondPlace</div>
+                                    <div class="prize__title">2<sup>nd</sup>Prize</div>
+                                </div>
+                            </div>
+                            <div class="col-xs-3 visible-xxs">
+                                <div class="prize">
+                                    <div class="prize__value">$@Model.BudgetSecondPlace</div>
+                                    <div class="prize__title">2<sup>nd</sup>Prize</div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
 
                 @await Html.PartialAsync("ProjectDetailsStatusBarPartial", Model.StatusBarPartial)
 
