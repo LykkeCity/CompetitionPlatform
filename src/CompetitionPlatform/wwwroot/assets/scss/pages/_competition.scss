@@ -127,11 +127,41 @@
       margin-bottom: 0;
     }
 
-    .card__actions:not(.visible-xs) {
-      @include rem(margin-right, 28px);
+    .card__actions {
+      @include rem(padding, 11px 0);
 
-      .action_link {
-        @include rem(margin-left, 18px);
+      &:not(.visible-xs) {
+        @include rem(margin-right, 28px);
+
+        .action_link {
+          @include rem(margin-left, 18px);
+        }
+      }
+    }
+  }
+
+  &__header {
+    @media all and (max-width: $screen-landscape) {
+      .tabs_stack_container {
+        float: none !important;
+        clear: both;
+        overflow: hidden;
+
+        @include rem(margin-top, 70px);
+        @include rem(margin-right, -70px);
+        @include rem(height, 35px);
+        @include clearfix;
+
+        .tabs_stack {
+          margin-top: 0;
+          white-space: nowrap;
+          overflow: auto;
+          padding-bottom: 30px;
+        }
+
+        .tab_item {
+          margin-bottom: 0;
+        }
       }
     }
   }
@@ -175,16 +205,6 @@
 
     .page__header {
       @include rem(padding-right, 70px);
-    }
-  }
-
-  @media all and (max-width: $screen-landscape) {
-    .tabs_stack {
-      float: none !important;
-      clear: both;
-
-      @include rem(margin-top, 70px);
-      @include clearfix;
     }
   }
 
@@ -689,7 +709,6 @@
     top: 0;
 
     @include rem(padding-top, 15px);
-    @include rem(top, 91px);
 
     .container {
       padding-left: 15px;
@@ -887,7 +906,7 @@
         line-height: normal;
 
         &:first-child {
-          @include rem(width, 240px);
+          @include rem(width, 330px);
         }
 
         &:last-child {
@@ -2050,8 +2069,21 @@
   }
 }
 
-.btn.btn_create_project .icon {
-  margin-right: -1px;
+.btn.btn_create_project {
+  width: 24px;
+  height: 24px;
+
+  @include rem(margin-top, 17px);
+
+  .icon {
+    width: 100%;
+    font-size: 20px;
+    line-height: 24px;
+  }
+
+  @media all and (max-width: $screen-landscape) {
+    margin-top: 12px;
+  }
 }
 
 .section--padding_bottom {
@@ -2067,18 +2099,44 @@
   &--experts {
     .user_badge--small {
       line-height: 1.2;
+      position: relative;
+
+      .user_badge__img {
+        position: absolute;
+        left: 0;
+        top: 0;
+
+        @include rem(width, 40px);
+        @include rem(height, 40px);
+
+        img {
+          @include rem(width, 40px);
+          @include rem(height, 40px);
+        }
+      }
 
       .user_badge__info {
         font-weight: $fw-semi;
         color: $text;
+        overflow: visible;
 
         @include rem(font-size, 18px);
-        @include rem(padding-top, 6px);
+        @include rem(padding-left, 55px);
+        @include rem(padding-bottom, 9px);
+        @include rem(padding-top, 9px);
       }
     }
 
     .btn--icon .icon {
       @include rem(font-size, 16px);
+    }
+
+    .expert_input .form-control {
+      margin-bottom: 0;
+    }
+
+    ._action {
+      @include rem(padding-right, 12px !important);
     }
 
     tr {
@@ -2120,7 +2178,7 @@
       tr {
         border-bottom: 1px solid $border-alt;
         position: relative;
-        padding: 9px 0 9px 45px;
+        padding: 9px 30px 9px 40px;
 
         &:first-child {
           border-top: 1px solid $border-alt;
@@ -2133,21 +2191,54 @@
           font-size: 13px;
           white-space: normal;
           line-height: normal;
+
+          > .user_badge--small {
+            position: static;
+
+            > .user_badge__img {
+              position: absolute;
+              left: 0;
+              top: 9px;
+            }
+
+            > .user_badge__info {
+              padding: 1px 0;
+              font-size: 13px;
+            }
+          }
         }
       }
 
-      .user_badge {
-        &__img {
-          position: absolute;
-          left: 0;
-          top: 9px;
-        }
 
-        &__info {
-          padding-top: 0 !important;
-          font-size: 13px;
-        }
+      ._action {
+        position: absolute;
+        right: 0;
+        top: 50%;
+        margin-top: -10px;
       }
+    }
+  }
+
+  &--values {
+    @include rem(margin-bottom, 15px);
+
+    tr {
+      td {
+        border: 0;
+        background: transparent !important;
+        cursor: auto;
+        color: $secondary;
+        vertical-align: top;
+        white-space: normal;
+
+        @include rem(padding, 5px 10px 5px 0);
+        @include rem(font-size, 16px);
+      }
+    }
+
+    ._name {
+      opacity: .6;
+      width: 90px;
     }
   }
 }
@@ -2162,13 +2253,19 @@
   &--transparent {
     border: 0;
     border-radius: 0;
-    height: 30px;
-    padding: 3px 0;
     font-weight: normal;
+
+    @include rem(padding, 4px 0);
+    @include rem(height, 40px);
   }
 }
 
 .expert_input {
   padding-top: 0 !important;
+  padding-bottom: 0 !important;
   position: relative;
+}
+
+.header--static {
+  position: static !important;
 }

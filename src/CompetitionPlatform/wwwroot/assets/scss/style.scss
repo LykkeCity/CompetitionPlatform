@@ -3,6 +3,7 @@
 
 // vendors
 @import "../../node_modules/LykkeFramework/assets/scss/vendor/bootstrap-datetimepicker";
+@import '../../node_modules/LykkeFramework/assets/scss/vendor/bootstrap-select';
 
 // elements
 @import '../../node_modules/LykkeFramework/assets/scss/partials/elements';
@@ -30,13 +31,18 @@
 @import '../../node_modules/LykkeFramework/assets/scss/partials/flow';
 @import '../../node_modules/LykkeFramework/assets/scss/partials/alert';
 @import '../../node_modules/LykkeFramework/assets/scss/partials/popover';
+@import '../../node_modules/LykkeFramework/assets/scss/partials/list_group';
+@import '../../node_modules/LykkeFramework/assets/scss/partials/pagination';
 
 // optional
 @import 'pages/competition';
 @import 'pages/user_profile';
 @import 'pages/result';
+@import 'pages/news';
 @import 'partials/popover';
 @import 'partials/rating';
 @import 'partials/stage';
+@import 'partials/draganddrop';
 @import 'partials/messages';
 @import 'partials/jquery.fancybox';
+@import 'partials/select';
