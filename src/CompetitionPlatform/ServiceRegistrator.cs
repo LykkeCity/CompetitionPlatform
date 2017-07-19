@@ -7,8 +7,10 @@ using Common.Log;
 using CompetitionPlatform.Services;
 using AzureStorage.Tables;
 using AzureStorage.Queue;
+using CompetitionPlatform.Data.AzureRepositories.Blog;
 using CompetitionPlatform.Data.AzureRepositories.Result;
 using CompetitionPlatform.Data.AzureRepositories.Vote;
+using CompetitionPlatform.Data.BlogCategory;
 using CompetitionPlatform.Data.ProjectCategory;
 
 namespace CompetitionPlatform
@@ -61,6 +63,12 @@ namespace CompetitionPlatform
             services.AddSingleton<INoSQLTableStorage<UserFeedbackEntity>>(
                 new AzureTableStorage<UserFeedbackEntity>(connectionString, "UserFeedback", log));
 
+            services.AddSingleton<INoSQLTableStorage<BlogEntity>>(
+                new AzureTableStorage<BlogEntity>(connectionString, "Blogs", log));
+
+            services.AddSingleton<INoSQLTableStorage<BlogCommentEntity>>(
+                new AzureTableStorage<BlogCommentEntity>(connectionString, "BlogComments", log));
+
             services.AddTransient<IProjectRepository, ProjectRepository>();
             services.AddTransient<IProjectFileRepository, ProjectFileRepository>();
             services.AddTransient<IUsersRepository, UsersRepository>();
@@ -77,6 +85,9 @@ namespace CompetitionPlatform
             services.AddTransient<IProjectWinnersService, ProjectWinnersService>();
             services.AddTransient<IFollowMailSentRepository, FollowMailSentRepository>();
             services.AddTransient<IUserFeedbackRepository, UserFeedbackRepository>();
+            services.AddTransient<IBlogRepository, BlogRepository>();
+            services.AddTransient<IBlogCategoriesRepository, BlogCategoriesRepository>();
+            services.AddTransient<IBlogCommentsRepository, BlogCommentsRepository>();
         }
 
         public static void RegisterLyykeServices(this IServiceCollection services)
