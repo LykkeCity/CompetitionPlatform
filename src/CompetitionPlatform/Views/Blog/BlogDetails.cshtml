@@ -1,0 +1,216 @@
+﻿@model CompetitionPlatform.Models.BlogViewModels.BlogViewModel
+@using CompetitionPlatform.Helpers
+
+
+<section class="section section--padding">
+    <div class="container">
+
+        @{
+            var commentsCount = Model.CommentsPartial == null ? 0 : Model.CommentsPartial.Comments.Count();
+            var commentsCountText = commentsCount == 1 ? "1 comment" : commentsCount + " comments";
+        }
+
+        <div class="news_article">
+            <div class="news_article__header">
+                <div class="t-simulate">
+                    <div class="t-cell">
+                        </br>
+                        </br>
+                        <h1 class="news_article__title h2">@Model.Name</h1>
+                        <div class="news_article__desc">@Model.Category</div>
+                    </div>
+                </div>
+                @if (Model.IsAdmin)
+                {
+                    <a asp-area="" asp-controller="Blog" asp-action="Edit" asp-route-id="@Model.Id"><button class="btn btn-sm btn_edit pull-right">Edit</button></a> 
+                }
+            </div>
+            <div class="news_article__body">
+                <div class="row">
+                    @if (!string.IsNullOrEmpty(Model.ProjectId))
+                    {
+                        <div class="col-xs-12 col-sm-4">
+                            <div class="stage_item stage_item--simple">
+                                <div class="stage_item__content">
+                                    <div class="stage_item__inner">
+                                        <div class="stream_nav__text">Project</div>
+
+                                        <div class="stage_item__header">
+                                            <div class="stage_item__title">
+                                                <a href="">@Model.ProjectName</a>
+                                            </div>
+                                            <div class="prize__value">$@Model.ProjectBudget</div>
+                                        </div>
+
+                                        <div class="stage_item__body">
+                                            <table class="table table--values">
+                                                <tr>
+                                                    <td class="_name">Category:</td>
+                                                    <td class="_value"><a href="">@Model.ProjectCategory</a></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="_name">Creator:</td>
+                                                    <td class="_value"><a href="">@Model.ProjectAuthor</a></td>
+                                                </tr>
+                                                @*<tr>
+                                                        <td class="_name">Period:</td>
+                                                        <td class="_value">Apr 10 – Apr 25 ⋅ 15 days</td>
+                                                    </tr>*@
+                                                <tr>
+                                                    <td class="_name">Participants:</td>
+                                                    <td class="_value">@Model.ProjectParticipants</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="_name">Results:</td>
+                                                    <td class="_value">@Model.ProjectResults</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="_name">Winners:</td>
+                                                    <td class="_value">@Model.ProjectWinners</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    <div class="col-xs-12 col-sm-8 col-md-7">
+                        <div class="news_article__text text">
+                            <p class="lead">@Model.Overview</p>
+
+                            <div class="news_info">
+                                <span class="news_info__item">@Model.AuthorName</span>
+                                <span class="middot">&middot;</span>
+                                <span class="news_info__item">@Model.Published.ToString("MMMM dd, yyyy")</span>
+                                <span class="middot">&middot;</span>
+                                <div class="news_info__item">@commentsCountText</div>
+                            </div>
+
+                            <div class="social_share_widget">
+                                <!-- AddToAny BEGIN -->
+                                <div class="a2a_kit a2a_kit_size_32 a2a_default_style">
+                                    <a class="a2a_button_facebook a2a_counter" data-label="Share"></a>
+                                    <a class="a2a_button_twitter a2a_counter" data-label="Tweet"></a>
+                                    <a class="a2a_button_linkedin a2a_counter" data-label="Share"></a>
+                                    <a class="a2a_button_pocket a2a_counter" data-label="Pocket"></a>
+                                </div>
+                                <!-- AddToAny END -->
+                            </div>
+
+                            @Html.Raw(Model.Text)
+
+                            <div class="listing">
+                                @if (!string.IsNullOrEmpty(Model.FirstResult) && !string.IsNullOrEmpty(Model.FirstResultAuthor) && !string.IsNullOrEmpty(Model.FirstResultComment))
+                                {
+                                    <div class="listing__item">
+                                        <div class="move_to_btn move_to_btn--smallcaps">
+                                            <a href="@Model.FirstResult">
+                                                <div class="move_to_btn__icon">
+                                                    <i class="icon icon--move_to_thin"></i>
+                                                </div>
+                                                <div class="move_to_btn__content">
+                                                    <div class="move_to_btn__title">Result #1</div>
+                                                    <div class="move_to_btn__desc">
+                                                        by <span class="_name">@Model.FirstResultAuthor</span>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <p>@Model.FirstResultComment</p>
+                                    </div>
+                                }
+
+                                @if (!string.IsNullOrEmpty(Model.SecondResult) && !string.IsNullOrEmpty(Model.SecondResultAuthor) && !string.IsNullOrEmpty(Model.SecondResultComment))
+                                {
+                                    <div class="listing__item">
+                                        <div class="move_to_btn move_to_btn--smallcaps">
+                                            <a href="@Model.SecondResult">
+                                                <div class="move_to_btn__icon">
+                                                    <i class="icon icon--move_to_thin"></i>
+                                                </div>
+                                                <div class="move_to_btn__content">
+                                                    <div class="move_to_btn__title">Result #2</div>
+                                                    <div class="move_to_btn__desc">
+                                                        by <span class="_name">@Model.SecondResultAuthor</span>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <p>@Model.SecondResultComment</p>
+                                    </div>
+                                }
+
+                                @if (!string.IsNullOrEmpty(Model.ThirdResult) && !string.IsNullOrEmpty(Model.ThirdResultAuthor) && !string.IsNullOrEmpty(Model.ThirdResultComment))
+                                {
+                                    <div class="listing__item">
+                                        <div class="move_to_btn move_to_btn--smallcaps">
+                                            <a href="@Model.ThirdResult">
+                                                <div class="move_to_btn__icon">
+                                                    <i class="icon icon--move_to_thin"></i>
+                                                </div>
+                                                <div class="move_to_btn__content">
+                                                    <div class="move_to_btn__title">Result #3</div>
+                                                    <div class="move_to_btn__desc">
+                                                        by <span class="_name">@Model.ThirdResultAuthor</span>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <p>@Model.ThirdResultComment</p>
+                                    </div>
+                                }
+
+                                @if (!string.IsNullOrEmpty(Model.FourthResult) && !string.IsNullOrEmpty(Model.FourthResultAuthor) && !string.IsNullOrEmpty(Model.FourthResultComment))
+                                {
+                                    <div class="listing__item">
+                                        <div class="move_to_btn move_to_btn--smallcaps">
+                                            <a href="@Model.FourthResult">
+                                                <div class="move_to_btn__icon">
+                                                    <i class="icon icon--move_to_thin"></i>
+                                                </div>
+                                                <div class="move_to_btn__content">
+                                                    <div class="move_to_btn__title">Result #4</div>
+                                                    <div class="move_to_btn__desc">
+                                                        by <span class="_name">@Model.FourthResultAuthor</span>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <p>@Model.FourthResultComment</p>
+                                    </div>
+                                }
+                            </div>
+
+                        </div>
+
+                        <div class="social_share_widget">
+                            <!-- AddToAny BEGIN -->
+                            <div class="a2a_kit a2a_kit_size_32 a2a_default_style">
+                                <a class="a2a_button_facebook a2a_counter" data-label="Share"></a>
+                                <a class="a2a_button_twitter a2a_counter" data-label="Tweet"></a>
+                                <a class="a2a_button_linkedin a2a_counter" data-label="Share"></a>
+                                <a class="a2a_button_pocket a2a_counter" data-label="Pocket"></a>
+                            </div>
+                            <!-- AddToAny END -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="news_comments">
+            <div class="row">
+                <div class="col-xs-12 col-md-8 col-md-offset-4">
+
+                    <div class="block_header">
+                        <h3>Comments <span>@commentsCount</span></h3>
+                    </div>
+
+                    @await Html.PartialAsync("BlogCommentsPartial", Model.CommentsPartial)
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

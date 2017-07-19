@@ -1,0 +1,130 @@
+﻿@model CompetitionPlatform.Models.BlogViewModels.BlogListIndexViewModel
+
+@{
+    ViewData["Title"] = "Blog";
+
+    string blogCategoryFilter = ViewBag.BlogCategoryFilter;
+
+    var allFilter = "";
+    var newsFilter = "";
+    var resultsFilter = "";
+    var winnersFilter = "";
+    var successFilter = "";
+    var videosFilter = "";
+
+    switch (blogCategoryFilter)
+    {
+        case "All":
+            allFilter = "list_group__item--active";
+            break;
+        case "News":
+            newsFilter = "list_group__item--active";
+            allFilter = "";
+            break;
+        case "Results":
+            resultsFilter = "list_group__item--active";
+            break;
+        case "Winners":
+            winnersFilter = "list_group__item--active";
+            break;
+        case "Successstories":
+            successFilter = "list_group__item--active";
+            break;
+        case "Videos":
+            videosFilter = "list_group__item--active";
+            break;
+        case default(string):
+            allFilter = "list_group__item--active";
+            break;
+    }
+}
+
+<section class="section section--padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-10 automargin">
+                
+                <h1 class="text-left visible-xs">Blog</h1>
+
+                <div class="row">
+                    <div class="col-xs-12 col-sm-3 pull-right">
+                        <div class="hidden-xs">
+                            @if (Model.IsAdmin)
+                            {
+                                <a asp-area="" asp-controller="Blog" asp-action="Create"><button class="btn btn-sm btn_edit">Create</button></a>
+                            }
+                            <h3 class="h3_small">Categories</h3>
+                            <div class="list_group">
+                                <ul id="blogCategoryFilters" class="list_group_inner">
+                                    <li id="allFilter" class="list_group__item @allFilter"><a href="#" class="list_group__link">All</a></li>
+                                    <li id="newsFilter" class="list_group__item @newsFilter"><a href="#" class="list_group__link">News</a></li>
+                                    <li id="resultsFilter" class="list_group__item @resultsFilter"><a href="#" class="list_group__link">Results</a></li>
+                                    <li id="winnersFilter" class="list_group__item @winnersFilter"><a href="#" class="list_group__link">Winners</a></li>
+                                    <li id="successFilter" class="list_group__item @successFilter"><a href="#" class="list_group__link">Success stories</a></li>
+                                    <li id="videosFilter" class="list_group__item @videosFilter"><a href="#" class="list_group__link">Videos</a></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="news_filter">
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-4 visible-xs">
+                                    <div class="select select--with_label form-group" data-control="select">
+                                        <label for="blogCategoryFilter" class="select__label control-label">Category:</label>
+                                        <div class="select__value"><span class="_value">All</span></div>
+                                        <select id="blogCategoryFilter" class="form-control select__elem">
+                                            <option>All</option>
+                                            <option>News</option>
+                                            <option>Results</option>
+                                            <option>Winners</option>
+                                            <option>Success stories</option>
+                                            <option>Videos</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                @*<div class="col-xs-6 col-sm-12">
+                                    <div class="select select--with_label form-group" data-control="select">
+                                        <label for="select2" class="select__label control-label">Month:</label>
+                                        <div class="select__value"><span class="_value">All</span></div>
+                                        <select id="select2" class="form-control select__elem">
+                                            <option>All</option>
+                                            <option>January</option>
+                                            <option>February</option>
+                                            <option>March</option>
+                                            <option>April</option>
+                                            <option>May</option>
+                                            <option>June</option>
+                                            <option>July</option>
+                                            <option>August</option>
+                                            <option>September</option>
+                                            <option>October</option>
+                                            <option>December</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6 col-sm-12">
+                                    <div class="select select--with_label form-group" data-control="select">
+                                        <label for="select3" class="select__label control-label">Year:</label>
+                                        <div class="select__value"><span class="_value">All</span></div>
+                                        <select id="select3" class="form-control select__elem">
+                                            <option>All</option>
+                                            <option>2014</option>
+                                            <option>2015</option>
+                                            <option>2016</option>
+                                            <option>2017</option>
+                                        </select>
+                                    </div>
+                                </div>*@
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="blogListResults" class="col-xs-12 col-sm-9">
+                        @await Html.PartialAsync("BlogListPartial", Model)
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
