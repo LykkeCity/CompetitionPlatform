@@ -1,0 +1,16 @@
+@using System.Threading.Tasks
+@using CompetitionPlatform.Helpers
+@model CompetitionPlatform.Models.BlogViewModels.BlogCommentPartialViewModel
+
+<form asp-controller="Blog" asp-action="AddComment" enctype="multipart/form-data">
+    @if (ClaimsHelper.GetUser(User.Identity).Email != null)
+    {
+        <div class="form-group">
+            @Html.Hidden("blogId", Model.BlogId)
+            @Html.Hidden("ParentId", Model.ParentId)
+            <input asp-for="@Model.BlogId" type="hidden" />
+            <textarea asp-for="@Model.Comment" rows="5" class="form-control" placeholder="Enter your comment here..."></textarea>
+        </div>
+        <input type="submit" value="Post Comment" class="btn btn-primary pull-right" />
+    }
+</form>

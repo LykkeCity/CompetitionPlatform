@@ -1,0 +1,114 @@
+@using System.Threading.Tasks
+@using CompetitionPlatform.Helpers
+@model CompetitionPlatform.Models.BlogViewModels.BlogCommentPartialViewModel
+
+@if (ClaimsHelper.GetUser(User.Identity).Email != null)
+{
+    <form asp-controller="Blog" asp-action="AddComment" enctype="multipart/form-data" class="form form--message">
+        @if (ClaimsHelper.GetUser(User.Identity).Email != null)
+        {
+            <div class="message_card message_card--form">
+                <div class="user_badge user_badge--small">
+                    <div class="user_badge__img">
+                        <a href=""><img src="~/images/avatar.svg" alt=""></a>
+                    </div>
+                    <div class="user_badge__message">
+                        <div class="message_card__inner">
+                            <div class="user_badge__title">
+                                <a href="">@ClaimsHelper.GetUser(User.Identity).GetFullName()</a>
+                            </div>
+                            @Html.Hidden("blogId", Model.BlogId)
+                            <input asp-for="@Model.BlogId" type="hidden" />
+                            <textarea asp-for="@Model.Comment" id="msg" placeholder="Enter your comment here..." class="form-control form-control--textarea message_card__area"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="message_actions">
+                <div class="row">
+                    <div class="col-sm-6">
+                        @*<div class="checkbox">
+                                <label for="ch1" class="checkbox__label"><input type="checkbox" id="ch1" class="checkbox__control"> Notify me of new comments via email</label>
+                            </div>*@
+                    </div>
+                    <div class="col-sm-6 text-right">
+                        <input type="submit" value="Post Comment" class="btn" />
+                    </div>
+                </div>
+            </div>
+        }
+    </form>
+}
+else
+{
+    <div class="form form--message disabled">
+        <div class="message_card__inner">
+            <div style="height: 80px; line-height: 60px;" class="form-control" disabled>
+                <div class="text-center">
+                    Please
+                    <a asp-area="" asp-controller="Home" asp-action="SignIn" class="">login</a>
+                    to leave a comment
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="messages_list">
+    @foreach (var comment in Model.Comments)
+    {
+        <div class="message_card @(!string.IsNullOrEmpty(comment.ParentId) ? "message_card--accent" : "")">
+            <div class="user_badge user_badge--small">
+                <div class="user_badge__img"><a href=""><img src="~/images/avatar.svg" alt=""></a></div>
+                <div class="user_badge__message">
+                    <div class="message_card__inner">
+                        <div class="user_badge__title">
+                            <a href="">@comment.FullName</a>
+                            @if (comment.UserId == Model.BlogAuthorId)
+                            {
+                                <span class="label label--primary">creator</span>
+                            }
+                            else if (Model.CommenterIsModerator.ContainsKey(comment.Id) && Model.CommenterIsModerator[comment.Id].Equals(true))
+                            {
+                                <span class="label label--blue">moderator</span>
+                            }
+                            <span class="message_card__date">&middot; @comment.LastModified.ToString("hh:mm tt MMMM dd, yyyy")</span>
+                        </div>
+                        <div class="message_card__message">
+                            <p>
+                                @if (comment.Deleted)
+                                {
+                                    const string deletedComment = "[Comment was deleted]";
+                                    @deletedComment
+                                }
+                                else
+                                {
+                                    @Html.Raw(comment.Comment)
+                                }
+
+                            </p>
+                            <div id="@comment.Id"></div>
+                            @if (Model.UserId != comment.UserId || Model.IsAdmin)
+                            {
+                                <div class="card__actions">
+                                    @if (!string.IsNullOrEmpty(Model.UserId) && Model.UserId != comment.UserId && string.IsNullOrEmpty(comment.ParentId) && !comment.Deleted)
+                                    {
+                                        <button id="@comment.Id" class="action_link replyToBlogCommentButton @comment.Id">Reply</button>
+                                    }
+                                    @if (Model.IsAuthor && Model.UserId != comment.UserId && Model.IsAdmin)
+                                    {
+                                        <span>&middot;</span>
+                                    }
+                                    @if (Model.IsAdmin && !comment.Deleted)
+                                    {
+                                        <a asp-area="" asp-controller="Blog" asp-action="RemoveComment" asp-route-blogId="@Model.BlogId" asp-route-commentId=@comment.Id class="action_link">Delete</a>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

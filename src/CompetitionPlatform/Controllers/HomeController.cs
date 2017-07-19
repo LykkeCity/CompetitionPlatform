@@ -62,6 +62,7 @@ namespace CompetitionPlatform.Controllers
             ViewBag.AllProjects = ViewBag.AllProjects != true;
             ViewBag.MyProjects = false;
             ViewBag.Faq = false;
+            ViewBag.Blog = false;
 
             var viewModel = await GetProjectListViewModel();
             viewModel.Projects = viewModel.Projects.OrderBy(x => x.Status).ThenBy(x => x.BudgetFirstPlace);
@@ -74,6 +75,7 @@ namespace CompetitionPlatform.Controllers
             ViewBag.MyProjects = ViewBag.MyProjects != true;
             ViewBag.AllProjects = false;
             ViewBag.Faq = false;
+            ViewBag.Blog = false;
 
             var user = GetAuthenticatedUser();
             var viewModel = await GetMyProjectListViewModel(userId: user.Email, createdProjects: true, followingProjects: true, participatingProjects: true);
@@ -476,6 +478,7 @@ namespace CompetitionPlatform.Controllers
             ViewBag.Faq = ViewBag.Faq != true;
             ViewBag.MyProjects = false;
             ViewBag.AllProjects = false;
+            ViewBag.Blog = false;
 
             return View();
         }

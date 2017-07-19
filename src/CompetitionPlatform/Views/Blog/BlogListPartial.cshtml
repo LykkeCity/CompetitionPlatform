@@ -1,0 +1,45 @@
+﻿@model CompetitionPlatform.Models.BlogViewModels.BlogListIndexViewModel
+
+@{
+    ViewData["Title"] = "Blog";
+}
+
+
+
+<h1 class="text-left hidden-xs">Blog</h1>
+<div class="news_list">
+    @foreach (var blog in Model.BlogEntries)
+                            {
+
+                                var commentsCount = blog.CommentsCount == 1 ? "1 comment" : blog.CommentsCount + " comments";
+
+
+        <div class="news_list__item">
+            <div class="label label--text label--primary">@blog.Category</div>
+            <div class="news_list__title h3">
+                <a asp-controller="Blog" asp-action="BlogDetails" asp-route-id="@blog.Id">@blog.Name</a>
+            </div>
+            <div class="news_list__desc">@blog.Overview</div>
+
+            @if (!string.IsNullOrEmpty(blog.ProjectId) && !string.IsNullOrEmpty(blog.ProjectName))
+                                    {
+                <div class="move_to_btn">
+                    <a asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@blog.ProjectId">
+                        <div class="move_to_btn__icon">
+                            <i class="icon icon--move_to_thin"></i>
+                        </div>
+                        <div class="move_to_btn__content">
+                            <div class="move_to_btn__title">@blog.ProjectName</div>
+                            <div class="move_to_btn__desc">Project</div>
+                        </div>
+                    </a>
+                </div>
+                                    }
+            <div class="news_info">
+                <span class="news_info__item">@blog.Published.ToString("MMMM d")</span>
+                <span class="middot">&middot;</span>
+                <div class="news_info__item">@commentsCount</div>
+            </div>
+        </div>
+                            }
+</div>

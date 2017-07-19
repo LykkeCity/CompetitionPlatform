@@ -1,0 +1,190 @@
+@model CompetitionPlatform.Models.BlogViewModels.BlogViewModel
+
+@{
+    ViewData["Title"] = "Edit a Blog Entry";
+}
+
+<section class="section section--lead section--padding">
+    <div class="container">
+        <div class="page__actions">
+            <div class="back_link">
+                <a asp-area="" asp-controller="Home" asp-action="Index">
+                    <i class="icon icon--back"></i> Back to Blog List
+                </a>
+            </div>
+        </div>
+        <div class="content__left">
+            <div class="pull-right latest_updated">
+            </div>
+            <h2>Create a blog entry</h2>
+        </div>
+    </div>
+</section>
+
+<section class="section section--competition_edit">
+    <div class="container">
+        <div class="content__left">
+            <form asp-action="SaveEditedBlog" enctype="multipart/form-data" class="form form--default form--competition_edit">
+
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger" />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Id" class="control-label"></label>
+                    <input asp-for="Id" class="form-control disabled" />
+                    <span asp-validation-for="Id" class="text-danger" />
+                    @Html.ValidationMessageFor(x => x.Id)
+                </div>
+
+                <div class="form-group">
+                    <div class="row">
+                        <label asp-for="Overview" class="control-label col-sm-4"></label>
+                    </div>
+                    <textarea asp-for="Overview" class="form-control" rows="7"></textarea>
+                    <span asp-validation-for="Overview" class="text-danger" />
+                </div>
+                
+                <div class="form-group">
+                    <label asp-for="ProjectId" class="control-label"></label>
+                    <input asp-for="ProjectId" class="form-control" />
+                    <span asp-validation-for="ProjectId" class="text-danger" />
+                    @Html.ValidationMessageFor(x => x.ProjectId)
+                </div>
+
+                <div class="form-group">
+                    <div class="row">
+                        <label asp-for="Text" class="control-label col-sm-4"></label>
+
+                    </div>
+                    <textarea asp-for="Text" class="form-control richEditor" rows="10"></textarea>
+                    <span asp-validation-for="Text" class="text-danger" />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="FirstResult" class="control-label"></label>
+                    <input asp-for="FirstResult" class="form-control" />
+                    <span asp-validation-for="FirstResult" class="text-danger" />
+                </div>
+                
+                <div class="form-group">
+                    <label asp-for="FirstResultAuthor" class="control-label"></label>
+                    <input asp-for="FirstResultAuthor" class="form-control" />
+                    <span asp-validation-for="FirstResultAuthor" class="text-danger" />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="FirstResultComment" class="control-label"></label>
+                    <input asp-for="FirstResultComment" class="form-control" />
+                    <span asp-validation-for="FirstResultComment" class="text-danger" />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="SecondResult" class="control-label"></label>
+                    <input asp-for="SecondResult" class="form-control" />
+                    <span asp-validation-for="SecondResult" class="text-danger" />
+                </div>
+                
+                <div class="form-group">
+                    <label asp-for="SecondResultAuthor" class="control-label"></label>
+                    <input asp-for="SecondResultAuthor" class="form-control" />
+                    <span asp-validation-for="SecondResultAuthor" class="text-danger" />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="SecondResultComment" class="control-label"></label>
+                    <input asp-for="SecondResultComment" class="form-control" />
+                    <span asp-validation-for="SecondResultComment" class="text-danger" />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="ThirdResult" class="control-label"></label>
+                    <input asp-for="ThirdResult" class="form-control" />
+                    <span asp-validation-for="ThirdResult" class="text-danger" />
+                </div>
+                
+                <div class="form-group">
+                    <label asp-for="ThirdResultAuthor" class="control-label"></label>
+                    <input asp-for="ThirdResultAuthor" class="form-control" />
+                    <span asp-validation-for="ThirdResultAuthor" class="text-danger" />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="ThirdResultComment" class="control-label"></label>
+                    <input asp-for="ThirdResultComment" class="form-control" />
+                    <span asp-validation-for="ThirdResultComment" class="text-danger" />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="FourthResult" class="control-label"></label>
+                    <input asp-for="FourthResult" class="form-control" />
+                    <span asp-validation-for="FourthResult" class="text-danger" />
+                </div>
+                
+                <div class="form-group">
+                    <label asp-for="FourthResultAuthor" class="control-label"></label>
+                    <input asp-for="FourthResultAuthor" class="form-control" />
+                    <span asp-validation-for="FourthResultAuthor" class="text-danger" />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="FourthResultComment" class="control-label"></label>
+                    <input asp-for="FourthResultComment" class="form-control" />
+                    <span asp-validation-for="FourthResultComment" class="text-danger" />
+                </div>
+                
+                <fieldset class="form_fieldset">
+                    <div class="flow flow--project">
+                        <div class="flow__item">
+                            <div class="flow__icon"></div>
+                            <div class="flow__content">
+                                <div class="flow__title h4">Publish Date</div>
+                                <div class="flow__actions">
+                                    <div class="form-group">
+                                        <div class="input-group date datetimepicker">
+                                            <input asp-for="Published" class="form-control datetimepicker" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flow__text">
+                                    The blog entry will appear to be posted on the following date:
+                                </div>
+                                <span asp-validation-for="Published" class="text-danger" />
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label class="control-label">Category:</label>
+                        <div class="form-group" data-control="select">
+                            <select asp-for="@Model.Category" class="form-control">
+                                @foreach (var category in ViewBag.BlogCategories)
+                                {
+                                    <option>@category</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form__submit">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <button type="submit" class="btn">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
