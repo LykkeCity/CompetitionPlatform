@@ -22,15 +22,15 @@
 
     //myProjects filters
     $('#myProjectStatusFilter')
-       .change(function () {
-           $('#myProjectsCreatedFilter').removeClass('tab_item--active');
-           $('#myProjectsFollowingFilter').removeClass('tab_item--active');
-           $('#myProjectsParticipatingFilter').removeClass('tab_item--active');
+        .change(function () {
+            $('#myProjectsCreatedFilter').removeClass('tab_item--active');
+            $('#myProjectsFollowingFilter').removeClass('tab_item--active');
+            $('#myProjectsParticipatingFilter').removeClass('tab_item--active');
 
-           $('#myProjectListResults').load('/Home/GetMyProjectList?myProjectStatusFilter=' +
-               $('#myProjectStatusFilter :selected').val() + '&myProjectCategoryFilter=' +
-               $('#myProjectCategoryFilter :selected').val().replace(/\s/g, '') + '&myProjectPrizeFilter=' + $('#myProjectPrizeFilter :selected').val());
-       });
+            $('#myProjectListResults').load('/Home/GetMyProjectList?myProjectStatusFilter=' +
+                $('#myProjectStatusFilter :selected').val() + '&myProjectCategoryFilter=' +
+                $('#myProjectCategoryFilter :selected').val().replace(/\s/g, '') + '&myProjectPrizeFilter=' + $('#myProjectPrizeFilter :selected').val());
+        });
 
     $('#myProjectCategoryFilter')
         .change(function () {
@@ -53,6 +53,75 @@
                 $('#myProjectStatusFilter :selected').val() + '&myProjectCategoryFilter=' +
                 $('#myProjectCategoryFilter :selected').val().replace(/\s/g, '') + '&myProjectPrizeFilter=' + $('#myProjectPrizeFilter :selected').val());
         });
+
+    //blog filters
+    $('#blogCategoryFilter').change(function () {
+        var val = $("#blogCategoryFilter option:selected").text();
+        $('#blogListResults').load('/Blog/GetBlogList?blogCategoryFilter=' + val.replace(/\s/g, ''));
+    });
+
+    $("#blogCategoryFilters li").click(function () {
+
+        switch ($(this).text().replace(/\s/g, '')) {
+            case "All":
+                $('#allFilter').addClass("list_group__item--active");
+                $('#newsFilter').removeClass("list_group__item--active");
+                $('#resultsFilter').removeClass("list_group__item--active");
+                $('#winnersFilter').removeClass("list_group__item--active");
+                $('#successFilter').removeClass("list_group__item--active");
+                $('#videosFilter').removeClass("list_group__item--active");
+                break;
+            case "News":
+                $('#allFilter').removeClass("list_group__item--active");
+                $('#newsFilter').addClass("list_group__item--active");
+                $('#resultsFilter').removeClass("list_group__item--active");
+                $('#winnersFilter').removeClass("list_group__item--active");
+                $('#successFilter').removeClass("list_group__item--active");
+                $('#videosFilter').removeClass("list_group__item--active");
+                break;
+            case "Results":
+                $('#allFilter').removeClass("list_group__item--active");
+                $('#newsFilter').removeClass("list_group__item--active");
+                $('#resultsFilter').addClass("list_group__item--active");
+                $('#winnersFilter').removeClass("list_group__item--active");
+                $('#successFilter').removeClass("list_group__item--active");
+                $('#videosFilter').removeClass("list_group__item--active");
+                break;
+            case "Winners":
+                $('#allFilter').removeClass("list_group__item--active");
+                $('#newsFilter').removeClass("list_group__item--active");
+                $('#resultsFilter').removeClass("list_group__item--active");
+                $('#winnersFilter').addClass("list_group__item--active");
+                $('#successFilter').removeClass("list_group__item--active");
+                $('#videosFilter').removeClass("list_group__item--active");
+                break;
+            case "Successstories":
+                $('#allFilter').removeClass("list_group__item--active");
+                $('#newsFilter').removeClass("list_group__item--active");
+                $('#resultsFilter').removeClass("list_group__item--active");
+                $('#winnersFilter').removeClass("list_group__item--active");
+                $('#successFilter').addClass("list_group__item--active");
+                $('#videosFilter').removeClass("list_group__item--active");
+                break;
+            case "Videos":
+                $('#allFilter').removeClass("list_group__item--active");
+                $('#newsFilter').removeClass("list_group__item--active");
+                $('#resultsFilter').removeClass("list_group__item--active");
+                $('#winnersFilter').removeClass("list_group__item--active");
+                $('#successFilter').removeClass("list_group__item--active");
+                $('#videosFilter').addClass("list_group__item--active");
+                break;
+            default:
+                $('#allFilter').addClass("list_group__item--active");
+                $('#newsFilter').removeClass("list_group__item--active");
+                $('#resultsFilter').removeClass("list_group__item--active");
+                $('#winnersFilter').removeClass("list_group__item--active");
+                $('#successFilter').removeClass("list_group__item--active");
+                $('#videosFilter').removeClass("list_group__item--active");
+        }
+
+        $('#blogListResults').load('/Blog/GetBlogList?blogCategoryFilter=' + $(this).text().replace(/\s/g, ''));
+    });
 
     $('#voteForButton')
         .click(function () {
@@ -98,11 +167,18 @@
         });
 
     $('.replyToCommentButton')
-       .click(function () {
-           var id = '#' + this.id;
-           $(id).load('/ProjectDetails/GetCommentReplyForm?commentId=' + this.id + '&projectId=' + $('#projectId').val());
-           $('.' + this.id).hide();
-       });
+        .click(function () {
+            var id = '#' + this.id;
+            $(id).load('/ProjectDetails/GetCommentReplyForm?commentId=' + this.id + '&projectId=' + $('#projectId').val());
+            $('.' + this.id).hide();
+        });
+
+    $('.replyToBlogCommentButton')
+        .click(function () {
+            var id = '#' + this.id;
+            $(id).load('/Blog/GetCommentReplyForm?commentId=' + this.id + '&blogId=' + $('#blogId').val());
+            $('.' + this.id).hide();
+        });
 
     $('#file').change(function () {
         $("#fileInputHelperText").empty();
@@ -124,12 +200,12 @@
 
     $('#msg')
         .bind('blur',
-            function () {
-                if (!$(this).val()) {
-                    $(this).parents('.form--message').removeClass('focused');
-                    $(this).parents('.message_card__inner').removeAttr('style');
-                }
-            })
+        function () {
+            if (!$(this).val()) {
+                $(this).parents('.form--message').removeClass('focused');
+                $(this).parents('.message_card__inner').removeAttr('style');
+            }
+        })
         .bind('focus', function () { $(this).parents('.form--message').addClass('focused'); })
         .keyup(function () {
             if ($(this).val()) {
@@ -140,10 +216,10 @@
         });
 
     $('#msg')
-      .each(function () { autosize(this); })
-      .on('autosize:resized', function () {
-          $('.message_card__inner').css({ height: 'auto' });
-      });
+        .each(function () { autosize(this); })
+        .on('autosize:resized', function () {
+            $('.message_card__inner').css({ height: 'auto' });
+        });
 
     var clipboard = new Clipboard('._copy_link');
 
@@ -173,9 +249,9 @@
     });
 
     $('#navbar-collapse')
-      .on('click', function (e) {
-          $('body').toggleClass('menu-collapsed');
-      });
+        .on('click', function (e) {
+            $('body').toggleClass('menu-collapsed');
+        });
 
     //caches a jQuery object containing the header element
     var header = $('.header:not(.header--static)');
