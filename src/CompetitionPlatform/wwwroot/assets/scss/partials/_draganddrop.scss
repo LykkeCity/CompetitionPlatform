@@ -1,0 +1,29 @@
+[draggable] {
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -khtml-user-drag: element;
+  -webkit-user-drag: element;
+}
+
+
+.ui-sortable-helper {
+  .stage_item__inner {
+    box-shadow: 0 8px 50px 0 rgba(63, 77, 96, 0.2), 0 5px 5px 0 rgba(63, 77, 96, 0.05);
+    border-radius: 4px;
+    border-color: transparent !important;
+
+    @include rem(padding-left, 15px);
+    @include rem(margin-left, -15px);
+  }
+
+  &:after,
+  &:before {
+    display: none;
+  }
+}
+
+.ui-sortable-placeholder {
+  visibility: visible !important;
+}

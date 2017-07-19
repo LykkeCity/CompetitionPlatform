@@ -1,0 +1,492 @@
+.stream_nav {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 570px;
+
+  &__text {
+    line-height: 1.85;
+    letter-spacing: 2.9px;
+    color: rgba($secondary, .8);
+    text-transform: uppercase;
+    white-space: nowrap;
+
+    @include rem(font-size, 13px);
+
+    span {
+      opacity: .6;
+    }
+  }
+
+  &__index {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-flow: row wrap;
+    flex-flow: row wrap;
+    text-align: center;
+    align-content: center;
+    justify-content: center;
+
+    @include rem(margin-top, -5px);
+  }
+
+  &__dash {
+    position: relative;
+    flex-grow: 1;
+    max-width: 80px;
+    display: inline-block;
+    vertical-align: top;
+
+    @include rem(padding, 19px 0);
+    @include rem(margin, 0 5px);
+
+    &:after {
+      content: '';
+      display: block;
+      vertical-align: top;
+      height: 2px;
+      width: 100%;
+      border-radius: 2px;
+      background-color: #ebebeb;
+
+      @include transition(background .2s ease);
+    }
+
+    &--active:after {
+      background-color: $secondary !important;
+    }
+
+    &:hover:after {
+      background-color: rgba($secondary, .4);
+    }
+  }
+
+  @media all and (max-width: $screen-landscape) {
+  }
+
+  @media all and (max-width: $screen-mobile) {
+    &__index {
+      pointer-events: none;
+      margin-top: 0;
+    }
+  }
+}
+
+.stream_header {
+  position: relative;
+
+  @include rem(margin-bottom, 40px);
+
+  .next_stage,
+  .prev_stage {
+    position: absolute;
+    right: 0;
+    left: auto;
+    top: 0;
+    width: 30%;
+    line-height: 1.5;
+    text-align: right;
+    color: rgba($secondary, .6);
+
+    @include rem(font-size, 16px);
+    @include rem(padding, 15px);
+    @include rem(margin, -15px 0);
+    @include rem(padding-right, 50px);
+    @include rem(max-width, 270px);
+
+    &:hover {
+      color: rgba($secondary, .8);
+    }
+
+    &:before {
+      font-family: 'icon';
+      content: "\e929";
+      position: absolute;
+      top: 50%;
+
+      @include rem(right, 15px);
+      @include rem(font-size, 20px);
+      @include rem(margin-top, -17px);
+    }
+
+    span {
+      display: block;
+      overflow: hidden;
+
+      @include rem(max-height, 48px);
+    }
+  }
+
+  .prev_stage {
+    right: auto;
+    left: 0;
+    text-align: left;
+    padding-right: 0;
+
+    @include rem(padding-left, 50px);
+
+    &:before {
+      content: "\e92a";
+      right: auto;
+
+      @include rem(left, 15px);
+    }
+  }
+
+  @media all and (max-width: $screen-tablet) {
+    margin-top: -30px;
+    margin-bottom: 20px;
+
+
+    .prev_stage,
+    .next_stage {
+      width: 60px;
+      height: 60px;
+
+      @include rem(margin, -15px);
+      @include rem(padding, 15px);
+
+      &:before {
+        right: 0;
+        left: 0;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+      }
+    }
+  }
+
+  @media all and (max-width: $screen-landscape) {
+    margin-top: -30px;
+    margin-bottom: 20px;
+  }
+
+  @media all and (max-width: $screen-mobile-old) {
+    margin-top: 0;
+  }
+
+  @media all and (max-width: $screen-mobile-tiny) {
+    margin-top: -5px;
+
+    .prev_stage,
+    .next_stage {
+      margin: -18px -15px 0;
+    }
+  }
+}
+
+.stage_list {
+  counter-reset: list1;
+
+  @include rem(margin, 30px 0);
+}
+
+.stage_item {
+  position: relative;
+  width: 100%;
+
+  &:after {
+    content: '';
+    position: absolute;
+    z-index:0;
+    border-left: 1px solid $border-alt;
+
+    @include rem(left, 19px);
+    @include rem(top, 10px);
+    @include rem(bottom, -10px);
+  }
+
+  &:before {
+    font-size: 0;
+    position: absolute;
+    left: 0;
+    border-radius: 100px;
+    background-color: #cfd2d7;
+    font-weight: $fw-semi;
+    color: $white;
+    text-align: center;
+    display: block;
+    counter-increment: list1;
+    content: counter(list1) '';
+    z-index:2;
+
+    @include rem(padding, 12px 5px);
+    @include rem(font-size, 18px);
+    @include rem(width, 40px);
+    @include rem(height, 40px);
+    @include rem(top, 10px);
+  }
+
+  &:first-child {
+    .stage_item__inner {
+      border-top: 1px solid $border-alt;
+    }
+  }
+
+  &:last-child,
+  &:last-of-type {
+    &:after {
+      display: none !important;
+    }
+  }
+
+  a {
+    color: inherit;
+  }
+
+  &__content {
+    @include rem(padding-left, 70px);
+  }
+
+  &__inner {
+    display: table;
+    width: 100%;
+    border-bottom: 1px solid $border-alt;
+    background: $white;
+
+    @include rem(min-height, 60px);
+  }
+
+  &__icon {
+    cursor: move;
+
+    @include rem(width, 20px);
+    @include rem(padding, 0 5px);
+
+    .icon {
+      margin-right: 0;
+    }
+  }
+
+  &__icon,
+  &__title,
+  &__action {
+    display: table-cell;
+    vertical-align: middle;
+  }
+
+  &__action {
+    text-align: center;
+
+    @include rem(padding-right, 10px);
+    @include rem(width, 50px);
+
+    .btn--icon .icon {
+      @include rem(font-size, 16px);
+    }
+  }
+
+  &__title {
+    font-weight: $fw-semi;
+    line-height: 1.5;
+    color: $text;
+
+    @include rem(font-size, 18px);
+    @include rem(padding, 5px 15px);
+
+    .accent {
+      font-weight: $fw-semi;
+      line-height: normal;
+      color: $primary;
+      display: block;
+
+      @include rem(font-size, 16px);
+    }
+
+    .hint {
+      line-height: 1.5;
+      color: rgba($secondary, .6);
+      margin-bottom: 0;
+      font-weight: normal;
+
+      @include rem(font-size, 16px);
+    }
+  }
+
+  /* =============== EXTENDED=============== */
+  .stage_list--extended & {
+    @include rem(padding-bottom, 35px);
+
+    .stream_nav__text {
+      line-height: 1.85;
+      letter-spacing: 2px;
+
+      @include rem(margin-bottom, 3px);
+      @include rem(font-size, 13px);
+    }
+
+    .prize__value {
+      line-height: 1.67;
+      font-weight: normal;
+      text-align: right;
+      position: relative;
+
+      @include rem(top, -2px);
+      @include rem(font-size, 24px);
+    }
+
+    .label {
+      margin-left: 0;
+      margin-right: 0;
+
+      @include rem(margin-bottom, 15px);
+    }
+
+    .stage_item {
+      &__inner {
+        border: 0;
+      }
+
+      &__content {
+        @include rem(padding-top, 20px);
+      }
+
+      &__title {
+        display: block;
+        padding: 0;
+        line-height: 1.59;
+
+        @include rem(font-size, 22px);
+        @include rem(margin-bottom, 18px);
+      }
+    }
+  }
+  /* ======================================= */
+
+  &--simple {
+    max-width: 300px;
+
+    &:before {
+      display: none;
+    }
+
+    .prize__value {
+      line-height: 1.67;
+      font-weight: $fw-light;
+      text-align: left;
+      color: $text;
+
+      @include rem(margin-bottom, 5px);
+      @include rem(font-size, 24px);
+    }
+
+    .stage_item {
+      &__inner {
+        border: 0 !important;
+      }
+
+      &__content {
+        padding: 0;
+      }
+
+      &__title {
+        display: block;
+        padding: 0;
+        line-height: 1.59;
+
+        @include rem(font-size, 22px);
+        @include rem(margin-bottom, 5px);
+      }
+    }
+  }
+
+  &--checked {
+    &:before {
+      font-family: icon;
+      content: "\e90b";
+
+      @include rem(font-size, 22px);
+      @include rem(line-height, 16px);
+    }
+  }
+
+  &--active {
+    &:before {
+      background-color: $text;
+    }
+
+    .stream_nav__text {
+      font-weight: $fw-semi !important;
+      color: $text !important;
+    }
+  }
+
+  @media all and (max-width: $screen-landscape) {
+    &__content {
+      @include rem(padding-left, 65px);
+    }
+
+    &__title {
+      .accent {
+        margin-top: 2px;
+      }
+    }
+
+    .stage_list--extended & {
+      .stage_item__title {
+        margin-bottom: 5px;
+      }
+    }
+
+    &--simple {
+      max-width: none;
+    }
+  }
+
+  @media all and (max-width: $screen-mobile-tiny) {
+    &__header {
+      .row > div {
+        width: 100% !important;
+        float: none !important;
+      }
+    }
+    
+    .stage_list--extended & {
+      .prize__value {
+        text-align: left;
+        color: $text;
+        margin-bottom: 10px;
+        font-weight: $fw-light;
+      }
+    }
+  }
+}
+
+.btn_add_stage {
+  position: relative;
+
+  @include rem(margin-left, 70px);
+}
+
+.btn_rename_stream {
+  @include rem(padding, 13px 10px);
+  @include rem(margin-left, -10px);
+}
+
+.stream_block {
+  .stream_nav__text {
+    color: rgba($secondary, .6);
+
+    span {
+      opacity: 1;
+    }
+  }
+
+  &__header {
+    @include rem(margin-bottom, 25px);
+
+    h2, h3, h4,
+    .h2, .h3, .h4 {
+      @include rem(margin-bottom, 6px);
+    }
+  }
+
+  &__body {
+    .stage_list {
+      margin-top: 0;
+    }
+  }
+}
