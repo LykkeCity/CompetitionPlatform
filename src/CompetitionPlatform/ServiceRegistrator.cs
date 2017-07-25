@@ -69,6 +69,9 @@ namespace CompetitionPlatform
             services.AddSingleton<INoSQLTableStorage<BlogCommentEntity>>(
                 new AzureTableStorage<BlogCommentEntity>(connectionString, "BlogComments", log));
 
+            services.AddSingleton<INoSQLTableStorage<BlogPictureInfoEntity>>(
+                new AzureTableStorage<BlogPictureInfoEntity>(connectionString, "BlogPicturesInfo", log));
+
             services.AddTransient<IProjectRepository, ProjectRepository>();
             services.AddTransient<IProjectFileRepository, ProjectFileRepository>();
             services.AddTransient<IUsersRepository, UsersRepository>();
@@ -88,6 +91,8 @@ namespace CompetitionPlatform
             services.AddTransient<IBlogRepository, BlogRepository>();
             services.AddTransient<IBlogCategoriesRepository, BlogCategoriesRepository>();
             services.AddTransient<IBlogCommentsRepository, BlogCommentsRepository>();
+            services.AddTransient<IBlogPictureRepository, BlogPictureRepository>();
+            services.AddTransient<IBlogPictureInfoRepository, BlogPictureInfoRepository>();
         }
 
         public static void RegisterLyykeServices(this IServiceCollection services)
