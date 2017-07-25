@@ -98,6 +98,13 @@
                                 </div>
                                 <!-- AddToAny END -->
                             </div>
+                            
+                            @if (!string.IsNullOrEmpty(Model.ImageDataType) && !string.IsNullOrEmpty(Model.ImageBase64))
+                            {
+                                <div class="news_article__media">
+                                    <img src="data:@Model.ImageDataType;base64,@Model.ImageBase64" alt="news_image_alt">
+                                </div>
+                            }
 
                             @Html.Raw(Model.Text)
 

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ using CompetitionPlatform.Helpers;
 using CompetitionPlatform.Models;
 using CompetitionPlatform.Models.BlogViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CompetitionPlatform.Controllers
@@ -26,11 +28,14 @@ namespace CompetitionPlatform.Controllers
         private readonly IProjectWinnersRepository _winnersRepository;
         private readonly IUserRolesRepository _userRolesRepository;
         private readonly IBlogCommentsRepository _blogCommentsRepository;
+        private readonly IBlogPictureRepository _blogPictureRepository;
+        private readonly IBlogPictureInfoRepository _blogPictureInfoRepository;
 
         public BlogController(IBlogRepository blogRepository, IBlogCategoriesRepository blogCategoriesRepository,
             IProjectRepository projectRepository, IProjectParticipantsRepository participantsRepository,
             IProjectResultRepository resultRepository, IProjectWinnersRepository winnersRepository,
-            IUserRolesRepository userRolesRepository, IBlogCommentsRepository blogCommentsRepository)
+            IUserRolesRepository userRolesRepository, IBlogCommentsRepository blogCommentsRepository,
+            IBlogPictureRepository blogPictureRepository, IBlogPictureInfoRepository blogPictureInfoRepository)
         {
             _blogRepository = blogRepository;
             _blogCategoriesRepository = blogCategoriesRepository;
@@ -40,6 +45,8 @@ namespace CompetitionPlatform.Controllers
             _winnersRepository = winnersRepository;
             _userRolesRepository = userRolesRepository;
             _blogCommentsRepository = blogCommentsRepository;
+            _blogPictureRepository = blogPictureRepository;
+            _blogPictureInfoRepository = blogPictureInfoRepository;
         }
 
         public async Task<IActionResult> BlogList()
@@ -80,7 +87,6 @@ namespace CompetitionPlatform.Controllers
             }
 
             ViewBag.BlogCategories = _blogCategoriesRepository.GetCategories();
-            var blog = await _blogRepository.GetAsync(id);
             var viewModel = await GetBlogViewModel(id);
 
             return View("EditBlog", viewModel);
@@ -121,6 +127,7 @@ namespace CompetitionPlatform.Controllers
                 }
 
                 await _blogRepository.SaveAsync(blog);
+                await SaveBlogPicture(blog.File, blog.Id);
                 return RedirectToAction("BlogList", "Blog");
             }
 
@@ -157,6 +164,7 @@ namespace CompetitionPlatform.Controllers
                 blog.ProjectName = project.Name;
             }
 
+            await SaveBlogPicture(blog.File, blog.Id);
             await _blogRepository.UpdateAsync(blog);
             return RedirectToAction("BlogList", "Blog");
         }
@@ -247,6 +255,21 @@ namespace CompetitionPlatform.Controllers
 
             model.CommentsPartial = commentsPartial;
 
+            var blogImageInfo = await _blogPictureInfoRepository.GetAsync(blog.Id);
+            if (blogImageInfo != null)
+            {
+                var blogImage = await _blogPictureRepository.GetBlogPicture(blog.Id);
+
+                byte[] bytesArray;
+                using (var ms = new MemoryStream())
+                {
+                    blogImage.CopyTo(ms);
+                    bytesArray = ms.ToArray();
+                }
+                model.ImageDataType = blogImageInfo.ContentType;
+                model.ImageBase64 = Convert.ToBase64String(bytesArray);
+            }
+
             if (string.IsNullOrEmpty(blog.ProjectId)) return model;
             var project = await _projectRepository.GetAsync(blog.ProjectId);
 
@@ -266,7 +289,7 @@ namespace CompetitionPlatform.Controllers
         }
 
         private async Task<BlogListIndexViewModel> GetBlogListViewModel()
-        {            
+        {
             var blogEntries = await _blogRepository.GetBlogsAsync();
 
             var compactModels = await GetCompactBlogsList(blogEntries);
@@ -300,9 +323,22 @@ namespace CompetitionPlatform.Controllers
                     ProjectName = blog.ProjectName
                 };
 
+                var blogImageInfo = await _blogPictureInfoRepository.GetAsync(blog.Id);
+                if (blogImageInfo != null)
+                {
+                    var blogImage = await _blogPictureRepository.GetBlogPicture(blog.Id);
+
+                    byte[] bytesArray;
+                    using (var ms = new MemoryStream())
+                    {
+                        blogImage.CopyTo(ms);
+                        bytesArray = ms.ToArray();
+                    }
+                    compactModel.ImageDataType = blogImageInfo.ContentType;
+                    compactModel.ImageBase64 = Convert.ToBase64String(bytesArray);
+                }
                 compactModels.Add(compactModel);
             }
-
             return compactModels;
         }
 
@@ -418,9 +454,27 @@ namespace CompetitionPlatform.Controllers
 
             var userRole = (user.Email == null) ? null : await _userRolesRepository.GetAsync(user.Email.ToLower());
 
-            var isAdmin = (userRole != null) && userRole.Role == "ADMIN";
+            var isAdmin = (userRole != null) && userRole.Role == StreamsRoles.Admin;
 
             return isAdmin;
+        }
+
+        private async Task SaveBlogPicture(IFormFile file, string blogId)
+        {
+            if (file != null)
+            {
+                var imageUrl = await _blogPictureRepository.InsertBlogPicture(file.OpenReadStream(), blogId);
+
+                var fileInfo = new BlogPictureInfoEntity
+                {
+                    RowKey = blogId,
+                    ContentType = file.ContentType,
+                    FileName = file.FileName,
+                    ImageUrl = imageUrl
+                };
+
+                await _blogPictureInfoRepository.SaveAsync(fileInfo);
+            }
         }
     }
 }

@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using CompetitionPlatform.Data.AzureRepositories.Blog;
+using Microsoft.AspNetCore.Http;
 
 namespace CompetitionPlatform.Models.BlogViewModels
 {
@@ -50,6 +51,10 @@ namespace CompetitionPlatform.Models.BlogViewModels
         public DateTime Published { get; set; }
         public BlogCommentPartialViewModel CommentsPartial { get; set; }
         public bool IsAdmin { get; set; }
+        public IFormFile File { set; get; }
+        public BlogPictureInfoViewModel FileInfo { get; set; }
+        public string ImageDataType { get; set; }
+        public string ImageBase64 { get; set; }
     }
 
     public class BlogCompactViewModel
@@ -62,6 +67,8 @@ namespace CompetitionPlatform.Models.BlogViewModels
         public int CommentsCount { get; set; }
         public string ProjectId { get; set; }
         public string ProjectName { get; set; }
+        public string ImageDataType { get; set; }
+        public string ImageBase64 { get; set; }
     }
 
     public class BlogListIndexViewModel
@@ -89,5 +96,11 @@ namespace CompetitionPlatform.Models.BlogViewModels
         public Dictionary<string, bool> CommenterIsModerator { get; set; }
         public string UserAgent { get; set; }
         public bool Deleted { get; set; }
+    }
+
+    public class BlogPictureInfoViewModel
+    {
+        public string FileName { get; set; }
+        public string ContentType { get; set; }
     }
 }
