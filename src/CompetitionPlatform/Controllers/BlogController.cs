@@ -128,7 +128,7 @@ namespace CompetitionPlatform.Controllers
 
                 await _blogRepository.SaveAsync(blog);
                 await SaveBlogPicture(blog.File, blog.Id);
-                return RedirectToAction("BlogList", "Blog");
+                return RedirectToAction("BlogDetails", "Blog", new { id = blog.Id });
             }
 
             ViewBag.BlogCategories = _blogCategoriesRepository.GetCategories();
@@ -166,7 +166,7 @@ namespace CompetitionPlatform.Controllers
 
             await SaveBlogPicture(blog.File, blog.Id);
             await _blogRepository.UpdateAsync(blog);
-            return RedirectToAction("BlogList", "Blog");
+            return RedirectToAction("BlogDetails", "Blog", new { id = blog.Id });
         }
 
         public async Task<IActionResult> BlogDetails(string id)
