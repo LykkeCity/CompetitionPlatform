@@ -37,7 +37,7 @@
 
                                         <div class="stage_item__header">
                                             <div class="stage_item__title">
-                                                <a href="">@Model.ProjectName</a>
+                                                <a asp-area="" asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@Model.ProjectId">@Model.ProjectName</a>
                                             </div>
                                             <div class="prize__value">$@Model.ProjectBudget</div>
                                         </div>
@@ -46,11 +46,11 @@
                                             <table class="table table--values">
                                                 <tr>
                                                     <td class="_name">Category:</td>
-                                                    <td class="_value"><a href="">@Model.ProjectCategory</a></td>
+                                                    <td class="_value"><div>@Model.ProjectCategory</div></td>
                                                 </tr>
                                                 <tr>
                                                     <td class="_name">Creator:</td>
-                                                    <td class="_value"><a href="">@Model.ProjectAuthor</a></td>
+                                                    <td class="_value"><div>@Model.ProjectAuthor</div></td>
                                                 </tr>
                                                 @*<tr>
                                                         <td class="_name">Period:</td>
