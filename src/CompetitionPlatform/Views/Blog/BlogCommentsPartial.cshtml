@@ -15,7 +15,7 @@
                     <div class="user_badge__message">
                         <div class="message_card__inner">
                             <div class="user_badge__title">
-                                <a href="">@ClaimsHelper.GetUser(User.Identity).GetFullName()</a>
+                                <div>@ClaimsHelper.GetUser(User.Identity).GetFullName()</div>
                             </div>
                             @Html.Hidden("blogId", Model.BlogId)
                             <input asp-for="@Model.BlogId" type="hidden" />
@@ -63,7 +63,7 @@ else
                 <div class="user_badge__message">
                     <div class="message_card__inner">
                         <div class="user_badge__title">
-                            <a href="">@comment.FullName</a>
+                            <span>@comment.FullName</span>
                             @if (comment.UserId == Model.BlogAuthorId)
                             {
                                 <span class="label label--primary">creator</span>

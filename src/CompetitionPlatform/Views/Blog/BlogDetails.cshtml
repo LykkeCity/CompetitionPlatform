@@ -22,7 +22,7 @@
                 </div>
                 @if (Model.IsAdmin)
                 {
-                    <a asp-area="" asp-controller="Blog" asp-action="Edit" asp-route-id="@Model.Id"><button class="btn btn-sm btn_edit pull-right">Edit</button></a> 
+                    <a asp-area="" asp-controller="Blog" asp-action="Edit" asp-route-id="@Model.Id"><button class="btn btn-sm btn_edit pull-right">Edit</button></a>
                 }
             </div>
             <div class="news_article__body">
@@ -37,7 +37,7 @@
 
                                         <div class="stage_item__header">
                                             <div class="stage_item__title">
-                                                <a href="">@Model.ProjectName</a>
+                                                <a asp-area="" asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@Model.ProjectId">@Model.ProjectName</a>
                                             </div>
                                             <div class="prize__value">$@Model.ProjectBudget</div>
                                         </div>
@@ -46,11 +46,11 @@
                                             <table class="table table--values">
                                                 <tr>
                                                     <td class="_name">Category:</td>
-                                                    <td class="_value"><a href="">@Model.ProjectCategory</a></td>
+                                                    <td class="_value"><div>@Model.ProjectCategory</div></td>
                                                 </tr>
                                                 <tr>
                                                     <td class="_name">Creator:</td>
-                                                    <td class="_value"><a href="">@Model.ProjectAuthor</a></td>
+                                                    <td class="_value"><div>@Model.ProjectAuthor</div></td>
                                                 </tr>
                                                 @*<tr>
                                                         <td class="_name">Period:</td>
@@ -85,7 +85,7 @@
                                 <span class="middot">&middot;</span>
                                 <span class="news_info__item">@Model.Published.ToString("MMMM dd, yyyy")</span>
                                 <span class="middot">&middot;</span>
-                                <div class="news_info__item">@commentsCountText</div>
+                                <a href="#comments" class="news_info__item">@commentsCountText</a>
                             </div>
 
                             <div class="social_share_widget">
@@ -98,7 +98,7 @@
                                 </div>
                                 <!-- AddToAny END -->
                             </div>
-                            
+
                             @if (!string.IsNullOrEmpty(Model.ImageDataType) && !string.IsNullOrEmpty(Model.ImageBase64))
                             {
                                 <div class="news_article__media">
@@ -207,12 +207,15 @@
             </div>
         </div>
 
-        <div class="news_comments">
+        <div name="" class="news_comments">
+            <a name="comments"></a>
             <div class="row">
                 <div class="col-xs-12 col-md-8 col-md-offset-4">
 
                     <div class="block_header">
-                        <h3>Comments <span>@commentsCount</span></h3>
+                        <h3>
+                            Comments <span>@commentsCount</span>
+                        </h3>
                     </div>
 
                     @await Html.PartialAsync("BlogCommentsPartial", Model.CommentsPartial)

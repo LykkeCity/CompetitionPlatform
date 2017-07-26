@@ -51,6 +51,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Blog
             ProjectId = src.ProjectId;
             ProjectName = src.ProjectName;
             FirstResult = src.FirstResult;
+            FirstResultAuthor = src.FirstResultAuthor;
             FirstResultComment = src.FirstResultComment;
             SecondResult = src.SecondResult;
             SecondResultAuthor = src.SecondResultAuthor;

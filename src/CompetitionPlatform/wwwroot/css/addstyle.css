@@ -28,3 +28,7 @@
 .content {
     padding-top: 0 !important;
 }
+
+.project-list-header {
+    padding-left: 0 !important;
+}

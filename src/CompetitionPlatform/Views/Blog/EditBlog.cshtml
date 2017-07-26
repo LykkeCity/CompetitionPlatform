@@ -8,7 +8,7 @@
     <div class="container">
         <div class="page__actions">
             <div class="back_link">
-                <a asp-area="" asp-controller="Home" asp-action="Index">
+                <a asp-area="" asp-controller="Blog" asp-action="BlogList">
                     <i class="icon icon--back"></i> Back to Blog List
                 </a>
             </div>
@@ -36,7 +36,7 @@
 
                 <div class="form-group">
                     <label asp-for="Id" class="control-label"></label>
-                    <input asp-for="Id" class="form-control disabled" />
+                    <input asp-for="Id" class="form-control disabled" readonly/>
                     <span asp-validation-for="Id" class="text-danger" />
                     @Html.ValidationMessageFor(x => x.Id)
                 </div>
