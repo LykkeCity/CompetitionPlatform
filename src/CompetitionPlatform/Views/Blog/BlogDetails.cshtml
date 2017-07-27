@@ -9,8 +9,13 @@
             var commentsCount = Model.CommentsPartial == null ? 0 : Model.CommentsPartial.Comments.Count();
             var commentsCountText = commentsCount == 1 ? "1 comment" : commentsCount + " comments";
         }
-
-        <div class="news_article">
+        
+    <div class="back_link remove-bottom-margin">
+        <a asp-area="" asp-controller="Blog" asp-action="BlogList">
+            <i class="icon icon--back"></i> Back to Blog List
+        </a>
+    </div>
+    <div class="news_article">
             <div class="news_article__header">
                 <div class="t-simulate">
                     <div class="t-cell">

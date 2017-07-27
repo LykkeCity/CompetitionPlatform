@@ -32,3 +32,7 @@
 .project-list-header {
     padding-left: 0 !important;
 }
+
+.remove-bottom-margin {
+    margin-bottom: 0 !important;
+}
