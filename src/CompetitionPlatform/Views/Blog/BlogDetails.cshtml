@@ -8,14 +8,18 @@
         @{
             var commentsCount = Model.CommentsPartial == null ? 0 : Model.CommentsPartial.Comments.Count();
             var commentsCountText = commentsCount == 1 ? "1 comment" : commentsCount + " comments";
+            var hasProject = !string.IsNullOrEmpty(Model.ProjectId);
+
+            var newsArticleStyle = hasProject ? "col-xs-12 col-sm-8 col-md-7" : "col-xs-12 col-sm-8 col-md-8 col-sm-offset-2 col-md-offset-2";
+            var newsCommentsStyle = hasProject ? "col-xs-12 col-md-8 col-md-offset-4" : "col-xs-12 col-md-8 col-md-offset-2";
         }
-        
-    <div class="back_link remove-bottom-margin">
-        <a asp-area="" asp-controller="Blog" asp-action="BlogList">
-            <i class="icon icon--back"></i> Back to Blog List
-        </a>
-    </div>
-    <div class="news_article">
+
+        <div class="back_link remove-bottom-margin">
+            <a asp-area="" asp-controller="Blog" asp-action="BlogList">
+                <i class="icon icon--back"></i> Back to Blog List
+            </a>
+        </div>
+        <div class="news_article">
             <div class="news_article__header">
                 <div class="t-simulate">
                     <div class="t-cell">
@@ -32,7 +36,7 @@
             </div>
             <div class="news_article__body">
                 <div class="row">
-                    @if (!string.IsNullOrEmpty(Model.ProjectId))
+                    @if (hasProject)
                     {
                         <div class="col-xs-12 col-sm-4">
                             <div class="stage_item stage_item--simple">
@@ -81,7 +85,8 @@
                             </div>
                         </div>
                     }
-                    <div class="col-xs-12 col-sm-8 col-md-7">
+
+                    <div class="@newsArticleStyle">
                         <div class="news_article__text text">
                             <p class="lead">@Model.Overview</p>
 
@@ -215,7 +220,7 @@
         <div name="" class="news_comments">
             <a name="comments"></a>
             <div class="row">
-                <div class="col-xs-12 col-md-8 col-md-offset-4">
+                <div class="@newsCommentsStyle">
 
                     <div class="block_header">
                         <h3>
