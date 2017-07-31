@@ -55,6 +55,7 @@ namespace CompetitionPlatform.Controllers
             ViewBag.MyProjects = false;
             ViewBag.AllProjects = false;
             ViewBag.Faq = false;
+            ViewBag.AllCategoryActive = true;
 
             var viewModel = await GetBlogListViewModel();
             return View(viewModel);
