@@ -179,33 +179,34 @@
         </header>
     </div>
 
-    <nav class="header_nav">
-        <div class="header_nav__inner">
-            <div class="container">
-                <a type="button" class="btn btn_create_project pull-right" href="/Project/Create"><i class="icon icon--add"></i></a>
+    <div class="header_nav_container">
+        <nav class="header_nav">
+            <div class="header_nav__inner">
+                <div class="container">
+                    <a type="button" class="btn btn_create_project pull-right" href="/Project/Create"><i class="icon icon--add"></i></a>
 
-                @{
-                    var allProjects = ViewBag.AllProjects;
-                    var myProjects = ViewBag.MyProjects;
-                    var faq = ViewBag.Faq;
-                    var blog = ViewBag.Blog;
+                    @{
+                        var allProjects = ViewBag.AllProjects;
+                        var myProjects = ViewBag.MyProjects;
+                        var faq = ViewBag.Faq;
+                        var blog = ViewBag.Blog;
 
-                    var allProjectsActive = allProjects != null && allProjects ? "nav_list__item--active" : "";
-                    var myProjectsActive = myProjects != null && myProjects ? "nav_list__item--active" : "";
-                    var faqActive = faq != null && faq ? "nav_list__item--active" : "";
-                    var blogActive = blog != null && blog ? "nav_list__item--active" : "";
-                }
+                        var allProjectsActive = allProjects != null && allProjects ? "nav_list__item--active" : "";
+                        var myProjectsActive = myProjects != null && myProjects ? "nav_list__item--active" : "";
+                        var faqActive = faq != null && faq ? "nav_list__item--active" : "";
+                        var blogActive = blog != null && blog ? "nav_list__item--active" : "";
+                    }
 
-                <ul class="header_nav__list nav_list">
-                    <li class="nav_list__item @allProjectsActive"><a asp-area="" asp-controller="Home" asp-action="Allprojects">All projects</a></li>
-                    <li class="nav_list__item @myProjectsActive"><a asp-area="" asp-controller="Home" asp-action="Myprojects">My projects</a></li>
-                    <li class="nav_list__item @blogActive"><a asp-area="" asp-controller="Blog" asp-action="BlogList">Blog</a></li>
-                    <li class="nav_list__item @faqActive"><a href="/Home/Faq">FAQ</a></li>
-                </ul>
+                    <ul class="header_nav__list nav_list">
+                        <li class="nav_list__item @allProjectsActive"><a asp-area="" asp-controller="Home" asp-action="Allprojects">All projects</a></li>
+                        <li class="nav_list__item @myProjectsActive"><a asp-area="" asp-controller="Home" asp-action="Myprojects">My projects</a></li>
+                        <li class="nav_list__item @blogActive"><a asp-area="" asp-controller="Blog" asp-action="BlogList">Blog</a></li>
+                        <li class="nav_list__item @faqActive"><a href="/Home/Faq">FAQ</a></li>
+                    </ul>
+                </div>
             </div>
-        </div>
-    </nav>
-
+        </nav>
+    </div>
     <article class="content page page--competition_platform">
         @RenderBody()
     </article>
