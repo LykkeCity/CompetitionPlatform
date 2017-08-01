@@ -15,15 +15,17 @@
     <div class="container container--extend">
         <div class="page__header project-list-header">
             <h2 class="pull-left">My projects</h2>
-            <div class="tabs_stack pull-right">
-                <div id="myProjectsCreatedFilter" class="tab_item @createdTabActive">
-                    <a class="tab_item__link" href="/Home/GetCreatedProjects">Created</a>
-                </div>
-                <div id="myProjectsFollowingFilter" class="tab_item @followingTabActive">
-                    <a class="tab_item__link" href="/Home/GetFollowingProjects">followed</a>
-                </div>
-                <div id="myProjectsParticipatingFilter" class="tab_item @participatingTabActive">
-                    <a class="tab_item__link" href="/Home/GetParticipatingProjects">participating</a>
+            <div class="tabs_stack_container pull-right">
+                <div class="tabs_stack">
+                    <div id="myProjectsCreatedFilter" class="tab_item @createdTabActive">
+                        <a class="tab_item__link" href="/Home/GetCreatedProjects">Created</a>
+                    </div>
+                    <div id="myProjectsFollowingFilter" class="tab_item @followingTabActive">
+                        <a class="tab_item__link" href="/Home/GetFollowingProjects">followed</a>
+                    </div>
+                    <div id="myProjectsParticipatingFilter" class="tab_item @participatingTabActive">
+                        <a class="tab_item__link" href="/Home/GetParticipatingProjects">participating</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -65,7 +67,7 @@
                     </select>
                 </div>
             </div>
-            <div class="pull-right hidden-xs hidden-sm">
+            <div class="col-sm-1 text-right pull-right hidden-xs hidden-sm">
                 <a type="button" class="btn btn-circle new-project-button" href="/Project/Create">+</a>
             </div>
         </div>
