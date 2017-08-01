@@ -52,18 +52,23 @@ function initEventsOnClick() {
 
 function initEventsOnScroll() {
   $(window).scroll(function() {
-    if($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
-      $('body').find('#launcher, .btn_feedback').css({
+
+    var scrollPosition = $(window).height() + $(window).scrollTop(),
+      visibleArea = $(document).height() - $('.footer').outerHeight(),
+      limit = 20;
+
+    if(scrollPosition > visibleArea + limit) {
+      $('body').addClass('footer_in_view').find('#launcher, .btn_feedback').css({
         bottom: $('.footer').outerHeight()
-      })
+      });
     }
 
     else {
-      $('body').find('#launcher, .btn_feedback').css({
+      $('body').removeClass('footer_in_view').find('#launcher, .btn_feedback').css({
         bottom: 0
       })
     }
-  });
+  }).trigger('scroll');
 }
 
 function initClipboard() {
