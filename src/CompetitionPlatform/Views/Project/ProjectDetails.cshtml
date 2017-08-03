@@ -293,30 +293,46 @@
                     <li role="presentation" class="@infoTabActive"><a href="#info" aria-controls="info" role="tab" data-toggle="tab">Info</a></li>
                     <li role="presentation" class="@participantsTabActive">
                         <a href="#Participants" aria-controls="participants" role="tab" data-toggle="tab">
-                            Participants <sup>
-                                @participantsCount
-                            </sup>
+                            Participants
+                            @if (!string.IsNullOrEmpty(participantsCount))
+                            {
+                                <sup>
+                                    @participantsCount
+                                </sup>
+                            }
                         </a>
                     </li>
                     <li role="presentation" class="@commentsTabActive">
                         <a href="#Comments" aria-controls="comments" role="tab" data-toggle="tab">
-                            Comments <sup>
-                                @commentsCount
-                            </sup>
+                            Comments
+                            @if (!string.IsNullOrEmpty(commentsCount))
+                            {
+                                <sup>
+                                    @commentsCount
+                                </sup>
+                            }
                         </a>
                     </li>
                     <li role="presentation" class="@resultsTabActive">
                         <a href="#Results" aria-controls="results" role="tab" data-toggle="tab">
-                            Results <sup>
-                                @resultsCount
-                            </sup>
+                            Results
+                            @if (!string.IsNullOrEmpty(resultsCount))
+                            {
+                                <sup>
+                                    @resultsCount
+                                </sup>
+                            }
                         </a>
                     </li>
                     <li role="presentation" class="@winnersTabActive">
                         <a href="#Winners" aria-controls="results" role="tab" data-toggle="tab">
-                            Winners <sup>
-                                @winnersCount
-                            </sup>
+                            Winners
+                            @if (!string.IsNullOrEmpty(winnersCount))
+                            {
+                                <sup>
+                                    @winnersCount
+                                </sup>
+                            }
                         </a>
                     </li>
                 </ul>
