@@ -70,6 +70,7 @@
                 $('#winnersFilter').removeClass("list_group__item--active");
                 $('#successFilter').removeClass("list_group__item--active");
                 $('#videosFilter').removeClass("list_group__item--active");
+                $('#aboutFilter').removeClass("list_group__item--active");
                 break;
             case "News":
                 $('#allFilter').removeClass("list_group__item--active");
@@ -78,6 +79,7 @@
                 $('#winnersFilter').removeClass("list_group__item--active");
                 $('#successFilter').removeClass("list_group__item--active");
                 $('#videosFilter').removeClass("list_group__item--active");
+                $('#aboutFilter').removeClass("list_group__item--active");
                 break;
             case "Results":
                 $('#allFilter').removeClass("list_group__item--active");
@@ -86,6 +88,7 @@
                 $('#winnersFilter').removeClass("list_group__item--active");
                 $('#successFilter').removeClass("list_group__item--active");
                 $('#videosFilter').removeClass("list_group__item--active");
+                $('#aboutFilter').removeClass("list_group__item--active");
                 break;
             case "Winners":
                 $('#allFilter').removeClass("list_group__item--active");
@@ -94,6 +97,7 @@
                 $('#winnersFilter').addClass("list_group__item--active");
                 $('#successFilter').removeClass("list_group__item--active");
                 $('#videosFilter').removeClass("list_group__item--active");
+                $('#aboutFilter').removeClass("list_group__item--active");
                 break;
             case "Successstories":
                 $('#allFilter').removeClass("list_group__item--active");
@@ -102,6 +106,7 @@
                 $('#winnersFilter').removeClass("list_group__item--active");
                 $('#successFilter').addClass("list_group__item--active");
                 $('#videosFilter').removeClass("list_group__item--active");
+                $('#aboutFilter').removeClass("list_group__item--active");
                 break;
             case "Videos":
                 $('#allFilter').removeClass("list_group__item--active");
@@ -110,6 +115,16 @@
                 $('#winnersFilter').removeClass("list_group__item--active");
                 $('#successFilter').removeClass("list_group__item--active");
                 $('#videosFilter').addClass("list_group__item--active");
+                $('#aboutFilter').removeClass("list_group__item--active");
+                break;
+            case "About":
+                $('#allFilter').removeClass("list_group__item--active");
+                $('#newsFilter').removeClass("list_group__item--active");
+                $('#resultsFilter').removeClass("list_group__item--active");
+                $('#winnersFilter').removeClass("list_group__item--active");
+                $('#successFilter').removeClass("list_group__item--active");
+                $('#videosFilter').removeClass("list_group__item--active");
+                $('#aboutFilter').addClass("list_group__item--active");
                 break;
             default:
                 $('#allFilter').addClass("list_group__item--active");
@@ -118,6 +133,7 @@
                 $('#winnersFilter').removeClass("list_group__item--active");
                 $('#successFilter').removeClass("list_group__item--active");
                 $('#videosFilter').removeClass("list_group__item--active");
+                $('#aboutFilter').removeClass("list_group__item--active");
         }
 
         $('#blogListResults').load('/Blog/GetBlogList?blogCategoryFilter=' + $(this).text().replace(/\s/g, ''));
