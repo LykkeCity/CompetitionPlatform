@@ -1,6 +1,9 @@
 ﻿@model CompetitionPlatform.Models.BlogViewModels.BlogViewModel
 @using CompetitionPlatform.Helpers
 
+@{
+    ViewData["Title"] = Model.Name + " - LykkeStreams";
+}
 
 <section class="section section--padding">
     <div class="container">
@@ -14,11 +17,6 @@
             var newsCommentsStyle = hasProject ? "col-xs-12 col-md-8 col-md-offset-4" : "col-xs-12 col-md-8 col-md-offset-2";
         }
 
-        <div class="back_link remove-bottom-margin">
-            <a asp-area="" asp-controller="Blog" asp-action="BlogList">
-                <i class="icon icon--back"></i> Back to Blog List
-            </a>
-        </div>
         <div class="news_article">
             <div class="news_article__header">
                 <div class="t-simulate">
