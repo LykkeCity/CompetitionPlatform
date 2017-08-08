@@ -491,7 +491,7 @@ namespace CompetitionPlatform.Controllers
         [HttpGet("~/api/isalive")]
         public string Get()
         {
-            var response =  new IsAliveResponse
+            var response = new IsAliveResponse
             {
                 Version =
                     Microsoft.Extensions.PlatformAbstractions.PlatformServices.Default.Application.ApplicationVersion,
@@ -561,14 +561,17 @@ namespace CompetitionPlatform.Controllers
 
                 var amount = winners.Where(winner => winner.Budget != null).Sum(winner => (double)winner.Budget);
 
-                justFinishedProjects.Add(
-                    new JustFinishedProject
-                    {
-                        ProjectName = project.Name,
-                        ProjectId = project.Id,
-                        Amount = amount,
-                        NumberOfWinners = winners.Count()
-                    });
+                if (amount != 0)
+                {
+                    justFinishedProjects.Add(
+                        new JustFinishedProject
+                        {
+                            ProjectName = project.Name,
+                            ProjectId = project.Id,
+                            Amount = amount,
+                            NumberOfWinners = winners.Count()
+                        });
+                }
 
                 if (justFinishedProjects.Count == 4) break;
             }
