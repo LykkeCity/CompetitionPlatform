@@ -8,6 +8,7 @@ using CompetitionPlatform.Services;
 using AzureStorage.Tables;
 using AzureStorage.Queue;
 using CompetitionPlatform.Data.AzureRepositories.Blog;
+using CompetitionPlatform.Data.AzureRepositories.Expert;
 using CompetitionPlatform.Data.AzureRepositories.Result;
 using CompetitionPlatform.Data.AzureRepositories.Vote;
 using CompetitionPlatform.Data.BlogCategory;
@@ -72,6 +73,9 @@ namespace CompetitionPlatform
             services.AddSingleton<INoSQLTableStorage<BlogPictureInfoEntity>>(
                 new AzureTableStorage<BlogPictureInfoEntity>(connectionString, "BlogPicturesInfo", log));
 
+            services.AddSingleton<INoSQLTableStorage<ProjectExpertEntity>>(
+                new AzureTableStorage<ProjectExpertEntity>(connectionString, "ProjectExperts", log));
+
             services.AddTransient<IProjectRepository, ProjectRepository>();
             services.AddTransient<IProjectFileRepository, ProjectFileRepository>();
             services.AddTransient<IUsersRepository, UsersRepository>();
@@ -93,6 +97,7 @@ namespace CompetitionPlatform
             services.AddTransient<IBlogCommentsRepository, BlogCommentsRepository>();
             services.AddTransient<IBlogPictureRepository, BlogPictureRepository>();
             services.AddTransient<IBlogPictureInfoRepository, BlogPictureInfoRepository>();
+            services.AddTransient<IProjectExpertsRepository, ProjectExpertsRepository>();
         }
 
         public static void RegisterLyykeServices(this IServiceCollection services)
