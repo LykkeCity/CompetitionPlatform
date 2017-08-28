@@ -221,15 +221,18 @@
             <div class="col-xs-12 col-sm-4 content__right pull-right">
                 <div class="row">
                     <div class="col-xs-6 col-sm-12">
-                        <div class="user_badge">
-                            <div class="user_badge__img">
-                                <img src="~/images/avatar.svg" alt="">
+                        @if (Model.ProjectExperts == null)
+                        {
+                            <div class="user_badge">
+                                <div class="user_badge__img">
+                                    <img src="~/images/avatar.svg" alt="">
+                                </div>
+                                <div class="user_badge__info">
+                                    <div class="user_badge__title">@Model.AuthorFullName</div>
+                                    <div class="user_badge__desc">Creator</div>
+                                </div>
                             </div>
-                            <div class="user_badge__info">
-                                <div class="user_badge__title">@Model.AuthorFullName</div>
-                                <div class="user_badge__desc">Creator</div>
-                            </div>
-                        </div>
+                        }
 
                         @await Html.PartialAsync("ProjectDetailsStatusPartial", new ProjectDetailsStatusViewModel
                    {
@@ -389,6 +392,31 @@
                                         <a asp-area="" asp-controller="ProjectDetails" asp-action="DownloadProjectFile" asp-route-id="@Model.Id">Download</a>
                                     </div>
                                 </div>
+                            </div>
+                        }
+                        @if (Model.ProjectExperts != null)
+                        {
+                            <div class="extend_block">
+                                <h4>Experts</h4>
+
+                                <table class="table table--experts">
+                                    @foreach (var expert in Model.ProjectExperts)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <div class="user_badge user_badge--small">
+                                                    <div class="user_badge__img">
+                                                        <a href=""><img src="~/images/avatar.svg" alt=""></a>
+                                                    </div>
+                                                    <div class="user_badge__info">
+                                                        <span>@expert.FullName</span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td><span>@expert.Description</span></td>
+                                        </tr>
+                                    }
+                                </table>
                             </div>
                         }
                     </div>
