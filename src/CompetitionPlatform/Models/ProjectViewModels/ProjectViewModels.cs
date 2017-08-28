@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using CompetitionPlatform.Data.AzureRepositories.Expert;
 using CompetitionPlatform.Data.AzureRepositories.Project;
 using Microsoft.AspNetCore.Http;
 
@@ -93,6 +94,7 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public string UserAgent { get; set; }
         public bool SkipVoting { get; set; }
         public bool SkipRegistration { get; set; }
+        public IEnumerable<IProjectExpertData> ProjectExperts { get; set; }
     }
 
     public class ProjectCompactViewModel

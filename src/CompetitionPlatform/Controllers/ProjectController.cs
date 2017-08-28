@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AzureStorage.Queue;
 using Common.Log;
+using CompetitionPlatform.Data.AzureRepositories.Expert;
 using CompetitionPlatform.Data.AzureRepositories.Project;
 using CompetitionPlatform.Data.AzureRepositories.Result;
 using CompetitionPlatform.Data.AzureRepositories.Settings;
@@ -45,6 +46,7 @@ namespace CompetitionPlatform.Controllers
         private readonly IProjectResultVoteRepository _resultVoteRepository;
         private readonly BaseSettings _settings;
         private readonly ILog _log;
+        private readonly IProjectExpertsRepository _projectExpertsRepository;
 
         public ProjectController(IProjectRepository projectRepository, IProjectCommentsRepository commentsRepository,
             IProjectFileRepository fileRepository, IProjectFileInfoRepository fileInfoRepository,
@@ -53,7 +55,7 @@ namespace CompetitionPlatform.Controllers
             IProjectWinnersRepository winnersRepository, IUserRolesRepository userRolesRepository,
             IProjectWinnersService winnersService, IQueueExt emailsQueue,
             IProjectResultVoteRepository resultVoteRepository, BaseSettings settings,
-            ILog log)
+            ILog log, IProjectExpertsRepository projectExpertsRepository)
         {
             _projectRepository = projectRepository;
             _commentsRepository = commentsRepository;
@@ -70,6 +72,7 @@ namespace CompetitionPlatform.Controllers
             _resultVoteRepository = resultVoteRepository;
             _settings = settings;
             _log = log;
+            _projectExpertsRepository = projectExpertsRepository;
         }
 
         [Authorize]
@@ -551,6 +554,8 @@ namespace CompetitionPlatform.Controllers
                 SubmissionsDeadline = project.ImplementationDeadline
             };
 
+            var experts = await _projectExpertsRepository.GetProjectExpertsAsync(id);
+
             var projectViewModel = new ProjectViewModel
             {
                 Id = project.Id,
@@ -583,7 +588,8 @@ namespace CompetitionPlatform.Controllers
                 ProgrammingResourceName = project.ProgrammingResourceName,
                 ProgrammingResourceLink = project.ProgrammingResourceLink,
                 SkipVoting = project.SkipVoting,
-                SkipRegistration = project.SkipRegistration
+                SkipRegistration = project.SkipRegistration,
+                ProjectExperts = !experts.Any() ? null : experts
             };
 
             if (!string.IsNullOrEmpty(project.Tags))
