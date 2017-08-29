@@ -52,8 +52,7 @@ namespace CompetitionPlatform
                     //})
                     .UseKestrel()
                     .UseContentRoot(Directory.GetCurrentDirectory())
-                    //.UseUrls("https://*:443/")
-                    .UseUrls("http://*:5000/")
+                    .UseUrls("https://*:443/")
                     .UseIISIntegration()
                     .UseStartup<Startup>()
                     .Build();
