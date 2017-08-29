@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Net;
 using Microsoft.AspNetCore.Hosting;
 using AzureStorage.Blob;
 using System.Security.Cryptography.X509Certificates;
@@ -43,14 +44,15 @@ namespace CompetitionPlatform
                 X509Certificate2 xcert = new X509Certificate2(cert, sertPassword);
 
                 var host = new WebHostBuilder()
-                    //.UseKestrel(x =>
-                    //{
-                    //    //x.ThreadCount = 1;
-                    //    //x.UseHttps(xcert);
-                    //    x.AddServerHeader = false;
-
-                    //})
-                    .UseKestrel()
+                    .UseKestrel(x =>
+                    {
+                        x.AddServerHeader = false;
+                        x.Listen(IPAddress.Loopback, 443, listenOptions =>
+                        {
+                            listenOptions.UseHttps(xcert);
+                            listenOptions.UseConnectionLogging();
+                        });
+                    })
                     .UseContentRoot(Directory.GetCurrentDirectory())
                     .UseUrls("https://*:443/")
                     .UseIISIntegration()
