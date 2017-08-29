@@ -21,8 +21,8 @@ namespace CompetitionPlatform.Helpers
             var lastName = claimsList.Where(c => c.Type == ClaimTypes.Surname)
                    .Select(c => c.Value).SingleOrDefault();
 
-            var email = claimsList.Where(c => c.Type == ClaimTypes.Email)
-                   .Select(c => c.Value).SingleOrDefault();
+            var email = claimsList.Where(c => c.Type == ClaimTypes.Name)
+                   .Select(c => c.Value).FirstOrDefault();
 
             var documents = claimsList.Where(c => c.Type == "documents")
                 .Select(c => c.Value).SingleOrDefault();

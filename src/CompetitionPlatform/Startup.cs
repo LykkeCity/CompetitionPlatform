@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -15,8 +16,11 @@ using CompetitionPlatform.Exceptions;
 using CompetitionPlatform.ScheduledJobs;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using System.IO;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.HttpOverrides;
+using Newtonsoft.Json;
 
 namespace CompetitionPlatform
 {
@@ -63,6 +67,7 @@ namespace CompetitionPlatform
             {
                 //Settings = GeneralSettingsReader.ReadGeneralSettings<BaseSettings>(settingsConnectionString, settingsContainer, settingsFileName);
                 Settings = GeneralSettingsReader.ReadGeneralSettingsFromUrl<BaseSettings>(settingsUrl);
+
                 services.AddSingleton(Settings);
             }
             catch (Exception ex)
@@ -78,10 +83,31 @@ namespace CompetitionPlatform
             {
                 // Add framework services.
                 services.AddDbContext<ApplicationDbContext>(options =>
-                        options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-                services.AddAuthentication(
-                    options => { options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme; });
+                services.AddAuthentication(options =>
+                {
+                    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+                })
+                .AddCookie(options =>
+                {
+                    options.ExpireTimeSpan = TimeSpan.FromHours(24);
+                    options.LoginPath = new PathString("/signin");
+                    options.AccessDeniedPath = "/Home/Error";
+                })
+                .AddOpenIdConnect(options =>
+                {
+                    options.Authority = Settings.LykkeStreams.Authentication.Authority;
+                    options.ClientId = Settings.LykkeStreams.Authentication.ClientId;
+                    options.ClientSecret = Settings.LykkeStreams.Authentication.ClientSecret;
+                    options.RequireHttpsMetadata = true;
+                    options.SaveTokens = true;
+                    options.CallbackPath = "/auth";
+                    options.ResponseType = OpenIdConnectResponseType.Code;
+                    options.Events = new CompPlatformAuthenticationEvents(Log, HostingEnvironment,
+                        Settings.LykkeStreams.Azure.StorageConnString);
+                });
 
                 //var notificationEmailsQueueConnString = "";
                 var notificationSlackQueueConnString = Settings.SlackNotifications.AzureQueue.ConnectionString;
@@ -100,7 +126,7 @@ namespace CompetitionPlatform
                 //}
                 //else
                 //{
-                    services.RegisterInMemoryNotificationServices();
+                services.RegisterInMemoryNotificationServices();
                 //}
 
                 services.Configure<ForwardedHeadersOptions>(options =>
@@ -120,6 +146,7 @@ namespace CompetitionPlatform
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            app.UseAuthentication();
             app.UseApplicationInsightsRequestTelemetry();
 
             try
@@ -135,7 +162,7 @@ namespace CompetitionPlatform
                 {
                     app.UseExceptionHandler("/Home/Error");
                 }
-                
+
                 if (env.IsDevelopment())
                 {
                     app.UseDatabaseErrorPage();
@@ -149,37 +176,38 @@ namespace CompetitionPlatform
 
                 app.UseApplicationInsightsExceptionTelemetry();
 
-                app.UseCookieAuthentication(new CookieAuthenticationOptions
-                {
-                    AutomaticAuthenticate = true,
-                    AutomaticChallenge = true,
-                    ExpireTimeSpan = TimeSpan.FromHours(24),
-                    LoginPath = new PathString("/signin"),
-                    AccessDeniedPath = "/Home/Error"
-                });
+                //app.UseCookieAuthentication(new CookieAuthenticationOptions
+                //{
 
-                app.UseOpenIdConnectAuthentication(new OpenIdConnectOptions
-                {
-                    RequireHttpsMetadata = true,
-                    SaveTokens = true,
+                //    AutomaticAuthenticate = true,
+                //    AutomaticChallenge = true,
+                //    ExpireTimeSpan = TimeSpan.FromHours(24),
+                //    LoginPath = new PathString("/signin"),
+                //    AccessDeniedPath = "/Home/Error"
+                //});
 
-                    // Note: these settings must match the application details
-                    // inserted in the database at the server level.
-                    ClientId = Settings.LykkeStreams.Authentication.ClientId,
-                    ClientSecret = Settings.LykkeStreams.Authentication.ClientSecret,
-                    PostLogoutRedirectUri = Settings.LykkeStreams.Authentication.PostLogoutRedirectUri,
-                    CallbackPath = "/auth",
+                //app.UseOpenIdConnectAuthentication(new OpenIdConnectOptions
+                //{
+                //    RequireHttpsMetadata = false,
+                //    SaveTokens = true,
 
-                    // Use the authorization code flow.
-                    ResponseType = OpenIdConnectResponseType.Code,
-                    Events = new CompPlatformAuthenticationEvents(Log, HostingEnvironment, Settings.LykkeStreams.Azure.StorageConnString),
+                //    // Note: these settings must match the application details
+                //    // inserted in the database at the server level.
+                //    ClientId = Settings.LykkeStreams.Authentication.ClientId,
+                //    ClientSecret = Settings.LykkeStreams.Authentication.ClientSecret,
+                //    PostLogoutRedirectUri = Settings.LykkeStreams.Authentication.PostLogoutRedirectUri,
+                //    CallbackPath = "/auth",
 
-                    // Note: setting the Authority allows the OIDC client middleware to automatically
-                    // retrieve the identity provider's configuration and spare you from setting
-                    // the different endpoints URIs or the token validation parameters explicitly.
-                    Authority = Settings.LykkeStreams.Authentication.Authority,
-                    Scope = { "email profile" }
-                });
+                //    // Use the authorization code flow.
+                //    ResponseType = OpenIdConnectResponseType.Code,
+                //    Events = new CompPlatformAuthenticationEvents(Log, HostingEnvironment, Settings.LykkeStreams.Azure.StorageConnString),
+
+                //    // Note: setting the Authority allows the OIDC client middleware to automatically
+                //    // retrieve the identity provider's configuration and spare you from setting
+                //    // the different endpoints URIs or the token validation parameters explicitly.
+                //    Authority = Settings.LykkeStreams.Authentication.Authority,
+                //    Scope = { "email profile" }
+                //});
 
                 app.UseStaticFiles();
 
@@ -215,7 +243,7 @@ namespace CompetitionPlatform
             if (string.IsNullOrEmpty(settings.LykkeStreams.Authentication.Authority))
                 WriteSettingsReadError(log, "Authentication-Authority");
 
-            if(string.IsNullOrEmpty(settings.EmailServiceBus.Key))
+            if (string.IsNullOrEmpty(settings.EmailServiceBus.Key))
                 WriteSettingsReadError(log, "EmailServiceBus-Key");
 
             if (string.IsNullOrEmpty(settings.EmailServiceBus.NamespaceUrl))

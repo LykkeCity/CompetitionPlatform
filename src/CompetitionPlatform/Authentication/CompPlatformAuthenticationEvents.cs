@@ -31,7 +31,7 @@ namespace CompetitionPlatform.Authentication
             //}
         }
 
-        public override Task RemoteFailure(FailureContext context)
+        public override Task RemoteFailure(RemoteFailureContext context)
         {
             _log.WriteErrorAsync("Authentication", "RemoteFailure", context.Failure.Message + context.Failure.InnerException, context.Failure).Wait();
 
@@ -43,14 +43,14 @@ namespace CompetitionPlatform.Authentication
 
         public override async Task TokenValidated(TokenValidatedContext context)
         {
-            var email = context.Ticket.Principal.Claims.Where(c => c.Type == ClaimTypes.Email)
-                   .Select(c => c.Value).SingleOrDefault();
+            var email = context.Principal.Claims.Where(c => c.Type == ClaimTypes.Name)
+                   .Select(c => c.Value).FirstOrDefault();
 
             var sentMail = await _mailSentRepository.GetRegisterAsync(email);
 
             if (sentMail == null)
             {
-                var firstName = context.Ticket.Principal.Claims.Where(c => c.Type == ClaimTypes.GivenName)
+                var firstName = context.Principal.Claims.Where(c => c.Type == ClaimTypes.GivenName)
                    .Select(c => c.Value).SingleOrDefault();
 
                 var message = NotificationMessageHelper.GenerateRegistrationMessage(firstName, email);
@@ -63,11 +63,11 @@ namespace CompetitionPlatform.Authentication
 
         public override Task TicketReceived(TicketReceivedContext context)
         {
-            context.Ticket.Properties.Items.Clear();
+            context.Properties.Items.Clear();
 
             context.Properties.Items.Clear();
 
-            foreach (var principalClaim in context.Ticket.Principal.Claims)
+            foreach (var principalClaim in context.Principal.Claims)
             {
                 principalClaim.Properties.Clear();
             }

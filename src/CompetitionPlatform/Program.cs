@@ -20,7 +20,8 @@ namespace CompetitionPlatform
             {
 
                 var host = new WebHostBuilder()
-                    .UseKestrel(opts => opts.ThreadCount = 1)
+                   // .UseKestrel(opts => opts.ThreadCount = 1)
+                    .UseKestrel()
                     .UseContentRoot(Directory.GetCurrentDirectory())
                     .UseUrls("http://*:5000/")
                     .UseIISIntegration()
@@ -44,8 +45,8 @@ namespace CompetitionPlatform
                 var host = new WebHostBuilder()
                     .UseKestrel(x =>
                     {
-                        x.ThreadCount = 1;
-                        x.UseHttps(xcert);
+                        //x.ThreadCount = 1;
+                        //x.UseHttps(xcert);
                         x.AddServerHeader = false;
 
                     })
