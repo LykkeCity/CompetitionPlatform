@@ -43,13 +43,14 @@ namespace CompetitionPlatform
                 X509Certificate2 xcert = new X509Certificate2(cert, sertPassword);
 
                 var host = new WebHostBuilder()
-                    .UseKestrel(x =>
-                    {
-                        //x.ThreadCount = 1;
-                        //x.UseHttps(xcert);
-                        x.AddServerHeader = false;
+                    //.UseKestrel(x =>
+                    //{
+                    //    //x.ThreadCount = 1;
+                    //    //x.UseHttps(xcert);
+                    //    x.AddServerHeader = false;
 
-                    })
+                    //})
+                    .UseKestrel()
                     .UseContentRoot(Directory.GetCurrentDirectory())
                     .UseUrls("https://*:443/")
                     .UseIISIntegration()
