@@ -305,7 +305,8 @@ namespace CompetitionPlatform.Controllers
             // Request a redirect to the external login provider to link a login for the current user
             var redirectUrl = Url.Action("LinkLoginCallback", "Manage");
             var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl, _userManager.GetUserId(User));
-            return Challenge(properties, provider);
+            //return Challenge(properties, provider);
+            return Challenge();
         }
 
         //
