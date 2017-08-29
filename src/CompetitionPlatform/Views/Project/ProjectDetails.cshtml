@@ -359,37 +359,43 @@
                         </div>
                         @if (Model.FileInfo != null)
                         {
-                            <div class="asset_link">
-                                <div class="asset_link__icon">
+                            <div class="extend_block">
+                                <h4>Brief</h4>
 
-                                    @switch (fileExtension.ToLower())
-                                    {
-                                        case "pdf":
-                                            <div class="asset_icon asset_icon--red">PDF</div>
-                                            break;
-                                        case "xls":
-                                        case "xlsx":
-                                            <div class="asset_icon asset_icon--green">@fileExtension.ToUpper()</div>
-                                            break;
-                                        case "jpg":
-                                            <div class="asset_icon asset_icon--yellow">JPG</div>
-                                            break;
-                                        case "doc":
-                                        case "docx":
-                                            <div class="asset_icon asset_icon--blue">@fileExtension.ToUpper()</div>
-                                            break;
-                                        default:
-                                            <div class="asset_icon asset_icon--primary">@fileExtension.ToUpper()</div>
-                                            break;
-                                    }
-                                </div>
-                                <div class="asset_link__info">
-                                    <div class="asset_link__title">
-                                        <a asp-area="" asp-controller="ProjectDetails" asp-action="DownloadProjectFile" asp-route-id="@Model.Id">@Model.FileInfo.FileName</a>
-                                    </div>
-                                    @*<div class="asset_link__desc">24.8MB</div>*@
-                                    <div class="asset_link__link">
-                                        <a asp-area="" asp-controller="ProjectDetails" asp-action="DownloadProjectFile" asp-route-id="@Model.Id">Download</a>
+                                <div class="asset_link_list">
+                                    <div class="asset_link asset_link--alt">
+                                        <div class="asset_link__icon">
+                                            @switch (fileExtension.ToLower())
+                                            {
+                                                case "pdf":
+                                                    <div class="asset_icon asset_icon--red">PDF</div>
+                                                    break;
+                                                case "xls":
+                                                case "xlsx":
+                                                    <div class="asset_icon asset_icon--green">@fileExtension.ToUpper()</div>
+                                                    break;
+                                                case "jpg":
+                                                    <div class="asset_icon asset_icon--yellow">JPG</div>
+                                                    break;
+                                                case "doc":
+                                                case "docx":
+                                                    <div class="asset_icon asset_icon--blue">@fileExtension.ToUpper()</div>
+                                                    break;
+                                                default:
+                                                    <div class="asset_icon asset_icon--primary">@fileExtension.ToUpper()</div>
+                                                    break;
+                                            }
+                                        </div>
+                                        <div class="asset_link__action">
+                                            <a class="btn btn--icon _delete_asset" asp-area="" asp-controller="ProjectDetails" asp-action="DownloadProjectFile" asp-route-id="@Model.Id">
+                                                <i class="icon icon--download"></i>
+                                            </a>
+                                        </div>
+                                        <div class="asset_link__info">
+                                            <div class="asset_link__title">
+                                                <a asp-area="" asp-controller="ProjectDetails" asp-action="DownloadProjectFile" asp-route-id="@Model.Id">@Model.FileInfo.FileName</a>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
