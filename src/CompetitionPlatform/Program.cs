@@ -21,7 +21,6 @@ namespace CompetitionPlatform
             {
 
                 var host = new WebHostBuilder()
-                   // .UseKestrel(opts => opts.ThreadCount = 1)
                     .UseKestrel()
                     .UseContentRoot(Directory.GetCurrentDirectory())
                     .UseUrls("http://*:5000/")
@@ -41,7 +40,7 @@ namespace CompetitionPlatform
                 var certBlob = new AzureBlobStorage(sertConnString);
                 var cert = certBlob.GetAsync(sertContainer, sertFilename).Result.ToBytes();
 
-                X509Certificate2 xcert = new X509Certificate2(cert, sertPassword);
+                var xcert = new X509Certificate2(cert, sertPassword);
 
                 var host = new WebHostBuilder()
                     .UseKestrel(x =>
