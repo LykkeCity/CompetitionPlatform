@@ -11,7 +11,7 @@ using CompetitionPlatform.Helpers;
 using CompetitionPlatform.Models;
 using Microsoft.AspNetCore.Mvc;
 using CompetitionPlatform.Models.ProjectViewModels;
-using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
@@ -447,8 +447,7 @@ namespace CompetitionPlatform.Controllers
 
             if (User.Identity.IsAuthenticated)
             {
-                await HttpContext.Authentication.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-                await HttpContext.Authentication.SignOutAsync("OpenIdConnect");
+                await HttpContext.SignOutAsync();
             }
 
             if (!string.IsNullOrEmpty(redirectUrl))
