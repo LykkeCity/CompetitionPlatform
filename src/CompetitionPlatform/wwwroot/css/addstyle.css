@@ -36,3 +36,7 @@
 .remove-bottom-margin {
     margin-bottom: 0 !important;
 }
+
+.overflow-visible {
+    overflow: visible !important;
+}
