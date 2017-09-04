@@ -359,6 +359,8 @@
                         </div>
                         @if (Model.FileInfo != null)
                         {
+                            var extension = fileExtension.Length > 2 ? fileExtension.ToUpper().Substring(0, 3) : fileExtension.ToUpper();
+
                             <div class="extend_block">
                                 <h4>Brief</h4>
 
@@ -382,7 +384,7 @@
                                                     <div class="asset_icon asset_icon--blue">@fileExtension.ToUpper()</div>
                                                     break;
                                                 default:
-                                                    <div class="asset_icon asset_icon--primary">@fileExtension.ToUpper().Substring(0,3)</div>
+                                                    <div class="asset_icon asset_icon--primary">@extension</div>
                                                     break;
                                             }
                                         </div>
