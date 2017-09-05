@@ -589,7 +589,8 @@ namespace CompetitionPlatform.Controllers
                 ProgrammingResourceLink = project.ProgrammingResourceLink,
                 SkipVoting = project.SkipVoting,
                 SkipRegistration = project.SkipRegistration,
-                ProjectExperts = !experts.Any() ? null : experts
+                ProjectExperts = !experts.Any() ? null : experts,
+                PrizeDescription = project.PrizeDescription
             };
 
             if (!string.IsNullOrEmpty(project.Tags))
