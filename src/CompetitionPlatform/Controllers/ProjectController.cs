@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -26,6 +25,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Ganss.XSS;
 
 namespace CompetitionPlatform.Controllers
 {
@@ -129,6 +129,10 @@ namespace CompetitionPlatform.Controllers
 
             projectViewModel.ProjectStatus = projectViewModel.Status.ToString();
 
+            var sanitizer = new HtmlSanitizer();
+            projectViewModel.PrizeDescription = sanitizer.Sanitize(projectViewModel.PrizeDescription);
+            projectViewModel.Description = sanitizer.Sanitize(projectViewModel.Description);
+
             projectViewModel.SkipVoting = !enableVoting;
             projectViewModel.SkipRegistration = !enableRegistration;
             if (projectViewModel.CompetitionRegistrationDeadline == DateTime.MinValue)
@@ -195,6 +199,10 @@ namespace CompetitionPlatform.Controllers
             projectViewModel.Tags = SerializeTags(projectViewModel.Tags);
 
             projectViewModel.ProjectStatus = projectViewModel.Status.ToString();
+
+            var sanitizer = new HtmlSanitizer();
+            projectViewModel.PrizeDescription = sanitizer.Sanitize(projectViewModel.PrizeDescription);
+            projectViewModel.Description = sanitizer.Sanitize(projectViewModel.Description);
 
             projectViewModel.SkipVoting = !enableVoting;
             projectViewModel.SkipRegistration = !enableRegistration;
