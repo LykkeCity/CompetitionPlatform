@@ -95,6 +95,9 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public bool SkipVoting { get; set; }
         public bool SkipRegistration { get; set; }
         public IEnumerable<IProjectExpertData> ProjectExperts { get; set; }
+
+        [Display(Name = "Prize Description")]
+        public string PrizeDescription { get; set; }
     }
 
     public class ProjectCompactViewModel

@@ -45,6 +45,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
         public string UserAgent { get; set; }
         public bool SkipVoting { get; set; }
         public bool SkipRegistration { get; set; }
+        public string PrizeDescription { get; set; }
 
         internal void Update(IProjectData src)
         {
@@ -70,6 +71,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
             SkipRegistration = src.SkipRegistration;
             AuthorId = src.AuthorId;
             AuthorFullName = src.AuthorFullName;
+            PrizeDescription = src.PrizeDescription;
         }
 
         public static ProjectEntity Create(IProjectData src)
@@ -100,7 +102,8 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
                 ProgrammingResourceLink = src.ProgrammingResourceLink,
                 UserAgent = src.UserAgent,
                 SkipVoting = src.SkipVoting,
-                SkipRegistration = src.SkipRegistration
+                SkipRegistration = src.SkipRegistration,
+                PrizeDescription = src.PrizeDescription
             };
 
             return result;

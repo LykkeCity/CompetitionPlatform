@@ -172,6 +172,16 @@
             </div>
         </div>
         <div class="row">
+
+            @if (!string.IsNullOrEmpty(Model.PrizeDescription))
+            {
+                <div class="col-xs-12 col-sm-8 content__left">
+                    <p>
+                        @Html.Raw(Model.PrizeDescription)
+                    </p>
+                </div>
+            }
+
             <div class="col-xs-12 col-sm-8 content__left">
                 @if (Model.BudgetFirstPlace != 0)
                 {
@@ -185,29 +195,37 @@
                             </div>
                         </div>
                         @if (Model.BudgetSecondPlace != null)
-                        {
+                {
                             <div class="col-xs-3 hidden-xxs">
                                 <div class="prize">
                                     <div class="prize__value">$@Model.BudgetSecondPlace</div>
-                                    <div class="prize__title">2<sup>nd</sup>Prize</div>
+                                    <div class="prize__title">
+                                        2<sup>nd</sup>Prize
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-xs-3 hidden-xxs">
                                 <div class="prize">
                                     <div class="prize__value">$@Model.BudgetSecondPlace</div>
-                                    <div class="prize__title">2<sup>nd</sup>Prize</div>
+                                    <div class="prize__title">
+                                        2<sup>nd</sup>Prize
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-xs-3 hidden-xxs">
                                 <div class="prize">
                                     <div class="prize__value">$@Model.BudgetSecondPlace</div>
-                                    <div class="prize__title">2<sup>nd</sup>Prize</div>
+                                    <div class="prize__title">
+                                        2<sup>nd</sup>Prize
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-xs-3 visible-xxs">
                                 <div class="prize">
                                     <div class="prize__value">$@Model.BudgetSecondPlace</div>
-                                    <div class="prize__title">2<sup>nd</sup>Prize</div>
+                                    <div class="prize__title">
+                                        2<sup>nd</sup>Prize
+                                    </div>
                                 </div>
                             </div>
                         }
@@ -344,13 +362,13 @@
                     <div role="tabpanel" class="tab-pane @infoTabActive" id="info">
                         <div class="text">
                             @*<div class="form-group">
-                                <div class="row">
-                                    <label asp-for="Overview" class="control-label col-sm-4"></label>
-                                </div>
-                                <p>
-                                    @Model.Overview
-                                </p>
-                            </div>*@
+                                    <div class="row">
+                                        <label asp-for="Overview" class="control-label col-sm-4"></label>
+                                    </div>
+                                    <p>
+                                        @Model.Overview
+                                    </p>
+                                </div>*@
 
                             <div class="row">
                                 <label class="control-label col-sm-4">Description</label>
