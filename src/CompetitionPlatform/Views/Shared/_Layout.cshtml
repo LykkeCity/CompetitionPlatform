@@ -11,6 +11,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta property="og:image" content="@shareImgLink" />
     <meta property="og:image:secure_url" content="@shareImgLink" />
+    @if (ViewBag.FacebookShareDescription != null)
+    {
+        <meta property="og:description" content="@ViewBag.FacebookShareDescription" />
+    }
     <link rel="image_src" href="@shareImgLink" />
 
     <title>@ViewData["Title"] - LykkeStreams</title>

@@ -450,6 +450,7 @@ namespace CompetitionPlatform.Controllers
             }
 
             var viewModel = await GetProjectViewModel(id);
+            ViewBag.FacebookShareDescription = viewModel.Overview;
             return View(viewModel);
         }
 
