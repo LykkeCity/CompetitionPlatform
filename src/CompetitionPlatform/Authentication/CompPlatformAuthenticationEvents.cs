@@ -43,8 +43,8 @@ namespace CompetitionPlatform.Authentication
 
         public override async Task TokenValidated(TokenValidatedContext context)
         {
-            var email = context.Principal.Claims.Where(c => c.Type == ClaimTypes.Name)
-                   .Select(c => c.Value).FirstOrDefault();
+            var email = context.Principal.Claims.Where(c => c.Type == ClaimTypes.Email)
+                   .Select(c => c.Value).SingleOrDefault();
 
             var sentMail = await _mailSentRepository.GetRegisterAsync(email);
 

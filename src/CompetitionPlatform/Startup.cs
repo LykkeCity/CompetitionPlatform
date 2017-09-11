@@ -107,6 +107,7 @@ namespace CompetitionPlatform
                     options.ResponseType = OpenIdConnectResponseType.Code;
                     options.Events = new CompPlatformAuthenticationEvents(Log, HostingEnvironment,
                         Settings.LykkeStreams.Azure.StorageConnString);
+                    options.Scope.Add("email");
                 });
 
                 //var notificationEmailsQueueConnString = "";
