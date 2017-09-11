@@ -16,13 +16,13 @@ namespace CompetitionPlatform.Helpers
             var claimsList = claims as IList<Claim> ?? claims.ToList();
 
             var firstName = claimsList.Where(c => c.Type == ClaimTypes.GivenName)
-                   .Select(c => c.Value).SingleOrDefault();
+                .Select(c => c.Value).SingleOrDefault();
 
             var lastName = claimsList.Where(c => c.Type == ClaimTypes.Surname)
-                   .Select(c => c.Value).SingleOrDefault();
+                .Select(c => c.Value).SingleOrDefault();
 
-            var email = claimsList.Where(c => c.Type == ClaimTypes.Name)
-                   .Select(c => c.Value).FirstOrDefault();
+            var email = claimsList.Where(c => c.Type == ClaimTypes.Email)
+                .Select(c => c.Value).SingleOrDefault();
 
             var documents = claimsList.Where(c => c.Type == "documents")
                 .Select(c => c.Value).SingleOrDefault();
@@ -40,7 +40,7 @@ namespace CompetitionPlatform.Helpers
 
         public static string GetFirstName(IIdentity identity)
         {
-            var claimsIdentity = (ClaimsIdentity) identity;
+            var claimsIdentity = (ClaimsIdentity)identity;
             var claims = claimsIdentity.Claims;
 
             var claimsList = claims as IList<Claim> ?? claims.ToList();
