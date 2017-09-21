@@ -308,7 +308,7 @@ namespace CompetitionPlatform.Controllers
                 }
                 await _projectRepository.UpdateAsync(projectViewModel);
             }
-                
+
 
             if (project.Status == Status.Draft && projectViewModel.Status == Status.Initiative)
             {
@@ -692,7 +692,7 @@ namespace CompetitionPlatform.Controllers
                 projectViewModel.Tags = builder.ToString();
             }
 
-            projectViewModel.EditStreamProjects = new EditStreamProjects {ProjectsList = new List<StreamProject>()};
+            projectViewModel.EditStreamProjects = new EditStreamProjects { ProjectsList = new List<StreamProject>() };
             if (!string.IsNullOrEmpty(project.StreamId))
             {
                 var stream = await _streamRepository.GetAsync(project.StreamId);
@@ -910,14 +910,13 @@ namespace CompetitionPlatform.Controllers
         private async Task<List<StreamProject>> GetStreamProjects()
         {
             var projects = await _projectRepository.GetProjectsAsync();
-
             return (from project in projects
-                where project.ProjectStatus != Status.Draft.ToString()
-                select new StreamProject
-                {
-                    ProjectId = project.Id,
-                    ProjectName = project.Name
-                }).ToList();
+                    where project.ProjectStatus != Status.Draft.ToString() && string.IsNullOrEmpty(project.StreamId)
+                    select new StreamProject
+                    {
+                        ProjectId = project.Id,
+                        ProjectName = project.Name
+                    }).ToList();
         }
 
         private async Task<List<CompactStream>> GetCompactStreams()
@@ -925,16 +924,16 @@ namespace CompetitionPlatform.Controllers
             var streams = await _streamRepository.GetStreamsAsync();
 
             return streams.Select(stream => new CompactStream
-                {
-                    StreamId = stream.Id,
-                    StreamName = stream.Name
-                })
+            {
+                StreamId = stream.Id,
+                StreamName = stream.Name
+            })
                 .ToList();
         }
 
         public async Task<IActionResult> GetEditStreamsTable(string streamId)
         {
-            var model = new EditStreamProjects {ProjectsList = new List<StreamProject>()};
+            var model = new EditStreamProjects { ProjectsList = new List<StreamProject>() };
             if (!string.IsNullOrEmpty(streamId))
             {
                 var stream = await _streamRepository.GetAsync(streamId);
