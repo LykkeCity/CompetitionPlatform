@@ -98,6 +98,18 @@ namespace CompetitionPlatform.Models.ProjectViewModels
 
         [Display(Name = "Prize Description")]
         public string PrizeDescription { get; set; }
+
+        public string StreamId { get; set; }
+
+        public string StreamType { get; set; }
+
+        public List<StreamProject> StreamProjects { get; set; }
+        public List<StreamProject> AllStreamProjects { get; set; }
+        public List<CompactStream> CompactStreams { get; set; }
+        public EditStreamProjects EditStreamProjects { get; set; }
+        public string NewStreamName { get; set; }
+        public string ExistingStreamId { get; set; }
+        public string SerializedStream { get; set; }
     }
 
     public class ProjectCompactViewModel
@@ -170,6 +182,24 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public string ProjectName { get; set; }
         public double Amount { get; set; }
         public int NumberOfWinners { get; set; }
+    }
+
+    public class StreamProject
+    {
+        public string ProjectId { get; set; }
+        public string ProjectName { get; set; }
+        public int Place { get; set; }
+    }
+
+    public class CompactStream
+    {
+        public string  StreamId { get; set; }
+        public string StreamName { get; set; }
+    }
+
+    public class EditStreamProjects
+    {
+        public List<StreamProject> ProjectsList { get; set; }
     }
 }
 

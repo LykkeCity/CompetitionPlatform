@@ -27,8 +27,12 @@ namespace CompetitionPlatform.Helpers
             var documents = claimsList.Where(c => c.Type == "documents")
                 .Select(c => c.Value).SingleOrDefault();
 
+            var id = claimsList.Where(c => c.Type == ClaimTypes.NameIdentifier)
+                .Select(c => c.Value).SingleOrDefault();
+
             var user = new CompetitionPlatformUser
             {
+                Id = id,
                 Email = email,
                 FirstName = firstName,
                 LastName = lastName,
