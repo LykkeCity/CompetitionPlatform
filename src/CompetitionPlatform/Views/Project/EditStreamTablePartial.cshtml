@@ -1,0 +1,36 @@
+@using System.Threading.Tasks
+@using CompetitionPlatform.Models.ProjectViewModels
+@model EditStreamProjects
+
+
+@{
+}
+
+
+
+<table>
+    <thead>
+        <tr>
+            <th>Select</th>
+            <th>Place</th>
+            <th>Name</th>
+        </tr>
+    </thead>
+</table>
+<table id="streamProjectsTable" class="streamProjectsTable">
+    <thead>
+    </thead>
+    <tbody>
+    @foreach (var proj in Model.ProjectsList)
+    {
+        <tr>
+            <td>
+                <input type="checkbox" name="record">
+            </td>
+            <td>@proj.Place</td>
+            <td>@proj.ProjectName</td>
+            <td style="display: none;">@proj.ProjectId</td>
+        </tr>
+    }
+    </tbody>
+</table>

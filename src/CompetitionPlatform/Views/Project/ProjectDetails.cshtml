@@ -125,10 +125,73 @@
             checkVoting = "check--yellow";
             break;
     }
+
+    var streamsProjectCount = 0;
+    StreamProject currentProjectInStream = null;
+    var previousProjectExists = false;
+    StreamProject previousProject = null;
+    var nextProjectExists = false;
+    StreamProject nextProject = null;
+
+    if (Model.StreamId != null)
+    {
+        streamsProjectCount = Model.StreamProjects.Max(x => x.Place);
+        currentProjectInStream = Model.StreamProjects.FirstOrDefault(p => p.ProjectId == Model.Id);
+
+        previousProjectExists = currentProjectInStream.Place - 2 >= 0;
+        if (previousProjectExists)
+        {
+            previousProject = Model.StreamProjects[currentProjectInStream.Place - 2];
+        }
+
+
+        nextProjectExists = currentProjectInStream.Place < streamsProjectCount;
+        if (nextProjectExists)
+        {
+            nextProject = Model.StreamProjects[currentProjectInStream.Place]; 
+        }
+        
+    }
 }
 
 <section class="section section--lead section--padding">
     <div class="container container--extend">
+        @if (Model.StreamId != null)
+        {
+            <div class="stream_header">
+                <div class="stream_nav">
+                    <div class="stream_nav__text">
+                        Stream: <span>Stage @currentProjectInStream.Place/@streamsProjectCount</span>
+                    </div>
+
+                    <div class="stream_nav__index">
+                        @foreach (var streamProj in Model.StreamProjects)
+                        {
+                            var active = "";
+                            if (streamProj.ProjectId == Model.Id)
+                            {
+                                active = "stream_nav__dash--active"; 
+                            }
+                            <a asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@streamProj.ProjectId" class="stream_nav__dash @active"></a>
+                        }
+                    </div>
+                </div>
+                
+                @if (nextProjectExists)
+                {
+                    <a asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@nextProject.ProjectId" class="next_stage">
+                        <span class="hidden-xs hidden-sm">@nextProject.ProjectName</span>
+                    </a>
+                }
+                
+                @if (previousProjectExists)
+                {
+                    <a asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@previousProject.ProjectId" class="prev_stage">
+                        <span class="hidden-xs hidden-sm">@previousProject.ProjectName</span>
+                    </a>  
+                }
+            </div>
+        }
         <div class="page__header">
             <div class="row">
                 <div class="col-sm-8 automargin text-center">
@@ -195,7 +258,7 @@
                             </div>
                         </div>
                         @if (Model.BudgetSecondPlace != null)
-                {
+                        {
                             <div class="col-xs-3 hidden-xxs">
                                 <div class="prize">
                                     <div class="prize__value">$@Model.BudgetSecondPlace</div>
@@ -240,7 +303,7 @@
                 <div class="row">
                     <div class="col-xs-6 col-sm-12">
                         @if (Model.ProjectExperts == null)
-                        {
+            {
                             <div class="user_badge">
                                 <div class="user_badge__img">
                                     <img src="~/images/avatar.svg" alt="">
@@ -253,17 +316,17 @@
                         }
 
                         @await Html.PartialAsync("ProjectDetailsStatusPartial", new ProjectDetailsStatusViewModel
-                   {
-                       ProjectId = Model.Id,
-                       Status = Model.Status,
-                       VotesFor = Model.VotesFor,
-                       VotesAgainst = Model.VotesAgainst,
-                       CompetitionRegistrationDeadline = Model.CompetitionRegistrationDeadline,
-                       ImplementationDeadline = Model.ImplementationDeadline,
-                       VotingDeadline = Model.VotingDeadline,
-                       IsParticipant = Model.IsParticipant,
-                       HasResult = Model.ParticipantsPartial.HasResult
-                   })
+       {
+           ProjectId = Model.Id,
+           Status = Model.Status,
+           VotesFor = Model.VotesFor,
+           VotesAgainst = Model.VotesAgainst,
+           CompetitionRegistrationDeadline = Model.CompetitionRegistrationDeadline,
+           ImplementationDeadline = Model.ImplementationDeadline,
+           VotingDeadline = Model.VotingDeadline,
+           IsParticipant = Model.IsParticipant,
+           HasResult = Model.ParticipantsPartial.HasResult
+       })
                     </div>
                     <div class="col-xs-6 col-sm-12">
 
@@ -364,8 +427,8 @@
                             @Html.Raw(Model.Description)
                         </div>
                         @if (Model.FileInfo != null)
-                        {
-                            var extension = fileExtension.Length > 2 ? fileExtension.ToUpper().Substring(0, 3) : fileExtension.ToUpper();
+            {
+                var extension = fileExtension.Length > 2 ? fileExtension.ToUpper().Substring(0, 3) : fileExtension.ToUpper();
 
                             <div class="extend_block">
                                 <h4>Brief</h4>
@@ -409,7 +472,7 @@
                             </div>
                         }
                         @if (Model.ProjectExperts != null)
-                        {
+            {
                             <div class="extend_block">
                                 <h4>Experts</h4>
 
@@ -462,9 +525,9 @@
                         <a href="">@Model.Category</a>
                     </div>
                     @if (Model.TagsList != null)
-            {
-                foreach (var category in Model.TagsList)
-                {
+                    {
+                        foreach (var category in Model.TagsList)
+                        {
                             <div class="tag_item">
                                 <a href="">@category</a>
                             </div>
@@ -493,7 +556,7 @@
 
                 <ul class="list list--text_previews">
                     @foreach (var project in Model.OtherProjects)
-            {
+                    {
                         <li class="list__item">
                             <a class="other-projects-name" asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.Id">
                                 <p>

@@ -10,6 +10,7 @@ using AzureStorage.Queue;
 using Common.Log;
 using CompetitionPlatform.Data.AzureRepositories.Expert;
 using CompetitionPlatform.Data.AzureRepositories.Project;
+using CompetitionPlatform.Data.AzureRepositories.ProjectStream;
 using CompetitionPlatform.Data.AzureRepositories.Result;
 using CompetitionPlatform.Data.AzureRepositories.Settings;
 using CompetitionPlatform.Data.AzureRepositories.Users;
@@ -47,6 +48,7 @@ namespace CompetitionPlatform.Controllers
         private readonly BaseSettings _settings;
         private readonly ILog _log;
         private readonly IProjectExpertsRepository _projectExpertsRepository;
+        private readonly IStreamRepository _streamRepository;
 
         public ProjectController(IProjectRepository projectRepository, IProjectCommentsRepository commentsRepository,
             IProjectFileRepository fileRepository, IProjectFileInfoRepository fileInfoRepository,
@@ -55,7 +57,8 @@ namespace CompetitionPlatform.Controllers
             IProjectWinnersRepository winnersRepository, IUserRolesRepository userRolesRepository,
             IProjectWinnersService winnersService, IQueueExt emailsQueue,
             IProjectResultVoteRepository resultVoteRepository, BaseSettings settings,
-            ILog log, IProjectExpertsRepository projectExpertsRepository)
+            ILog log, IProjectExpertsRepository projectExpertsRepository,
+            IStreamRepository streamRepository)
         {
             _projectRepository = projectRepository;
             _commentsRepository = commentsRepository;
@@ -73,6 +76,7 @@ namespace CompetitionPlatform.Controllers
             _settings = settings;
             _log = log;
             _projectExpertsRepository = projectExpertsRepository;
+            _streamRepository = streamRepository;
         }
 
         [Authorize]
@@ -233,7 +237,78 @@ namespace CompetitionPlatform.Controllers
                                       projectViewModel.ProjectUrl != projectId;
 
             if (!statusAndUrlChanged)
+            {
+                var currentProjectIsInStream = false;
+                var currentProjectWasInOldStream = false;
+                var streamId = "";
+
+                if (projectViewModel.StreamType == "New")
+                {
+                    var user = GetAuthenticatedUser();
+                    var streamProjects = JsonConvert.DeserializeObject<List<StreamProject>>(projectViewModel.SerializedStream);
+
+                    if (streamProjects.Any())
+                    {
+                        var newStream = new StreamEntity
+                        {
+                            Name = projectViewModel.NewStreamName,
+                            AuthorId = user.Id,
+                            AuthorEmail = user.Email,
+                            Stream = projectViewModel.SerializedStream
+                        };
+
+                        streamId = await _streamRepository.SaveAsync(newStream);
+
+                        foreach (var proj in streamProjects)
+                        {
+                            var streamProject = await _projectRepository.GetAsync(proj.ProjectId);
+                            streamProject.StreamId = streamId;
+                            await _projectRepository.UpdateAsync(streamProject);
+                        }
+
+                        currentProjectIsInStream = streamProjects.Any(p => p.ProjectId == projectViewModel.Id);
+                    }
+                }
+                if (projectViewModel.StreamType == "Existing")
+                {
+                    var existingStream = await _streamRepository.GetAsync(projectViewModel.ExistingStreamId);
+                    var oldProjects = JsonConvert.DeserializeObject<List<StreamProject>>(existingStream.Stream);
+                    currentProjectWasInOldStream = oldProjects.Any(p => p.ProjectId == projectViewModel.Id);
+
+                    foreach (var oldProj in oldProjects)
+                    {
+                        var oldProject = await _projectRepository.GetAsync(oldProj.ProjectId);
+                        oldProject.StreamId = null;
+                        await _projectRepository.UpdateAsync(oldProject);
+                    }
+
+                    existingStream.Stream = projectViewModel.SerializedStream;
+                    await _streamRepository.UpdateAsync(existingStream);
+
+                    var newProjects = JsonConvert.DeserializeObject<List<StreamProject>>(projectViewModel.SerializedStream);
+
+                    foreach (var newProj in newProjects)
+                    {
+                        var streamProject = await _projectRepository.GetAsync(newProj.ProjectId);
+                        streamProject.StreamId = existingStream.Id;
+                        await _projectRepository.UpdateAsync(streamProject);
+                    }
+
+                    currentProjectIsInStream = newProjects.Any(p => p.ProjectId == projectViewModel.Id);
+                    streamId = existingStream.Id;
+                }
+
+                if (currentProjectIsInStream)
+                {
+                    projectViewModel.StreamId = streamId;
+                }
+                else if (currentProjectWasInOldStream)
+                {
+                    projectViewModel.StreamId = null;
+                }
                 await _projectRepository.UpdateAsync(projectViewModel);
+            }
+                
 
             if (project.Status == Status.Draft && projectViewModel.Status == Status.Initiative)
             {
@@ -599,7 +674,10 @@ namespace CompetitionPlatform.Controllers
                 SkipVoting = project.SkipVoting,
                 SkipRegistration = project.SkipRegistration,
                 ProjectExperts = !experts.Any() ? null : experts,
-                PrizeDescription = project.PrizeDescription
+                PrizeDescription = project.PrizeDescription,
+                StreamId = project.StreamId,
+                AllStreamProjects = await GetStreamProjects(),
+                CompactStreams = await GetCompactStreams()
             };
 
             if (!string.IsNullOrEmpty(project.Tags))
@@ -612,6 +690,13 @@ namespace CompetitionPlatform.Controllers
                     builder.Append(tag).Append(", ");
                 }
                 projectViewModel.Tags = builder.ToString();
+            }
+
+            projectViewModel.EditStreamProjects = new EditStreamProjects {ProjectsList = new List<StreamProject>()};
+            if (!string.IsNullOrEmpty(project.StreamId))
+            {
+                var stream = await _streamRepository.GetAsync(project.StreamId);
+                projectViewModel.StreamProjects = JsonConvert.DeserializeObject<List<StreamProject>>(stream.Stream);
             }
 
             var fileInfo = await _fileInfoRepository.GetAsync(id);
@@ -820,6 +905,44 @@ namespace CompetitionPlatform.Controllers
             {
                 await emailProducer.SendEmailAsync(email, message, "Lykke Notifications");
             }
+        }
+
+        private async Task<List<StreamProject>> GetStreamProjects()
+        {
+            var projects = await _projectRepository.GetProjectsAsync();
+
+            return (from project in projects
+                where project.ProjectStatus != Status.Draft.ToString()
+                select new StreamProject
+                {
+                    ProjectId = project.Id,
+                    ProjectName = project.Name
+                }).ToList();
+        }
+
+        private async Task<List<CompactStream>> GetCompactStreams()
+        {
+            var streams = await _streamRepository.GetStreamsAsync();
+
+            return streams.Select(stream => new CompactStream
+                {
+                    StreamId = stream.Id,
+                    StreamName = stream.Name
+                })
+                .ToList();
+        }
+
+        public async Task<IActionResult> GetEditStreamsTable(string streamId)
+        {
+            var model = new EditStreamProjects {ProjectsList = new List<StreamProject>()};
+            if (!string.IsNullOrEmpty(streamId))
+            {
+                var stream = await _streamRepository.GetAsync(streamId);
+                var streamProjects = JsonConvert.DeserializeObject<List<StreamProject>>(stream.Stream);
+                model.ProjectsList = streamProjects;
+            }
+
+            return PartialView("EditStreamTablePartial", model);
         }
     }
 }
