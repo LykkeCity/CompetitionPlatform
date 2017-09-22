@@ -112,6 +112,7 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public string SerializedStream { get; set; }
 
         [Display(Name = "Name Tag")]
+        [StringLength(30)]
         public string NameTag { get; set; }
     }
 
