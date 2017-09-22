@@ -70,7 +70,7 @@
                                     {
                                         <div class="card__sum h3 pull-right">$@project.BudgetFirstPlace</div>
                                     }
-                                    
+
                                     <div class="card__title h3">
                                         @if (project.Status == Status.Voting)
                                         {
@@ -79,6 +79,10 @@
                                         else
                                         {
                                             <a asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.Id">@project.Name</a>
+                                        }
+                                        @if (!string.IsNullOrEmpty(project.NameTag))
+                                        {
+                                            <sup class="project-list-name-tag">@project.NameTag</sup>
                                         }
                                     </div>
                                 </div>

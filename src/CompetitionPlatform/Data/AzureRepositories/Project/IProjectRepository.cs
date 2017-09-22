@@ -34,6 +34,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
         bool SkipRegistration { get; set; }
         string PrizeDescription { get; set; }
         string StreamId { get; set; }
+        string NameTag { get; set; }
     }
 
     public interface IProjectRepository

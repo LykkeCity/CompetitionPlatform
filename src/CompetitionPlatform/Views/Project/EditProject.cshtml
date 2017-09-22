@@ -262,6 +262,15 @@
                     <span asp-validation-for="Name" class="text-danger" />
                 </div>
 
+                <div class="form-group">
+                    <label asp-for="NameTag" class="control-label"></label>
+                    <input asp-for="NameTag" class="form-control" />
+                    <span asp-validation-for="NameTag" class="text-danger" />
+                </div>
+
+                <p class="text-muted">Name Tag will appear near your project's name. Use it to provide additional information - for example if the project is a tender or a vacancy.</p>
+
+
                 @if (Model.Status == Status.Draft)
                 {
                     <div class="form-group">
@@ -403,13 +412,13 @@
                         </div>
                     </div>
                 }
-                
-                
+
+
                 @if (Model.IsAdmin)
                 {
 
                     <div class="row">
-                        
+
                         <div class="col-sm-6">
                             <p class="text-muted">You can add this project to the overall chain, which is called Stream. The current project will be one of the stages of the Stream.</p>
                             <label class="control-label">Stream:</label>
@@ -423,14 +432,14 @@
                         </div>
                     </div>
                     <fieldset id="hiddenStreamElements" class="form_fieldset" style="display: none;">
-                        
-                    
+
+
                         <div class="form-group newStreamNameTextbox">
                             <label asp-for="NewStreamName" class="control-label"></label>
                             <input asp-for="NewStreamName" class="form-control" />
                             <span asp-validation-for="NewStreamName" class="text-danger" />
                         </div>
-                        
+
                         <div class="existingStreamDropdown">
                             <label class="control-label">Stream:</label>
                             <div class="form-group" data-control="select">
@@ -443,22 +452,22 @@
                                 </select>
                             </div>
                         </div>
-                        
+
                         @*<table>
-                            <thead>
-                            <tr>
-                                <th>Select</th>
-                                <th>Place</th>
-                                <th>Name</th>
-                            </tr>
-                            </thead>
-                        </table>
-                        <table id="streamProjectsTable" class="streamProjectsTable">
-                            <thead>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>*@
+                                <thead>
+                                <tr>
+                                    <th>Select</th>
+                                    <th>Place</th>
+                                    <th>Name</th>
+                                </tr>
+                                </thead>
+                            </table>
+                            <table id="streamProjectsTable" class="streamProjectsTable">
+                                <thead>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>*@
                         <div id="streamProjectsTableEdit">
                             @await Html.PartialAsync("EditStreamTablePartial", Model.EditStreamProjects)
                         </div>
@@ -468,18 +477,18 @@
                             <select name="projectName" id="projectName">
                                 @foreach (var project in Model.AllStreamProjects)
                                 {
-                                    <option value="@project.ProjectId">@project.ProjectName</option> 
+                                    <option value="@project.ProjectId">@project.ProjectName</option>
                                 }
                             </select>
                             <input type="button" class="add-row" value="Add Row">
                         </div>
                         <button type="button" class="delete-row">Delete Row</button>
 
-                    </fieldset> 
+                    </fieldset>
                 }
-            
-            <input asp-for="@Model.SerializedStream" type="hidden" />
-            <div class="form__submit">
+
+                <input asp-for="@Model.SerializedStream" type="hidden" />
+                <div class="form__submit">
                     <div class="row">
                         <div class="col-sm-6">
                             <button type="submit" class="btn">Save changes</button>

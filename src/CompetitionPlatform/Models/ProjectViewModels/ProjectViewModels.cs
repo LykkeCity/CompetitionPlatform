@@ -110,6 +110,9 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public string NewStreamName { get; set; }
         public string ExistingStreamId { get; set; }
         public string SerializedStream { get; set; }
+
+        [Display(Name = "Name Tag")]
+        public string NameTag { get; set; }
     }
 
     public class ProjectCompactViewModel
@@ -133,6 +136,7 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public string Category { get; set; }
         public List<string> Tags { get; set; }
         public bool Following { get; set; }
+        public string NameTag { get; set; }
     }
 
     public class ProjectFileInfoViewModel
