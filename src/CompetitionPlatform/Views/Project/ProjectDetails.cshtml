@@ -148,9 +148,9 @@
         nextProjectExists = currentProjectInStream.Place < streamsProjectCount;
         if (nextProjectExists)
         {
-            nextProject = Model.StreamProjects[currentProjectInStream.Place]; 
+            nextProject = Model.StreamProjects[currentProjectInStream.Place];
         }
-        
+
     }
 }
 
@@ -170,25 +170,25 @@
                             var active = "";
                             if (streamProj.ProjectId == Model.Id)
                             {
-                                active = "stream_nav__dash--active"; 
+                                active = "stream_nav__dash--active";
                             }
                             <a asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@streamProj.ProjectId" class="stream_nav__dash @active"></a>
                         }
                     </div>
                 </div>
-                
+
                 @if (nextProjectExists)
                 {
                     <a asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@nextProject.ProjectId" class="next_stage">
                         <span class="hidden-xs hidden-sm">@nextProject.ProjectName</span>
                     </a>
                 }
-                
+
                 @if (previousProjectExists)
                 {
                     <a asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@previousProject.ProjectId" class="prev_stage">
                         <span class="hidden-xs hidden-sm">@previousProject.ProjectName</span>
-                    </a>  
+                    </a>
                 }
             </div>
         }
@@ -316,17 +316,17 @@
                         }
 
                         @await Html.PartialAsync("ProjectDetailsStatusPartial", new ProjectDetailsStatusViewModel
-       {
-           ProjectId = Model.Id,
-           Status = Model.Status,
-           VotesFor = Model.VotesFor,
-           VotesAgainst = Model.VotesAgainst,
-           CompetitionRegistrationDeadline = Model.CompetitionRegistrationDeadline,
-           ImplementationDeadline = Model.ImplementationDeadline,
-           VotingDeadline = Model.VotingDeadline,
-           IsParticipant = Model.IsParticipant,
-           HasResult = Model.ParticipantsPartial.HasResult
-       })
+                   {
+                       ProjectId = Model.Id,
+                       Status = Model.Status,
+                       VotesFor = Model.VotesFor,
+                       VotesAgainst = Model.VotesAgainst,
+                       CompetitionRegistrationDeadline = Model.CompetitionRegistrationDeadline,
+                       ImplementationDeadline = Model.ImplementationDeadline,
+                       VotingDeadline = Model.VotingDeadline,
+                       IsParticipant = Model.IsParticipant,
+                       HasResult = Model.ParticipantsPartial.HasResult
+                   })
                     </div>
                     <div class="col-xs-6 col-sm-12">
 

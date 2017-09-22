@@ -677,7 +677,8 @@ namespace CompetitionPlatform.Controllers
                 PrizeDescription = project.PrizeDescription,
                 StreamId = project.StreamId,
                 AllStreamProjects = await GetStreamProjects(),
-                CompactStreams = await GetCompactStreams()
+                CompactStreams = await GetCompactStreams(),
+                NameTag = project.NameTag
             };
 
             if (!string.IsNullOrEmpty(project.Tags))

@@ -141,6 +141,15 @@
                 </div>
 
                 <div class="form-group">
+                    <label asp-for="NameTag" class="control-label"></label>
+                    <input asp-for="NameTag" class="form-control" />
+                    <span asp-validation-for="NameTag" class="text-danger" />
+                </div>
+
+                <p class="text-muted">Name Tag will appear near your project's name. Use it to provide additional information - for example if the project is a tender or a vacancy.</p>
+
+
+                <div class="form-group">
                     <label asp-for="Id" class="control-label"></label>
                     <input asp-for="Id" class="form-control" />
                     <span asp-validation-for="Id" class="text-danger" />

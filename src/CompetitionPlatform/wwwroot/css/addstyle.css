@@ -40,3 +40,12 @@
 .overflow-visible {
     overflow: visible !important;
 }
+
+.project-list-name-tag {
+    width: 45px !important;
+    height: 17px !important;
+    opacity: 0.6 !important;
+    font-size: 14px;
+    text-align: left;
+    color: #3f4d60 !important;
+}

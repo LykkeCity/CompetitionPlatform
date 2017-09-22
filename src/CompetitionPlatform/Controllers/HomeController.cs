@@ -315,7 +315,8 @@ namespace CompetitionPlatform.Controllers
                     AuthorFullName = project.AuthorFullName,
                     Category = project.Category,
                     Tags = tagsList,
-                    Following = following
+                    Following = following,
+                    NameTag = project.NameTag
                 };
 
                 if (!string.IsNullOrEmpty(project.ProjectStatus))
