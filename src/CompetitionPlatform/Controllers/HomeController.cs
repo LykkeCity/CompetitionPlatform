@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
 using CompetitionPlatform.Data.AzureRepositories.Project;
@@ -12,6 +13,8 @@ using CompetitionPlatform.Models;
 using Microsoft.AspNetCore.Mvc;
 using CompetitionPlatform.Models.ProjectViewModels;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
@@ -398,28 +401,7 @@ namespace CompetitionPlatform.Controllers
         public IActionResult SignIn()
         {
             var redirectUrl = Request.Headers["Referer"].ToString();
-
-            Response.Cookies.Append("redirectUrl", redirectUrl, new CookieOptions()
-            {
-                Expires = DateTime.Now.AddDays(1)
-            });
-
-            return RedirectToAction("DoSignIn", "Home");
-        }
-
-
-        [Authorize]
-        public IActionResult DoSignIn()
-        {
-            if (Request.Cookies.ContainsKey("redirectUrl"))
-            {
-                var path = Request.Cookies["redirectUrl"];
-                if (!string.IsNullOrEmpty(path))
-                {
-                    return Redirect(path);
-                }
-            }
-            return RedirectToAction("Index", "Home");
+            return Challenge(new AuthenticationProperties { RedirectUri = redirectUrl });
         }
 
         public IActionResult About()
@@ -442,19 +424,21 @@ namespace CompetitionPlatform.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> LogOut()
+        public IActionResult LogOut()
         {
             var redirectUrl = Request.Headers["Referer"].ToString();
 
             if (User.Identity.IsAuthenticated)
             {
-                await HttpContext.SignOutAsync();
+                return SignOut(new AuthenticationProperties { RedirectUri = "/"},
+                    CookieAuthenticationDefaults.AuthenticationScheme, OpenIdConnectDefaults.AuthenticationScheme);
             }
 
             if (!string.IsNullOrEmpty(redirectUrl))
             {
                 return Redirect(redirectUrl);
             }
+
             return RedirectToAction("Index", "Home");
         }
 
