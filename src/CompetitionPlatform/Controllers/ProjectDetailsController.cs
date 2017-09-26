@@ -228,7 +228,9 @@ namespace CompetitionPlatform.Controllers
                 await _projectRepository.UpdateAsync(project);
             }
 
-            return RedirectToAction("ProjectDetails", "Project", new { id = id, participantAdded = true });
+            TempData["ShowParticipantAddedModal"] = true;
+
+            return RedirectToAction("ProjectDetails", "Project", new { id = id });
         }
 
         [Authorize]
@@ -357,7 +359,9 @@ namespace CompetitionPlatform.Controllers
                 await _resultRepository.UpdateAsync(result);
                 await CalculateScores(totalVotes, model.ProjectId);
 
-                return RedirectToAction("ProjectDetails", "Project", new { id = model.ProjectId, resultsActive = true, votedForResult = true });
+                TempData["ShowVotedForResultModal"] = true;
+
+                return RedirectToAction("ProjectDetails", "Project", new { id = model.ProjectId, resultsActive = true });
             }
             else
             {
@@ -372,7 +376,9 @@ namespace CompetitionPlatform.Controllers
                 await _resultRepository.UpdateAsync(result);
                 await CalculateScores(totalVotes, model.ProjectId);
 
-                return RedirectToAction("ProjectDetails", "Project", new { id = model.ProjectId, resultsActive = true, votedTwice = true });
+                TempData["ShowVotedTwiceModal"] = true;
+
+                return RedirectToAction("ProjectDetails", "Project", new { id = model.ProjectId, resultsActive = true });
             }
         }
 

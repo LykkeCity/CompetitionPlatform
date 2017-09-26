@@ -479,22 +479,21 @@ namespace CompetitionPlatform.Controllers
             return projectFollows;
         }
 
-        public async Task<IActionResult> ProjectDetails(string id, bool participantAdded = false, bool votedForResult = false, bool votedTwice = false,
-            bool commentsActive = false, bool participantsActive = false, bool resultsActive = false, bool winnersActive = false)
+        public async Task<IActionResult> ProjectDetails(string id, bool commentsActive = false, bool participantsActive = false, bool resultsActive = false, bool winnersActive = false)
         {
-            if (participantAdded)
+            if (TempData["ShowParticipantAddedModal"] != null)
             {
-                ViewBag.ParticipantAdded = true;
+                ViewBag.ParticipantAdded = (bool)TempData["ShowParticipantAddedModal"];
             }
 
-            if (votedForResult)
+            if (TempData["ShowVotedForResultModal"] != null)
             {
-                ViewBag.VotedForResult = true;
+                ViewBag.VotedForResult = (bool)TempData["ShowVotedForResultModal"];
             }
 
-            if (votedTwice)
+            if (TempData["ShowVotedTwiceModal"] != null)
             {
-                ViewBag.VotedTwice = true;
+                ViewBag.VotedTwice = (bool)TempData["ShowVotedTwiceModal"];
             }
 
             if (commentsActive)
