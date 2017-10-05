@@ -8,6 +8,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Result
     {
         string ProjectId { get; set; }
         string ParticipantId { get; set; }
+        string ParticipantIdentifier { get; set; }
         string ParticipantFullName { get; set; }
         string Link { get; set; }
         DateTime Submitted { get; set; }

@@ -9,6 +9,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
         string Id { get; set; }
         string ProjectId { get; set; }
         string UserId { get; set; }
+        string UserIdentifier { get; set; }
         string FullName { get; set; }
         string Comment { get; set; }
         string ParentId { get; set; }
