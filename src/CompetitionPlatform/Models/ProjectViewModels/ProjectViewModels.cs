@@ -75,6 +75,7 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         [Required]
         [Display(Name = "Author Email")]
         public string AuthorId { get; set; }
+        public string AuthorIdentifier { get; set; }
 
         [Required]
         [Display(Name = "Author Full Name")]
@@ -134,6 +135,7 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public DateTime ImplementationDeadline { get; set; }
         public DateTime VotingDeadline { get; set; }
         public string AuthorFullName { get; set; }
+        public string AuthorId { get; set; }
         public string Category { get; set; }
         public List<string> Tags { get; set; }
         public bool Following { get; set; }
@@ -179,6 +181,7 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public string ProjectId { get; set; }
         public string ProjectName { get; set; }
         public double Amount { get; set; }
+        public string Id { get; set; }
     }
 
     public class JustFinishedProject

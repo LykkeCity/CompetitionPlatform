@@ -9,6 +9,7 @@
             <form asp-controller="ProjectDetails" asp-action="SaveResult" enctype="multipart/form-data" class="form form--share_result">
                 <input asp-for="@Model.ProjectId" type="hidden" />
                 <input asp-for="@Model.ParticipantId" type="hidden" />
+                <input asp-for="@Model.ParticipantIdentifier" type="hidden" />
                 <div class="row">
                     <div class="col-md-9">
                         <input asp-for="@Model.Link" class="form-control" type="text" placeholder="Insert link for the shared file(Dropbox, googleDrive, GitHub)" />

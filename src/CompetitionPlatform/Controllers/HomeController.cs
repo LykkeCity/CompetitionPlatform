@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using CompetitionPlatform.Data.AzureRepositories.Project;
 using CompetitionPlatform.Data.AzureRepositories.Result;
+using CompetitionPlatform.Data.AzureRepositories.Settings;
 using CompetitionPlatform.Data.AzureRepositories.Users;
 using CompetitionPlatform.Data.ProjectCategory;
 using CompetitionPlatform.Helpers;
@@ -33,12 +34,13 @@ namespace CompetitionPlatform.Controllers
         private readonly IProjectWinnersRepository _winnersRepository;
         private readonly IUserFeedbackRepository _feedbackRepository;
         private readonly IUserRolesRepository _userRolesRepository;
+        private readonly BaseSettings _settings;
 
         public HomeController(IProjectRepository projectRepository, IProjectCommentsRepository commentsRepository,
             IProjectCategoriesRepository categoriesRepository, IProjectParticipantsRepository participantsRepository,
             IProjectFollowRepository projectFollowRepository, IProjectResultRepository resultsRepository,
             IProjectWinnersRepository winnersRepository, IUserFeedbackRepository feedbackRepository,
-            IUserRolesRepository userRolesRepository)
+            IUserRolesRepository userRolesRepository, BaseSettings settings)
         {
             _projectRepository = projectRepository;
             _commentsRepository = commentsRepository;
@@ -49,6 +51,7 @@ namespace CompetitionPlatform.Controllers
             _winnersRepository = winnersRepository;
             _feedbackRepository = feedbackRepository;
             _userRolesRepository = userRolesRepository;
+            _settings = settings;
         }
 
         public async Task<IActionResult> Index()
@@ -299,6 +302,14 @@ namespace CompetitionPlatform.Controllers
                         following = true;
                 }
 
+                if (string.IsNullOrEmpty(project.AuthorIdentifier))
+                {
+                    project.AuthorIdentifier = await ClaimsHelper.GetUserIdByEmail(
+                        _settings.LykkeStreams.Authentication.Authority, _settings.LykkeStreams.Authentication.ClientId,
+                        project.AuthorId);
+                    await _projectRepository.UpdateAsync(project);
+                }
+
                 var compactModel = new ProjectCompactViewModel
                 {
                     Id = project.Id,
@@ -316,6 +327,7 @@ namespace CompetitionPlatform.Controllers
                     ResultsCount = resultsCount,
                     WinnersCount = winnersCount,
                     AuthorFullName = project.AuthorFullName,
+                    AuthorId = project.AuthorIdentifier,
                     Category = project.Category,
                     Tags = tagsList,
                     Following = following,
@@ -517,6 +529,16 @@ namespace CompetitionPlatform.Controllers
                 var winners = await _winnersRepository.GetWinnersAsync(project.Id);
                 foreach (var winner in winners)
                 {
+                    if (string.IsNullOrEmpty(winner.WinnerIdentifier))
+                    {
+                        winner.ProjectId = project.Id;
+                        winner.WinnerIdentifier = await ClaimsHelper.GetUserIdByEmail(
+                            _settings.LykkeStreams.Authentication.Authority,
+                            _settings.LykkeStreams.Authentication.ClientId, winner.WinnerId);
+
+                        await _winnersRepository.UpdateAsync(winner);
+                    }
+
                     if (winner.Budget != null)
                         latestWinners.Add(
                             new LatestWinner
@@ -524,7 +546,8 @@ namespace CompetitionPlatform.Controllers
                                 Name = winner.FullName,
                                 ProjectId = project.Id,
                                 ProjectName = project.Name,
-                                Amount = (double)winner.Budget
+                                Amount = (double)winner.Budget,
+                                Id = winner.WinnerIdentifier
                             });
                 }
                 if (latestWinners.Count >= 4) break;

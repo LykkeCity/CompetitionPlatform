@@ -1,8 +1,14 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Security.Claims;
 using System.Security.Principal;
+using System.Threading.Tasks;
 using CompetitionPlatform.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 
 namespace CompetitionPlatform.Helpers
 {
@@ -54,6 +60,36 @@ namespace CompetitionPlatform.Helpers
                 .SingleOrDefault();
 
             return firstName;
+        }
+
+        public static ClaimsIdentity UpdateFirstNameClaim(IIdentity identity, string name)
+        {
+            var claimsIdentity = (ClaimsIdentity)identity;
+            var claims = claimsIdentity.Claims;
+            var claimsList = claims as IList<Claim> ?? claims.ToList();
+            var firstName = claimsList.SingleOrDefault(c => c.Type == ClaimTypes.GivenName);
+            claimsIdentity.RemoveClaim(firstName);
+            claimsIdentity.AddClaim(new Claim(ClaimTypes.GivenName, name));
+
+            return claimsIdentity;
+        }
+
+        public static async Task<string> GetUserIdByEmail(string authLink, string appId, string email)
+        {
+            var webRequest = (HttpWebRequest)WebRequest.Create(authLink + "/getidbyemail?email=" + email);
+            webRequest.Method = "GET";
+            webRequest.ContentType = "text/html";
+            webRequest.Headers["application_id"] = appId;
+            var webResponse = await webRequest.GetResponseAsync();
+
+            using (var receiveStream = webResponse.GetResponseStream())
+            {
+                using (var sr = new StreamReader(receiveStream))
+                {
+                    var userId = await sr.ReadToEndAsync();
+                    return JsonConvert.DeserializeObject(userId).ToString();
+                }
+            }
         }
     }
 }
