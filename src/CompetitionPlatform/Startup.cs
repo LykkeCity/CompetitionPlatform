@@ -135,7 +135,7 @@ namespace CompetitionPlatform
                     options.ForwardedHeaders = ForwardedHeaders.XForwardedProto;
                 });
 
-                services.RegisterRepositories(connectionString, Log);
+                services.RegisterRepositories(connectionString, Log, Settings.LykkeStreams.PersonalDataService.ApiKey, Settings.LykkeStreams.PersonalDataService.ServiceUri);
                 JobScheduler.Start(connectionString, Log);
             }
             catch (Exception ex)
@@ -255,6 +255,15 @@ namespace CompetitionPlatform
 
             if (string.IsNullOrEmpty(settings.EmailServiceBus.QueueName))
                 WriteSettingsReadError(log, "EmailServiceBus-QueueName");
+
+            if(string.IsNullOrEmpty(settings.LykkeStreams.PersonalDataService.ApiKey))
+                WriteSettingsReadError(log, "PersonalData-ApiKey");
+
+            if (string.IsNullOrEmpty(settings.LykkeStreams.PersonalDataService.ServiceUri))
+                WriteSettingsReadError(log, "PersonalData-ServiceUri");
+
+            if (string.IsNullOrEmpty(settings.LykkeStreams.PersonalDataService.ServiceExternalUri))
+                WriteSettingsReadError(log, "PersonalData-ServiceExternalUri");
         }
 
         private void WriteSettingsReadError(ILog log, string elementName)

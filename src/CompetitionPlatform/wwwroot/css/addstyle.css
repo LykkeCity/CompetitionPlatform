@@ -49,3 +49,7 @@
     text-align: left;
     color: #3f4d60 !important;
 }
+
+.link-text-black {
+    color: inherit !important;
+} 

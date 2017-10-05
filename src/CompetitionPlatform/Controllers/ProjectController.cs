@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Security.Claims;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -27,6 +28,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Ganss.XSS;
+using Lykke.Service.PersonalData.Contract;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace CompetitionPlatform.Controllers
 {
@@ -49,6 +53,7 @@ namespace CompetitionPlatform.Controllers
         private readonly ILog _log;
         private readonly IProjectExpertsRepository _projectExpertsRepository;
         private readonly IStreamRepository _streamRepository;
+        private readonly IPersonalDataService _personalDataService;
 
         public ProjectController(IProjectRepository projectRepository, IProjectCommentsRepository commentsRepository,
             IProjectFileRepository fileRepository, IProjectFileInfoRepository fileInfoRepository,
@@ -58,7 +63,7 @@ namespace CompetitionPlatform.Controllers
             IProjectWinnersService winnersService, IQueueExt emailsQueue,
             IProjectResultVoteRepository resultVoteRepository, BaseSettings settings,
             ILog log, IProjectExpertsRepository projectExpertsRepository,
-            IStreamRepository streamRepository)
+            IStreamRepository streamRepository, IPersonalDataService personalDataService)
         {
             _projectRepository = projectRepository;
             _commentsRepository = commentsRepository;
@@ -77,6 +82,7 @@ namespace CompetitionPlatform.Controllers
             _log = log;
             _projectExpertsRepository = projectExpertsRepository;
             _streamRepository = streamRepository;
+            _personalDataService = personalDataService;
         }
 
         [Authorize]
@@ -164,6 +170,7 @@ namespace CompetitionPlatform.Controllers
 
                 projectViewModel.AuthorId = user.Email;
                 projectViewModel.AuthorFullName = user.GetFullName();
+                projectViewModel.AuthorIdentifier = user.Id;
                 projectViewModel.UserAgent = HttpContext.Request.Headers["User-Agent"].ToString();
 
                 projectViewModel.Created = DateTime.UtcNow;
@@ -525,6 +532,7 @@ namespace CompetitionPlatform.Controllers
 
             var viewModel = await GetProjectViewModel(id);
             ViewBag.FacebookShareDescription = viewModel.Overview;
+
             return View(viewModel);
         }
 
@@ -542,6 +550,13 @@ namespace CompetitionPlatform.Controllers
 
             foreach (var comment in comments)
             {
+                if (string.IsNullOrEmpty(comment.UserIdentifier))
+                {
+                    comment.UserIdentifier = await ClaimsHelper.GetUserIdByEmail(_settings.LykkeStreams.Authentication.Authority,
+                        _settings.LykkeStreams.Authentication.ClientId, comment.UserId);
+                    await _commentsRepository.UpdateAsync(comment, id);
+                }
+
                 if (!string.IsNullOrEmpty(comment.Comment))
                 {
                     comment.Comment = Regex.Replace(comment.Comment, @"\r\n?|\n", "<br />");
@@ -590,8 +605,25 @@ namespace CompetitionPlatform.Controllers
             var userVotedForResults = new Dictionary<string, bool>();
             var resultVotes = await _resultVoteRepository.GetProjectResultVotesAsync(project.Id);
 
+            foreach (var part in participants)
+            {
+                if (string.IsNullOrEmpty(part.UserIdentifier))
+                {
+                    part.UserIdentifier = await ClaimsHelper.GetUserIdByEmail(_settings.LykkeStreams.Authentication.Authority,
+                        _settings.LykkeStreams.Authentication.ClientId, part.UserId);
+                    await _participantsRepository.UpdateAsync(part);
+                }
+            }
+
             foreach (var result in results)
             {
+                if (string.IsNullOrEmpty(result.ParticipantIdentifier))
+                {
+                    result.ParticipantIdentifier = await ClaimsHelper.GetUserIdByEmail(_settings.LykkeStreams.Authentication.Authority,
+                        _settings.LykkeStreams.Authentication.ClientId, result.ParticipantId);
+                    await _resultRepository.UpdateAsync(result);
+                }
+
                 var match =
                     resultVotes.FirstOrDefault(x => x.ParticipantId == result.ParticipantId && x.VoterUserId == user.Email);
 
@@ -754,6 +786,17 @@ namespace CompetitionPlatform.Controllers
             var winnersList = await _winnersRepository.GetWinnersAsync(model.Id);
 
             winnersList = winnersList.OrderBy(x => x.Place).ThenByDescending(x => x.Votes).ThenByDescending(x => x.Score);
+
+            foreach (var winner in winnersList)
+            {
+                if (string.IsNullOrEmpty(winner.WinnerIdentifier))
+                {
+                    winner.ProjectId = model.Id;
+                    winner.WinnerIdentifier = await ClaimsHelper.GetUserIdByEmail(_settings.LykkeStreams.Authentication.Authority,
+                        _settings.LykkeStreams.Authentication.ClientId, winner.WinnerId);
+                    await _winnersRepository.UpdateAsync(winner);
+                }
+            }
 
             model.ResultsPartial.Winners = winnersList;
 

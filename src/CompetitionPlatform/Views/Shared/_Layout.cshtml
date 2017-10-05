@@ -172,6 +172,9 @@
                             <div class="dropdown__container">
                                 <ul class="dropdown__nav">
                                     <li>
+                                        <a asp-controller="UserProfile" asp-action="DisplayUserProfile" asp-route-id="@ClaimsHelper.GetUser(User.Identity).Id">Profile</a>
+                                    </li>
+                                    <li>
                                         <a asp-controller="Home" asp-action="LogOut" asp-route-id="">Sign Out</a>
                                     </li>
                                 </ul>

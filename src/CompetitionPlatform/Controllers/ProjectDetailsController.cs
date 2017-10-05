@@ -58,6 +58,7 @@ namespace CompetitionPlatform.Controllers
         {
             var user = GetAuthenticatedUser();
             model.UserId = user.Email;
+            model.UserIdentifier = user.Id;
             model.FullName = user.GetFullName();
             model.Created = DateTime.UtcNow;
             model.LastModified = model.Created;
@@ -213,6 +214,7 @@ namespace CompetitionPlatform.Controllers
                 {
                     ProjectId = id,
                     UserId = user.Email,
+                    UserIdentifier = user.Id,
                     FullName = user.GetFullName(),
                     Registered = DateTime.UtcNow,
                     Result = false,
@@ -260,7 +262,8 @@ namespace CompetitionPlatform.Controllers
             var viewModel = new AddResultViewModel
             {
                 ProjectId = id,
-                ParticipantId = GetAuthenticatedUser().Email
+                ParticipantId = GetAuthenticatedUser().Email,
+                ParticipantIdentifier = GetAuthenticatedUser().Id
             };
             return View("~/Views/Project/AddResult.cshtml", viewModel);
         }

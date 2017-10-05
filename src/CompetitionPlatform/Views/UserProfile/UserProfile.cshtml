@@ -1,0 +1,119 @@
+﻿@using CompetitionPlatform.Helpers
+@model CompetitionPlatform.Models.UserProfile.UserProfileViewModel
+
+@{
+    ViewData["Title"] = "Projects";
+    var fullName = Model.Profile.FirstName + " " + Model.Profile.LastName;
+
+    var editProfileLink = @Model.AuthLink + "/profile";
+}
+
+<section class="section section--lead section--padding">
+    <div class="container container--extend">
+        <div class="row">
+            <div class="pull-right">
+                @if (ClaimsHelper.GetUser(User.Identity).Id != null && ClaimsHelper.GetUser(User.Identity).Id == Model.Profile.ClientId)
+                {
+                    <a href="@editProfileLink"><button class="btn btn-sm btn_edit">Edit Profile</button></a>
+                }
+            </div>
+        </div>
+        <div class="page__header">
+            <div class="user_profile">
+                <div class="row">
+                    <div class="col-sm-8 user_profile__main">
+                        <div class="user_badge">
+                            <div class="user_badge__img">
+                                @if (Model.Profile.AvatarUrl == null)
+                                {
+                                    <img src="~/assets/img/competition/user_default.svg" alt="user_image" width="160">
+                                }
+                                else
+                                {
+                                    <img src="@Model.Profile.AvatarUrl" alt="user_image" width="160">
+                                }
+                            </div>
+                            <div class="user_badge__content">
+                                <h1 class="h2">@fullName</h1>
+                                @if (!string.IsNullOrEmpty(Model.Profile.Website))
+                                {
+                                    <div class="hint">
+                                        <a target="_blank" href="@Model.Profile.Website">@Model.Profile.Website</a>
+                                    </div>
+                                }
+
+                                <p>@Model.Profile.ShortBio</p>
+
+                                <div class="user_badge__contacts">
+                                    <div class="social">
+                                        @if (!string.IsNullOrEmpty(Model.Profile.Twitter))
+                                        {
+                                            <a target="_blank" href="@Model.Profile.Twitter" class="social__item"><i class="icon icon--tw"></i></a>
+                                        }
+                                        @if (!string.IsNullOrEmpty(Model.Profile.Facebook))
+                                        {
+                                            <a target="_blank" href="@Model.Profile.Facebook" class="social__item"><i class="icon icon--fb_simple"></i></a>
+                                        }
+                                        @if (!string.IsNullOrEmpty(Model.Profile.Github))
+                                        {
+                                            <a target="_blank" href="@Model.Profile.Github" class="social__item"><i class="icon icon--github"></i></a>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 user_profile__desc">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <h5>Won</h5>
+                                <div class="prize__value">$@Model.WinningsSum</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="col-xs-12 content__left">
+
+                <div class="nav_scroll">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active"><a href="#participated" aria-controls="participated" role="tab" data-toggle="tab">Participated <sup>@Model.ParticipatedProjects.Count</sup></a></li>
+                        <li role="presentation"><a href="#won" aria-controls="won" role="tab" data-toggle="tab">Won <sup>@Model.WonProjects.Count</sup></a></li>
+                        <li role="presentation"><a href="#created" aria-controls="created" role="tab" data-toggle="tab">Created <sup>@Model.CreatedProjects.Count</sup></a></li>
+                        <li role="presentation"><a href="#comments" aria-controls="comments" role="tab" data-toggle="tab">Comments <sup>@Model.Comments.Count</sup></a></li>
+                    </ul>
+                </div>
+
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="participated">
+                        <div class="row">
+                            @await Html.PartialAsync("ProfileProjectListPartial", Model.ParticipatedProjects)
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="won">
+                        <div class="row">
+                            @await Html.PartialAsync("ProfileProjectListPartial", Model.WonProjects)
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="created">
+                        <div class="row">
+                            @await Html.PartialAsync("ProfileProjectListPartial", Model.CreatedProjects)
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="comments">
+                        <div class="row">
+                            <div class="col-sm-8 automargin">
+                                <div class="messages_list">
+                                    @await Html.PartialAsync("ProfileCommentsListPartial", Model.Comments)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

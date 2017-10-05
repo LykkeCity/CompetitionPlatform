@@ -22,6 +22,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Users
         {
             Place = src.Place;
             Budget = src.Budget;
+            WinnerIdentifier = src.WinnerIdentifier;
         }
 
         public static WinnerEntity Create(IWinnerData src)
@@ -37,6 +38,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Users
                 Score = src.Score,
                 Budget = src.Budget,
                 WinnerId = src.WinnerId,
+                WinnerIdentifier = src.WinnerIdentifier,
                 WinningScore = src.WinningScore
             };
 
@@ -45,6 +47,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Users
 
         public string ProjectId { get; set; }
         public string WinnerId { get; set; }
+        public string WinnerIdentifier { get; set; }
         public string FullName { get; set; }
         public int Place { get; set; }
         public string Result { get; set; }

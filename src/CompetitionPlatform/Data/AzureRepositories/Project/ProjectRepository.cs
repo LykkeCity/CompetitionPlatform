@@ -39,6 +39,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
         public DateTime LastModified { get; set; }
         public string AuthorId { get; set; }
         public string AuthorFullName { get; set; }
+        public string AuthorIdentifier { get; set; }
         public int ParticipantsCount { get; set; }
         public string ProgrammingResourceName { get; set; }
         public string ProgrammingResourceLink { get; set; }
@@ -73,6 +74,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
             SkipRegistration = src.SkipRegistration;
             AuthorId = src.AuthorId;
             AuthorFullName = src.AuthorFullName;
+            AuthorIdentifier = src.AuthorIdentifier;
             PrizeDescription = src.PrizeDescription;
             StreamId = src.StreamId;
             NameTag = src.NameTag;
@@ -101,6 +103,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
                 LastModified = src.Created,
                 AuthorId = src.AuthorId,
                 AuthorFullName = src.AuthorFullName,
+                AuthorIdentifier = src.AuthorIdentifier,
                 ParticipantsCount = src.ParticipantsCount,
                 ProgrammingResourceName = src.ProgrammingResourceName,
                 ProgrammingResourceLink = src.ProgrammingResourceLink,

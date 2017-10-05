@@ -8,6 +8,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Users
     {
         string ProjectId { get; set; }
         string WinnerId { get; set; }
+        string WinnerIdentifier { get; set; }
         string FullName { get; set; }
         int Place { get; set; }
         string Result { get; set; }
