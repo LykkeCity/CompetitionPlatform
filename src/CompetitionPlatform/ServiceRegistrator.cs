@@ -14,12 +14,15 @@ using CompetitionPlatform.Data.AzureRepositories.Result;
 using CompetitionPlatform.Data.AzureRepositories.Vote;
 using CompetitionPlatform.Data.BlogCategory;
 using CompetitionPlatform.Data.ProjectCategory;
+using Lykke.Service.PersonalData.Client;
+using Lykke.Service.PersonalData.Contract;
+using Lykke.Service.PersonalData.Settings;
 
 namespace CompetitionPlatform
 {
     public static class ServiceRegistrator
     {
-        public static void RegisterRepositories(this IServiceCollection services, string connectionString, ILog log)
+        public static void RegisterRepositories(this IServiceCollection services, string connectionString, ILog log, string personalDatAapiKey, string personalDataServiceUri)
         {
             services.AddSingleton(log);
 
@@ -80,6 +83,9 @@ namespace CompetitionPlatform
             services.AddSingleton<INoSQLTableStorage<StreamEntity>>(
                 new AzureTableStorage<StreamEntity>(connectionString, "ProjectStreams", log));
 
+            services.AddSingleton<IPersonalDataService>(
+                new PersonalDataService(new PersonalDataServiceSettings { ApiKey = personalDatAapiKey, ServiceUri = personalDataServiceUri }, log));
+
             services.AddTransient<IProjectRepository, ProjectRepository>();
             services.AddTransient<IProjectFileRepository, ProjectFileRepository>();
             services.AddTransient<IUsersRepository, UsersRepository>();
@@ -111,11 +117,6 @@ namespace CompetitionPlatform
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
         }
-
-        //public static void RegisterEmailNotificationServices(this IServiceCollection services, string emailsQueueConnString)
-        //{
-        //    services.AddSingleton<IAzureQueue<string>>(new AzureQueue<string>(emailsQueueConnString, "emailsqueue"));
-        //}
 
         public static void RegisterSlackNotificationServices(this IServiceCollection services, string slackQueueConnString)
         {
