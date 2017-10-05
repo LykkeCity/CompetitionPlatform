@@ -12,8 +12,8 @@
             <tr>
                 <td>
                     <div class="user_badge user_badge--small">
-                        <div class="user_badge__img"><img src="~/images/avatar.svg" alt=""></div>
-                        <div class="user_badge__info">@participant.FullName</div>
+                        <a href="/userprofile/@participant.UserIdentifier" class="user_badge__img"><img src="~/images/avatar.svg" alt=""></a>
+                        <a href="/userprofile/@participant.UserIdentifier" class="user_badge__info link-text-black">@participant.FullName</a>
                     </div>
                 </td>
                 <td class="text-right">@participant.Registered.ToString("MMMM dd, yyyy hh:mm")</td>
