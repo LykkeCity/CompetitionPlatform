@@ -12,7 +12,7 @@
                             <p>@comment.Comment</p>
                             <div class="card__actions">
                                 <span class="action_text">Posted in</span>
-                                <a asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@comment.ProjectId" asp-route-commentsActive=true>@comment.ProjectName</a>
+                                <a class="action_link" asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@comment.ProjectId" asp-route-commentsActive=true>@comment.ProjectName</a>
                             </div>
 
                         </div>
