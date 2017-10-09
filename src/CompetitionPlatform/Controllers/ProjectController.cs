@@ -695,6 +695,7 @@ namespace CompetitionPlatform.Controllers
                 ResultsPartial = resultsPartial,
                 AuthorId = project.AuthorId,
                 AuthorFullName = project.AuthorFullName,
+                AuthorIdentifier = project.AuthorIdentifier,
                 ParticipantId = participantId,
                 IsParticipant = isParticipant,
                 IsAdmin = isAdmin,
