@@ -52,4 +52,8 @@
 
 .link-text-black {
     color: inherit !important;
-} 
+}
+
+.user_badge__img img {
+    height: 100% !important;
+}
