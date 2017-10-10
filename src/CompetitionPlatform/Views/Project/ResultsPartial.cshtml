@@ -54,7 +54,7 @@
                 <th class="board_result text-center">Result</th>
                 @if (!Model.SkipVoting)
                 {
-                    <th class="board_score text-center">Score</th>
+                    @*<th class="board_score text-center">Score</th>*@
                     <th class="board_vote text-center">Vote</th>
                 }
                 @if (Model.Status == Status.Voting)
@@ -91,7 +91,7 @@
                     }
                     @if (!Model.SkipVoting)
                     {
-                        <td class="board_score text-center">0<span class="text-muted">/100</span></td>
+                        @*<td class="board_score text-center">0<span class="text-muted">/100</span></td>*@
                         <td class="board_vote text-center">@result.Votes</td>
                     }
                     @if (Model.Status == Status.Voting)
