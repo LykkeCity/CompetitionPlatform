@@ -21,6 +21,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Expert
 
         public string ProjectId { get; set; }
         public string UserId { get; set; }
+        public string UserIdentifier { get; set; }
         public string FullName { get; set; }
         public string Description { get; set; }
 
@@ -32,6 +33,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Expert
                 RowKey = GenerateRowKey(src.UserId),
                 ProjectId = src.ProjectId,
                 UserId = src.UserId,
+                UserIdentifier = src.UserIdentifier,
                 FullName = src.FullName,
                 Description = src.Description
             };
@@ -43,6 +45,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Expert
         {
             FullName = src.FullName;
             Description = src.Description;
+            UserIdentifier = src.UserIdentifier;
         }
     }
     public class ProjectExpertsRepository : IProjectExpertsRepository

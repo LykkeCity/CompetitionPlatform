@@ -671,6 +671,16 @@ namespace CompetitionPlatform.Controllers
 
             var experts = await _projectExpertsRepository.GetProjectExpertsAsync(id);
 
+            foreach (var expert in experts)
+            {
+                if (string.IsNullOrEmpty(expert.UserIdentifier))
+                {
+                    expert.UserIdentifier = await ClaimsHelper.GetUserIdByEmail(_settings.LykkeStreams.Authentication.Authority,
+                        _settings.LykkeStreams.Authentication.ClientId, expert.UserId);
+                    await _projectExpertsRepository.UpdateAsync(expert);
+                }
+            }
+
             var projectViewModel = new ProjectViewModel
             {
                 Id = project.Id,
