@@ -10,7 +10,51 @@
 
 @if (Model.Status == Status.Archive)
 {
-    var prizeFund = Model.Winners.Where(winner => winner.Budget != null).Sum(winner => (double) winner.Budget);
+    var prizeFund = Model.Winners.Where(winner => winner.Budget != null).Sum(winner => (double)winner.Budget);
+
+    <div>
+        @if (!containsFirstPlaceWinner)
+        {
+            <p>
+                For this project, none of the submitted results matched our experts expectations, so we decided not to award the first prize.
+            </p>
+        }
+    </div>
+
+    <div class="winners_list">
+        <div class="row">
+            @foreach (var winner in Model.Winners)
+            {
+                var voteVotes = winner.Votes == 1 ? "vote" : "votes";
+                if (winner.Place == 1)
+                {
+                    <div class="col-xs-6 col-sm-3">
+                        <div class="winners_item winners_item--first">
+                            <div class="winners_item__user">
+                                <div class="winners_item__img"><a href="/userprofile/@winner.WinnerIdentifier"><img src="~/public/img/user_default.svg" alt="@winner.FullName" /></a></div>
+                                <span class="winners_item__label">1</span>
+                            </div>
+                            <div class="winners_item__title"><a href="/userprofile/@winner.WinnerIdentifier">@winner.FullName</a></div>
+                            <div class="prize__value">$@winner.Budget</div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-xs-6 col-sm-3">
+                        <div class="winners_item">
+                            <div class="winners_item__user">
+                                <div class="winners_item__img"><a href=""><img src="~/public/img/user_default.svg" alt="@winner.FullName" /></a></div>
+                                <span class="winners_item__label">2</span>
+                            </div>
+                            <div class="winners_item__title"><a href="">@winner.FullName</a></div>
+                            <div class="prize__value">$@winner.Budget</div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
 
     <div class="banner banner--results">
         <div class="banner__content">
@@ -42,101 +86,4 @@
             </div>
         </div>
     </div>
-
-    <div>
-        @if (!containsFirstPlaceWinner)
-        {
-            <p>
-                For this project, none of the submitted results matched our experts expectations, so we decided not to award the first prize.
-            </p>
-        }
-    </div>
-
-    <div class="table-responsive">
-        @{
-            var showSecondPlaceIcon = true;
-        }
-        <table class="table table--board table--board_results">
-            @foreach (var winner in Model.Winners)
-            {
-                var voteVotes = winner.Votes == 1 ? "vote" : "votes";
-
-                if (winner.Place == 1)
-                {
-                    <tr class="board_winner">
-                        <td class="board_place">
-                            <span class="icon icon--prize">
-                                <span class="path1"></span><span class="path2"></span><span class="path3"></span>
-                            </span>
-                        </td>
-                        <td class="board_name">
-                            <div class="user_badge user_badge--small">
-                                <div class="user_badge__img">
-                                    <a href="/userprofile/@winner.WinnerIdentifier"><img src="~/images/avatar.svg" alt=""></a>
-                                </div>
-                                @if (Model.SkipVoting)
-                                {
-                                    <div class="user_badge__info">
-                                        <a class="bold" href="/userprofile/@winner.WinnerIdentifier">@winner.FullName</a>
-                                    </div>
-                                }
-                                else
-                                {
-                                    <div class="user_badge__info">
-                                        <div class="user_badge__title">
-                                            <a href="/userprofile/@winner.WinnerIdentifier">@winner.FullName</a>
-                                        </div>
-                                        <span class="user_badge__desc">@winner.Votes @voteVotes</span>
-                                    </div>
-                                }
-                            </div>
-                        </td>
-                        <td class="board_result text-center"><a target="_blank" href="@winner.Result">View result</a></td>
-                        <td class="board_sum">
-                            <div class="prize__value">$ @winner.Budget</div>
-                        </td>
-                    </tr>
-                }
-                else
-                {
-                    <tr>
-                        @if (showSecondPlaceIcon)
-                        {
-                            <td class="board_place">
-                                <span class="icon icon--prize2"></span>
-                            </td>
-                            //showSecondPlaceIcon = false;
-                        }
-                        <td class="board_name">
-                            <div class="user_badge user_badge--small">
-                                <div class="user_badge__img">
-                                    <a href="/userprofile/@winner.WinnerIdentifier"><img src="~/images/avatar.svg" alt=""></a>
-                                </div>
-                                @if (Model.SkipVoting)
-                                {
-                                    <div class="user_badge__info">
-                                        <a class="bold" href="/userprofile/@winner.WinnerIdentifier">@winner.FullName</a>
-                                    </div>
-                                }
-                                else
-                                {
-                                    <div class="user_badge__info">
-                                        <div class="user_badge__title">
-                                            <a href="/userprofile/@winner.WinnerIdentifier">@winner.FullName</a>
-                                        </div>
-                                        <span class="user_badge__desc">@winner.Votes @voteVotes</span>
-                                    </div>
-                                }
-                            </div>
-                        </td>
-                        <td class="board_result text-center"><a target="_blank" href="@winner.Result">View result</a></td>
-                        <td class="board_sum">
-                            <div class="prize__value">$ @winner.Budget</div>
-                        </td>
-                    </tr>
-                }
-
-            }
-        </table>
-    </div>
-            }
+}

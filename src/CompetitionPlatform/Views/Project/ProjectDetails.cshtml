@@ -90,6 +90,8 @@
     var registrationCurrent = "";
     var submissionCurrent = "";
     var votingCurrent = "";
+    var showDaysOfProject = false;
+    var daysOfProject = Model.ResultsPartial.DaysOfContest == 1 ? "1 day" : Model.ResultsPartial.DaysOfContest + " days";
 
     switch (Model.Status)
     {
@@ -123,6 +125,7 @@
             checkCompetition = "check--blue";
             checkSubmission = "check--green";
             checkVoting = "check--yellow";
+            showDaysOfProject = true;
             break;
     }
 
@@ -331,6 +334,15 @@
                     <div class="col-xs-6 col-sm-12">
 
                         <ul class="list list--info">
+                            @if (showDaysOfProject)
+                            {
+                                <li class="list__item">
+                                    <div class="list__content">
+                                        <div class="title @textCompetition">Days of the project</div>
+                                        <p>@Model.Created.ToString("MMM d") - @Model.VotingDeadline.ToString("MMM d") (@daysOfProject)</p>
+                                    </div>
+                                </li>
+                            }
                             @if (!Model.SkipRegistration)
                             {
                                 <li class="list__item @registrationCurrent">
