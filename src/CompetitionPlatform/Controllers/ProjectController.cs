@@ -792,7 +792,7 @@ namespace CompetitionPlatform.Controllers
             model.ResultsPartial.BudgetFirstPlace = model.BudgetFirstPlace;
             model.ResultsPartial.BudgetSecondPlace = model.BudgetSecondPlace;
             model.ResultsPartial.ParticipantCount = model.ParticipantsPartial.Participants.Count();
-            model.ResultsPartial.DaysOfContest = (DateTime.UtcNow - model.Created).Days;
+            model.ResultsPartial.DaysOfContest = (model.VotingDeadline - model.Created).Days;
 
             var winnersList = await _winnersRepository.GetWinnersAsync(model.Id);
 
