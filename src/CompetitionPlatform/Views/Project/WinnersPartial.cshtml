@@ -44,10 +44,10 @@
                     <div class="col-xs-6 col-sm-3">
                         <div class="winners_item">
                             <div class="winners_item__user">
-                                <div class="winners_item__img"><a href=""><img src="~/public/img/user_default.svg" alt="@winner.FullName" /></a></div>
+                                <div class="winners_item__img"><a href="/userprofile/@winner.WinnerIdentifier"><img src="~/public/img/user_default.svg" alt="@winner.FullName" /></a></div>
                                 <span class="winners_item__label">2</span>
                             </div>
-                            <div class="winners_item__title"><a href="">@winner.FullName</a></div>
+                            <div class="winners_item__title"><a href="/userprofile/@winner.WinnerIdentifier">@winner.FullName</a></div>
                             <div class="prize__value">$@winner.Budget</div>
                         </div>
                     </div>
