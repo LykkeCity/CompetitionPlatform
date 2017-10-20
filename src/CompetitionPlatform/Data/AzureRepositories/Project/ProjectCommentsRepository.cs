@@ -21,6 +21,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
 
         public string Id { get; set; }
         public string UserId { get; set; }
+        public string UserIdentifier { get; set; }
         public string FullName { get; set; }
         public string ProjectId { get; set; }
         public string Comment { get; set; }
@@ -41,6 +42,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
                 Id = id,
                 Comment = src.Comment,
                 UserId = src.UserId,
+                UserIdentifier = src.UserIdentifier,
                 FullName = src.FullName,
                 Created = src.Created,
                 LastModified = src.LastModified,
@@ -56,6 +58,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
             Comment = src.Comment;
             LastModified = DateTime.UtcNow;
             Deleted = src.Deleted;
+            UserIdentifier = src.UserIdentifier;
         }
     }
 

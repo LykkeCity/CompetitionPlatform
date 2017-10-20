@@ -14,38 +14,6 @@
 
 @if (showResults)
 {
-    <div class="banner banner--results">
-        <img src="~/img/competition/winner-voting-icn.svg" class="pull-left" width="80" alt="banner-coin">
-        <div class="banner__content">
-            <h4>Help us determine the winner!</h4>
-            <p>
-                Check the completed task, participants of the contest and choose the best result. You can cast votes for the various participants.
-            <p>
-                Project winners are decided by a score given by the community, as follows:
-            </p>
-            <p>
-                <span class="middot h3">&middot;</span> Selected experts: 30%
-            </p>
-            <p>
-                <span class="middot h3">&middot;</span> Project originator: 10%
-            </p>
-            <p>
-                <span class="middot h3">&middot;</span> Sponsor providing cash incentives: 40%
-            </p>
-            <p>
-                <span class="middot h3">&middot;</span> Lykke community votes: 20%
-            </p>
-            <p>
-                A result is not eligible to win the competition without the author's vote, which states that it has matched the requirements.
-            </p>
-            @if (Model.Status != Status.Voting && Model.Status != Status.Archive)
-                {
-                <span>Voting will open after @Model.SubmissionsDeadline.ToString("MMMM d, yyyy.")</span>
-            }
-            </p>
-        </div>
-    </div>
-
     <div class="table-container">
         <table class="table table--board">
             <tr>
@@ -54,7 +22,7 @@
                 <th class="board_result text-center">Result</th>
                 @if (!Model.SkipVoting)
                 {
-                    <th class="board_score text-center">Score</th>
+                    @*<th class="board_score text-center">Score</th>*@
                     <th class="board_vote text-center">Vote</th>
                 }
                 @if (Model.Status == Status.Voting)
@@ -74,10 +42,10 @@
                 <tr>
                     <td class="board_name">
                         <div class="user_badge user_badge--small">
-                            <div class="user_badge__img">
+                            <a href="/userprofile/@result.ParticipantIdentifier" class="user_badge__img">
                                 <img src="~/images/avatar.svg" alt="">
-                            </div>
-                            <div class="user_badge__info">@result.ParticipantFullName</div>
+                            </a>
+                            <a href="/userprofile/@result.ParticipantIdentifier" class="user_badge__info link-text-black">@result.ParticipantFullName</a>
                         </div>
                     </td>
                     <td class="board_date">@result.Submitted.ToString("MMMM dd, yyyy hh:mm")</td>
@@ -91,7 +59,7 @@
                     }
                     @if (!Model.SkipVoting)
                     {
-                        <td class="board_score text-center">0<span class="text-muted">/100</span></td>
+                        @*<td class="board_score text-center">0<span class="text-muted">/100</span></td>*@
                         <td class="board_vote text-center">@result.Votes</td>
                     }
                     @if (Model.Status == Status.Voting)
@@ -191,5 +159,37 @@
                 </tr>
             }
         </table>
+    </div>
+
+    <div class="banner banner--results">
+        <img src="~/img/competition/winner-voting-icn.svg" class="pull-left" width="80" alt="banner-coin">
+        <div class="banner__content">
+            <h4>Help us determine the winner!</h4>
+            <p>
+                Check the completed task, participants of the contest and choose the best result. You can cast votes for the various participants.
+            <p>
+                Project winners are decided by a score given by the community, as follows:
+            </p>
+            <p>
+                <span class="middot h3">&middot;</span> Selected experts: 30%
+            </p>
+            <p>
+                <span class="middot h3">&middot;</span> Project originator: 10%
+            </p>
+            <p>
+                <span class="middot h3">&middot;</span> Sponsor providing cash incentives: 40%
+            </p>
+            <p>
+                <span class="middot h3">&middot;</span> Lykke community votes: 20%
+            </p>
+            <p>
+                A result is not eligible to win the competition without the author's vote, which states that it has matched the requirements.
+            </p>
+            @if (Model.Status != Status.Voting && Model.Status != Status.Archive)
+                {
+                <span>Voting will open after @Model.SubmissionsDeadline.ToString("MMMM d, yyyy.")</span>
+            }
+            </p>
+        </div>
     </div>
 }

@@ -49,5 +49,13 @@ namespace CompetitionPlatform.Data.AzureRepositories.Settings
         public AzureSettings Azure { get; set; }
         public AuthenticationSettings Authentication { get; set; }
         public List<string> ProjectCreateNotificationReceiver { get; set; }
+        public PersonalDataServiceSettings PersonalDataService { get; set; }
+    }
+
+    public class PersonalDataServiceSettings
+    {
+        public string ServiceUri { get; set; }
+        public string ServiceExternalUri { get; set; }
+        public string ApiKey { get; set; }
     }
 }

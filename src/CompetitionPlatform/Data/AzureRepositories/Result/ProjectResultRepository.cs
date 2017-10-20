@@ -21,6 +21,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Result
 
         public string ProjectId { get; set; }
         public string ParticipantId { get; set; }
+        public string ParticipantIdentifier { get; set; }
         public string ParticipantFullName { get; set; }
         public string Link { get; set; }
         public DateTime Submitted { get; set; }
@@ -36,6 +37,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Result
                 RowKey = GenerateRowKey(src.ParticipantId),
                 ProjectId = src.ProjectId,
                 ParticipantId = src.ParticipantId,
+                ParticipantIdentifier = src.ParticipantIdentifier,
                 ParticipantFullName = src.ParticipantFullName,
                 Link = src.Link,
                 Submitted = src.Submitted,
@@ -52,6 +54,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Result
             Score = src.Score;
             Votes = src.Votes;
             UserAgent = src.UserAgent;
+            ParticipantIdentifier = src.ParticipantIdentifier;
         }
     }
 

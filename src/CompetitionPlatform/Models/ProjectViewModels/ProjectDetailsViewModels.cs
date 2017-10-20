@@ -13,6 +13,7 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public string Id { get; set; }
         public string ProjectId { get; set; }
         public string UserId { get; set; }
+        public string UserIdentifier { get; set; }
         public string FullName { get; set; }
         [Required]
         public string Comment { get; set; }
@@ -45,6 +46,7 @@ namespace CompetitionPlatform.Models.ProjectViewModels
     {
         public string ProjectId { get; set; }
         public string UserId { get; set; }
+        public string UserIdentifier { get; set; }
         public string FullName { get; set; }
         public DateTime Registered { get; set; }
         public bool Result { get; set; }
@@ -63,6 +65,7 @@ namespace CompetitionPlatform.Models.ProjectViewModels
     {
         public string ProjectId { get; set; }
         public string ParticipantId { get; set; }
+        public string ParticipantIdentifier { get; set; }
 
         [Required]
         [Url]
@@ -127,6 +130,7 @@ namespace CompetitionPlatform.Models.ProjectViewModels
     {
         public string ProjectId { get; set; }
         public string WinnerId { get; set; }
+        public string WinnerIdentifier { get; set; }
         public string FullName { get; set; }
         public int Place { get; set; }
         public string Result { get; set; }

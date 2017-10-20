@@ -95,6 +95,7 @@ namespace CompetitionPlatform.Services
                 {
                     ProjectId = firstPlaceResult.ProjectId,
                     WinnerId = firstPlaceResult.ParticipantId,
+                    WinnerIdentifier = firstPlaceResult.ParticipantIdentifier,
                     FullName = firstPlaceResult.ParticipantFullName,
                     Result = firstPlaceResult.Link,
                     Votes = firstPlaceResult.Votes,
@@ -118,6 +119,7 @@ namespace CompetitionPlatform.Services
                     {
                         ProjectId = secondPlaceResult.ProjectId,
                         WinnerId = secondPlaceResult.ParticipantId,
+                        WinnerIdentifier = secondPlaceResult.ParticipantIdentifier,
                         FullName = secondPlaceResult.ParticipantFullName,
                         Result = secondPlaceResult.Link,
                         Votes = secondPlaceResult.Votes,

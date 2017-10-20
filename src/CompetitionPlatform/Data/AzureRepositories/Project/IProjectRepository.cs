@@ -26,6 +26,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
         DateTime LastModified { get; set; }
         string AuthorId { get; set; }
         string AuthorFullName { get; set; }
+        string AuthorIdentifier { get; set; }
         int ParticipantsCount { get; set; }
         string ProgrammingResourceName { get; set; }
         string ProgrammingResourceLink { get; set; }

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
 using CompetitionPlatform.Data.AzureRepositories.Project;
 using CompetitionPlatform.Data.AzureRepositories.Result;
+using CompetitionPlatform.Data.AzureRepositories.Settings;
 using CompetitionPlatform.Data.AzureRepositories.Users;
 using CompetitionPlatform.Data.ProjectCategory;
 using CompetitionPlatform.Helpers;
@@ -12,6 +14,8 @@ using CompetitionPlatform.Models;
 using Microsoft.AspNetCore.Mvc;
 using CompetitionPlatform.Models.ProjectViewModels;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
@@ -30,12 +34,13 @@ namespace CompetitionPlatform.Controllers
         private readonly IProjectWinnersRepository _winnersRepository;
         private readonly IUserFeedbackRepository _feedbackRepository;
         private readonly IUserRolesRepository _userRolesRepository;
+        private readonly BaseSettings _settings;
 
         public HomeController(IProjectRepository projectRepository, IProjectCommentsRepository commentsRepository,
             IProjectCategoriesRepository categoriesRepository, IProjectParticipantsRepository participantsRepository,
             IProjectFollowRepository projectFollowRepository, IProjectResultRepository resultsRepository,
             IProjectWinnersRepository winnersRepository, IUserFeedbackRepository feedbackRepository,
-            IUserRolesRepository userRolesRepository)
+            IUserRolesRepository userRolesRepository, BaseSettings settings)
         {
             _projectRepository = projectRepository;
             _commentsRepository = commentsRepository;
@@ -46,6 +51,7 @@ namespace CompetitionPlatform.Controllers
             _winnersRepository = winnersRepository;
             _feedbackRepository = feedbackRepository;
             _userRolesRepository = userRolesRepository;
+            _settings = settings;
         }
 
         public async Task<IActionResult> Index()
@@ -296,6 +302,14 @@ namespace CompetitionPlatform.Controllers
                         following = true;
                 }
 
+                if (string.IsNullOrEmpty(project.AuthorIdentifier))
+                {
+                    project.AuthorIdentifier = await ClaimsHelper.GetUserIdByEmail(
+                        _settings.LykkeStreams.Authentication.Authority, _settings.LykkeStreams.Authentication.ClientId,
+                        project.AuthorId);
+                    await _projectRepository.UpdateAsync(project);
+                }
+
                 var compactModel = new ProjectCompactViewModel
                 {
                     Id = project.Id,
@@ -313,6 +327,7 @@ namespace CompetitionPlatform.Controllers
                     ResultsCount = resultsCount,
                     WinnersCount = winnersCount,
                     AuthorFullName = project.AuthorFullName,
+                    AuthorId = project.AuthorIdentifier,
                     Category = project.Category,
                     Tags = tagsList,
                     Following = following,
@@ -398,28 +413,7 @@ namespace CompetitionPlatform.Controllers
         public IActionResult SignIn()
         {
             var redirectUrl = Request.Headers["Referer"].ToString();
-
-            Response.Cookies.Append("redirectUrl", redirectUrl, new CookieOptions()
-            {
-                Expires = DateTime.Now.AddDays(1)
-            });
-
-            return RedirectToAction("DoSignIn", "Home");
-        }
-
-
-        [Authorize]
-        public IActionResult DoSignIn()
-        {
-            if (Request.Cookies.ContainsKey("redirectUrl"))
-            {
-                var path = Request.Cookies["redirectUrl"];
-                if (!string.IsNullOrEmpty(path))
-                {
-                    return Redirect(path);
-                }
-            }
-            return RedirectToAction("Index", "Home");
+            return Challenge(new AuthenticationProperties { RedirectUri = redirectUrl });
         }
 
         public IActionResult About()
@@ -442,19 +436,21 @@ namespace CompetitionPlatform.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> LogOut()
+        public IActionResult LogOut()
         {
             var redirectUrl = Request.Headers["Referer"].ToString();
 
             if (User.Identity.IsAuthenticated)
             {
-                await HttpContext.SignOutAsync();
+                return SignOut(new AuthenticationProperties { RedirectUri = "/"},
+                    CookieAuthenticationDefaults.AuthenticationScheme, OpenIdConnectDefaults.AuthenticationScheme);
             }
 
             if (!string.IsNullOrEmpty(redirectUrl))
             {
                 return Redirect(redirectUrl);
             }
+
             return RedirectToAction("Index", "Home");
         }
 
@@ -533,6 +529,16 @@ namespace CompetitionPlatform.Controllers
                 var winners = await _winnersRepository.GetWinnersAsync(project.Id);
                 foreach (var winner in winners)
                 {
+                    if (string.IsNullOrEmpty(winner.WinnerIdentifier))
+                    {
+                        winner.ProjectId = project.Id;
+                        winner.WinnerIdentifier = await ClaimsHelper.GetUserIdByEmail(
+                            _settings.LykkeStreams.Authentication.Authority,
+                            _settings.LykkeStreams.Authentication.ClientId, winner.WinnerId);
+
+                        await _winnersRepository.UpdateAsync(winner);
+                    }
+
                     if (winner.Budget != null)
                         latestWinners.Add(
                             new LatestWinner
@@ -540,7 +546,8 @@ namespace CompetitionPlatform.Controllers
                                 Name = winner.FullName,
                                 ProjectId = project.Id,
                                 ProjectName = project.Name,
-                                Amount = (double)winner.Budget
+                                Amount = (double)winner.Budget,
+                                Id = winner.WinnerIdentifier
                             });
                 }
                 if (latestWinners.Count >= 4) break;

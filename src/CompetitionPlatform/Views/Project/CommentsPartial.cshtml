@@ -59,11 +59,11 @@ else
     {
         <div class="message_card @(!string.IsNullOrEmpty(comment.ParentId) ? "message_card--accent" : "")">
             <div class="user_badge user_badge--small">
-                <div class="user_badge__img"><a href=""><img src="~/images/avatar.svg" alt=""></a></div>
+                <div class="user_badge__img"><a href="/userprofile/@comment.UserIdentifier"><img src="~/images/avatar.svg" alt=""></a></div>
                 <div class="user_badge__message">
                     <div class="message_card__inner">
                         <div class="user_badge__title">
-                            <a href="">@comment.FullName</a>
+                            <a href="/userprofile/@comment.UserIdentifier">@comment.FullName</a>
                             @if (comment.UserId == Model.ProjectAuthorId)
                             {
                                 <span class="label label--primary">creator</span>

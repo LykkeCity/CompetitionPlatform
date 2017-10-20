@@ -1,11 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26403.7
+VisualStudioVersion = 15.0.26730.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{C6B4D0F5-8E90-4927-A21D-EFCB3DD857D3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1AD9A605-827F-4351-BDB9-98337FA48983}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{FC407B0C-D286-4C44-B9B9-936434CF0760}"
 EndProject
@@ -28,5 +31,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{FC407B0C-D286-4C44-B9B9-936434CF0760} = {C6B4D0F5-8E90-4927-A21D-EFCB3DD857D3}
 		{6A3B572A-67B5-4E08-97E0-84B0CC9AA4FB} = {C6B4D0F5-8E90-4927-A21D-EFCB3DD857D3}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {10CA1C8E-B701-4A2F-BBB9-D7E20849087F}
 	EndGlobalSection
 EndGlobal
