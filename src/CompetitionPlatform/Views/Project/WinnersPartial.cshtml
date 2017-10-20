@@ -11,7 +11,8 @@
 @if (Model.Status == Status.Archive)
 {
     var prizeFund = Model.Winners.Where(winner => winner.Budget != null).Sum(winner => (double)winner.Budget);
-
+    var placeCounter = 0;
+    var secondPlaceWinnerStyle = "col-xs-6 col-sm-3";
     <div>
         @if (!containsFirstPlaceWinner)
         {
@@ -25,6 +26,7 @@
         <div class="row">
             @foreach (var winner in Model.Winners)
             {
+                placeCounter = placeCounter + 1;
                 var voteVotes = winner.Votes == 1 ? "vote" : "votes";
                 if (winner.Place == 1)
                 {
@@ -41,7 +43,11 @@
                 }
                 else
                 {
-                    <div class="col-xs-6 col-sm-3">
+                    if (placeCounter == 5)
+                    {
+                        secondPlaceWinnerStyle = "col-xs-12 col-sm-12";
+                    }
+                    <div class="@secondPlaceWinnerStyle">
                         <div class="winners_item">
                             <div class="winners_item__user">
                                 <div class="winners_item__img"><a href="/userprofile/@winner.WinnerIdentifier"><img src="~/public/img/user_default.svg" alt="@winner.FullName" /></a></div>
@@ -51,6 +57,7 @@
                             <div class="prize__value">$@winner.Budget</div>
                         </div>
                     </div>
+
                 }
             }
         </div>
