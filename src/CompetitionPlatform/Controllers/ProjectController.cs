@@ -673,13 +673,15 @@ namespace CompetitionPlatform.Controllers
 
             foreach (var expert in experts)
             {
-                if (string.IsNullOrEmpty(expert.UserIdentifier))
+                if (string.IsNullOrEmpty(expert.UserIdentifier) && !string.IsNullOrEmpty(expert.UserId))
                 {
                     expert.UserIdentifier = await ClaimsHelper.GetUserIdByEmail(_settings.LykkeStreams.Authentication.Authority,
                         _settings.LykkeStreams.Authentication.ClientId, expert.UserId);
                     await _projectExpertsRepository.UpdateAsync(expert);
                 }
             }
+
+            experts = experts.OrderBy(x => x.Priority == 0).ThenBy(x => x.Priority);
 
             var projectViewModel = new ProjectViewModel
             {
