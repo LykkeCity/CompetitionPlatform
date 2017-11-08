@@ -24,6 +24,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Expert
         public string UserIdentifier { get; set; }
         public string FullName { get; set; }
         public string Description { get; set; }
+        public int Priority { get; set; }
 
         public static ProjectExpertEntity Create(IProjectExpertData src)
         {
@@ -35,7 +36,8 @@ namespace CompetitionPlatform.Data.AzureRepositories.Expert
                 UserId = src.UserId,
                 UserIdentifier = src.UserIdentifier,
                 FullName = src.FullName,
-                Description = src.Description
+                Description = src.Description,
+                Priority = src.Priority
             };
 
             return result;
@@ -46,6 +48,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Expert
             FullName = src.FullName;
             Description = src.Description;
             UserIdentifier = src.UserIdentifier;
+            Priority = src.Priority;
         }
     }
     public class ProjectExpertsRepository : IProjectExpertsRepository

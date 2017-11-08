@@ -495,10 +495,26 @@
                                             <td>
                                                 <div class="user_badge user_badge--small">
                                                     <div class="user_badge__img">
-                                                        <a href="/userprofile/@expert.UserIdentifier"><img src="~/images/avatar.svg" alt=""></a>
+                                                        @if (!string.IsNullOrEmpty(expert.UserIdentifier))
+                                                        {
+                                                            <a href="/userprofile/@expert.UserIdentifier"><img src="~/images/avatar.svg" alt=""></a>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span><img src="~/images/avatar.svg" alt=""></span>
+                                                        }
+                                                        
                                                     </div>
                                                     <div class="user_badge__info">
-                                                        <a href="/userprofile/@expert.UserIdentifier">@expert.FullName</a>
+                                                        @if (!string.IsNullOrEmpty(expert.UserIdentifier))
+                                                        {
+                                                            <a href="/userprofile/@expert.UserIdentifier">@expert.FullName</a>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span>@expert.FullName</span>
+                                                        }
+                                                        
                                                     </div>
                                                 </div>
                                             </td>

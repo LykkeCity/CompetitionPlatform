@@ -12,6 +12,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Expert
         string UserIdentifier { get; set; }
         string FullName { get; set; }
         string Description { get; set; }
+        int Priority { get; set; }
     }
     public interface IProjectExpertsRepository
     {
