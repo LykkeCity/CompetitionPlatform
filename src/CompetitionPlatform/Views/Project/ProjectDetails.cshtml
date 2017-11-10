@@ -503,7 +503,7 @@
                                                         {
                                                             <span><img src="~/images/avatar.svg" alt=""></span>
                                                         }
-                                                        
+
                                                     </div>
                                                     <div class="user_badge__info">
                                                         @if (!string.IsNullOrEmpty(expert.UserIdentifier))
@@ -514,11 +514,17 @@
                                                         {
                                                             <span>@expert.FullName</span>
                                                         }
-                                                        
+
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td><span>@expert.Description</span></td>
+                                            <td>
+                                                @if (!string.IsNullOrEmpty(expert.UserId) && expert.UserId == Model.AuthorId)
+                                                {
+                                                    <span class="label label--yellow">AUTHOR</span>
+                                                }
+                                                <span>@expert.Description</span>
+                                            </td>
                                         </tr>
                                     }
                                 </table>
