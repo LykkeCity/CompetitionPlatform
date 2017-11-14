@@ -2,7 +2,7 @@
 @model CompetitionPlatform.Models.UserProfile.UserProfileViewModel
 
 @{
-    ViewData["Title"] = "Projects";
+    ViewData["Title"] = "Profile";
     var fullName = Model.Profile.FirstName + " " + Model.Profile.LastName;
 
     var editProfileLink = @Model.AuthLink + "/profile";
