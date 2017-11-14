@@ -112,7 +112,7 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public string ExistingStreamId { get; set; }
         public string SerializedStream { get; set; }
 
-        [Display(Name = "Name Tag")]
+        [Display(Name = "Title Note")]
         [StringLength(30)]
         public string NameTag { get; set; }
     }
