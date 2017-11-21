@@ -63,14 +63,14 @@ namespace CompetitionPlatform.Controllers
             return View(viewModel);
         }
 
-        public async Task<IActionResult> Allprojects()
+        public async Task<IActionResult> Allprojects(string status, string category, string prize)
         {
             ViewBag.AllProjects = ViewBag.AllProjects != true;
             ViewBag.MyProjects = false;
             ViewBag.Faq = false;
             ViewBag.Blog = false;
 
-            var viewModel = await GetProjectListViewModel();
+            var viewModel = await GetProjectListViewModel(projectStatusFilter:status, projectCategoryFilter:category, projectPrizeFilter:prize);
             viewModel.Projects = viewModel.Projects.OrderBy(x => x.Status).ThenBy(x => x.BudgetFirstPlace);
             return View(viewModel);
         }
