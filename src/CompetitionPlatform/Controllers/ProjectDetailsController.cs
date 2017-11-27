@@ -2,13 +2,17 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using AzureStorage.Queue;
+using Common.Log;
 using CompetitionPlatform.Data.AzureRepositories.Project;
 using CompetitionPlatform.Data.AzureRepositories.Result;
+using CompetitionPlatform.Data.AzureRepositories.Settings;
 using CompetitionPlatform.Data.AzureRepositories.Users;
 using CompetitionPlatform.Data.AzureRepositories.Vote;
 using CompetitionPlatform.Helpers;
 using CompetitionPlatform.Models;
 using CompetitionPlatform.Models.ProjectViewModels;
+using Lykke.EmailSenderProducer;
+using Lykke.EmailSenderProducer.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -29,6 +33,8 @@ namespace CompetitionPlatform.Controllers
         private readonly IQueueExt _emailsQueue;
         private readonly IUserRolesRepository _userRolesRepository;
         private readonly IProjectWinnersRepository _winnersRepository;
+        private readonly ILog _log;
+        private readonly BaseSettings _settings;
 
         public ProjectDetailsController(IProjectCommentsRepository commentsRepository, IProjectFileRepository fileRepository,
             IProjectFileInfoRepository fileInfoRepository, IProjectVoteRepository voteRepository,
@@ -36,7 +42,8 @@ namespace CompetitionPlatform.Controllers
             IProjectResultRepository resultRepository, IProjectResultVoteRepository resultVoteRepository,
             IProjectFollowRepository projectFollowRepository, IFollowMailSentRepository mailSentRepository,
             IQueueExt emailsQueue, IUserRolesRepository userRolesRepository,
-            IProjectWinnersRepository winnersRepository)
+            IProjectWinnersRepository winnersRepository, ILog log,
+            BaseSettings settings)
         {
             _commentsRepository = commentsRepository;
             _fileRepository = fileRepository;
@@ -51,6 +58,8 @@ namespace CompetitionPlatform.Controllers
             _emailsQueue = emailsQueue;
             _userRolesRepository = userRolesRepository;
             _winnersRepository = winnersRepository;
+            _log = log;
+            _settings = settings;
         }
 
         [Authorize]
@@ -67,6 +76,7 @@ namespace CompetitionPlatform.Controllers
             if (!string.IsNullOrEmpty(model.Comment))
             {
                 await _commentsRepository.SaveAsync(model);
+                await SendNewCommentNotification(model);
             }
             return RedirectToAction("ProjectDetails", "Project", new { id = model.ProjectId, commentsActive = true });
         }
@@ -517,6 +527,25 @@ namespace CompetitionPlatform.Controllers
         private CompetitionPlatformUser GetAuthenticatedUser()
         {
             return ClaimsHelper.GetUser(User.Identity);
+        }
+
+        private async Task SendNewCommentNotification(ICommentData model)
+        {
+            var emailProducer = new EmailSenderProducer(_settings.EmailServiceBus, _log);
+
+            var message = new EmailMessage
+            {
+                Body = "New Comment was created. \n" + "Comment Author - " + model.FullName + "\n" +
+                       "Comment - " + model.Comment + "\n" +
+                       "Project Link - https://streams.lykke.com/Project/ProjectDetails/" + model.ProjectId + "?commentsActive=true",
+                Subject = "New Comment!",
+                IsHtml = false
+            };
+
+            foreach (var email in _settings.LykkeStreams.ProjectCreateNotificationReceiver)
+            {
+                await emailProducer.SendEmailAsync(email, message, "Lykke Notifications");
+            }
         }
     }
 }
