@@ -57,3 +57,7 @@
 .user_badge__img img {
     height: 100% !important;
 }
+
+.project-extended-tag {
+    margin-right: -8px;
+}

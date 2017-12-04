@@ -12,6 +12,7 @@
                     var votesCount = project.VotesFor + project.VotesAgainst;
                     var commentsCount = (project.CommentsCount == 1) ? project.CommentsCount + " comment" : project.CommentsCount + " comments";
                     var facebookSharingUrl = "https://www.facebook.com/sharer/sharer.php?u=" + Context.Request.Host + "/Project/ProjectDetails/" + project.Id;
+                    var titleNoteExtended = "EXTENDED!";
                 }
 
                 @switch (project.Status)
@@ -64,7 +65,7 @@
                                     {
                                         <a asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.Id">@project.Name</a>
                                     }
-                                    @if (!string.IsNullOrEmpty(project.NameTag))
+                                    @if (!string.IsNullOrEmpty(project.NameTag) && project.NameTag.ToUpper() != titleNoteExtended)
                                     {
                                         <sup class="project-list-name-tag">@project.NameTag</sup>
                                     }
@@ -96,6 +97,10 @@
                                     }
 
                                     <span href="" class="label label--green"><i class="icon icon--deadline_fill"></i> @projectStatus @project.ImplementationDeadline.ToString("dd.MM.yyyy")</span>
+                                    if (!string.IsNullOrEmpty(project.NameTag) && project.NameTag.ToUpper() == titleNoteExtended)
+                                    {
+                                        <span class="label label--text label--green project-extended-tag">Extended!</span>
+                                    }
                                     <span class="label label--text label--gray">@daysLeftText</span>
                                 }
                                 else if (project.Status == Status.Voting)

@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Projects";
+    var titleNoteExtended = "EXTENDED!";
 }
 
 <section class="section section--lead section--padding">
@@ -80,7 +81,7 @@
                                         {
                                             <a asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.Id">@project.Name</a>
                                         }
-                                        @if (!string.IsNullOrEmpty(project.NameTag))
+                                        @if (!string.IsNullOrEmpty(project.NameTag) && project.NameTag.ToUpper() != titleNoteExtended)
                                         {
                                             <sup class="project-list-name-tag">@project.NameTag</sup>
                                         }
@@ -112,6 +113,10 @@
                                         }
 
                                         <span href="" class="label label--green"><i class="icon icon--deadline_fill"></i> @projectStatus @project.ImplementationDeadline.ToString("dd.MM.yyyy")</span>
+                                         if (!string.IsNullOrEmpty(project.NameTag) && project.NameTag.ToUpper() == titleNoteExtended)
+                                         {
+                                             <span class="label label--text label--green project-extended-tag">Extended!</span>
+                                         }
                                         <span class="label label--text label--gray">@daysLeftText</span>
                                     }
                                     else if (project.Status == Status.Voting)
