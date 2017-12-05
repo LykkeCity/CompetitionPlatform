@@ -76,6 +76,9 @@ namespace CompetitionPlatform.Controllers
             if (!string.IsNullOrEmpty(model.Comment))
             {
                 await _commentsRepository.SaveAsync(model);
+                var project = await _projectRepository.GetAsync(model.ProjectId);
+                project.LastModified = DateTime.UtcNow;
+                await _projectRepository.UpdateAsync(project);
                 await SendNewCommentNotification(model);
             }
             return RedirectToAction("ProjectDetails", "Project", new { id = model.ProjectId, commentsActive = true });
@@ -234,9 +237,8 @@ namespace CompetitionPlatform.Controllers
                 await _participantsRepository.SaveAsync(viewModel);
 
                 var project = await _projectRepository.GetAsync(id);
-
                 project.ParticipantsCount += 1;
-
+                project.LastModified = DateTime.UtcNow;
                 await _projectRepository.UpdateAsync(project);
             }
 
@@ -312,10 +314,11 @@ namespace CompetitionPlatform.Controllers
                 model.Submitted = DateTime.UtcNow;
 
                 await _resultRepository.SaveAsync(model);
-
                 participant.Result = true;
-
                 await _participantsRepository.UpdateAsync(participant);
+                var project = await _projectRepository.GetAsync(model.ProjectId);
+                project.LastModified = DateTime.UtcNow;
+                await _projectRepository.UpdateAsync(project);
             }
             else
             {
