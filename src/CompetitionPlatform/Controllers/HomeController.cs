@@ -57,7 +57,7 @@ namespace CompetitionPlatform.Controllers
         public async Task<IActionResult> Index()
         {
             var viewModel = await GetProjectListViewModel(currentProjects: true);
-            viewModel.Projects = viewModel.Projects.OrderByDescending(x => x.Status).ThenByDescending(x => x.BudgetFirstPlace);
+            viewModel.Projects = viewModel.Projects.OrderByDescending(x => x.LastModified);
             viewModel.LatestWinners = await GetLatestWinners();
             viewModel.JustFinishedProjects = await GetJustFinishedProjects();
             return View(viewModel);
@@ -331,7 +331,8 @@ namespace CompetitionPlatform.Controllers
                     Category = project.Category,
                     Tags = tagsList,
                     Following = following,
-                    NameTag = project.NameTag
+                    NameTag = project.NameTag,
+                    LastModified = project.LastModified
                 };
 
                 if (!string.IsNullOrEmpty(project.ProjectStatus))
