@@ -71,7 +71,7 @@ namespace CompetitionPlatform.Controllers
             ViewBag.Blog = false;
 
             var viewModel = await GetProjectListViewModel(projectStatusFilter:status, projectCategoryFilter:category, projectPrizeFilter:prize);
-            viewModel.Projects = viewModel.Projects.OrderBy(x => x.Status).ThenBy(x => x.BudgetFirstPlace).ThenBy(x => x.Created);
+            viewModel.Projects = viewModel.Projects.OrderBy(x => x.Status).ThenByDescending(x => x.BudgetFirstPlace).ThenBy(x => x.Created);
             return View(viewModel);
         }
 
