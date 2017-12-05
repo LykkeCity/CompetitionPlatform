@@ -71,7 +71,7 @@ namespace CompetitionPlatform.Controllers
             ViewBag.Blog = false;
 
             var viewModel = await GetProjectListViewModel(projectStatusFilter:status, projectCategoryFilter:category, projectPrizeFilter:prize);
-            viewModel.Projects = viewModel.Projects.OrderBy(x => x.Status).ThenBy(x => x.BudgetFirstPlace);
+            viewModel.Projects = viewModel.Projects.OrderBy(x => x.Status).ThenBy(x => x.BudgetFirstPlace).ThenBy(x => x.Created);
             return View(viewModel);
         }
 
@@ -332,7 +332,8 @@ namespace CompetitionPlatform.Controllers
                     Tags = tagsList,
                     Following = following,
                     NameTag = project.NameTag,
-                    LastModified = project.LastModified
+                    LastModified = project.LastModified,
+                    Created = project.Created
                 };
 
                 if (!string.IsNullOrEmpty(project.ProjectStatus))

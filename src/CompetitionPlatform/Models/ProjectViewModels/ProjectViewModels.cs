@@ -141,6 +141,7 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public bool Following { get; set; }
         public string NameTag { get; set; }
         public DateTime LastModified { get; set; }
+        public DateTime Created { get; set; }
     }
 
     public class ProjectFileInfoViewModel
