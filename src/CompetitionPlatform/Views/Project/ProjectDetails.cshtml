@@ -644,7 +644,14 @@
                                 <p>
                                     <b>@project.Name</b>
                                 </p>
-                                <span class="text-muted">$@project.BudgetFirstPlace &middot; @project.Members participants</span>
+                                @if (project.BudgetSecondPlace == null)
+                                {
+                                    <span class="text-muted">$@project.BudgetFirstPlace</span>
+                                }
+                                else
+                                {
+                                    <span class="text-muted">$@project.BudgetFirstPlace &middot; $@project.BudgetSecondPlace &middot; $@project.BudgetSecondPlace &middot; $@project.BudgetSecondPlace</span>
+                                }
                             </a>
                         </li>
                     }
