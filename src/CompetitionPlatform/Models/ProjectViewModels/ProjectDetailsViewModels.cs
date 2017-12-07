@@ -124,6 +124,7 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public string Name { get; set; }
         public int Members { get; set; }
         public double BudgetFirstPlace { get; set; }
+        public double? BudgetSecondPlace { get; set; }
     }
 
     public class WinnerViewModel : IWinnerData

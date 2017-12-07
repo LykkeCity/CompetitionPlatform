@@ -768,7 +768,7 @@ namespace CompetitionPlatform.Controllers
         private async Task<List<OtherProjectViewModel>> GetOtherProjects(string id)
         {
             var projects = await _projectRepository.GetProjectsAsync();
-            var filteredProjects = projects.Where(x => x.Id != id && x.ProjectStatus == Status.Submission.ToString()).Take(7).ToList();
+            var filteredProjects = projects.Where(x => x.Id != id && x.ProjectStatus == Status.Submission.ToString() && x.BudgetFirstPlace > 0).Take(7).ToList();
 
             var otherProjects = new List<OtherProjectViewModel>();
 
@@ -779,6 +779,7 @@ namespace CompetitionPlatform.Controllers
                     Id = project.Id,
                     Name = project.Name,
                     BudgetFirstPlace = project.BudgetFirstPlace,
+                    BudgetSecondPlace = project.BudgetSecondPlace,
                     Members = project.ParticipantsCount
                 };
 
