@@ -247,32 +247,18 @@ namespace CompetitionPlatform.Controllers
                 }
 
                 var compactModel = new ProjectCompactViewModel
-                {
-                    Id = project.Id,
-                    Name = project.Name,
-                    Overview = project.Overview,
-                    Description = project.Description,
-                    BudgetFirstPlace = project.BudgetFirstPlace,
-                    VotesFor = project.VotesFor,
-                    VotesAgainst = project.VotesAgainst,
-                    CompetitionRegistrationDeadline = project.CompetitionRegistrationDeadline,
-                    ImplementationDeadline = project.ImplementationDeadline,
-                    VotingDeadline = project.VotingDeadline,
+                {           
                     CommentsCount = projectCommentsCount,
                     ParticipantsCount = participantsCount,
                     ResultsCount = resultsCount,
                     WinnersCount = winnersCount,
-                    AuthorFullName = project.AuthorFullName,
-                    AuthorId = project.AuthorIdentifier,
-                    Category = project.Category,
                     Tags = tagsList,
-                    Following = following,
-                    NameTag = project.NameTag
+                    BaseProjectData = project
                 };
 
                 if (!string.IsNullOrEmpty(project.ProjectStatus))
                 {
-                    compactModel.Status = StatusHelper.GetProjectStatusFromString(project.ProjectStatus);
+                    compactModel.BaseProjectData.Status = StatusHelper.GetProjectStatusFromString(project.ProjectStatus);
                 }
 
                 compactModels.Add(compactModel);
