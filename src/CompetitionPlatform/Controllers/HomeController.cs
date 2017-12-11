@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using CompetitionPlatform.Models.ProjectModels;
 
 namespace CompetitionPlatform.Controllers
 {
@@ -150,36 +151,18 @@ namespace CompetitionPlatform.Controllers
             string projectPrizeFilter = null, string projectAuthorId = null,
             bool currentProjects = false)
         {
-            var projects = await _projectRepository.GetProjectsAsync();
-
-            projects = projects.Where(x => x.ProjectStatus != Status.Draft.ToString());
+            
+            var projectlist = await ProjectList.CreateProjectList(_projectRepository);
+            var projects = projectlist
+                .RemoveDrafts()
+                .FilterByStatus(projectStatusFilter)
+                .FilterByCategory(projectCategoryFilter)
+                .FilterByAuthorId(projectAuthorId)
+                .FilterByCurrentProjects(currentProjects)
+                .OrderByPrize(projectPrizeFilter)
+                .GetProjects();
 
             var projectCategories = _categoriesRepository.GetCategories();
-
-            if (!string.IsNullOrEmpty(projectStatusFilter) && projectStatusFilter != "All")
-                projects = projects.Where(x => x.ProjectStatus == projectStatusFilter);
-
-            if (!string.IsNullOrEmpty(projectCategoryFilter) && projectCategoryFilter != "All")
-                projects = projects.Where(x => x.Category.Replace(" ", "") == projectCategoryFilter);
-
-            if (!string.IsNullOrEmpty(projectAuthorId))
-                projects = projects.Where(x => x.AuthorId == projectAuthorId);
-
-            if (currentProjects)
-                projects = projects.Where(x => x.ProjectStatus != Status.Initiative.ToString() && x.ProjectStatus != Status.Archive.ToString());
-
-            if (!string.IsNullOrEmpty(projectPrizeFilter))
-            {
-                if (projectPrizeFilter == "Ascending")
-                    projects = projects.OrderBy(x => x.BudgetFirstPlace);
-
-                if (projectPrizeFilter == "Descending")
-                    projects = projects.OrderByDescending(x => x.BudgetFirstPlace);
-            }
-            else
-            {
-                projects = projects.OrderBy(x => x.BudgetFirstPlace);
-            }
 
             var compactModels = await GetCompactProjectsList(projects);
 
