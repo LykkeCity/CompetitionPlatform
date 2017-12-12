@@ -57,22 +57,38 @@ namespace CompetitionPlatform.Controllers
 
         public async Task<IActionResult> Index()
         {
+            // fetch the view model
             var viewModel = await GetProjectListViewModel(currentProjects: true);
-            viewModel.Projects = viewModel.Projects.OrderByDescending(x => x.LastModified);
+
+            // order by last modified
+            viewModel.Projects = viewModel.Projects.OrderByDescending(x => x.BaseProjectData.LastModified);
+
+            // fetch latest winners and JustFinishedProjects for the viewmodel
             viewModel.LatestWinners = await GetLatestWinners();
             viewModel.JustFinishedProjects = await GetJustFinishedProjects();
+
+            // return view
             return View(viewModel);
         }
 
         public async Task<IActionResult> Allprojects(string status, string category, string prize)
         {
+            // flip the flag for AllProjects, set MyProjects, FAQ, and Blog to false?
             ViewBag.AllProjects = ViewBag.AllProjects != true;
             ViewBag.MyProjects = false;
             ViewBag.Faq = false;
             ViewBag.Blog = false;
 
+            // build view model
             var viewModel = await GetProjectListViewModel(projectStatusFilter:status, projectCategoryFilter:category, projectPrizeFilter:prize);
-            viewModel.Projects = viewModel.Projects.OrderBy(x => x.Status).ThenByDescending(x => x.BudgetFirstPlace).ThenBy(x => x.Created);
+
+            // order by status, then by budget, then by created
+            // TODO: add to project model
+            // or fetch ProjectList then feed to generateViewModel?
+            viewModel.Projects = viewModel.Projects
+                .OrderBy(x => x.BaseProjectData.Status)
+                .ThenByDescending(x => x.BaseProjectData.BudgetFirstPlace)
+                .ThenBy(x => x.BaseProjectData.Created);
             return View(viewModel);
         }
 
@@ -259,32 +275,25 @@ namespace CompetitionPlatform.Controllers
             return viewModel;
         }
 
-        private async Task<List<ProjectCompactViewModel>> GetCompactProjectsList(IEnumerable<IProjectData> projects)
+        private async Task<List<ProjectCompactViewModel>> GetCompactProjectsList(IEnumerable<IProjectData> projectList)
         {
-            var compactModels = new List<ProjectCompactViewModel>();
-            var user = GetAuthenticatedUser();
+            var compactModels = await CompactProjectList.CreateCompactProjectList(
+                projectList,
+                _commentsRepository,
+                _participantsRepository,
+                _projectFollowRepository,
+                _resultsRepository,
+                _winnersRepository,
+                GetAuthenticatedUser().Email
+            );
+            return compactModels.GetProjects();
 
-            foreach (var project in projects)
+            /* TODO: Move these from side effects to checks at object creation time
+             foreach (var project in projects)
             {
-                var projectCommentsCount = await _commentsRepository.GetProjectCommentsCountAsync(project.Id);
-                var participantsCount = await _participantsRepository.GetProjectParticipantsCountAsync(project.Id);
-                var resultsCount = await _resultsRepository.GetResultsCountAsync(project.Id);
-                var winnersCount = await _winnersRepository.GetWinnersCountAsync(project.Id);
-
-                var tagsList = new List<string>();
-                if (!string.IsNullOrEmpty(project.Tags))
-                {
-                    tagsList = JsonConvert.DeserializeObject<List<string>>(project.Tags);
-                }
-
-                var following = false;
-                if (user.Email != null)
-                {
-                    var follow = await _projectFollowRepository.GetAsync(user.Email, project.Id);
-                    if (follow != null)
-                        following = true;
-                }
-
+                
+                // if the project has no author, use the ClaimsHelper to get the AuthorIdentifier from the AuthorID and 
+                // fill it in
                 if (string.IsNullOrEmpty(project.AuthorIdentifier))
                 {
                     project.AuthorIdentifier = await ClaimsHelper.GetUserIdByEmail(
@@ -293,41 +302,18 @@ namespace CompetitionPlatform.Controllers
                     await _projectRepository.UpdateAsync(project);
                 }
 
-                var compactModel = new ProjectCompactViewModel
-                {
-                    Id = project.Id,
-                    Name = project.Name,
-                    Overview = project.Overview,
-                    Description = project.Description,
-                    BudgetFirstPlace = project.BudgetFirstPlace,
-                    VotesFor = project.VotesFor,
-                    VotesAgainst = project.VotesAgainst,
-                    CompetitionRegistrationDeadline = project.CompetitionRegistrationDeadline,
-                    ImplementationDeadline = project.ImplementationDeadline,
-                    VotingDeadline = project.VotingDeadline,
-                    CommentsCount = projectCommentsCount,
-                    ParticipantsCount = participantsCount,
-                    ResultsCount = resultsCount,
-                    WinnersCount = winnersCount,
-                    AuthorFullName = project.AuthorFullName,
-                    AuthorId = project.AuthorIdentifier,
-                    Category = project.Category,
-                    Tags = tagsList,
-                    Following = following,
-                    NameTag = project.NameTag,
-                    LastModified = project.LastModified,
-                    Created = project.Created
-                };
+               
 
+                // if the project is missing the enum status, fill it in from the string
                 if (!string.IsNullOrEmpty(project.ProjectStatus))
                 {
                     compactModel.Status = StatusHelper.GetProjectStatusFromString(project.ProjectStatus);
                 }
 
                 compactModels.Add(compactModel);
-            }
+            }*/
 
-            return compactModels;
+
         }
 
         [Authorize]
