@@ -88,14 +88,15 @@ namespace CompetitionPlatform.Controllers
                 .OrderByPrize(prize);
 
             var viewModel = await BuildViewModel(projectList);
-                
+
             //TODO: Is this ordering needed? Status should be filtered, and prize should be ordered
             // order by status, then by budget, then by created
+            //Default filtering - used when the page is first opened
 
-            /*viewModel.Projects = viewModel.Projects
+            viewModel.Projects = viewModel.Projects
                 .OrderBy(x => x.BaseProjectData.Status)
                 .ThenByDescending(x => x.BaseProjectData.BudgetFirstPlace)
-                .ThenBy(x => x.BaseProjectData.Created);*/
+                .ThenBy(x => x.BaseProjectData.Created);
             return View(viewModel);
         }
 
@@ -244,34 +245,29 @@ namespace CompetitionPlatform.Controllers
                 _winnersRepository,
                 GetAuthenticatedUser().Email
             );
-            return compactModels.GetProjects();
 
-            /* TODO: Move these from side effects to checks at object creation time
-             foreach (var project in projects)
+
+            /* TODO: Move these from side effects to checks at object creation time*/
+            foreach (var project in projectList)
             {
-                
                 // if the project has no author, use the ClaimsHelper to get the AuthorIdentifier from the AuthorID and 
                 // fill it in
-                if (string.IsNullOrEmpty(project.AuthorIdentifier))
-                {
-                    project.AuthorIdentifier = await ClaimsHelper.GetUserIdByEmail(
-                        _settings.LykkeStreams.Authentication.Authority, _settings.LykkeStreams.Authentication.ClientId,
-                        project.AuthorId);
-                    await _projectRepository.UpdateAsync(project);
-                }
-
-               
+                //if (string.IsNullOrEmpty(project.AuthorIdentifier))
+                //{
+                //    project.AuthorIdentifier = await ClaimsHelper.GetUserIdByEmail(
+                //        _settings.LykkeStreams.Authentication.Authority, _settings.LykkeStreams.Authentication.ClientId,
+                //        project.AuthorId);
+                //    await _projectRepository.UpdateAsync(project);
+                //}
 
                 // if the project is missing the enum status, fill it in from the string
                 if (!string.IsNullOrEmpty(project.ProjectStatus))
                 {
-                    compactModel.Status = StatusHelper.GetProjectStatusFromString(project.ProjectStatus);
+                    project.Status = StatusHelper.GetProjectStatusFromString(project.ProjectStatus);
                 }
+            }
 
-                compactModels.Add(compactModel);
-            }*/
-
-
+            return compactModels.GetProjects();
         }
 
         [Authorize]
