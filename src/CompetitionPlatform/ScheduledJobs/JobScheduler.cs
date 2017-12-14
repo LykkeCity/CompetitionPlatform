@@ -1,4 +1,5 @@
 ﻿using Common.Log;
+using Lykke.SettingsReader;
 using Quartz;
 using Quartz.Impl;
 
@@ -6,7 +7,7 @@ namespace CompetitionPlatform.ScheduledJobs
 {
     public static class JobScheduler
     {
-        public static async void Start(string connectionString, ILog log)
+        public static async void Start(IReloadingManager<string> connectionString, ILog log)
         {
             var schedFact = new StdSchedulerFactory();
 
