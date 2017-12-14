@@ -6,14 +6,14 @@
     <div class="col-xs-12 col-sm-6 col-md-6">
         @{
             var statusColor = "";
-            var projectStatus = project.Status.ToString().ToUpper();
+            var projectStatus = project.BaseProjectData.Status.ToString().ToUpper();
             var projectCount = "";
-            var votesCount = project.VotesFor + project.VotesAgainst;
+            var votesCount = project.BaseProjectData.VotesFor + project.BaseProjectData.VotesAgainst;
             var commentsCount = (project.CommentsCount == 1) ? project.CommentsCount + " comment" : project.CommentsCount + " comments";
-            var facebookSharingUrl = "https://www.facebook.com/sharer/sharer.php?u=" + Context.Request.Host + "/Project/ProjectDetails/" + project.Id;
+            var facebookSharingUrl = "https://www.facebook.com/sharer/sharer.php?u=" + Context.Request.Host + "/Project/ProjectDetails/" + project.BaseProjectData.Id;
         }
 
-        @switch (project.Status)
+        @switch (project.BaseProjectData.Status)
                 {
                     case Status.Draft:
                         statusColor = "label--flat label--gray";
@@ -43,33 +43,33 @@
             <div class="card__inner">
                 <div class="card__body">
                     <div class="card__breadcrumbs">
-                        <div class="user_badge__img"><a href="/userprofile/@project.AuthorId"><img src="~/public/img/user_default.svg" alt=""></a></div>
-                        <a href="/userprofile/@project.AuthorId" class="breadcrumb_elem">@project.AuthorFullName</a>
+                        <div class="user_badge__img"><a href="/userprofile/@project.BaseProjectData.AuthorId"><img src="~/public/img/user_default.svg" alt=""></a></div>
+                        <a href="/userprofile/@project.BaseProjectData.AuthorId" class="breadcrumb_elem">@project.BaseProjectData.AuthorFullName</a>
                         <i class="icon icon--chevron-thin-right"></i>
-                        <a href="/" class="breadcrumb_elem">@project.Category</a>
+                        <a href="/" class="breadcrumb_elem">@project.BaseProjectData.Category</a>
                     </div>
                     <div class="card__header">
-                        <div class="card__sum h3 pull-right">$@project.BudgetFirstPlace</div>
+                        <div class="card__sum h3 pull-right">$@project.BaseProjectData.BudgetFirstPlace</div>
                         <div class="card__title h3">
-                            @if (project.Status == Status.Voting)
+                            @if (project.BaseProjectData.Status == Status.Voting)
                             {
-                                <a asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.Id" asp-route-resultsActive=true>@project.Name</a>
+                                <a asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.BaseProjectData.Id" asp-route-resultsActive=true>@project.BaseProjectData.Name</a>
                             }
                             else
                             {
-                                <a asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.Id">@project.Name</a>
+                                <a asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.BaseProjectData.Id">@project.BaseProjectData.Name</a>
                             }
                         </div>
                     </div>
                     <div class="card__desc">
-                        @if (project.Status == Status.Registration)
+                        @if (project.BaseProjectData.Status == Status.Registration)
                         {
-                            <span href="" class="label label--blue"><i class="icon icon--deadline_fill"></i> @projectStatus @project.CompetitionRegistrationDeadline.ToString("dd.MM.yyyy")</span>
-                            <span class="label label--text label--gray">Submission @project.ImplementationDeadline.ToString("dd.MM.yyyy")</span>
+                            <span href="" class="label label--blue"><i class="icon icon--deadline_fill"></i> @projectStatus @project.BaseProjectData.CompetitionRegistrationDeadline.ToString("dd.MM.yyyy")</span>
+                            <span class="label label--text label--gray">Submission @project.BaseProjectData.ImplementationDeadline.ToString("dd.MM.yyyy")</span>
                         }
-                        else if (project.Status == Status.Submission)
+                        else if (project.BaseProjectData.Status == Status.Submission)
                         {
-                            var daysLeft = (project.ImplementationDeadline - DateTime.UtcNow.Date).Days;
+                            var daysLeft = (project.BaseProjectData.ImplementationDeadline - DateTime.UtcNow.Date).Days;
                             var daysLeftText = "";
 
 
@@ -86,12 +86,12 @@
                                 daysLeftText = "ends in " + daysLeft + " days";
                             }
 
-                            <span href="" class="label label--green"><i class="icon icon--deadline_fill"></i> @projectStatus @project.ImplementationDeadline.ToString("dd.MM.yyyy")</span>
+                            <span href="" class="label label--green"><i class="icon icon--deadline_fill"></i> @projectStatus @project.BaseProjectData.ImplementationDeadline.ToString("dd.MM.yyyy")</span>
                             <span class="label label--text label--gray">@daysLeftText</span>
                         }
-                        else if (project.Status == Status.Voting)
+                        else if (project.BaseProjectData.Status == Status.Voting)
                         {
-                            <span href="" class="label label--yellow"><i class="icon icon--deadline_fill"></i> @projectStatus @project.VotingDeadline.ToString("dd.MM.yyyy")</span>
+                            <span href="" class="label label--yellow"><i class="icon icon--deadline_fill"></i> @projectStatus @project.BaseProjectData.VotingDeadline.ToString("dd.MM.yyyy")</span>
                         }
                         else
                         {
@@ -99,14 +99,14 @@
                         }
                     </div>
                     <p class="card__text">
-                        @if (project.Overview.Length > 255)
+                        @if (project.BaseProjectData.Overview.Length > 255)
                         {
-                            var overview = project.Overview.Substring(0, Math.Min(project.Overview.Length, 252)) + "...";
+                            var overview = project.BaseProjectData.Overview.Substring(0, Math.Min(project.BaseProjectData.Overview.Length, 252)) + "...";
                             @overview;
                         }
                         else
                         {
-                            @project.Overview
+                            @project.BaseProjectData.Overview
                         }
                     </p>
                     <div class="tags_list">
@@ -121,34 +121,33 @@
 
                 <div class="card__footer">
                     <div class="card__actions">
-                        @if (project.Following)
+                        @if (project.IsFollowing)
                         {
-                            <a asp-area="" asp-controller="ProjectDetails" asp-action="UnFollowProject" asp-route-id="@project.Id" id="followButton" class="action_link action_follow active pull-right">
+                            <a asp-area="" asp-controller="ProjectDetails" asp-action="UnFollowProject" asp-route-id="@project.BaseProjectData.Id" id="followButton" class="action_link action_follow active pull-right">
                                 <i class="icon icon--follow"></i>Unfollow
                             </a>
                         }
                         else
                         {
-                            <a asp-area="" asp-controller="ProjectDetails" asp-action="FollowProject" asp-route-id="@project.Id" id="followButton" class="action_link action_follow pull-right">
+                            <a asp-area="" asp-controller="ProjectDetails" asp-action="FollowProject" asp-route-id="@project.BaseProjectData.Id" id="followButton" class="action_link action_follow pull-right">
                                 <i class="icon icon--follow"></i>Follow
                             </a>
                         }
-                        @if (project.Status == Status.Voting)
+                        @if (project.BaseProjectData.Status == Status.Voting)
                         {
-                            <a asp-area="" asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.Id" asp-route-resultsActive=true class="action_link">Read more</a>
+                            <a asp-area="" asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.BaseProjectData.Id" asp-route-resultsActive=true class="action_link">Read more</a>
                         }
                         else
                         {
-                            <a asp-area="" asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.Id" class="action_link">Read more</a>
+                            <a asp-area="" asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.BaseProjectData.Id" class="action_link">Read more</a>
                         }
 
                         &middot;
                         <a href="@facebookSharingUrl" class="action_link">Share</a>
                         &middot;
-                        <a asp-area="" asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.Id" asp-route-commentsActive=true class="action_link">@commentsCount</a>
+                        <a asp-area="" asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.BaseProjectData.Id" asp-route-commentsActive=true class="action_link">@commentsCount</a>
                         &middot;
-                        @*<div class="action_link cursor-default">@projectCount</div>*@
-                        <a asp-area="" asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.Id" asp-route-participantsActive=true class="action_link">@projectCount</a>
+                        <a asp-area="" asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.BaseProjectData.Id" asp-route-participantsActive=true class="action_link">@projectCount</a>
                     </div>
                 </div>
             </div>
