@@ -6,6 +6,7 @@ using CompetitionPlatform.Data.AzureRepositories.Result;
 using CompetitionPlatform.Data.AzureRepositories.Users;
 using CompetitionPlatform.Data.AzureRepositories.Vote;
 using CompetitionPlatform.Services;
+using Lykke.SettingsReader;
 using Quartz;
 
 namespace CompetitionPlatform.ScheduledJobs
@@ -16,20 +17,20 @@ namespace CompetitionPlatform.ScheduledJobs
         {
             var dataMap = context.JobDetail.JobDataMap;
 
-            var connectionString = dataMap.GetString("connectionString");
+            var connectionString = (IReloadingManager<string>)dataMap["connectionString"];
             var log = (ILog)dataMap["log"];
 
             var projectRepository =
-                new ProjectRepository(new AzureTableStorage<ProjectEntity>(connectionString, "Projects", log));
+                new ProjectRepository(AzureTableStorage<ProjectEntity>.Create(connectionString, "Projects", log));
 
             var resultRepository =
-                new ProjectResultRepository(new AzureTableStorage<ProjectResultEntity>(connectionString, "ProjectResults", log));
+                new ProjectResultRepository(AzureTableStorage<ProjectResultEntity>.Create(connectionString, "ProjectResults", log));
 
             var winnersRepository =
-                new ProjectWinnersRepository(new AzureTableStorage<WinnerEntity>(connectionString, "Winners", log));
+                new ProjectWinnersRepository(AzureTableStorage<WinnerEntity>.Create(connectionString, "Winners", log));
 
             var resultVotesRepository =
-                new ProjectResultVoteRepository(new AzureTableStorage<ProjectResultVoteEntity>(connectionString, "ProjectResultVotes", log));
+                new ProjectResultVoteRepository(AzureTableStorage<ProjectResultVoteEntity>.Create(connectionString, "ProjectResultVotes", log));
 
             var winnersService = new ProjectWinnersService(projectRepository, resultRepository, winnersRepository, resultVotesRepository);
 

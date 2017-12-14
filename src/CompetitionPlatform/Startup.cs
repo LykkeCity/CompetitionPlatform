@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using CompetitionPlatform.Data;
-using CompetitionPlatform.Data.AzureRepositories.Log;
 using AzureStorage.Tables;
 using Common.Log;
 using CompetitionPlatform.Authentication;
@@ -17,15 +14,25 @@ using CompetitionPlatform.ScheduledJobs;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
-using System.IO;
+using System.Threading.Tasks;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using CompetitionPlatform.Modules;
+using Lykke.Logs;
+using Lykke.SettingsReader;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.HttpOverrides;
-using Newtonsoft.Json;
 
 namespace CompetitionPlatform
 {
     public class Startup
     {
+        public IConfigurationRoot Configuration { get; }
+        public IHostingEnvironment HostingEnvironment { get; }
+        public IContainer ApplicationContainer { get; set; }
+        public ILog Log { get; private set; }
+        private BaseSettings _settings;
+
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
@@ -37,7 +44,6 @@ namespace CompetitionPlatform
             if (env.IsDevelopment())
             {
                 // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
-                // builder.AddUserSecrets();
                 builder.AddApplicationInsightsSettings(developerMode: true);
             }
 
@@ -45,42 +51,16 @@ namespace CompetitionPlatform
             HostingEnvironment = env;
         }
 
-        public IConfigurationRoot Configuration { get; }
-        private BaseSettings Settings { get; set; }
-        public IHostingEnvironment HostingEnvironment { get; }
-        private ILog Log { get; set; }
-
-
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            //var settingsConnectionString = Configuration["SettingsConnString"];
-            //var settingsContainer = Configuration["SettingsContainerName"];
-            //var settingsFileName = Configuration["SettingsFileName"];
-            var connectionStringLogs = Configuration["LogsConnString"];
-
-            var settingsUrl = Configuration["SettingsUrl"];
-
-            Log = new LogToTable(new AzureTableStorage<LogEntity>(connectionStringLogs, "LogCompPlatform", null));
-
             try
             {
-                //Settings = GeneralSettingsReader.ReadGeneralSettings<BaseSettings>(settingsConnectionString, settingsContainer, settingsFileName);
-                Settings = GeneralSettingsReader.ReadGeneralSettingsFromUrl<BaseSettings>(settingsUrl);
+                var settings = Configuration.LoadSettings<BaseSettings>();
+                _settings = settings.CurrentValue;
 
-                services.AddSingleton(Settings);
-            }
-            catch (Exception ex)
-            {
-                Log.WriteErrorAsync("Startup", "ReadSettingsFile", "Reading Settings File", ex).Wait();
-            }
+                Log = CreateLog(services, settings);
 
-            var connectionString = Settings.LykkeStreams.Azure.StorageConnString;
-
-            CheckSettings(Settings, Log);
-
-            try
-            {
                 // Add framework services.
                 services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
@@ -98,63 +78,58 @@ namespace CompetitionPlatform
                 })
                 .AddOpenIdConnect(options =>
                 {
-                    options.Authority = Settings.LykkeStreams.Authentication.Authority;
-                    options.ClientId = Settings.LykkeStreams.Authentication.ClientId;
-                    options.ClientSecret = Settings.LykkeStreams.Authentication.ClientSecret;
+                    options.Authority = _settings.LykkeStreams.Authentication.Authority;
+                    options.ClientId = _settings.LykkeStreams.Authentication.ClientId;
+                    options.ClientSecret = _settings.LykkeStreams.Authentication.ClientSecret;
                     options.RequireHttpsMetadata = true;
                     options.SaveTokens = true;
                     options.CallbackPath = "/auth";
                     options.ResponseType = OpenIdConnectResponseType.Code;
                     options.Events = new CompPlatformAuthenticationEvents(Log, HostingEnvironment,
-                        Settings.LykkeStreams.Azure.StorageConnString);
+                        settings.ConnectionString(x => x.LykkeStreams.Azure.StorageConnString));
                     options.Scope.Add("email");
                 });
 
-                //var notificationEmailsQueueConnString = "";
-                var notificationSlackQueueConnString = Settings.SlackNotifications.AzureQueue.ConnectionString;
+                var notificationSlackQueueConnString = _settings.SlackNotifications.AzureQueue.ConnectionString;
 
                 services.AddApplicationInsightsTelemetry(Configuration);
-                var builder = services.AddMvc();
+                var mvcBuilder = services.AddMvc();
 
-                builder.AddMvcOptions(o => { o.Filters.Add(new GlobalExceptionFilter(Log, notificationSlackQueueConnString)); });
+                mvcBuilder.AddMvcOptions(o => { o.Filters.Add(new GlobalExceptionFilter(Log, notificationSlackQueueConnString)); });
 
                 services.RegisterLyykeServices();
 
-                //if (HostingEnvironment.IsProduction() && !string.IsNullOrEmpty(notificationEmailsQueueConnString) &&
-                //    !string.IsNullOrEmpty(notificationSlackQueueConnString))
-                //{
-                //    services.RegisterEmailNotificationServices(notificationEmailsQueueConnString);
-                //}
-                //else
-                //{
                 services.RegisterInMemoryNotificationServices();
-                //}
 
                 services.Configure<ForwardedHeadersOptions>(options =>
                 {
                     options.ForwardedHeaders = ForwardedHeaders.XForwardedProto;
                 });
 
-                services.RegisterRepositories(connectionString, Log, Settings.LykkeStreams.PersonalDataService.ApiKey, Settings.LykkeStreams.PersonalDataService.ServiceUri);
-                JobScheduler.Start(connectionString, Log);
+                JobScheduler.Start(settings.ConnectionString(x => x.LykkeStreams.Azure.StorageConnString), Log);
+
+                var builder = new ContainerBuilder();
+                builder.RegisterInstance(Log).As<ILog>().SingleInstance();
+
+                builder.RegisterModule(new DbModule(settings, Log));
+
+                builder.Populate(services);
+
+                ApplicationContainer = builder.Build();
+                return new AutofacServiceProvider(ApplicationContainer);
             }
             catch (Exception ex)
             {
-                Log.WriteErrorAsync("Startup", "RegisterServices", "Registering Repositories and services", ex).Wait();
+                Log?.WriteFatalErrorAsync(nameof(Startup), nameof(ConfigureServices), "", ex);
+                throw;
             }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime appLifetime)
         {
-            app.UseAuthentication();
-            app.UseApplicationInsightsRequestTelemetry();
-
             try
             {
-                loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-                loggerFactory.AddDebug();
-
                 if (env.IsDevelopment() || env.IsStaging())
                 {
                     app.UseDeveloperExceptionPage();
@@ -175,40 +150,7 @@ namespace CompetitionPlatform
                     ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
                 });
 
-                app.UseApplicationInsightsExceptionTelemetry();
-
-                //app.UseCookieAuthentication(new CookieAuthenticationOptions
-                //{
-
-                //    AutomaticAuthenticate = true,
-                //    AutomaticChallenge = true,
-                //    ExpireTimeSpan = TimeSpan.FromHours(24),
-                //    LoginPath = new PathString("/signin"),
-                //    AccessDeniedPath = "/Home/Error"
-                //});
-
-                //app.UseOpenIdConnectAuthentication(new OpenIdConnectOptions
-                //{
-                //    RequireHttpsMetadata = false,
-                //    SaveTokens = true,
-
-                //    // Note: these settings must match the application details
-                //    // inserted in the database at the server level.
-                //    ClientId = Settings.LykkeStreams.Authentication.ClientId,
-                //    ClientSecret = Settings.LykkeStreams.Authentication.ClientSecret,
-                //    PostLogoutRedirectUri = Settings.LykkeStreams.Authentication.PostLogoutRedirectUri,
-                //    CallbackPath = "/auth",
-
-                //    // Use the authorization code flow.
-                //    ResponseType = OpenIdConnectResponseType.Code,
-                //    Events = new CompPlatformAuthenticationEvents(Log, HostingEnvironment, Settings.LykkeStreams.Azure.StorageConnString),
-
-                //    // Note: setting the Authority allows the OIDC client middleware to automatically
-                //    // retrieve the identity provider's configuration and spare you from setting
-                //    // the different endpoints URIs or the token validation parameters explicitly.
-                //    Authority = Settings.LykkeStreams.Authentication.Authority,
-                //    Scope = { "email profile" }
-                //});
+                app.UseAuthentication();
 
                 app.UseStaticFiles();
 
@@ -220,6 +162,8 @@ namespace CompetitionPlatform
                         name: "default",
                         template: "{controller=Home}/{action=Index}/{id?}");
                 });
+
+                appLifetime.ApplicationStopped.Register(() => CleanUp().Wait());
             }
             catch (Exception ex)
             {
@@ -227,49 +171,52 @@ namespace CompetitionPlatform
             }
         }
 
-        private void CheckSettings(BaseSettings settings, ILog log)
+        private static ILog CreateLog(IServiceCollection services, IReloadingManager<BaseSettings> settings)
         {
-            if (string.IsNullOrEmpty(settings.LykkeStreams.Azure.StorageConnString))
-                WriteSettingsReadError(log, "StorageConnString");
+            var consoleLogger = new LogToConsole();
+            var aggregateLogger = new AggregateLogger();
 
-            if (string.IsNullOrEmpty(settings.LykkeStreams.Authentication.ClientId))
-                WriteSettingsReadError(log, "Authentication-ClientId");
+            aggregateLogger.AddLog(consoleLogger);
 
-            if (string.IsNullOrEmpty(settings.LykkeStreams.Authentication.ClientSecret))
-                WriteSettingsReadError(log, "Authentication-ClientSecret");
+            var dbLogConnectionStringManager = settings.ConnectionString(x => x.LykkeStreams.Azure.StorageLogConnString);
+            var dbLogConnectionString = dbLogConnectionStringManager.CurrentValue;
 
-            if (string.IsNullOrEmpty(settings.LykkeStreams.Authentication.PostLogoutRedirectUri))
-                WriteSettingsReadError(log, "Authentication-PostLogoutRedirectUri");
+            // Creating azure storage logger, which logs own messages to console log
+            if (!string.IsNullOrEmpty(dbLogConnectionString) && !(dbLogConnectionString.StartsWith("${") && dbLogConnectionString.EndsWith("}")))
+            {
+                var persistenceManager = new LykkeLogToAzureStoragePersistenceManager(
+                    AzureTableStorage<LogEntity>.Create(dbLogConnectionStringManager, "LogCompPlatform", consoleLogger),
+                    consoleLogger);
 
-            if (string.IsNullOrEmpty(settings.LykkeStreams.Authentication.Authority))
-                WriteSettingsReadError(log, "Authentication-Authority");
+                var azureStorageLogger = new LykkeLogToAzureStorage(
+                    persistenceManager,
+                    null,
+                    consoleLogger);
 
-            if (string.IsNullOrEmpty(settings.EmailServiceBus.Key))
-                WriteSettingsReadError(log, "EmailServiceBus-Key");
+                azureStorageLogger.Start();
 
-            if (string.IsNullOrEmpty(settings.EmailServiceBus.NamespaceUrl))
-                WriteSettingsReadError(log, "EmailServiceBus-NamespaceUrl");
+                aggregateLogger.AddLog(azureStorageLogger);
+            }
 
-            if (string.IsNullOrEmpty(settings.EmailServiceBus.PolicyName))
-                WriteSettingsReadError(log, "EmailServiceBus-PolicyName");
-
-            if (string.IsNullOrEmpty(settings.EmailServiceBus.QueueName))
-                WriteSettingsReadError(log, "EmailServiceBus-QueueName");
-
-            if(string.IsNullOrEmpty(settings.LykkeStreams.PersonalDataService.ApiKey))
-                WriteSettingsReadError(log, "PersonalData-ApiKey");
-
-            if (string.IsNullOrEmpty(settings.LykkeStreams.PersonalDataService.ServiceUri))
-                WriteSettingsReadError(log, "PersonalData-ServiceUri");
-
-            if (string.IsNullOrEmpty(settings.LykkeStreams.PersonalDataService.ServiceExternalUri))
-                WriteSettingsReadError(log, "PersonalData-ServiceExternalUri");
+            return aggregateLogger;
         }
 
-        private void WriteSettingsReadError(ILog log, string elementName)
+        private async Task CleanUp()
         {
-            log.WriteErrorAsync("Startup:ReadSettings", "Read " + elementName, elementName + " Missing or Empty",
-                new Exception(elementName + " is missing from the settings file!")).Wait();
+            try
+            {
+                // NOTE: Service can't recieve and process requests here, so you can destroy all resources
+                ApplicationContainer.Dispose();
+            }
+            catch (Exception ex)
+            {
+                if (Log != null)
+                {
+                    await Log.WriteFatalErrorAsync(nameof(Startup), nameof(CleanUp), "", ex);
+                    (Log as IDisposable)?.Dispose();
+                }
+                throw;
+            }
         }
     }
 }
