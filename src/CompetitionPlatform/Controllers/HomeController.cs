@@ -468,6 +468,15 @@ namespace CompetitionPlatform.Controllers
                 }
                 if (latestWinners.Count >= 4) break;
             }
+
+            var winnersIdList = latestWinners.Select(winner => winner.Id).ToList();
+            var winnerAvatarUrls = await _personalDataService.GetClientAvatarsAsync(winnersIdList);
+
+            foreach (var winner in latestWinners)
+            {
+                winner.AvatarUrl = winnerAvatarUrls[winner.Id];
+            }
+
             return latestWinners.Take(4).ToList();
         }
 

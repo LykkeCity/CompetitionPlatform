@@ -202,7 +202,18 @@
                         @foreach (var latestWinner in Model.LatestWinners)
                         {
                             <div class="user_badge user_badge--small">
-                                <a href="/userprofile/@latestWinner.Id" class="user_badge__img"><span><img src="~/public/img/user_default.svg" alt="user"></span></a>
+                                <a href="/userprofile/@latestWinner.Id" class="user_badge__img">
+                                    <span>
+                                        @if (string.IsNullOrEmpty(latestWinner.AvatarUrl))
+                                        {
+                                            <img src="~/public/img/user_default.svg" alt="">
+                                        }
+                                        else
+                                        {
+                                            <img src="@latestWinner.AvatarUrl" alt="">
+                                        }
+                                    </span>
+                                </a>
                                 <div class="user_badge__info">
                                     <a href="/userprofile/@latestWinner.Id" class="user_badge__title"><span>@latestWinner.Name</span></a>
                                     <div class="user_badge__desc">
