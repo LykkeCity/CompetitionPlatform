@@ -254,3 +254,4 @@ paket-files/
 
 **/launchSettings.json
 **/appsettings.Development.jsongeneralsettings.json 
+/src/CompetitionPlatform/appsettings.Development.json
