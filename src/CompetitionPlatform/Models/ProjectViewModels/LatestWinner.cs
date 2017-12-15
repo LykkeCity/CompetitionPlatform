@@ -7,5 +7,6 @@
         public string ProjectName { get; set; }
         public double Amount { get; set; }
         public string Id { get; set; }
+        public string AvatarUrl { get; set; }
     }
 }
