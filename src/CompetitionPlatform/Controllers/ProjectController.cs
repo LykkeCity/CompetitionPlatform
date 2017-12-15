@@ -231,6 +231,9 @@ namespace CompetitionPlatform.Controllers
             if (projectViewModel.AuthorFullName == null)
                 projectViewModel.AuthorFullName = project.AuthorFullName;
 
+            if (projectViewModel.AuthorIdentifier == null)
+                projectViewModel.AuthorIdentifier = project.AuthorIdentifier;
+
             project.Status = StatusHelper.GetProjectStatusFromString(project.ProjectStatus);
 
             projectViewModel.LastModified = DateTime.UtcNow;
