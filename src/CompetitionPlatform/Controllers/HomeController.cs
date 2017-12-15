@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using CompetitionPlatform.Models.ProjectModels;
+using Lykke.Service.PersonalData.Contract;
 
 namespace CompetitionPlatform.Controllers
 {
@@ -36,12 +37,14 @@ namespace CompetitionPlatform.Controllers
         private readonly IUserFeedbackRepository _feedbackRepository;
         private readonly IUserRolesRepository _userRolesRepository;
         private readonly BaseSettings _settings;
+        private readonly IPersonalDataService _personalDataService;
 
         public HomeController(IProjectRepository projectRepository, IProjectCommentsRepository commentsRepository,
             IProjectCategoriesRepository categoriesRepository, IProjectParticipantsRepository participantsRepository,
             IProjectFollowRepository projectFollowRepository, IProjectResultRepository resultsRepository,
             IProjectWinnersRepository winnersRepository, IUserFeedbackRepository feedbackRepository,
-            IUserRolesRepository userRolesRepository, BaseSettings settings)
+            IUserRolesRepository userRolesRepository, BaseSettings settings,
+            IPersonalDataService personalDataService)
         {
             _projectRepository = projectRepository;
             _commentsRepository = commentsRepository;
@@ -53,6 +56,7 @@ namespace CompetitionPlatform.Controllers
             _feedbackRepository = feedbackRepository;
             _userRolesRepository = userRolesRepository;
             _settings = settings;
+            _personalDataService = personalDataService;
         }
 
         public async Task<IActionResult> Index()
@@ -243,7 +247,8 @@ namespace CompetitionPlatform.Controllers
                 _projectFollowRepository,
                 _resultsRepository,
                 _winnersRepository,
-                GetAuthenticatedUser().Email
+                GetAuthenticatedUser().Email,
+                _personalDataService
             );
 
 

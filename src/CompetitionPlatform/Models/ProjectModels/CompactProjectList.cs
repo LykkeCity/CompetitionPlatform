@@ -6,11 +6,12 @@ using CompetitionPlatform.Data.AzureRepositories.Project;
 using CompetitionPlatform.Data.AzureRepositories.Result;
 using CompetitionPlatform.Data.AzureRepositories.Users;
 using CompetitionPlatform.Models.ProjectViewModels;
+using Lykke.Service.PersonalData.Contract;
 using Newtonsoft.Json;
 
 namespace CompetitionPlatform.Models.ProjectModels
 {
-    
+
     public class CompactProjectList
     {
         /*
@@ -18,7 +19,7 @@ namespace CompetitionPlatform.Models.ProjectModels
          * in the ProjectCompactViewModel class. It is frequently used, has nontrivial logic built in,
          * and may grow in the future - putting it as a class for now
          */
-        
+
         private List<ProjectCompactViewModel> _compactProjectsModelList = new List<ProjectCompactViewModel>();
 
         private CompactProjectList(IEnumerable<IProjectData> baseProjectList)
@@ -52,7 +53,8 @@ namespace CompetitionPlatform.Models.ProjectModels
             IProjectFollowRepository projectFollowRepository,
             IProjectResultRepository resultsRepository,
             IProjectWinnersRepository winnersRepository,
-            string userEmail
+            string userEmail,
+            IPersonalDataService personalDataService
         )
         {
             var returnCompactProjectList = new CompactProjectList(baseProjectList);
@@ -62,7 +64,8 @@ namespace CompetitionPlatform.Models.ProjectModels
                 projectFollowRepository,
                 resultsRepository,
                 winnersRepository,
-                userEmail
+                userEmail,
+                personalDataService
             );
         }
 
@@ -76,7 +79,8 @@ namespace CompetitionPlatform.Models.ProjectModels
             IProjectFollowRepository projectFollowRepository,
             IProjectResultRepository resultsRepository,
             IProjectWinnersRepository winnersRepository,
-            string userEmail
+            string userEmail,
+            IPersonalDataService personalDataService
         )
         {
             foreach (var compactProject in _compactProjectsModelList)
@@ -90,7 +94,7 @@ namespace CompetitionPlatform.Models.ProjectModels
                     compactProject.BaseProjectData.Id);
             }
 
-            return this;
+            return await FetchAuthorAvatars(this, personalDataService);
         }
 
         /*
@@ -121,10 +125,23 @@ namespace CompetitionPlatform.Models.ProjectModels
 
             return new List<string>();
         }
-        
-    public List<ProjectCompactViewModel> GetProjects()
+
+        public List<ProjectCompactViewModel> GetProjects()
         {
             return _compactProjectsModelList;
+        }
+
+        private async Task<CompactProjectList> FetchAuthorAvatars(CompactProjectList compactProjectList, IPersonalDataService personalDataService)
+        {
+            var authorIdList = compactProjectList._compactProjectsModelList.Select(compactProject => compactProject.BaseProjectData.AuthorIdentifier).ToList();
+            var authorAvatarUrls = await personalDataService.GetClientAvatarsAsync(authorIdList);
+
+            foreach (var compactProject in compactProjectList._compactProjectsModelList)
+            {
+                compactProject.AuthorAvatarUrl = authorAvatarUrls[compactProject.BaseProjectData.AuthorIdentifier];
+            }
+
+            return compactProjectList;
         }
     }
 }
