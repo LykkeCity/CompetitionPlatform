@@ -13,5 +13,6 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public List<string> Tags { get; set; }
         public bool IsFollowing { get; set; }
         public IProjectData BaseProjectData { get; set; }
+        public string AuthorAvatarUrl { get; set; }
     }
 }
