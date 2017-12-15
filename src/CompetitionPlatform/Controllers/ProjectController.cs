@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Security.Claims;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -29,8 +28,6 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Ganss.XSS;
 using Lykke.Service.PersonalData.Contract;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace CompetitionPlatform.Controllers
 {
@@ -545,8 +542,6 @@ namespace CompetitionPlatform.Controllers
 
             var project = await _projectRepository.GetAsync(id);
 
-            //var resources = JsonConvert.DeserializeObject<List<ProgrammingResource>>(project.ProgrammingResources);
-
             project.Status = StatusHelper.GetProjectStatusFromString(project.ProjectStatus);
 
             var comments = await _commentsRepository.GetProjectCommentsAsync(id);
@@ -947,9 +942,6 @@ namespace CompetitionPlatform.Controllers
 
         private async Task SendProjectCreateNotification(IProjectData model)
         {
-            //var httpClient = new HttpClient();
-            //var settingsString = await httpClient.GetStringAsync(_settings.EmailServiceBusSettingsUrl);
-            //var serviceBusSettings = JsonConvert.DeserializeObject<EmailServiceBusSettings>(settingsString);
             var emailProducer = new EmailSenderProducer(_settings.EmailServiceBus, _log);
 
             var message = new EmailMessage
