@@ -77,7 +77,7 @@ else
                             <a href="/userprofile/@comment.UserIdentifier">@comment.FullName</a>
                             @if (comment.UserId == Model.ProjectAuthorId)
                             {
-                                <span class="label label--primary">creator</span>
+                                <span class="label label--primary">author</span>
                             }
                             else if (Model.CommenterIsModerator.ContainsKey(comment.Id) && Model.CommenterIsModerator[comment.Id].Equals(true))
                             {
