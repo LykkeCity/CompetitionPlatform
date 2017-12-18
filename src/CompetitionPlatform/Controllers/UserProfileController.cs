@@ -11,6 +11,7 @@ using CompetitionPlatform.Data.AzureRepositories.Settings;
 using CompetitionPlatform.Data.AzureRepositories.Users;
 using CompetitionPlatform.Helpers;
 using CompetitionPlatform.Models;
+using CompetitionPlatform.Models.ProjectModels;
 using CompetitionPlatform.Models.ProjectViewModels;
 using CompetitionPlatform.Models.UserProfile;
 using Lykke.Service.PersonalData.Contract;
@@ -263,6 +264,7 @@ namespace CompetitionPlatform.Controllers
 
                 compactModels.Add(compactModel);
             }
+            compactModels = await CompactProjectList.FetchAuthorAvatars(compactModels, _personalDataService);
 
             return compactModels;
         }

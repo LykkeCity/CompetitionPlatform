@@ -94,7 +94,8 @@ namespace CompetitionPlatform.Models.ProjectModels
                     compactProject.BaseProjectData.Id);
             }
 
-            return await FetchAuthorAvatars(this, personalDataService);
+            _compactProjectsModelList = await FetchAuthorAvatars(_compactProjectsModelList, personalDataService);
+            return this;
         }
 
         /*
@@ -131,17 +132,17 @@ namespace CompetitionPlatform.Models.ProjectModels
             return _compactProjectsModelList;
         }
 
-        private async Task<CompactProjectList> FetchAuthorAvatars(CompactProjectList compactProjectList, IPersonalDataService personalDataService)
+        public static async Task<List<ProjectCompactViewModel>> FetchAuthorAvatars(List<ProjectCompactViewModel> compactProjectsModelList, IPersonalDataService personalDataService)
         {
-            var authorIdList = compactProjectList._compactProjectsModelList.Select(compactProject => compactProject.BaseProjectData.AuthorIdentifier).ToList();
+            var authorIdList = compactProjectsModelList.Select(compactProject => compactProject.BaseProjectData.AuthorIdentifier).ToList();
             var authorAvatarUrls = await personalDataService.GetClientAvatarsAsync(authorIdList);
 
-            foreach (var compactProject in compactProjectList._compactProjectsModelList)
+            foreach (var compactProject in compactProjectsModelList)
             {
                 compactProject.AuthorAvatarUrl = authorAvatarUrls[compactProject.BaseProjectData.AuthorIdentifier];
             }
 
-            return compactProjectList;
+            return compactProjectsModelList;
         }
     }
 }
