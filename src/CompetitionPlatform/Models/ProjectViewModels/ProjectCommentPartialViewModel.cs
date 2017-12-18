@@ -24,5 +24,6 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public Dictionary<string, bool> CommenterIsModerator { get; set; }
         public string UserAgent { get; set; }
         public bool Deleted { get; set; }
+        public Dictionary<string, string> Avatars { get; set; }
     }
 }

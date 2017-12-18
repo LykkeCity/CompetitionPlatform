@@ -115,5 +115,7 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         [Display(Name = "Title Note")]
         [StringLength(30)]
         public string NameTag { get; set; }
+
+        public string AuthorAvatarUrl { get; set; }
     }
 }

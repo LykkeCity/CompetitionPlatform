@@ -18,5 +18,6 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public bool IsAdmin { get; set; }
         public bool SkipVoting { get; set; }
         public DateTime SubmissionsDeadline { get; set; }
+        public Dictionary<string, string> Avatars { get; set; }
     }
 }
