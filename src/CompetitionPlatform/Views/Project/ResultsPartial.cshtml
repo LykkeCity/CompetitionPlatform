@@ -36,14 +36,21 @@
             </tr>
             @foreach (var result in Model.Results)
             {
-
                 var userVotedForResult = Model.UserVotedForResults.ContainsKey(result.ParticipantId) && Model.UserVotedForResults[result.ParticipantId].Equals(true);
+                var resultsAvatar = Model.Avatars[result.ParticipantIdentifier];
 
                 <tr>
                     <td class="board_name">
                         <div class="user_badge user_badge--small">
                             <a href="/userprofile/@result.ParticipantIdentifier" class="user_badge__img">
-                                <img src="~/images/avatar.svg" alt="">
+                                @if (string.IsNullOrEmpty(resultsAvatar))
+                                {
+                                    <img src="~/images/avatar.svg" alt="">
+                                }
+                                else
+                                {
+                                    <img src="@resultsAvatar" alt="">
+                                }
                             </a>
                             <a href="/userprofile/@result.ParticipantIdentifier" class="user_badge__info link-text-black">@result.ParticipantFullName</a>
                         </div>

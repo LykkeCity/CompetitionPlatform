@@ -43,8 +43,19 @@
             <div class="card__inner">
                 <div class="card__body">
                     <div class="card__breadcrumbs">
-                        <div class="user_badge__img"><a href="/userprofile/@project.BaseProjectData.AuthorId"><img src="~/public/img/user_default.svg" alt=""></a></div>
-                        <a href="/userprofile/@project.BaseProjectData.AuthorId" class="breadcrumb_elem">@project.BaseProjectData.AuthorFullName</a>
+                        <div class="user_badge__img">
+                            <a href="/userprofile/@project.BaseProjectData.AuthorIdentifier">
+                                @if (string.IsNullOrEmpty(project.AuthorAvatarUrl))
+                                {
+                                    <img src="~/public/img/user_default.svg" alt="">
+                                }
+                                else
+                                {
+                                    <img src="@project.AuthorAvatarUrl" alt="">
+                                }
+                            </a>
+                        </div>
+                        <a href="/userprofile/@project.BaseProjectData.AuthorIdentifier" class="breadcrumb_elem">@project.BaseProjectData.AuthorFullName</a>
                         <i class="icon icon--chevron-thin-right"></i>
                         <a href="/" class="breadcrumb_elem">@project.BaseProjectData.Category</a>
                     </div>

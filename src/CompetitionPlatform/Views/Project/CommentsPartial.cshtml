@@ -57,16 +57,27 @@ else
 <div class="messages_list">
     @foreach (var comment in Model.Comments)
     {
+        var commenterAvatar = Model.Avatars[comment.UserIdentifier];
+
         <div class="message_card @(!string.IsNullOrEmpty(comment.ParentId) ? "message_card--accent" : "")">
             <div class="user_badge user_badge--small">
-                <div class="user_badge__img"><a href="/userprofile/@comment.UserIdentifier"><img src="~/images/avatar.svg" alt=""></a></div>
+                <div class="user_badge__img"><a href="/userprofile/@comment.UserIdentifier">
+                    @if (string.IsNullOrEmpty(commenterAvatar))
+                    {
+                        <img src="~/images/avatar.svg" alt="">
+                    }
+                    else
+                    {
+                        <img src="@commenterAvatar" alt="">
+                    }
+                </a></div>
                 <div class="user_badge__message">
                     <div class="message_card__inner">
                         <div class="user_badge__title">
                             <a href="/userprofile/@comment.UserIdentifier">@comment.FullName</a>
                             @if (comment.UserId == Model.ProjectAuthorId)
                             {
-                                <span class="label label--primary">creator</span>
+                                <span class="label label--primary">author</span>
                             }
                             else if (Model.CommenterIsModerator.ContainsKey(comment.Id) && Model.CommenterIsModerator[comment.Id].Equals(true))
                             {

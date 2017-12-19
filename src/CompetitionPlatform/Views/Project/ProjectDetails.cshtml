@@ -357,7 +357,14 @@
             {
                             <div class="user_badge">
                                 <a href="/userprofile/@Model.AuthorIdentifier" class="user_badge__img">
-                                    <img src="~/images/avatar.svg" alt="">
+                                    @if (string.IsNullOrEmpty(Model.AuthorAvatarUrl))
+                                    {
+                                        <img src="~/images/avatar.svg" alt="">
+                                    }
+                                    else
+                                    {
+                                        <img src="@Model.AuthorAvatarUrl" alt="">
+                                    }
                                 </a>
                                 <div class="user_badge__info">
                                     <a href="/userprofile/@Model.AuthorIdentifier" class="user_badge__title">@Model.AuthorFullName</a>
@@ -545,7 +552,17 @@
                                                     <div class="user_badge__img">
                                                         @if (!string.IsNullOrEmpty(expert.UserIdentifier))
                                                         {
-                                                            <a href="/userprofile/@expert.UserIdentifier"><img src="~/images/avatar.svg" alt=""></a>
+                                                            var expertAvatar = Model.CommentsPartial.Avatars[expert.UserIdentifier];
+                                                            <a href="/userprofile/@expert.UserIdentifier">
+                                                                @if (string.IsNullOrEmpty(expertAvatar))
+                                                                {
+                                                                    <img src="~/images/avatar.svg" alt="">
+                                                                }
+                                                                else
+                                                                {
+                                                                    <img src="@expertAvatar" alt="">
+                                                                }
+                                                            </a>
                                                         }
                                                         else
                                                         {

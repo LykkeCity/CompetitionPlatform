@@ -9,5 +9,6 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public IEnumerable<IProjectParticipateData> Participants { get; set; }
         public Status Status { get; set; }
         public bool HasResult { get; set; }
+        public Dictionary<string, string> Avatars { get; set; }
     }
 }

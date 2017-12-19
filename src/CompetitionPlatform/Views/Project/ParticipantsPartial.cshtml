@@ -9,10 +9,20 @@
         </tr>
         @foreach (var participant in Model.Participants)
         {
+            var participantAvatar = Model.Avatars[participant.UserIdentifier];
             <tr>
                 <td>
                     <div class="user_badge user_badge--small">
-                        <a href="/userprofile/@participant.UserIdentifier" class="user_badge__img"><img src="~/images/avatar.svg" alt=""></a>
+                        <a href="/userprofile/@participant.UserIdentifier" class="user_badge__img">
+                            @if (string.IsNullOrEmpty(participantAvatar))
+                            {
+                                <img src="~/images/avatar.svg" alt="">
+                            }
+                            else
+                            {
+                                <img src="@participantAvatar" alt="">
+                            }
+                        </a>
                         <a href="/userprofile/@participant.UserIdentifier" class="user_badge__info link-text-black">@participant.FullName</a>
                     </div>
                 </td>
