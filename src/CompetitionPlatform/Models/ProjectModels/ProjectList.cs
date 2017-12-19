@@ -50,7 +50,7 @@ namespace CompetitionPlatform.Models.ProjectModels
                 if(await projectFollowRepository.GetAsync(userId, project.Id) != null)
                     followingProjectIds.Add(project.Id);
             }
-            _projectList = _projectList.Where(x => followingProjectIds.IndexOf(x.Id) > 0);
+            _projectList = _projectList.Where(x => followingProjectIds.IndexOf(x.Id) >= 0);
             return this;
         }
 
@@ -65,7 +65,7 @@ namespace CompetitionPlatform.Models.ProjectModels
                 if (await projectParticipantsRepository.GetAsync(userId, project.Id) != null)
                     participatingProjectIds.Add(project.Id);
             }
-            _projectList = _projectList.Where(x => participatingProjectIds.IndexOf(x.Id) > 0);
+            _projectList = _projectList.Where(x => participatingProjectIds.IndexOf(x.Id) >= 0);
             return this;
         }
         
@@ -115,7 +115,7 @@ namespace CompetitionPlatform.Models.ProjectModels
             return this;
         }
 
-        // Order projects by the first place prize (default: ascending)
+        // Order projects by the last modified date (default: descending)
         public ProjectList OrderByLastModified(string modifiedOrder = "Descending")
         {
             if (!string.IsNullOrEmpty(modifiedOrder))
