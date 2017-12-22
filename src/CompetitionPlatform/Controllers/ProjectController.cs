@@ -82,14 +82,23 @@ namespace CompetitionPlatform.Controllers
             _personalDataService = personalDataService;
         }
 
+
+        // Create a new project
         [Authorize]
         public async Task<IActionResult> Create()
         {
+            // Fetch user and role
+            // TODO: These should be methods on the CompetitionPlatformUser model class
+            // which should probably be broken out from IdentityModels
             var user = GetAuthenticatedUser();
             var userRole = await _userRolesRepository.GetAsync(user.Email.ToLower());
 
+
             ViewBag.ProjectCategories = _categoriesRepository.GetCategories();
 
+            // TODO: Move these checks into a bool CanCreateProject() or IsVerified() on the CompetitionPlatformUser
+            // avoiding these if trees makes it much easier to test and modify in the future
+            // plus it's used everywhere so we can DRY the code up
             if (userRole != null)
             {
                 return View("CreateProject");
@@ -108,6 +117,7 @@ namespace CompetitionPlatform.Controllers
             return View("CreateClosed");
         }
 
+        // Edit a project
         [Authorize]
         public async Task<IActionResult> Edit(string id)
         {
@@ -116,6 +126,7 @@ namespace CompetitionPlatform.Controllers
             var viewModel = await GetProjectViewModel(id);
             viewModel.IsAuthor = viewModel.AuthorId == user.Email;
 
+            // TODO: move to a bool CanUserEditProject(
             if (viewModel.IsAdmin)
             {
                 return View("EditProject", viewModel);
@@ -132,22 +143,35 @@ namespace CompetitionPlatform.Controllers
         [HttpPost]
         public async Task<IActionResult> SaveProject(ProjectViewModel projectViewModel, bool draft = false, bool enableVoting = false, bool enableRegistration = false)
         {
-            projectViewModel.Tags = SerializeTags(projectViewModel.Tags);
 
+            // TODO: We should re-check if we can do enums, or some workaround - the serialization/deserialization everywhere
+            // is definitely a surface for bugs to hide in.
+
+            projectViewModel.Tags = SerializeTags(projectViewModel.Tags);
             projectViewModel.ProjectStatus = projectViewModel.Status.ToString();
 
+            // TODO: Thinking about a Sanitize() method on the ProjectViewModel right before we write to DB,
+            // that way we get every possible user-generated field and don't need to worry about missing one
+            // (e.g. what if you forgot to do the PrizeDescription here?)
             var sanitizer = new HtmlSanitizer();
             projectViewModel.PrizeDescription = sanitizer.Sanitize(projectViewModel.PrizeDescription);
             projectViewModel.Description = sanitizer.Sanitize(projectViewModel.Description);
 
+            // TODO: Switch the name of the fields in the projectViewModel so it
+            // is consistent, using the ! operator is difficult to read and reason about here
             projectViewModel.SkipVoting = !enableVoting;
             projectViewModel.SkipRegistration = !enableRegistration;
+
+            // TODO: What's going on in these two if statements? Probably needs a comment, at least, if not a refactor.
             if (projectViewModel.CompetitionRegistrationDeadline == DateTime.MinValue)
                 projectViewModel.CompetitionRegistrationDeadline = DateTime.UtcNow.Date;
 
             if (projectViewModel.VotingDeadline == DateTime.MinValue)
                 projectViewModel.VotingDeadline = DateTime.UtcNow.Date;
 
+            // TODO: Move to a separate validation function for testing, regexes are notorious.
+            // Also, is the ID field the 'project URL' on the frontend? Should probably be changed, I found
+            // it quite confusing.
             var idValid = Regex.IsMatch(projectViewModel.Id, @"^[a-z0-9-]+$") && !string.IsNullOrEmpty(projectViewModel.Id);
 
             if (!idValid)
@@ -161,6 +185,7 @@ namespace CompetitionPlatform.Controllers
 
             if (project == null)
             {
+                // TODO: Put this entire if-block into a constructor or a factory method on ProjectViewModel?
                 projectViewModel.Status = draft ? Status.Draft : Status.Initiative;
 
                 var user = GetAuthenticatedUser();
@@ -168,6 +193,8 @@ namespace CompetitionPlatform.Controllers
                 projectViewModel.AuthorId = user.Email;
                 projectViewModel.AuthorFullName = user.GetFullName();
                 projectViewModel.AuthorIdentifier = user.Id;
+
+                // TODO: Where is the user-agent used?
                 projectViewModel.UserAgent = HttpContext.Request.Headers["User-Agent"].ToString();
 
                 projectViewModel.Created = DateTime.UtcNow;
@@ -175,11 +202,14 @@ namespace CompetitionPlatform.Controllers
 
                 var projectId = await _projectRepository.SaveAsync(projectViewModel);
 
+                // TODO: Move these into some kind of post-creation notification?
+                // Especially because we don't want to notify in case of some problem
                 if (projectViewModel.Status == Status.Initiative)
                 {
                     await SendProjectCreateNotification(projectViewModel);
                 }
 
+                // TODO: Not sure what emailsQueue is, probably needs a comment
                 if (_emailsQueue != null)
                 {
                     var message = NotificationMessageHelper.ProjectCreatedMessage(user.Email, user.GetFullName(),
@@ -187,15 +217,22 @@ namespace CompetitionPlatform.Controllers
                     await _emailsQueue.PutMessageAsync(message);
                 }
 
+                // TODO: How is this different than the _projectRepository.SaveAsync?
                 await SaveProjectFile(projectViewModel.File, projectId);
 
                 return RedirectToAction("ProjectDetails", "Project", new { id = projectId });
             }
+
+            // TODO: Move this to the validation function, then we can get rid of the if-statement 
+            // and the async fetch above
             ViewBag.ProjectCategories = _categoriesRepository.GetCategories();
             ModelState.AddModelError("Id", "Project with that Project Url already exists!");
             return View("CreateProject", projectViewModel);
         }
 
+
+        // TODO: This has a lot of duplicated code to SaveProject, rewrite to handle any
+        // edit-specific logic then call SaveProject
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> SaveEditedProject(ProjectViewModel projectViewModel, bool draft = false,
@@ -243,6 +280,8 @@ namespace CompetitionPlatform.Controllers
             var statusAndUrlChanged = projectViewModel.Status != Status.Draft &&
                                       projectViewModel.ProjectUrl != projectId;
 
+            // TODO: This definitely needs some love. Not totally sure what's happening here, we should dissect
+            // but it's definitely too complicated
             if (!statusAndUrlChanged)
             {
                 var currentProjectIsInStream = false;
@@ -410,6 +449,9 @@ namespace CompetitionPlatform.Controllers
             return RedirectToAction("ProjectDetails", "Project", new { id = projectViewModel.Id });
         }
 
+        // TODO: These notification tasks should probably be done elsewhere -
+        // I believe I saw that we've got additional requirements around notifications
+        // coming up, so maybe a separate notification controller is in order
         private async Task AddCompetitionMailToQueue(IProjectData project)
         {
             var following = await GetProjectFollows(project.Id);
@@ -478,7 +520,8 @@ namespace CompetitionPlatform.Controllers
                 }
             }
         }
-
+        // TODO: Move to the new ProjectModel, which will contain details about the project. ProjectViewModel is just
+        // the view-specific data
         private async Task<IEnumerable<IProjectFollowData>> GetProjectFollows(string projectId)
         {
             var follows = await _projectFollowRepository.GetFollowAsync();
@@ -486,6 +529,7 @@ namespace CompetitionPlatform.Controllers
             return projectFollows;
         }
 
+        // TODO: Name this something more descriptive - looks like it's filling in the view-specific data for the project?
         public async Task<IActionResult> ProjectDetails(string id, bool commentsActive = false, bool participantsActive = false, bool resultsActive = false, bool winnersActive = false)
         {
             if (TempData["ShowParticipantAddedModal"] != null)
@@ -503,6 +547,7 @@ namespace CompetitionPlatform.Controllers
                 ViewBag.VotedTwice = (bool)TempData["ShowVotedTwiceModal"];
             }
 
+            // TODO: these can just be ViewBag.CommentsActive = commentsActive
             if (commentsActive)
             {
                 ViewBag.CommentsActive = true;
@@ -535,7 +580,9 @@ namespace CompetitionPlatform.Controllers
 
             return View(viewModel);
         }
-
+        // TODO: A lot of this, like the fetch methods should probably be its own ProjectModel class - it's really about the 
+        // Project, not just the ProjectView and anything that's related to the view only (like the projectCategories) 
+        // can get pushed into the separate ProjectViewModel class that has a ProjectModel property on it.
         private async Task<ProjectViewModel> GetProjectViewModel(string id)
         {
             var projectCategories = _categoriesRepository.GetCategories();
@@ -546,8 +593,11 @@ namespace CompetitionPlatform.Controllers
             var projectDetailsAvatarIds = new List<string>();
             projectDetailsAvatarIds.Add(project.AuthorIdentifier);
 
+            // TODO: And these type of additional fetch methods can be methods on the model - the more we break
+            // it up, the easier it is to test and reuse. 
             var comments = await _commentsRepository.GetProjectCommentsAsync(id);
 
+            // TODO: Definitely should be a FormatComments()
             foreach (var comment in comments)
             {
                 if (string.IsNullOrEmpty(comment.UserIdentifier))
@@ -592,7 +642,9 @@ namespace CompetitionPlatform.Controllers
 
             var projectFollowing = (user.Email == null) ? null : await _projectFollowRepository.GetAsync(user.Email, id);
             var isFollowing = projectFollowing != null;
-
+            
+            // TODO: As I go through this, wondering if we need a CommentsList model, especially since 
+            // comments are probably going to be important to the platform going forwards
             comments = SortComments(comments);
 
             var commenterIsModerator = new Dictionary<string, bool>();
@@ -604,6 +656,8 @@ namespace CompetitionPlatform.Controllers
                 commenterIsModerator.Add(comment.Id, isModerator);
             }
 
+            // TODO: The votes might also need to be broken out, especially if we want to do
+            // 5-star or numeric scoring
             var userVotedForResults = new Dictionary<string, bool>();
             var resultVotes = await _resultVoteRepository.GetProjectResultVotesAsync(project.Id);
 
