@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
 using CompetitionPlatform.Data.AzureRepositories.Project;
@@ -17,9 +16,10 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using CompetitionPlatform.Models.ProjectModels;
+using Lykke.Service.PersonalData.Contract;
 
 namespace CompetitionPlatform.Controllers
 {
@@ -35,12 +35,14 @@ namespace CompetitionPlatform.Controllers
         private readonly IUserFeedbackRepository _feedbackRepository;
         private readonly IUserRolesRepository _userRolesRepository;
         private readonly BaseSettings _settings;
+        private readonly IPersonalDataService _personalDataService;
 
         public HomeController(IProjectRepository projectRepository, IProjectCommentsRepository commentsRepository,
             IProjectCategoriesRepository categoriesRepository, IProjectParticipantsRepository participantsRepository,
             IProjectFollowRepository projectFollowRepository, IProjectResultRepository resultsRepository,
             IProjectWinnersRepository winnersRepository, IUserFeedbackRepository feedbackRepository,
-            IUserRolesRepository userRolesRepository, BaseSettings settings)
+            IUserRolesRepository userRolesRepository, BaseSettings settings,
+            IPersonalDataService personalDataService)
         {
             _projectRepository = projectRepository;
             _commentsRepository = commentsRepository;
@@ -52,30 +54,57 @@ namespace CompetitionPlatform.Controllers
             _feedbackRepository = feedbackRepository;
             _userRolesRepository = userRolesRepository;
             _settings = settings;
+            _personalDataService = personalDataService;
         }
 
         public async Task<IActionResult> Index()
         {
-            var viewModel = await GetProjectListViewModel(currentProjects: true);
-            viewModel.Projects = viewModel.Projects.OrderByDescending(x => x.LastModified);
+            var projectList = (await ProjectList.CreateProjectList(_projectRepository))
+                .RemoveDrafts()
+                .FilterByCurrentProjects(true)
+                .OrderByLastModified();
+                
+            // fetch the view model
+            var viewModel = await BuildViewModel(projectList);
+
+            // fetch latest winners and JustFinishedProjects for the viewmodel
             viewModel.LatestWinners = await GetLatestWinners();
             viewModel.JustFinishedProjects = await GetJustFinishedProjects();
+
+            // return view
             return View(viewModel);
         }
 
         public async Task<IActionResult> Allprojects(string status, string category, string prize)
         {
+            // flip the flag for AllProjects, set MyProjects, FAQ, and Blog to false?
             ViewBag.AllProjects = ViewBag.AllProjects != true;
             ViewBag.MyProjects = false;
             ViewBag.Faq = false;
             ViewBag.Blog = false;
 
-            var viewModel = await GetProjectListViewModel(projectStatusFilter:status, projectCategoryFilter:category, projectPrizeFilter:prize);
-            viewModel.Projects = viewModel.Projects.OrderBy(x => x.Status).ThenByDescending(x => x.BudgetFirstPlace).ThenBy(x => x.Created);
+            var projectList = (await ProjectList.CreateProjectList(_projectRepository))
+                .RemoveDrafts()
+                .FilterByStatus(status)
+                .FilterByCategory(category)
+                .OrderByPrize(prize);
+
+            var viewModel = await BuildViewModel(projectList);
+
+            //TODO: Is this ordering needed? Status should be filtered, and prize should be ordered
+            // order by status, then by budget, then by created
+            //Default filtering - used when the page is first opened
+
+            viewModel.Projects = viewModel.Projects
+                .OrderBy(x => x.BaseProjectData.Status)
+                .ThenByDescending(x => x.BaseProjectData.BudgetFirstPlace)
+                .ThenBy(x => x.BaseProjectData.Created);
             return View(viewModel);
         }
 
         [Authorize]
+        // "My Projects" is anything that the current user has created, participated in, or follows.
+        // Create three separate ProjectLists, then combine them
         public async Task<IActionResult> Myprojects()
         {
             ViewBag.MyProjects = ViewBag.MyProjects != true;
@@ -84,14 +113,36 @@ namespace CompetitionPlatform.Controllers
             ViewBag.Blog = false;
 
             var user = GetAuthenticatedUser();
-            var viewModel = await GetMyProjectListViewModel(userId: user.Email, createdProjects: true, followingProjects: true, participatingProjects: true);
 
+            var createdProjectList = (await ProjectList.CreateProjectList(_projectRepository))
+                .FilterByAuthorId(user.Email);
+
+            var participatingProjectList = await ProjectList.CreateProjectList(_projectRepository);
+            participatingProjectList = await participatingProjectList.FilterByParticipating(user.Email, _participantsRepository);
+
+            var followingProjectList = await ProjectList.CreateProjectList(_projectRepository);
+            followingProjectList = await followingProjectList.FilterByFollowing(user.Email, _projectFollowRepository);
+
+            var completeProjectList = createdProjectList
+                .DistinctUnion(participatingProjectList)
+                .DistinctUnion(followingProjectList)
+                .RemoveDrafts()
+                .OrderByLastModified();
+
+            var viewModel = await BuildViewModel(completeProjectList);
+           
             return View(viewModel);
         }
 
         public async Task<IActionResult> GetProjectList(string projectStatusFilter, string projectCategoryFilter, string projectPrizeFilter)
         {
-            var viewModel = await GetProjectListViewModel(projectStatusFilter, projectCategoryFilter, projectPrizeFilter);
+            var projectList = (await ProjectList.CreateProjectList(_projectRepository))
+                .RemoveDrafts()
+                .FilterByStatus(projectStatusFilter)
+                .FilterByCategory(projectCategoryFilter)
+                .OrderByPrize(projectPrizeFilter);
+
+            var viewModel = await BuildViewModel(projectList);
             return PartialView("ProjectListPartial", viewModel);
         }
 
@@ -99,8 +150,25 @@ namespace CompetitionPlatform.Controllers
         public async Task<IActionResult> GetMyProjectList(string myProjectStatusFilter, string myProjectCategoryFilter, string myProjectPrizeFilter)
         {
             var user = GetAuthenticatedUser();
-            var viewModel = await GetMyProjectListViewModel(userId: user.Email, createdProjects: true, followingProjects: true, participatingProjects: true,
-                myProjectCategoryFilter: myProjectCategoryFilter, myProjectPrizeFilter: myProjectPrizeFilter, myProjectStatusFilter: myProjectStatusFilter);
+
+            var createdProjectList = (await ProjectList.CreateProjectList(_projectRepository))
+                .FilterByAuthorId(user.Email);
+
+            var participatingProjectList = await ProjectList.CreateProjectList(_projectRepository);
+            participatingProjectList = await participatingProjectList.FilterByParticipating(user.Email, _participantsRepository);
+
+            var followingProjectList = await ProjectList.CreateProjectList(_projectRepository);
+            followingProjectList = await followingProjectList.FilterByFollowing(user.Email, _projectFollowRepository);
+
+            var completeProjectList = createdProjectList
+                .DistinctUnion(participatingProjectList)
+                .DistinctUnion(followingProjectList)
+                .RemoveDrafts()
+                .FilterByStatus(myProjectStatusFilter)
+                .FilterByCategory(myProjectCategoryFilter)
+                .OrderByPrize(myProjectPrizeFilter);
+
+            var viewModel = await BuildViewModel(completeProjectList);
             return PartialView("ProjectListPartial", viewModel);
         }
 
@@ -113,7 +181,11 @@ namespace CompetitionPlatform.Controllers
             ViewBag.CreatedProjects = false;
 
             var user = GetAuthenticatedUser();
-            var viewModel = await GetMyProjectListViewModel(userId: user.Email, followingProjects: true);
+
+            var projectList = await ProjectList.CreateProjectList(_projectRepository);
+            projectList = await projectList.FilterByFollowing(user.Email, _projectFollowRepository);
+                
+            var viewModel = await BuildViewModel(projectList);
 
             return View("Myprojects", viewModel);
         }
@@ -127,8 +199,12 @@ namespace CompetitionPlatform.Controllers
             ViewBag.CreatedProjects = false;
 
             var user = GetAuthenticatedUser();
-            var viewModel = await GetMyProjectListViewModel(userId: user.Email, participatingProjects: true);
 
+            var projectList = await ProjectList.CreateProjectList(_projectRepository);
+            projectList = await projectList.FilterByParticipating(user.Email, _participantsRepository);
+
+            var viewModel = await BuildViewModel(projectList);
+            
             return View("Myprojects", viewModel);
         }
 
@@ -141,236 +217,72 @@ namespace CompetitionPlatform.Controllers
             ViewBag.ParticipatingProjects = false;
 
             var user = GetAuthenticatedUser();
-            var viewModel = await GetMyProjectListViewModel(userId: user.Email, createdProjects: true);
 
+            var projectList = (await ProjectList.CreateProjectList(_projectRepository))
+                .FilterByAuthorId(user.Email);
+
+            var viewModel = await BuildViewModel(projectList);
+            
             return View("Myprojects", viewModel);
         }
 
-        private async Task<ProjectListIndexViewModel> GetProjectListViewModel(string projectStatusFilter = null, string projectCategoryFilter = null,
-            string projectPrizeFilter = null, string projectAuthorId = null,
-            bool currentProjects = false)
+        // Method to build the view model: fetch categories and compact the projects
+        public async Task<ProjectListIndexViewModel> BuildViewModel(ProjectList projectList)
         {
-            var projects = await _projectRepository.GetProjectsAsync();
-
-            projects = projects.Where(x => x.ProjectStatus != Status.Draft.ToString());
-
-            var projectCategories = _categoriesRepository.GetCategories();
-
-            if (!string.IsNullOrEmpty(projectStatusFilter) && projectStatusFilter != "All")
-                projects = projects.Where(x => x.ProjectStatus == projectStatusFilter);
-
-            if (!string.IsNullOrEmpty(projectCategoryFilter) && projectCategoryFilter != "All")
-                projects = projects.Where(x => x.Category.Replace(" ", "") == projectCategoryFilter);
-
-            if (!string.IsNullOrEmpty(projectAuthorId))
-                projects = projects.Where(x => x.AuthorId == projectAuthorId);
-
-            if (currentProjects)
-                projects = projects.Where(x => x.ProjectStatus != Status.Initiative.ToString() && x.ProjectStatus != Status.Archive.ToString());
-
-            if (!string.IsNullOrEmpty(projectPrizeFilter))
+            return new ProjectListIndexViewModel
             {
-                if (projectPrizeFilter == "Ascending")
-                    projects = projects.OrderBy(x => x.BudgetFirstPlace);
-
-                if (projectPrizeFilter == "Descending")
-                    projects = projects.OrderByDescending(x => x.BudgetFirstPlace);
-            }
-            else
-            {
-                projects = projects.OrderBy(x => x.BudgetFirstPlace);
-            }
-
-            var compactModels = await GetCompactProjectsList(projects);
-
-            var viewModel = new ProjectListIndexViewModel
-            {
-                ProjectCategories = projectCategories,
-                Projects = compactModels
+                ProjectCategories = _categoriesRepository.GetCategories(),
+                Projects = await GetCompactProjectsList(projectList.GetProjects())
             };
-
-            return viewModel;
         }
-
-        private async Task<ProjectListIndexViewModel> GetMyProjectListViewModel(string userId = null, bool createdProjects = false,
-            bool followingProjects = false, bool participatingProjects = false,
-            string myProjectStatusFilter = null, string myProjectCategoryFilter = null,
-            string myProjectPrizeFilter = null)
+        
+        private async Task<List<ProjectCompactViewModel>> GetCompactProjectsList(IEnumerable<IProjectData> projectList)
         {
-            var authoredProjects = await _projectRepository.GetProjectsAsync();
+            var compactModels = await CompactProjectList.CreateCompactProjectList(
+                projectList,
+                _commentsRepository,
+                _participantsRepository,
+                _projectFollowRepository,
+                _resultsRepository,
+                _winnersRepository,
+                GetAuthenticatedUser().Email,
+                _personalDataService
+            );
 
-            var followedProjects = authoredProjects as IList<IProjectData> ?? authoredProjects.ToList();
-            var participatedProjects = authoredProjects as IList<IProjectData> ?? authoredProjects.ToList();
 
-            var projectCategories = _categoriesRepository.GetCategories();
-
-            if ((createdProjects || ViewBag.CreatedProjects == true) && !string.IsNullOrEmpty(userId))
-                authoredProjects = authoredProjects.Where(x => x.AuthorId == userId);
-
-            if (followingProjects || ViewBag.FollowingProjects == true)
+            /* TODO: Move these from side effects to checks at object creation time*/
+            foreach (var project in projectList)
             {
-                foreach (var project in followedProjects.ToList())
-                {
-                    var match = await _projectFollowRepository.GetAsync(userId, project.Id);
-                    if (match == null)
-                        followedProjects.Remove(project);
-                }
-            }
+                // if the project has no author, use the ClaimsHelper to get the AuthorIdentifier from the AuthorID and 
+                // fill it in
+                //if (string.IsNullOrEmpty(project.AuthorIdentifier))
+                //{
+                //    project.AuthorIdentifier = await ClaimsHelper.GetUserIdByEmail(
+                //        _settings.LykkeStreams.Authentication.Authority, _settings.LykkeStreams.Authentication.ClientId,
+                //        project.AuthorId);
+                //    await _projectRepository.UpdateAsync(project);
+                //}
 
-            if (participatingProjects || ViewBag.ParticipatingProjects == true)
-            {
-                foreach (var project in participatedProjects.ToList())
-                {
-                    var match = await _participantsRepository.GetAsync(project.Id, userId);
-                    if (match == null)
-                        participatedProjects.Remove(project);
-                }
-            }
-
-            IEnumerable<IProjectData> allProjects = null;
-
-            if (ViewBag.CreatedProjects == true)
-            {
-                allProjects = authoredProjects;
-            }
-            else if (ViewBag.FollowingProjects == true)
-            {
-                allProjects = followedProjects;
-            }
-            else if (ViewBag.ParticipatingProjects == true)
-            {
-                allProjects = participatedProjects;
-            }
-            else
-            {
-                allProjects = authoredProjects.Union(followedProjects).Union(participatedProjects);
-            }
-
-            if (!string.IsNullOrEmpty(myProjectStatusFilter) && myProjectStatusFilter != "All")
-                allProjects = allProjects.Where(x => x.ProjectStatus == myProjectStatusFilter);
-
-            if (!string.IsNullOrEmpty(myProjectCategoryFilter) && myProjectCategoryFilter != "All")
-                allProjects = allProjects.Where(x => x.Category.Replace(" ", "") == myProjectCategoryFilter);
-
-            if (!string.IsNullOrEmpty(myProjectPrizeFilter))
-            {
-                if (myProjectPrizeFilter == "Ascending")
-                    allProjects = allProjects.OrderBy(x => x.BudgetFirstPlace);
-
-                if (myProjectPrizeFilter == "Descending")
-                    allProjects = allProjects.OrderByDescending(x => x.BudgetFirstPlace);
-            }
-            else
-            {
-                allProjects = allProjects.OrderBy(x => x.BudgetFirstPlace);
-            }
-
-            var compactModels = await GetCompactProjectsList(allProjects);
-
-            var viewModel = new ProjectListIndexViewModel
-            {
-                ProjectCategories = projectCategories,
-                Projects = compactModels
-            };
-
-            return viewModel;
-        }
-
-        private async Task<List<ProjectCompactViewModel>> GetCompactProjectsList(IEnumerable<IProjectData> projects)
-        {
-            var compactModels = new List<ProjectCompactViewModel>();
-            var user = GetAuthenticatedUser();
-
-            foreach (var project in projects)
-            {
-                var projectCommentsCount = await _commentsRepository.GetProjectCommentsCountAsync(project.Id);
-                var participantsCount = await _participantsRepository.GetProjectParticipantsCountAsync(project.Id);
-                var resultsCount = await _resultsRepository.GetResultsCountAsync(project.Id);
-                var winnersCount = await _winnersRepository.GetWinnersCountAsync(project.Id);
-
-                var tagsList = new List<string>();
-                if (!string.IsNullOrEmpty(project.Tags))
-                {
-                    tagsList = JsonConvert.DeserializeObject<List<string>>(project.Tags);
-                }
-
-                var following = false;
-                if (user.Email != null)
-                {
-                    var follow = await _projectFollowRepository.GetAsync(user.Email, project.Id);
-                    if (follow != null)
-                        following = true;
-                }
-
-                if (string.IsNullOrEmpty(project.AuthorIdentifier))
-                {
-                    project.AuthorIdentifier = await ClaimsHelper.GetUserIdByEmail(
-                        _settings.LykkeStreams.Authentication.Authority, _settings.LykkeStreams.Authentication.ClientId,
-                        project.AuthorId);
-                    await _projectRepository.UpdateAsync(project);
-                }
-
-                var compactModel = new ProjectCompactViewModel
-                {
-                    Id = project.Id,
-                    Name = project.Name,
-                    Overview = project.Overview,
-                    Description = project.Description,
-                    BudgetFirstPlace = project.BudgetFirstPlace,
-                    VotesFor = project.VotesFor,
-                    VotesAgainst = project.VotesAgainst,
-                    CompetitionRegistrationDeadline = project.CompetitionRegistrationDeadline,
-                    ImplementationDeadline = project.ImplementationDeadline,
-                    VotingDeadline = project.VotingDeadline,
-                    CommentsCount = projectCommentsCount,
-                    ParticipantsCount = participantsCount,
-                    ResultsCount = resultsCount,
-                    WinnersCount = winnersCount,
-                    AuthorFullName = project.AuthorFullName,
-                    AuthorId = project.AuthorIdentifier,
-                    Category = project.Category,
-                    Tags = tagsList,
-                    Following = following,
-                    NameTag = project.NameTag,
-                    LastModified = project.LastModified,
-                    Created = project.Created
-                };
-
+                // if the project is missing the enum status, fill it in from the string
                 if (!string.IsNullOrEmpty(project.ProjectStatus))
                 {
-                    compactModel.Status = StatusHelper.GetProjectStatusFromString(project.ProjectStatus);
+                    project.Status = StatusHelper.GetProjectStatusFromString(project.ProjectStatus);
                 }
-
-                compactModels.Add(compactModel);
             }
 
-            return compactModels;
+            return compactModels.GetProjects();
         }
 
         [Authorize]
         public async Task<IActionResult> FilterFollowingProjects()
         {
-            var projectCategories = _categoriesRepository.GetCategories();
-
             var user = GetAuthenticatedUser();
 
-            var projects = await _projectRepository.GetProjectsAsync();
+            var projectList = await ProjectList.CreateProjectList(_projectRepository);
+            projectList = await projectList.FilterByFollowing(user.Email, _projectFollowRepository);
 
-            var follows = await _projectFollowRepository.GetFollowAsync();
-
-            var following = follows.Where(f => f.UserId == user.Email).ToList();
-
-            var filtered = projects
-                .Where(x => following.Any(y => y.ProjectId == x.Id));
-
-            var compactModels = await GetCompactProjectsList(filtered);
-
-            var viewModel = new ProjectListIndexViewModel
-            {
-                ProjectCategories = projectCategories,
-                Projects = compactModels
-            };
-
+            var viewModel = await BuildViewModel(projectList);
+           
             return View("~/Views/Home/Index.cshtml", viewModel);
         }
 
@@ -554,6 +466,15 @@ namespace CompetitionPlatform.Controllers
                 }
                 if (latestWinners.Count >= 4) break;
             }
+
+            var winnersIdList = latestWinners.Select(winner => winner.Id).ToList();
+            var winnerAvatarUrls = await _personalDataService.GetClientAvatarsAsync(winnersIdList);
+
+            foreach (var winner in latestWinners)
+            {
+                winner.AvatarUrl = winnerAvatarUrls[winner.Id];
+            }
+
             return latestWinners.Take(4).ToList();
         }
 

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Security.Claims;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -29,8 +28,6 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Ganss.XSS;
 using Lykke.Service.PersonalData.Contract;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace CompetitionPlatform.Controllers
 {
@@ -230,6 +227,9 @@ namespace CompetitionPlatform.Controllers
 
             if (projectViewModel.AuthorFullName == null)
                 projectViewModel.AuthorFullName = project.AuthorFullName;
+
+            if (projectViewModel.AuthorIdentifier == null)
+                projectViewModel.AuthorIdentifier = project.AuthorIdentifier;
 
             project.Status = StatusHelper.GetProjectStatusFromString(project.ProjectStatus);
 
@@ -542,9 +542,9 @@ namespace CompetitionPlatform.Controllers
 
             var project = await _projectRepository.GetAsync(id);
 
-            //var resources = JsonConvert.DeserializeObject<List<ProgrammingResource>>(project.ProgrammingResources);
-
             project.Status = StatusHelper.GetProjectStatusFromString(project.ProjectStatus);
+            var projectDetailsAvatarIds = new List<string>();
+            projectDetailsAvatarIds.Add(project.AuthorIdentifier);
 
             var comments = await _commentsRepository.GetProjectCommentsAsync(id);
 
@@ -556,6 +556,8 @@ namespace CompetitionPlatform.Controllers
                         _settings.LykkeStreams.Authentication.ClientId, comment.UserId);
                     await _commentsRepository.UpdateAsync(comment, id);
                 }
+
+                projectDetailsAvatarIds.Add(comment.UserIdentifier);
 
                 if (!string.IsNullOrEmpty(comment.Comment))
                 {
@@ -613,6 +615,8 @@ namespace CompetitionPlatform.Controllers
                         _settings.LykkeStreams.Authentication.ClientId, part.UserId);
                     await _participantsRepository.UpdateAsync(part);
                 }
+
+                projectDetailsAvatarIds.Add(part.UserIdentifier);
             }
 
             foreach (var result in results)
@@ -679,7 +683,14 @@ namespace CompetitionPlatform.Controllers
                         _settings.LykkeStreams.Authentication.ClientId, expert.UserId);
                     await _projectExpertsRepository.UpdateAsync(expert);
                 }
+
+                projectDetailsAvatarIds.Add(expert.UserIdentifier);
             }
+
+            var avatarsDictionary = await _personalDataService.GetClientAvatarsAsync(projectDetailsAvatarIds);
+            participantsPartial.Avatars = avatarsDictionary;
+            commentsPartial.Avatars = avatarsDictionary;
+            resultsPartial.Avatars = avatarsDictionary;
 
             experts = experts.OrderBy(x => x.Priority == 0).ThenBy(x => x.Priority);
 
@@ -722,7 +733,8 @@ namespace CompetitionPlatform.Controllers
                 StreamId = project.StreamId,
                 AllStreamProjects = await GetStreamProjects(),
                 CompactStreams = await GetCompactStreams(),
-                NameTag = project.NameTag
+                NameTag = project.NameTag,
+                AuthorAvatarUrl = avatarsDictionary[project.AuthorIdentifier]
             };
 
             if (!string.IsNullOrEmpty(project.Tags))
@@ -944,9 +956,6 @@ namespace CompetitionPlatform.Controllers
 
         private async Task SendProjectCreateNotification(IProjectData model)
         {
-            //var httpClient = new HttpClient();
-            //var settingsString = await httpClient.GetStringAsync(_settings.EmailServiceBusSettingsUrl);
-            //var serviceBusSettings = JsonConvert.DeserializeObject<EmailServiceBusSettings>(settingsString);
             var emailProducer = new EmailSenderProducer(_settings.EmailServiceBus, _log);
 
             var message = new EmailMessage

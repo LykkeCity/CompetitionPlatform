@@ -66,7 +66,7 @@ else
                             <span>@comment.FullName</span>
                             @if (comment.UserId == Model.BlogAuthorId)
                             {
-                                <span class="label label--primary">creator</span>
+                                <span class="label label--primary">author</span>
                             }
                             else if (Model.CommenterIsModerator.ContainsKey(comment.Id) && Model.CommenterIsModerator[comment.Id].Equals(true))
                             {

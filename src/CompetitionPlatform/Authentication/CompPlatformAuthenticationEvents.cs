@@ -6,6 +6,7 @@ using AzureStorage.Tables;
 using Common.Log;
 using CompetitionPlatform.Data.AzureRepositories.Users;
 using CompetitionPlatform.Helpers;
+using Lykke.SettingsReader;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Hosting;
@@ -17,9 +18,9 @@ namespace CompetitionPlatform.Authentication
         private readonly IRegisterMailSentRepository _mailSentRepository;
         private readonly ILog _log;
 
-        public CompPlatformAuthenticationEvents(ILog log, IHostingEnvironment hostingEnvironment, string connString)
+        public CompPlatformAuthenticationEvents(ILog log, IHostingEnvironment hostingEnvironment, IReloadingManager<string> connString)
         {
-            _mailSentRepository = new RegisterMailSentRepository(new AzureTableStorage<RegisterMailSentEntity>(connString, "RegisterMailSent", log));
+            _mailSentRepository = new RegisterMailSentRepository(AzureTableStorage<RegisterMailSentEntity>.Create(connString, "RegisterMailSent", log));
             _log = log;
             //if (hostingEnvironment.IsProduction() && !string.IsNullOrEmpty(emailsQueueConnString))
             //{
