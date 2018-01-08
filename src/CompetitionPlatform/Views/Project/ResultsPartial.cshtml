@@ -49,7 +49,7 @@
                         </div>
                     </td>
                     <td class="board_date">@result.Submitted.ToString("MMMM dd, yyyy hh:mm")</td>
-                    @if (Model.Status == Status.Voting || Model.IsAdmin)
+                    @if (Model.Status == Status.Voting || Model.Status == Status.Archive || Model.IsAdmin)
                     {
                         <td class="board_result text-center"><a target="_blank" href="@result.Link">View</a></td>
                     }
