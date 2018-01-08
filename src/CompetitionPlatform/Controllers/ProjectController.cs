@@ -682,9 +682,8 @@ namespace CompetitionPlatform.Controllers
                     expert.UserIdentifier = await ClaimsHelper.GetUserIdByEmail(_settings.LykkeStreams.Authentication.Authority,
                         _settings.LykkeStreams.Authentication.ClientId, expert.UserId);
                     await _projectExpertsRepository.UpdateAsync(expert);
+                    projectDetailsAvatarIds.Add(expert.UserIdentifier);
                 }
-
-                projectDetailsAvatarIds.Add(expert.UserIdentifier);
             }
 
             var avatarsDictionary = await _personalDataService.GetClientAvatarsAsync(projectDetailsAvatarIds);
