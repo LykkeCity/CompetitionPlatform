@@ -533,6 +533,7 @@ namespace CompetitionPlatform.Controllers
             var viewModel = await GetProjectViewModel(id);
             ViewBag.FacebookShareDescription = viewModel.Overview;
 
+            await _log.WriteInfoAsync("Project Controller", "Project Details", JsonConvert.SerializeObject(viewModel));
             return View(viewModel);
         }
 
