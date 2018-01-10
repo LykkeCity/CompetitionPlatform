@@ -1,3 +1,4 @@
+@using CompetitionPlatform.Helpers
 @model CompetitionPlatform.Models.ProjectViewModels.ResultsPartialViewModel
 
 @{
@@ -36,14 +37,7 @@
                             <div class="winners_item__user">
                                 <div class="winners_item__img">
                                     <a href="/userprofile/@winner.WinnerIdentifier">
-                                        @if (string.IsNullOrEmpty(winnerAvatar))
-                                        {
-                                            <img src="~/public/img/user_default.svg" alt="@winner.FullName" />
-                                        }
-                                        else
-                                        {
-                                            <img src="@winnerAvatar" alt="">
-                                        }
+                                        <img src="@ViewHelper.GetAvatarOrDefault(winnerAvatar)" alt="@winner.FullName">
                                     </a>
                                 </div>
                                 <span class="winners_item__label">1</span>
@@ -66,14 +60,7 @@
                             <div class="winners_item__user">
                                 <div class="winners_item__img">
                                     <a href="/userprofile/@winner.WinnerIdentifier">
-                                        @if (string.IsNullOrEmpty(winnerAvatar))
-                                        {
-                                            <img src="~/public/img/user_default.svg" alt="@winner.FullName" />
-                                        }
-                                        else
-                                        {
-                                            <img src="@winnerAvatar" alt="">
-                                        }
+                                        <img src="@ViewHelper.GetAvatarOrDefault(winnerAvatar)" alt="@winner.FullName">
                                     </a>
                                 </div>
                                 <span class="winners_item__label">2</span>

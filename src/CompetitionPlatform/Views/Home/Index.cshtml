@@ -1,4 +1,5 @@
-﻿@model CompetitionPlatform.Models.ProjectViewModels.ProjectListIndexViewModel
+﻿@using CompetitionPlatform.Helpers
+@model CompetitionPlatform.Models.ProjectViewModels.ProjectListIndexViewModel
 
 @{
     ViewData["Title"] = "Projects";
@@ -61,17 +62,9 @@
                         <div class="card__inner">
                             <div class="card__body">
                                 <div class="card__breadcrumbs">
-                                    @*<div class="user_badge__img"><a href="/userprofile/@project.BaseProjectData.AuthorId"><img src="~/public/img/user_default.svg" alt=""></a></div>*@
                                     <div class="user_badge__img">
                                         <a href="/userprofile/@project.BaseProjectData.AuthorIdentifier">
-                                            @if (string.IsNullOrEmpty(project.AuthorAvatarUrl))
-                                            {
-                                                <img src="~/public/img/user_default.svg" alt="">
-                                            }
-                                            else
-                                            {
-                                                <img src="@project.AuthorAvatarUrl" alt="">
-                                            }
+                                            <img src="@ViewHelper.GetAvatarOrDefault(project.AuthorAvatarUrl)" alt="@project.BaseProjectData.AuthorFullName">
                                         </a>
                                     </div>
                                     <a href="/userprofile/@project.BaseProjectData.AuthorIdentifier" class="breadcrumb_elem">@project.BaseProjectData.AuthorFullName</a>
@@ -125,10 +118,10 @@
                                         }
 
                                         <span href="" class="label label--green"><i class="icon icon--deadline_fill"></i> @projectStatus @project.BaseProjectData.ImplementationDeadline.ToString("dd.MM.yyyy")</span>
-                                         if (!string.IsNullOrEmpty(project.BaseProjectData.NameTag) && project.BaseProjectData.NameTag.ToUpper() == titleNoteExtended)
-                                         {
-                                             <span class="label label--text label--green project-extended-tag">Extended!</span>
-                                         }
+                                        if (!string.IsNullOrEmpty(project.BaseProjectData.NameTag) && project.BaseProjectData.NameTag.ToUpper() == titleNoteExtended)
+                                        {
+                                            <span class="label label--text label--green project-extended-tag">Extended!</span>
+                                        }
                                         <span class="label label--text label--gray">@daysLeftText</span>
                                     }
                                     else if (project.BaseProjectData.Status == Status.Voting)

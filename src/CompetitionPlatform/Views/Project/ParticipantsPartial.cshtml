@@ -1,3 +1,4 @@
+@using CompetitionPlatform.Helpers
 @model CompetitionPlatform.Models.ProjectViewModels.ProjectParticipantsPartialViewModel
 
 <div class="table-responsive">
@@ -14,14 +15,7 @@
                 <td>
                     <div class="user_badge user_badge--small">
                         <a href="/userprofile/@participant.UserIdentifier" class="user_badge__img">
-                            @if (string.IsNullOrEmpty(participantAvatar))
-                            {
-                                <img src="~/images/avatar.svg" alt="">
-                            }
-                            else
-                            {
-                                <img src="@participantAvatar" alt="">
-                            }
+                            <img src="@ViewHelper.GetAvatarOrDefault(participantAvatar)" alt="@participant.FullName">
                         </a>
                         <a href="/userprofile/@participant.UserIdentifier" class="user_badge__info link-text-black">@participant.FullName</a>
                     </div>
@@ -33,9 +27,9 @@
                     {
                         <td class="text-center">
                             <form asp-controller="ProjectDetails" asp-action="EditResult" enctype="multipart/form-data">
-                                <input asp-for="@participant.ProjectId" name="ProjectId" type="hidden"/>
-                                <input asp-for="@participant.UserId" name="UserId" type="hidden"/>
-                                <input type="submit" value="Edit" class="btn-link"/>
+                                <input asp-for="@participant.ProjectId" name="ProjectId" type="hidden" />
+                                <input asp-for="@participant.UserId" name="UserId" type="hidden" />
+                                <input type="submit" value="Edit" class="btn-link" />
                             </form>
                         </td>
                     }
