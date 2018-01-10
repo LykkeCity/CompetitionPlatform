@@ -69,6 +69,7 @@ namespace CompetitionPlatform.Controllers
         [HttpGet("~/userprofile/{id}")]
         public async Task<IActionResult> DisplayUserProfile(string id)
         {
+            if (!IsGuid(id)) return View("ProfileNotFound");
             var email = await GetUserEmailById(id);
             var profile = await _personalDataService.GetProfilePersonalDataAsync(id);
             var user = GetAuthenticatedUser();
@@ -272,6 +273,12 @@ namespace CompetitionPlatform.Controllers
         private CompetitionPlatformUser GetAuthenticatedUser()
         {
             return ClaimsHelper.GetUser(User.Identity);
+        }
+
+        public static bool IsGuid(string value)
+        {
+            Guid x;
+            return Guid.TryParse(value, out x);
         }
     }
 }
