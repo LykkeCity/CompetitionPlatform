@@ -23,6 +23,7 @@ namespace CompetitionPlatform
                 var host = new WebHostBuilder()
                     .UseKestrel()
                     .UseContentRoot(Directory.GetCurrentDirectory())
+                    .UseApplicationInsights()
                     .UseUrls("http://*:5000/")
                     .UseIISIntegration()
                     .UseStartup<Startup>()
@@ -53,6 +54,7 @@ namespace CompetitionPlatform
                         });
                     })
                     .UseContentRoot(Directory.GetCurrentDirectory())
+                    .UseApplicationInsights()
                     .UseUrls("https://*:443/")
                     .UseIISIntegration()
                     .UseStartup<Startup>()
