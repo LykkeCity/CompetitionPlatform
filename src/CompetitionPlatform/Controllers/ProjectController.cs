@@ -625,7 +625,7 @@ namespace CompetitionPlatform.Controllers
 
             var userRole = (user.Email == null) ? null : await _userRolesRepository.GetAsync(user.Email.ToLower());
 
-            var isAdmin = (userRole != null) && userRole.Role == "ADMIN";
+            var isAdmin = (userRole != null) && userRole.Role == StreamsRoles.Admin;
             var isAuthor = (user.Email != null) && user.Email == project.AuthorId;
 
             var participantId = "";
@@ -652,7 +652,7 @@ namespace CompetitionPlatform.Controllers
             foreach (var comment in comments)
             {
                 var role = await _userRolesRepository.GetAsync(comment.UserId);
-                var isModerator = role != null && role.Role == "ADMIN";
+                var isModerator = role != null && role.Role == StreamsRoles.Admin;
                 commenterIsModerator.Add(comment.Id, isModerator);
             }
 
