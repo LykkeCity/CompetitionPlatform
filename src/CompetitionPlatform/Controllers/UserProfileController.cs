@@ -82,6 +82,12 @@ namespace CompetitionPlatform.Controllers
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
             }
 
+            var commentsViewModel = new CommentsViewModel
+            {
+                CommentsList = await GetUserComments(email),
+                CommentAvatar = profile.AvatarUrl
+            };
+
             var userProfileViewModel = new UserProfileViewModel
             {
                 Profile = profile,
@@ -89,7 +95,7 @@ namespace CompetitionPlatform.Controllers
                 CreatedProjects = await GetCreatedProjects(email),
                 ParticipatedProjects = await GetParticipatedProjects(email),
                 WonProjects = await GetWonProjects(email),
-                Comments = await GetUserComments(email),
+                Comments = commentsViewModel,
                 AuthLink = _settings.LykkeStreams.Authentication.Authority
             };
 
