@@ -103,7 +103,7 @@ namespace CompetitionPlatform.Controllers
                 WonProjects = await GetWonProjects(email),
                 Comments = commentsViewModel,
                 AuthLink = _settings.LykkeStreams.Authentication.Authority,
-                IsLykkeMember = await UserIsLykkeMember(email)
+                IsLykkeMember = await IsUserLykkeMember(email)
             };
 
             return View("~/Views/UserProfile/UserProfile.cshtml", userProfileViewModel);
