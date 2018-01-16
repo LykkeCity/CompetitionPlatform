@@ -12,8 +12,9 @@ namespace CompetitionPlatform.Models.UserProfile
         public List<ProjectCompactViewModel> ParticipatedProjects { get; set; }
         public List<ProjectCompactViewModel> WonProjects { get; set; }
         public List<ProjectCompactViewModel> CreatedProjects { get; set; }
-        public List<UserProfileCommentData> Comments { get; set; }
+        public CommentsViewModel Comments { get; set; }
         public string AuthLink { get; set; }
+        public bool IsLykkeMember { get; set; }
     }
 
     public class UserProfileCommentData
@@ -23,5 +24,11 @@ namespace CompetitionPlatform.Models.UserProfile
         public string FullName { get; set; }
         public string Comment { get; set; }
         public DateTime LastModified { get; set; }
+    }
+
+    public class CommentsViewModel
+    {
+        public List<UserProfileCommentData> CommentsList { get; set; }
+        public string CommentAvatar { get; set; }
     }
 }

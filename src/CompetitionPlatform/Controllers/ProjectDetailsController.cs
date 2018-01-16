@@ -350,11 +350,11 @@ namespace CompetitionPlatform.Controllers
 
             if (voterId == project.AuthorId)
             {
-                voteType = "AUTHOR";
+                voteType = ResultVoteTypes.Author;
             }
-            else if (role != null && role.Role == "ADMIN")
+            else if (role != null && role.Role == StreamsRoles.Admin)
             {
-                voteType = "ADMIN";
+                voteType = ResultVoteTypes.Admin;
             }
 
             var vote = await _resultVoteRepository.GetAsync(model.ProjectId, model.ParticipantId, voterId);
@@ -465,7 +465,7 @@ namespace CompetitionPlatform.Controllers
 
             var userRole = (user.Email == null) ? null : await _userRolesRepository.GetAsync(user.Email.ToLower());
 
-            var isAdmin = (userRole != null) && userRole.Role == "ADMIN";
+            var isAdmin = (userRole != null) && userRole.Role == StreamsRoles.Admin;
 
             if (isAdmin)
             {
@@ -522,7 +522,7 @@ namespace CompetitionPlatform.Controllers
 
             var userRole = (user.Email == null) ? null : await _userRolesRepository.GetAsync(user.Email.ToLower());
 
-            var isAdmin = (userRole != null) && userRole.Role == "ADMIN";
+            var isAdmin = (userRole != null) && userRole.Role == StreamsRoles.Admin;
 
             return isAdmin;
         }

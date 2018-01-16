@@ -386,7 +386,7 @@
                                 <li class="list__item">
                                     <div class="list__content">
                                         <div class="title @textCompetition">Days of the project</div>
-                                        <p>@Model.Created.ToString("MMM d") - @Model.VotingDeadline.ToString("MMM d") (@daysOfProject)</p>
+                                        <p>@ViewHelper.GetProjectStageDates(Model.Created, Model.VotingDeadline) (@daysOfProject)</p>
                                     </div>
                                 </li>
                             }
@@ -398,7 +398,7 @@
                                     </div>
                                     <div class="list__content">
                                         <div class="title @textCompetition">Registration</div>
-                                        <p>@Model.Created.ToString("MMM d") - @Model.ImplementationDeadline.ToString("MMM d")</p>
+                                        <p>@ViewHelper.GetProjectStageDates(Model.Created, Model.ImplementationDeadline)</p>
                                     </div>
                                 </li>
                             }
@@ -408,7 +408,7 @@
                                 </div>
                                 <div class="list__content">
                                     <div class="title @textSubmission">Submissions</div>
-                                    <p>@Model.CompetitionRegistrationDeadline.ToString("MMM d") - @Model.ImplementationDeadline.ToString("MMM d")</p>
+                                    <p>@ViewHelper.GetProjectStageDates(Model.CompetitionRegistrationDeadline, Model.ImplementationDeadline)</p>
                                 </div>
                             </li>
                             @if (!Model.SkipVoting)
@@ -419,7 +419,7 @@
                                     </div>
                                     <div class="list__content">
                                         <div class="title @textVoting">Voting</div>
-                                        <p>@Model.ImplementationDeadline.ToString("MMM d") - @Model.VotingDeadline.ToString("MMM d")</p>
+                                        <p>@ViewHelper.GetProjectStageDates(Model.ImplementationDeadline, Model.VotingDeadline)</p>
                                     </div>
                                 </li>
                             }

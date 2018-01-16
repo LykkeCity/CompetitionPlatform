@@ -32,8 +32,13 @@ namespace CompetitionPlatform.Controllers
         private readonly IProjectWinnersRepository _winnersRepository;
         private readonly IPersonalDataService _personalDataService;
         private readonly IProjectFollowRepository _projectFollowRepository;
+        private readonly IUserRolesRepository _userRolesRepository;
 
-        public UserProfileController(BaseSettings settings, IProjectRepository projectRepository, IProjectCommentsRepository commentsRepository, IProjectParticipantsRepository participantsRepository, IProjectResultRepository resultsRepository, IProjectWinnersRepository winnersRepository, IPersonalDataService personalDataService, IProjectFollowRepository projectFollowRepository)
+        public UserProfileController(BaseSettings settings, IProjectRepository projectRepository, 
+            IProjectCommentsRepository commentsRepository, IProjectParticipantsRepository participantsRepository, 
+            IProjectResultRepository resultsRepository, IProjectWinnersRepository winnersRepository, 
+            IPersonalDataService personalDataService, IProjectFollowRepository projectFollowRepository,
+            IUserRolesRepository userRolesRepository)
         {
             _settings = settings;
             _projectRepository = projectRepository;
@@ -43,6 +48,7 @@ namespace CompetitionPlatform.Controllers
             _winnersRepository = winnersRepository;
             _personalDataService = personalDataService;
             _projectFollowRepository = projectFollowRepository;
+            _userRolesRepository = userRolesRepository;
         }
 
         private async Task<string> GetUserEmailById(string id)
@@ -82,6 +88,12 @@ namespace CompetitionPlatform.Controllers
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
             }
 
+            var commentsViewModel = new CommentsViewModel
+            {
+                CommentsList = await GetUserComments(email),
+                CommentAvatar = profile.AvatarUrl
+            };
+
             var userProfileViewModel = new UserProfileViewModel
             {
                 Profile = profile,
@@ -89,8 +101,9 @@ namespace CompetitionPlatform.Controllers
                 CreatedProjects = await GetCreatedProjects(email),
                 ParticipatedProjects = await GetParticipatedProjects(email),
                 WonProjects = await GetWonProjects(email),
-                Comments = await GetUserComments(email),
-                AuthLink = _settings.LykkeStreams.Authentication.Authority
+                Comments = commentsViewModel,
+                AuthLink = _settings.LykkeStreams.Authentication.Authority,
+                IsLykkeMember = await IsUserLykkeMember(email)
             };
 
             return View("~/Views/UserProfile/UserProfile.cshtml", userProfileViewModel);
@@ -279,6 +292,19 @@ namespace CompetitionPlatform.Controllers
         {
             Guid x;
             return Guid.TryParse(value, out x);
+        }
+
+        private async Task<bool> IsUserLykkeMember(string email)
+        {
+            var userRole = await _userRolesRepository.GetAsync(email);
+            var isAdmin = (userRole != null) && userRole.Role == StreamsRoles.Admin;
+
+            if (isAdmin) return true;
+
+            var domain = email.Split('@').Last();
+            if (domain == LykkeEmailDomains.LykkeCom || domain == LykkeEmailDomains.LykkexCom)
+                return true;
+            return false;
         }
     }
 }
