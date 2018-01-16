@@ -12,9 +12,9 @@ namespace CompetitionPlatform.Helpers
         public static string GetProjectStageDates(DateTime startDate, DateTime endDate)
         {
             //If years are different, display them for both dates
-            var sameYear = startDate.Year == endDate.Year;
+            var isSameYear = startDate.Year == endDate.Year;
 
-            if (sameYear)
+            if (isSameYear)
                 return startDate.ToString("MMM d") + " - " + endDate.ToString("MMM d, yyyy");
             return startDate.ToString("MMM d, yyyy") + " - " + endDate.ToString("MMM d, yyyy");
         }

@@ -294,7 +294,7 @@ namespace CompetitionPlatform.Controllers
             return Guid.TryParse(value, out x);
         }
 
-        private async Task<bool> UserIsLykkeMember(string email)
+        private async Task<bool> IsUserLykkeMember(string email)
         {
             var userRole = await _userRolesRepository.GetAsync(email);
             var isAdmin = (userRole != null) && userRole.Role == StreamsRoles.Admin;
@@ -302,7 +302,9 @@ namespace CompetitionPlatform.Controllers
             if (isAdmin) return true;
 
             var domain = email.Split('@').Last();
-            return domain == LykkeEmailDomains.LykkeCom || domain == LykkeEmailDomains.LykkexCom;
+            if (domain == LykkeEmailDomains.LykkeCom || domain == LykkeEmailDomains.LykkexCom)
+                return true;
+            return false;
         }
     }
 }
