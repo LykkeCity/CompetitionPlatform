@@ -14,5 +14,6 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public int Score { get; set; }
         public double? Budget { get; set; }
         public double WinningScore { get; set; }
+        public string StreamsId { get; set; }
     }
 }

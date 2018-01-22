@@ -14,6 +14,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Users
         DateTime Registered { get; set; }
         bool Result { get; set; }
         string UserAgent { get; set; }
+        string StreamsId { get; set; }
     }
 
     public interface IProjectParticipantsRepository

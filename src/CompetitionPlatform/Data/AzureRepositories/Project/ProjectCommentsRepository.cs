@@ -30,6 +30,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
         public DateTime LastModified { get; set; }
         public string UserAgent { get; set; }
         public bool Deleted { get; set; }
+        public string StreamsId { get; set; }
 
         public static CommentEntity Create(ICommentData src)
         {

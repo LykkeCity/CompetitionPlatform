@@ -15,5 +15,6 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public DateTime Registered { get; set; }
         public bool Result { get; set; }
         public string UserAgent { get; set; }
+        public string StreamsId { get; set; }
     }
 }
