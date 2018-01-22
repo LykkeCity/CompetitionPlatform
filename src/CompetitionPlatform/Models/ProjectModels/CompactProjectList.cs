@@ -54,7 +54,8 @@ namespace CompetitionPlatform.Models.ProjectModels
             IProjectResultRepository resultsRepository,
             IProjectWinnersRepository winnersRepository,
             string userEmail,
-            IPersonalDataService personalDataService
+            IPersonalDataService personalDataService,
+            IStreamsIdRepository streamsIdRepository
         )
         {
             var returnCompactProjectList = new CompactProjectList(baseProjectList);
@@ -65,7 +66,8 @@ namespace CompetitionPlatform.Models.ProjectModels
                 resultsRepository,
                 winnersRepository,
                 userEmail,
-                personalDataService
+                personalDataService,
+                streamsIdRepository
             );
         }
 
@@ -80,7 +82,8 @@ namespace CompetitionPlatform.Models.ProjectModels
             IProjectResultRepository resultsRepository,
             IProjectWinnersRepository winnersRepository,
             string userEmail,
-            IPersonalDataService personalDataService
+            IPersonalDataService personalDataService,
+            IStreamsIdRepository streamsIdRepository
         )
         {
             foreach (var compactProject in _compactProjectsModelList)
@@ -95,6 +98,7 @@ namespace CompetitionPlatform.Models.ProjectModels
             }
 
             _compactProjectsModelList = await FetchAuthorAvatars(_compactProjectsModelList, personalDataService);
+            _compactProjectsModelList = await FetchAuthorStreamsIds(_compactProjectsModelList, streamsIdRepository);
             return this;
         }
 
@@ -140,6 +144,18 @@ namespace CompetitionPlatform.Models.ProjectModels
             foreach (var compactProject in compactProjectsModelList)
             {
                 compactProject.AuthorAvatarUrl = authorAvatarUrls[compactProject.BaseProjectData.AuthorIdentifier];
+            }
+
+            return compactProjectsModelList;
+        }
+
+        public static async Task<List<ProjectCompactViewModel>> FetchAuthorStreamsIds(
+            List<ProjectCompactViewModel> compactProjectsModelList, IStreamsIdRepository streamsIdRepository)
+        {
+            foreach (var project in compactProjectsModelList)
+            {
+                var authorStreamsId = await streamsIdRepository.GetAsync(project.BaseProjectData.AuthorIdentifier);
+                project.AuthorStreamsId = authorStreamsId.StreamsId;
             }
 
             return compactProjectsModelList;

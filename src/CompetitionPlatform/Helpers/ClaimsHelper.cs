@@ -14,7 +14,7 @@ namespace CompetitionPlatform.Helpers
 {
     public static class ClaimsHelper
     {
-        public static CompetitionPlatformUser GetUser(IIdentity identity)
+        public static UserModel GetUser(IIdentity identity)
         {
             var claimsIdentity = (ClaimsIdentity)identity;
             var claims = claimsIdentity.Claims;
@@ -36,7 +36,7 @@ namespace CompetitionPlatform.Helpers
             var id = claimsList.Where(c => c.Type == ClaimTypes.NameIdentifier)
                 .Select(c => c.Value).SingleOrDefault();
 
-            var user = new CompetitionPlatformUser
+            var user = new UserModel
             {
                 Id = id,
                 Email = email,

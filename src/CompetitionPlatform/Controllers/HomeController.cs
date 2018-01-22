@@ -36,13 +36,14 @@ namespace CompetitionPlatform.Controllers
         private readonly IUserRolesRepository _userRolesRepository;
         private readonly BaseSettings _settings;
         private readonly IPersonalDataService _personalDataService;
+        private readonly IStreamsIdRepository _streamsIdRepository;
 
         public HomeController(IProjectRepository projectRepository, IProjectCommentsRepository commentsRepository,
             IProjectCategoriesRepository categoriesRepository, IProjectParticipantsRepository participantsRepository,
             IProjectFollowRepository projectFollowRepository, IProjectResultRepository resultsRepository,
             IProjectWinnersRepository winnersRepository, IUserFeedbackRepository feedbackRepository,
             IUserRolesRepository userRolesRepository, BaseSettings settings,
-            IPersonalDataService personalDataService)
+            IPersonalDataService personalDataService, IStreamsIdRepository streamsIdRepository)
         {
             _projectRepository = projectRepository;
             _commentsRepository = commentsRepository;
@@ -55,6 +56,7 @@ namespace CompetitionPlatform.Controllers
             _userRolesRepository = userRolesRepository;
             _settings = settings;
             _personalDataService = personalDataService;
+            _streamsIdRepository = streamsIdRepository;
         }
 
         public async Task<IActionResult> Index()
@@ -112,7 +114,7 @@ namespace CompetitionPlatform.Controllers
             ViewBag.Faq = false;
             ViewBag.Blog = false;
 
-            var user = GetAuthenticatedUser();
+            var user = UserModel.GetAuthenticatedUser(User.Identity);
 
             var createdProjectList = (await ProjectList.CreateProjectList(_projectRepository))
                 .FilterByAuthorId(user.Email);
@@ -149,7 +151,7 @@ namespace CompetitionPlatform.Controllers
         [Authorize]
         public async Task<IActionResult> GetMyProjectList(string myProjectStatusFilter, string myProjectCategoryFilter, string myProjectPrizeFilter)
         {
-            var user = GetAuthenticatedUser();
+            var user = UserModel.GetAuthenticatedUser(User.Identity);
 
             var createdProjectList = (await ProjectList.CreateProjectList(_projectRepository))
                 .FilterByAuthorId(user.Email);
@@ -180,7 +182,7 @@ namespace CompetitionPlatform.Controllers
             ViewBag.ParticipatingProjects = false;
             ViewBag.CreatedProjects = false;
 
-            var user = GetAuthenticatedUser();
+            var user = UserModel.GetAuthenticatedUser(User.Identity);
 
             var projectList = await ProjectList.CreateProjectList(_projectRepository);
             projectList = await projectList.FilterByFollowing(user.Email, _projectFollowRepository);
@@ -198,7 +200,7 @@ namespace CompetitionPlatform.Controllers
             ViewBag.FollowingProjects = false;
             ViewBag.CreatedProjects = false;
 
-            var user = GetAuthenticatedUser();
+            var user = UserModel.GetAuthenticatedUser(User.Identity);
 
             var projectList = await ProjectList.CreateProjectList(_projectRepository);
             projectList = await projectList.FilterByParticipating(user.Email, _participantsRepository);
@@ -216,7 +218,7 @@ namespace CompetitionPlatform.Controllers
             ViewBag.FollowingProjects = false;
             ViewBag.ParticipatingProjects = false;
 
-            var user = GetAuthenticatedUser();
+            var user = UserModel.GetAuthenticatedUser(User.Identity);
 
             var projectList = (await ProjectList.CreateProjectList(_projectRepository))
                 .FilterByAuthorId(user.Email);
@@ -245,8 +247,9 @@ namespace CompetitionPlatform.Controllers
                 _projectFollowRepository,
                 _resultsRepository,
                 _winnersRepository,
-                GetAuthenticatedUser().Email,
-                _personalDataService
+                UserModel.GetAuthenticatedUser(User.Identity).Email,
+                _personalDataService,
+                _streamsIdRepository
             );
 
 
@@ -276,7 +279,7 @@ namespace CompetitionPlatform.Controllers
         [Authorize]
         public async Task<IActionResult> FilterFollowingProjects()
         {
-            var user = GetAuthenticatedUser();
+            var user = UserModel.GetAuthenticatedUser(User.Identity);
 
             var projectList = await ProjectList.CreateProjectList(_projectRepository);
             projectList = await projectList.FilterByFollowing(user.Email, _projectFollowRepository);
@@ -295,7 +298,7 @@ namespace CompetitionPlatform.Controllers
         [Authorize]
         public async Task<IActionResult> ViewFeedBack()
         {
-            var user = GetAuthenticatedUser();
+            var user = UserModel.GetAuthenticatedUser(User.Identity);
             var userRole = await _userRolesRepository.GetAsync(user.Email.ToLower());
 
             if (userRole == null) return View("AccessDenied");
@@ -315,7 +318,7 @@ namespace CompetitionPlatform.Controllers
         [HttpPost]
         public async Task<IActionResult> SaveFeeback(FeedbackViewModel feedbackViewModel)
         {
-            var user = GetAuthenticatedUser();
+            var user = UserModel.GetAuthenticatedUser(User.Identity);
             feedbackViewModel.Email = user.Email;
             feedbackViewModel.Created = DateTime.UtcNow;
 
@@ -366,11 +369,6 @@ namespace CompetitionPlatform.Controllers
             }
 
             return RedirectToAction("Index", "Home");
-        }
-
-        private CompetitionPlatformUser GetAuthenticatedUser()
-        {
-            return ClaimsHelper.GetUser(User.Identity);
         }
 
         public IActionResult AuthenticationFailed()
@@ -454,6 +452,9 @@ namespace CompetitionPlatform.Controllers
                     }
 
                     if (winner.Budget != null)
+                    {
+                        var winnerStreamsId = await _streamsIdRepository.GetAsync(winner.WinnerIdentifier);
+
                         latestWinners.Add(
                             new LatestWinner
                             {
@@ -461,8 +462,11 @@ namespace CompetitionPlatform.Controllers
                                 ProjectId = project.Id,
                                 ProjectName = project.Name,
                                 Amount = (double)winner.Budget,
-                                Id = winner.WinnerIdentifier
+                                Id = winner.WinnerIdentifier,
+                                StreamsId = winnerStreamsId.StreamsId
                             });
+                    }
+                        
                 }
                 if (latestWinners.Count >= 4) break;
             }

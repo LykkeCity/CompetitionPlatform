@@ -35,6 +35,7 @@ namespace CompetitionPlatform.Controllers
         private readonly IProjectWinnersRepository _winnersRepository;
         private readonly ILog _log;
         private readonly BaseSettings _settings;
+        private readonly IStreamsIdRepository _streamsIdRepository;
 
         public ProjectDetailsController(IProjectCommentsRepository commentsRepository, IProjectFileRepository fileRepository,
             IProjectFileInfoRepository fileInfoRepository, IProjectVoteRepository voteRepository,
@@ -43,7 +44,7 @@ namespace CompetitionPlatform.Controllers
             IProjectFollowRepository projectFollowRepository, IFollowMailSentRepository mailSentRepository,
             IQueueExt emailsQueue, IUserRolesRepository userRolesRepository,
             IProjectWinnersRepository winnersRepository, ILog log,
-            BaseSettings settings)
+            BaseSettings settings, IStreamsIdRepository streamsIdRepository)
         {
             _commentsRepository = commentsRepository;
             _fileRepository = fileRepository;
@@ -60,12 +61,13 @@ namespace CompetitionPlatform.Controllers
             _winnersRepository = winnersRepository;
             _log = log;
             _settings = settings;
+            _streamsIdRepository = streamsIdRepository;
         }
 
         [Authorize]
         public async Task<IActionResult> AddComment(ProjectCommentPartialViewModel model)
         {
-            var user = GetAuthenticatedUser();
+            var user = UserModel.GetAuthenticatedUser(User.Identity);
             model.UserId = user.Email;
             model.UserIdentifier = user.Id;
             model.FullName = user.GetFullName();
@@ -80,13 +82,14 @@ namespace CompetitionPlatform.Controllers
                 project.LastModified = DateTime.UtcNow;
                 await _projectRepository.UpdateAsync(project);
                 await SendNewCommentNotification(model);
+                UserModel.GenerateStreamsId(_streamsIdRepository, user.Id);
             }
             return RedirectToAction("ProjectDetails", "Project", new { id = model.ProjectId, commentsActive = true });
         }
 
         public IActionResult GetCommentReplyForm(string commentId, string projectId)
         {
-            var user = GetAuthenticatedUser();
+            var user = UserModel.GetAuthenticatedUser(User.Identity);
             var created = DateTime.UtcNow;
 
             var model = new ProjectCommentPartialViewModel
@@ -112,7 +115,7 @@ namespace CompetitionPlatform.Controllers
 
         private async Task DoVoteFor(string id)
         {
-            var user = GetAuthenticatedUser();
+            var user = UserModel.GetAuthenticatedUser(User.Identity);
 
             var result = new ProjectVoteEntity
             {
@@ -151,7 +154,7 @@ namespace CompetitionPlatform.Controllers
 
         private async Task DoVoteAgainst(string id)
         {
-            var user = GetAuthenticatedUser();
+            var user = UserModel.GetAuthenticatedUser(User.Identity);
 
             var result = new ProjectVoteEntity
             {
@@ -217,7 +220,7 @@ namespace CompetitionPlatform.Controllers
         [Authorize]
         public async Task<IActionResult> AddParticipant(string id)
         {
-            var user = GetAuthenticatedUser();
+            var user = UserModel.GetAuthenticatedUser(User.Identity);
 
             var participant = await _participantsRepository.GetAsync(id, user.Email);
 
@@ -240,6 +243,7 @@ namespace CompetitionPlatform.Controllers
                 project.ParticipantsCount += 1;
                 project.LastModified = DateTime.UtcNow;
                 await _projectRepository.UpdateAsync(project);
+                UserModel.GenerateStreamsId(_streamsIdRepository, user.Id);
             }
 
             TempData["ShowParticipantAddedModal"] = true;
@@ -250,7 +254,7 @@ namespace CompetitionPlatform.Controllers
         [Authorize]
         public async Task<IActionResult> RemoveParticipant(string id)
         {
-            var user = GetAuthenticatedUser();
+            var user = UserModel.GetAuthenticatedUser(User.Identity);
 
             var participant = await _participantsRepository.GetAsync(id, user.Email);
 
@@ -271,11 +275,12 @@ namespace CompetitionPlatform.Controllers
         [Authorize]
         public IActionResult AddResult(string id)
         {
+            var user = UserModel.GetAuthenticatedUser(User.Identity);
             var viewModel = new AddResultViewModel
             {
                 ProjectId = id,
-                ParticipantId = GetAuthenticatedUser().Email,
-                ParticipantIdentifier = GetAuthenticatedUser().Id
+                ParticipantId = user.Email,
+                ParticipantIdentifier = user.Id
             };
             return View("~/Views/Project/AddResult.cshtml", viewModel);
         }
@@ -341,7 +346,7 @@ namespace CompetitionPlatform.Controllers
             }
 
             var project = await _projectRepository.GetAsync(model.ProjectId);
-            var voterId = GetAuthenticatedUser().Email;
+            var voterId = UserModel.GetAuthenticatedUser(User.Identity).Email;
 
             model.UserAgent = HttpContext.Request.Headers["User-Agent"].ToString();
 
@@ -401,7 +406,7 @@ namespace CompetitionPlatform.Controllers
         [Authorize]
         public async Task<IActionResult> FollowProject(string id)
         {
-            var user = GetAuthenticatedUser();
+            var user = UserModel.GetAuthenticatedUser(User.Identity);
 
             var project = await _projectRepository.GetAsync(id);
 
@@ -433,7 +438,7 @@ namespace CompetitionPlatform.Controllers
         [Authorize]
         public async Task<IActionResult> UnFollowProject(string id)
         {
-            var user = GetAuthenticatedUser();
+            var user = UserModel.GetAuthenticatedUser(User.Identity);
 
             await _projectFollowRepository.DeleteAsync(user.Email, id);
 
@@ -461,7 +466,7 @@ namespace CompetitionPlatform.Controllers
         [Authorize]
         public async Task<IActionResult> RemoveComment(string projectId, string commentId)
         {
-            var user = GetAuthenticatedUser();
+            var user = UserModel.GetAuthenticatedUser(User.Identity);
 
             var userRole = (user.Email == null) ? null : await _userRolesRepository.GetAsync(user.Email.ToLower());
 
@@ -518,18 +523,13 @@ namespace CompetitionPlatform.Controllers
 
         private async Task<bool> CurrentUserIsAdmin()
         {
-            var user = GetAuthenticatedUser();
+            var user = UserModel.GetAuthenticatedUser(User.Identity);
 
             var userRole = (user.Email == null) ? null : await _userRolesRepository.GetAsync(user.Email.ToLower());
 
             var isAdmin = (userRole != null) && userRole.Role == StreamsRoles.Admin;
 
             return isAdmin;
-        }
-
-        private CompetitionPlatformUser GetAuthenticatedUser()
-        {
-            return ClaimsHelper.GetUser(User.Identity);
         }
 
         private async Task SendNewCommentNotification(ICommentData model)

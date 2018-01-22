@@ -51,6 +51,7 @@ namespace CompetitionPlatform.Controllers
         private readonly IProjectExpertsRepository _projectExpertsRepository;
         private readonly IStreamRepository _streamRepository;
         private readonly IPersonalDataService _personalDataService;
+        private readonly IStreamsIdRepository _streamsIdRepository;
 
         public ProjectController(IProjectRepository projectRepository, IProjectCommentsRepository commentsRepository,
             IProjectFileRepository fileRepository, IProjectFileInfoRepository fileInfoRepository,
@@ -60,7 +61,8 @@ namespace CompetitionPlatform.Controllers
             IProjectWinnersService winnersService, IQueueExt emailsQueue,
             IProjectResultVoteRepository resultVoteRepository, BaseSettings settings,
             ILog log, IProjectExpertsRepository projectExpertsRepository,
-            IStreamRepository streamRepository, IPersonalDataService personalDataService)
+            IStreamRepository streamRepository, IPersonalDataService personalDataService,
+            IStreamsIdRepository streamsIdRepository)
         {
             _projectRepository = projectRepository;
             _commentsRepository = commentsRepository;
@@ -80,6 +82,7 @@ namespace CompetitionPlatform.Controllers
             _projectExpertsRepository = projectExpertsRepository;
             _streamRepository = streamRepository;
             _personalDataService = personalDataService;
+            _streamsIdRepository = streamsIdRepository;
         }
 
 
@@ -90,7 +93,7 @@ namespace CompetitionPlatform.Controllers
             // Fetch user and role
             // TODO: These should be methods on the CompetitionPlatformUser model class
             // which should probably be broken out from IdentityModels
-            var user = GetAuthenticatedUser();
+            var user = UserModel.GetAuthenticatedUser(User.Identity);
             var userRole = await _userRolesRepository.GetAsync(user.Email.ToLower());
 
 
@@ -121,7 +124,7 @@ namespace CompetitionPlatform.Controllers
         [Authorize]
         public async Task<IActionResult> Edit(string id)
         {
-            var user = GetAuthenticatedUser();
+            var user = UserModel.GetAuthenticatedUser(User.Identity);
 
             var viewModel = await GetProjectViewModel(id);
             viewModel.IsAuthor = viewModel.AuthorId == user.Email;
@@ -188,7 +191,7 @@ namespace CompetitionPlatform.Controllers
                 // TODO: Put this entire if-block into a constructor or a factory method on ProjectViewModel?
                 projectViewModel.Status = draft ? Status.Draft : Status.Initiative;
 
-                var user = GetAuthenticatedUser();
+                var user = UserModel.GetAuthenticatedUser(User.Identity);
 
                 projectViewModel.AuthorId = user.Email;
                 projectViewModel.AuthorFullName = user.GetFullName();
@@ -219,6 +222,7 @@ namespace CompetitionPlatform.Controllers
 
                 // TODO: How is this different than the _projectRepository.SaveAsync?
                 await SaveProjectFile(projectViewModel.File, projectId);
+                UserModel.GenerateStreamsId(_streamsIdRepository, user.Id);
 
                 return RedirectToAction("ProjectDetails", "Project", new { id = projectId });
             }
@@ -290,7 +294,7 @@ namespace CompetitionPlatform.Controllers
 
                 if (projectViewModel.StreamType == "New")
                 {
-                    var user = GetAuthenticatedUser();
+                    var user = UserModel.GetAuthenticatedUser(User.Identity);
                     var streamProjects = JsonConvert.DeserializeObject<List<StreamProject>>(projectViewModel.SerializedStream);
 
                     if (streamProjects.Any())
@@ -608,6 +612,8 @@ namespace CompetitionPlatform.Controllers
                 }
 
                 projectDetailsAvatarIds.Add(comment.UserIdentifier);
+                var commenterStreamsId = await _streamsIdRepository.GetAsync(comment.UserIdentifier);
+                comment.StreamsId = commenterStreamsId.StreamsId;
 
                 if (!string.IsNullOrEmpty(comment.Comment))
                 {
@@ -619,7 +625,7 @@ namespace CompetitionPlatform.Controllers
 
             var results = await _resultRepository.GetResultsAsync(id);
 
-            var user = GetAuthenticatedUser();
+            var user = UserModel.GetAuthenticatedUser(User.Identity);
 
             var participant = (user.Email == null) ? null : await _participantsRepository.GetAsync(id, user.Email);
 
@@ -671,6 +677,8 @@ namespace CompetitionPlatform.Controllers
                 }
 
                 projectDetailsAvatarIds.Add(part.UserIdentifier);
+                var participantStreamsId = await _streamsIdRepository.GetAsync(part.UserIdentifier);
+                part.StreamsId = participantStreamsId.StreamsId;
             }
 
             foreach (var result in results)
@@ -686,6 +694,8 @@ namespace CompetitionPlatform.Controllers
                     resultVotes.FirstOrDefault(x => x.ParticipantId == result.ParticipantId && x.VoterUserId == user.Email);
 
                 userVotedForResults.Add(result.ParticipantId, match != null && user.Email != null);
+                var resultStreamsId = await _streamsIdRepository.GetAsync(result.ParticipantIdentifier);
+                result.StreamsId = resultStreamsId.StreamsId;
             }
 
             var statusBarPartial = new ProjectDetailsStatusBarViewModel
@@ -740,6 +750,7 @@ namespace CompetitionPlatform.Controllers
                 if (!string.IsNullOrEmpty(expert.UserIdentifier))
                 {
                     projectDetailsAvatarIds.Add(expert.UserIdentifier);
+                    UserModel.GenerateStreamsId(_streamsIdRepository, expert.UserIdentifier);
                 }
             }
 
@@ -749,6 +760,7 @@ namespace CompetitionPlatform.Controllers
             resultsPartial.Avatars = avatarsDictionary;
 
             experts = experts.OrderBy(x => x.Priority == 0).ThenBy(x => x.Priority);
+            var authorStreamsId = await _streamsIdRepository.GetAsync(project.AuthorIdentifier);
 
             var projectViewModel = new ProjectViewModel
             {
@@ -790,7 +802,8 @@ namespace CompetitionPlatform.Controllers
                 AllStreamProjects = await GetStreamProjects(),
                 CompactStreams = await GetCompactStreams(),
                 NameTag = project.NameTag,
-                AuthorAvatarUrl = avatarsDictionary[project.AuthorIdentifier]
+                AuthorAvatarUrl = avatarsDictionary[project.AuthorIdentifier],
+                AuthorStreamsId = authorStreamsId.StreamsId
             };
 
             if (!string.IsNullOrEmpty(project.Tags))
@@ -876,6 +889,13 @@ namespace CompetitionPlatform.Controllers
                     winner.WinnerIdentifier = await ClaimsHelper.GetUserIdByEmail(_settings.LykkeStreams.Authentication.Authority,
                         _settings.LykkeStreams.Authentication.ClientId, winner.WinnerId);
                     await _winnersRepository.UpdateAsync(winner);
+                }
+                if (!string.IsNullOrEmpty(winner.WinnerIdentifier))
+                {
+                    UserModel.GenerateStreamsId(_streamsIdRepository, winner.WinnerIdentifier);
+
+                    var winnerStreamsId = await _streamsIdRepository.GetAsync(winner.WinnerIdentifier);
+                    winner.StreamsId = winnerStreamsId.StreamsId;
                 }
             }
 
@@ -974,11 +994,6 @@ namespace CompetitionPlatform.Controllers
             }
 
             return sortedComments;
-        }
-
-        private CompetitionPlatformUser GetAuthenticatedUser()
-        {
-            return ClaimsHelper.GetUser(User.Identity);
         }
 
         private async Task<string> GetUserKycStatus(string email)

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CompetitionPlatform.Data.AzureRepositories.Project;
 using CompetitionPlatform.Data.AzureRepositories.Users;
+using CompetitionPlatform.Helpers;
 
 namespace CompetitionPlatform.Models.ProjectModels
 {
@@ -72,7 +73,7 @@ namespace CompetitionPlatform.Models.ProjectModels
         // Select projects whose status matches a string
         public ProjectList FilterByStatus(string projectStatusFilter)
         {
-            if (!string.IsNullOrEmpty(projectStatusFilter) && projectStatusFilter != "All")
+            if (!string.IsNullOrEmpty(projectStatusFilter) && projectStatusFilter != OrderingTypes.All)
                 _projectList = _projectList.Where(x => x.ProjectStatus == projectStatusFilter);
             return this;
         }
@@ -80,7 +81,7 @@ namespace CompetitionPlatform.Models.ProjectModels
         // Select projects whose category matches a string
         public ProjectList FilterByCategory(string projectCategoryFilter)
         {
-            if (!string.IsNullOrEmpty(projectCategoryFilter) && projectCategoryFilter != "All")
+            if (!string.IsNullOrEmpty(projectCategoryFilter) && projectCategoryFilter != OrderingTypes.All)
                 _projectList = _projectList.Where(x => x.Category.Replace(" ", "") == projectCategoryFilter);
             return this;
         }
@@ -102,28 +103,28 @@ namespace CompetitionPlatform.Models.ProjectModels
         }
 
         // Order projects by the first place prize (default: ascending)
-        public ProjectList OrderByPrize(string prizeOrder = "Ascending")
+        public ProjectList OrderByPrize(string prizeOrder = OrderingTypes.Ascending)
         {
             if (!string.IsNullOrEmpty(prizeOrder))
             {
-                if (prizeOrder == "Ascending")
+                if (prizeOrder == OrderingTypes.Ascending)
                     _projectList = _projectList.OrderBy(x => x.BudgetFirstPlace);
 
-                if (prizeOrder == "Descending")
+                if (prizeOrder == OrderingTypes.Descending)
                     _projectList = _projectList.OrderByDescending(x => x.BudgetFirstPlace);
             }
             return this;
         }
 
         // Order projects by the last modified date (default: descending)
-        public ProjectList OrderByLastModified(string modifiedOrder = "Descending")
+        public ProjectList OrderByLastModified(string modifiedOrder = OrderingTypes.Descending)
         {
             if (!string.IsNullOrEmpty(modifiedOrder))
             {
-                if (modifiedOrder == "Ascending")
+                if (modifiedOrder == OrderingTypes.Ascending)
                     _projectList = _projectList.OrderBy(x => x.LastModified);
 
-                if (modifiedOrder == "Descending")
+                if (modifiedOrder == OrderingTypes.Descending)
                     _projectList = _projectList.OrderByDescending(x => x.LastModified);
             }
             return this;
