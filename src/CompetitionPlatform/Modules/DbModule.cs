@@ -116,6 +116,10 @@ namespace CompetitionPlatform.Modules
             ).As<IStreamRepository>().SingleInstance();
 
             builder.RegisterInstance(
+                new StreamsIdRepository(AzureTableStorage<StreamsIdEntity>.Create(connectionString, "StreamsId", _log))
+            ).As<IStreamsIdRepository>().SingleInstance();
+
+            builder.RegisterInstance(
                 new ProjectCategoriesRepository()
             ).As<IProjectCategoriesRepository>().SingleInstance();
 
