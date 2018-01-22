@@ -42,10 +42,10 @@
                 <tr>
                     <td class="board_name">
                         <div class="user_badge user_badge--small">
-                            <a href="/userprofile/@result.ParticipantIdentifier" class="user_badge__img">
+                            <a href="/userprofile/@result.StreamsId" class="user_badge__img">
                                 <img src="@ViewHelper.GetAvatarOrDefault(resultsAvatar)" alt="@result.ParticipantFullName">
                             </a>
-                            <a href="/userprofile/@result.ParticipantIdentifier" class="user_badge__info link-text-black">@result.ParticipantFullName</a>
+                            <a href="/userprofile/@result.StreamsId" class="user_badge__info link-text-black">@result.ParticipantFullName</a>
                         </div>
                     </td>
                     <td class="board_date">@result.Submitted.ToString("MMMM dd, yyyy hh:mm")</td>
