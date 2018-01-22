@@ -25,5 +25,6 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public string UserAgent { get; set; }
         public bool Deleted { get; set; }
         public Dictionary<string, string> Avatars { get; set; }
+        public string StreamsId { get; set; }
     }
 }

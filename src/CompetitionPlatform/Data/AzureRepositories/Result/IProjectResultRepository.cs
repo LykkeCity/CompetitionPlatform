@@ -15,6 +15,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Result
         int Score { get; set; }
         int Votes { get; set; }
         string UserAgent { get; set; }
+        string StreamsId { get; set; }
     }
 
     public interface IProjectResultRepository
