@@ -145,15 +145,10 @@ namespace CompetitionPlatform
                     app.UseBrowserLink();
                 }
 
-                var forwardingOptions = new ForwardedHeadersOptions
+                app.UseForwardedHeaders(new ForwardedHeadersOptions
                 {
-                    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto | ForwardedHeaders.XForwardedHost
-                };
-
-                forwardingOptions.KnownNetworks.Clear(); //its loopback by default
-                forwardingOptions.KnownProxies.Clear();
-
-                app.UseForwardedHeaders(forwardingOptions);
+                    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+                });
 
                 app.UseAuthentication();
 
