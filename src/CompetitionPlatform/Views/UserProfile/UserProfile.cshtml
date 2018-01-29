@@ -35,13 +35,16 @@
                             </div>
                             <div class="user_badge__content">
                                 <h1 class="h2">@fullName</h1>
-                                @if (!string.IsNullOrEmpty(Model.Profile.Website))
-                                {
-                                    <div class="hint">
+                                <div class="hint">
+                                    @if (Model.IsLykkeMember)
+                                    {
+                                        <span class="label label--yellow lykke-team-label">LYKKE TEAM</span>
+                                    }
+                                    @if (!string.IsNullOrEmpty(Model.Profile.Website))
+                                    {
                                         <a target="_blank" href="@Model.Profile.Website">@Model.Profile.Website</a>
-                                    </div>
-                                }
-
+                                    }
+                                </div>
                                 <p>@Model.Profile.ShortBio</p>
 
                                 <div class="user_badge__contacts">
@@ -83,7 +86,7 @@
                         <li role="presentation" class="active"><a href="#participated" aria-controls="participated" role="tab" data-toggle="tab">Participated <sup>@Model.ParticipatedProjects.Count</sup></a></li>
                         <li role="presentation"><a href="#won" aria-controls="won" role="tab" data-toggle="tab">Won <sup>@Model.WonProjects.Count</sup></a></li>
                         <li role="presentation"><a href="#created" aria-controls="created" role="tab" data-toggle="tab">Created <sup>@Model.CreatedProjects.Count</sup></a></li>
-                        <li role="presentation"><a href="#comments" aria-controls="comments" role="tab" data-toggle="tab">Comments <sup>@Model.Comments.Count</sup></a></li>
+                        <li role="presentation"><a href="#comments" aria-controls="comments" role="tab" data-toggle="tab">Comments <sup>@Model.Comments.CommentsList.Count</sup></a></li>
                     </ul>
                 </div>
 
