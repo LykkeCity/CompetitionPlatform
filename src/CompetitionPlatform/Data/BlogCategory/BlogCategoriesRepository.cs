@@ -16,7 +16,8 @@ namespace CompetitionPlatform.Data.BlogCategory
                 "Winners",
                 "Success stories",
                 "Videos",
-                "About"
+                "About",
+                "Tutorials"
             };
         }
     }
