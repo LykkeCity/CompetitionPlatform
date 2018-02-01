@@ -189,10 +189,21 @@ namespace CompetitionPlatform.Controllers
                 projectViewModel.Status = draft ? Status.Draft : Status.Initiative;
 
                 var user = GetAuthenticatedUser();
+                var userRole = await _userRolesRepository.GetAsync(user.Email.ToLower());
 
                 projectViewModel.AuthorId = user.Email;
                 projectViewModel.AuthorFullName = user.GetFullName();
                 projectViewModel.AuthorIdentifier = user.Id;
+
+                //Don't let non-admin users create Initiative projects
+                if (userRole == null || userRole.Role != "ADMIN")
+                {
+                    var kycStatus = await GetUserKycStatus(user.Email);
+                    if (kycStatus == "\"Ok\"" && projectViewModel.Status != Status.Draft)
+                    {
+                        return View("CreateInitiativeClosed");
+                    }
+                }
 
                 // TODO: Where is the user-agent used?
                 projectViewModel.UserAgent = HttpContext.Request.Headers["User-Agent"].ToString();
@@ -270,6 +281,19 @@ namespace CompetitionPlatform.Controllers
 
             project.Status = StatusHelper.GetProjectStatusFromString(project.ProjectStatus);
 
+            var user = GetAuthenticatedUser();
+            var userRole = await _userRolesRepository.GetAsync(user.Email.ToLower());
+
+            //Don't let non-admin users edit their draft projects to Initiative status
+            if (userRole == null || userRole.Role != "ADMIN")
+            {
+                var kycStatus = await GetUserKycStatus(user.Email);
+                if (kycStatus == "\"Ok\"" && projectViewModel.Status != Status.Draft)
+                {
+                    return View("CreateInitiativeClosed");
+                }
+            }
+
             projectViewModel.LastModified = DateTime.UtcNow;
 
             projectViewModel.UserAgent = HttpContext.Request.Headers["User-Agent"].ToString();
@@ -290,7 +314,6 @@ namespace CompetitionPlatform.Controllers
 
                 if (projectViewModel.StreamType == "New")
                 {
-                    var user = GetAuthenticatedUser();
                     var streamProjects = JsonConvert.DeserializeObject<List<StreamProject>>(projectViewModel.SerializedStream);
 
                     if (streamProjects.Any())
