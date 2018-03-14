@@ -1,0 +1,16 @@
+User-agent: *
+Disallow: /assets/js/
+Disallow: /css/
+Disallow: /images/
+Disallow: /img/competition/
+Disallow: /js/
+Disallow: /lib/bootstrap/dist/css/
+Disallow: /lib/bootstrap/dist/js/
+Disallow: /lib/jquery-validation/dist/
+Disallow: /Project/Create*
+Disallow: /Home/SignIn*
+Disallow: *?commentsActive=*
+Disallow: *?participantsActive=*
+Disallow: /public/css/
+Disallow: /public/img/
+Disallow: /public/js/
