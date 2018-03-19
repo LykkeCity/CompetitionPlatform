@@ -19,7 +19,7 @@
     "CompetitionPlatform": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "http://localhost:5000",
+      "launchUrl": "http://localhost:53395",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "SettingsUrl": "appsettings.Development.json"

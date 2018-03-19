@@ -472,7 +472,8 @@ namespace CompetitionPlatform.Controllers
 
             foreach (var winner in latestWinners)
             {
-                winner.AvatarUrl = winnerAvatarUrls[winner.Id];
+                winnerAvatarUrls.TryGetValue(winner.Id, out var avatarUrl);
+                winner.AvatarUrl = avatarUrl;
             }
 
             return latestWinners.Take(4).ToList();

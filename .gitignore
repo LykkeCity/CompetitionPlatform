@@ -252,6 +252,8 @@ paket-files/
 .idea/
 *.sln.iml
 
+/.vscode
+
 **/launchSettings.json
 **/appsettings.Development.jsongeneralsettings.json 
 /src/CompetitionPlatform/appsettings.Development.json
