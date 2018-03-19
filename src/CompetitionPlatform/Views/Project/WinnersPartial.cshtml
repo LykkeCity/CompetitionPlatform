@@ -29,7 +29,7 @@
             {
                 placeCounter = placeCounter + 1;
                 var voteVotes = winner.Votes == 1 ? "vote" : "votes";
-                var winnerAvatar = Model.Avatars[winner.WinnerIdentifier];
+                Model.Avatars.TryGetValue(winner.WinnerIdentifier, out var winnerAvatar);
                 if (winner.Place == 1)
                 {
                     <div class="col-xs-6 col-sm-3">
