@@ -127,7 +127,7 @@ namespace CompetitionPlatform.Modules
                 new PersonalDataService(new PersonalDataServiceClientSettings { ApiKey = personalDatAapiKey, ServiceUri = personalDataServiceUri }, _log)
             ).As<IPersonalDataService>().SingleInstance();
 
-            builder.RegisterEmailSenderViaAzureQueueMessageProducer(_settings.ConnectionString(x => x.LykkeStreams.Azure.ClientPersonalInfoConnString));
+            builder.RegisterEmailSenderViaAzureQueueMessageProducer(_settings.ConnectionString(x => x.LykkeStreams.Azure.MessageQueueConnString));
 
             builder.RegisterType<ProjectFileRepository>().As<IProjectFileRepository>();
             builder.RegisterType<BlogPictureRepository>().As<IBlogPictureRepository>();

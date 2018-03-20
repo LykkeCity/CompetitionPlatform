@@ -20,7 +20,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Settings
     {
         public string StorageConnString { get; set; }
         public string StorageLogConnString { get; set; }
-        public string ClientPersonalInfoConnString { get; set; }
+        public string MessageQueueConnString { get; set; }
     }
     
     public class SlackNotificationSettings
