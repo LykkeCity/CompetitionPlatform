@@ -1986,7 +1986,7 @@ a.action_link:hover img, button.action_link:hover img { opacity: 1; }
 
 .card__desc .label, .card__desc .votes, .card__desc .users_stack { vertical-align: middle; margin-bottom: 15px; margin-bottom: 0.9375rem; }
 
-.card__text { margin-bottom: 0; overflow: hidden; line-height: 30px; line-height: 1.875rem; max-height: 120px; max-height: 7.5rem; }
+.card__text { margin-bottom: 0; overflow: hidden; line-height: 30px; line-height: 1.875rem; max-height: 120px; /*max-height: 7.5rem;*/ }
 
 .card__sum { margin-bottom: 0; font-weight: 300; color: #333333; font-size: 24px; font-size: 1.5rem; line-height: 30px; line-height: 1.875rem; }
 
