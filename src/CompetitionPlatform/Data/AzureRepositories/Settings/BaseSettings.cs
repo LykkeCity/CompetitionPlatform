@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Lykke.EmailSenderProducer.Interfaces;
 
 namespace CompetitionPlatform.Data.AzureRepositories.Settings
 {
@@ -7,7 +6,6 @@ namespace CompetitionPlatform.Data.AzureRepositories.Settings
     {
         public SlackNotificationSettings SlackNotifications { get; set; }
         public StreamsSettings LykkeStreams { get; set; }
-        public EmailServiceBus EmailServiceBus { get; set; }
     }
 
     public class AuthenticationSettings
@@ -22,16 +20,9 @@ namespace CompetitionPlatform.Data.AzureRepositories.Settings
     {
         public string StorageConnString { get; set; }
         public string StorageLogConnString { get; set; }
+        public string ClientPersonalInfoConnString { get; set; }
     }
-
-    public class EmailServiceBus : IServiceBusEmailSettings
-    {
-        public string Key { get; set; }
-        public string QueueName { get; set; }
-        public string NamespaceUrl { get; set; }
-        public string PolicyName { get; set; }
-    }
-
+    
     public class SlackNotificationSettings
     {
         public SlackNotificationsAzureSettings AzureQueue { get; set; }

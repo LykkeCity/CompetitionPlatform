@@ -14,6 +14,7 @@ using CompetitionPlatform.Data.AzureRepositories.Vote;
 using CompetitionPlatform.Data.BlogCategory;
 using CompetitionPlatform.Data.ProjectCategory;
 using CompetitionPlatform.Services;
+using Lykke.Messages.Email;
 using Lykke.Service.PersonalData.Client;
 using Lykke.Service.PersonalData.Contract;
 using Lykke.Service.PersonalData.Settings;
@@ -125,6 +126,8 @@ namespace CompetitionPlatform.Modules
             builder.RegisterInstance(
                 new PersonalDataService(new PersonalDataServiceClientSettings { ApiKey = personalDatAapiKey, ServiceUri = personalDataServiceUri }, _log)
             ).As<IPersonalDataService>().SingleInstance();
+
+            builder.RegisterEmailSenderViaAzureQueueMessageProducer(_settings.ConnectionString(x => x.LykkeStreams.Azure.ClientPersonalInfoConnString));
 
             builder.RegisterType<ProjectFileRepository>().As<IProjectFileRepository>();
             builder.RegisterType<BlogPictureRepository>().As<IBlogPictureRepository>();
