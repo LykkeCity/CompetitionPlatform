@@ -20,8 +20,6 @@ using CompetitionPlatform.Helpers;
 using CompetitionPlatform.Models;
 using CompetitionPlatform.Models.ProjectViewModels;
 using CompetitionPlatform.Services;
-using Lykke.EmailSenderProducer;
-using Lykke.EmailSenderProducer.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -51,6 +49,7 @@ namespace CompetitionPlatform.Controllers
         private readonly IProjectExpertsRepository _projectExpertsRepository;
         private readonly IStreamRepository _streamRepository;
         private readonly IPersonalDataService _personalDataService;
+        private readonly Lykke.Messages.Email.IEmailSender _emailSender;
 
         public ProjectController(IProjectRepository projectRepository, IProjectCommentsRepository commentsRepository,
             IProjectFileRepository fileRepository, IProjectFileInfoRepository fileInfoRepository,
@@ -60,7 +59,8 @@ namespace CompetitionPlatform.Controllers
             IProjectWinnersService winnersService, IQueueExt emailsQueue,
             IProjectResultVoteRepository resultVoteRepository, BaseSettings settings,
             ILog log, IProjectExpertsRepository projectExpertsRepository,
-            IStreamRepository streamRepository, IPersonalDataService personalDataService)
+            IStreamRepository streamRepository, IPersonalDataService personalDataService,
+            Lykke.Messages.Email.IEmailSender emailSender)
         {
             _projectRepository = projectRepository;
             _commentsRepository = commentsRepository;
@@ -80,6 +80,7 @@ namespace CompetitionPlatform.Controllers
             _projectExpertsRepository = projectExpertsRepository;
             _streamRepository = streamRepository;
             _personalDataService = personalDataService;
+            _emailSender = emailSender;
         }
 
 
@@ -665,7 +666,7 @@ namespace CompetitionPlatform.Controllers
 
             var projectFollowing = (user.Email == null) ? null : await _projectFollowRepository.GetAsync(user.Email, id);
             var isFollowing = projectFollowing != null;
-            
+
             // TODO: As I go through this, wondering if we need a CommentsList model, especially since 
             // comments are probably going to be important to the platform going forwards
             comments = SortComments(comments);
@@ -757,7 +758,7 @@ namespace CompetitionPlatform.Controllers
                 if (string.IsNullOrEmpty(expert.UserIdentifier) && !string.IsNullOrEmpty(expert.UserId))
                 {
                     expert.UserIdentifier = await ClaimsHelper.GetUserIdByEmail(_settings.LykkeStreams.Authentication.Authority,
-                        _settings.LykkeStreams.Authentication.ClientId, expert.UserId);
+                         _settings.LykkeStreams.Authentication.ClientId, expert.UserId);
                     await _projectExpertsRepository.UpdateAsync(expert);
                 }
                 if (!string.IsNullOrEmpty(expert.UserIdentifier))
@@ -1035,19 +1036,17 @@ namespace CompetitionPlatform.Controllers
 
         private async Task SendProjectCreateNotification(IProjectData model)
         {
-            var emailProducer = new EmailSenderProducer(_settings.EmailServiceBus, _log);
-
-            var message = new EmailMessage
+            var message = new Lykke.Messages.Email.MessageData.PlainTextData
             {
-                Body = "New Project was created. Project name - " + model.Name + ", Project author - " + model.AuthorFullName +
+                Sender = "Lykke Notifications",
+                Text = "New Project was created. Project name - " + model.Name + ", Project author - " + model.AuthorFullName +
                 ", Project Link - https://streams.lykke.com/Project/ProjectDetails/" + model.Id,
-                Subject = "New Project Created!",
-                IsHtml = false
+                Subject = "New Project Created!"
             };
 
             foreach (var email in _settings.LykkeStreams.ProjectCreateNotificationReceiver)
             {
-                await emailProducer.SendEmailAsync(email, message, "Lykke Notifications");
+                await _emailSender.SendEmailAsync("Lykke", email, message);
             }
         }
 

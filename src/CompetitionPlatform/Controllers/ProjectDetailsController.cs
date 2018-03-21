@@ -11,8 +11,7 @@ using CompetitionPlatform.Data.AzureRepositories.Vote;
 using CompetitionPlatform.Helpers;
 using CompetitionPlatform.Models;
 using CompetitionPlatform.Models.ProjectViewModels;
-using Lykke.EmailSenderProducer;
-using Lykke.EmailSenderProducer.Models;
+using Lykke.Messages.Email;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -35,6 +34,7 @@ namespace CompetitionPlatform.Controllers
         private readonly IProjectWinnersRepository _winnersRepository;
         private readonly ILog _log;
         private readonly BaseSettings _settings;
+        private readonly IEmailSender _emailSender;
 
         public ProjectDetailsController(IProjectCommentsRepository commentsRepository, IProjectFileRepository fileRepository,
             IProjectFileInfoRepository fileInfoRepository, IProjectVoteRepository voteRepository,
@@ -43,6 +43,7 @@ namespace CompetitionPlatform.Controllers
             IProjectFollowRepository projectFollowRepository, IFollowMailSentRepository mailSentRepository,
             IQueueExt emailsQueue, IUserRolesRepository userRolesRepository,
             IProjectWinnersRepository winnersRepository, ILog log,
+            IEmailSender emailSender,
             BaseSettings settings)
         {
             _commentsRepository = commentsRepository;
@@ -60,6 +61,7 @@ namespace CompetitionPlatform.Controllers
             _winnersRepository = winnersRepository;
             _log = log;
             _settings = settings;
+            _emailSender = emailSender;
         }
 
         [Authorize]
@@ -534,20 +536,18 @@ namespace CompetitionPlatform.Controllers
 
         private async Task SendNewCommentNotification(ICommentData model)
         {
-            var emailProducer = new EmailSenderProducer(_settings.EmailServiceBus, _log);
-
-            var message = new EmailMessage
+            var message = new Lykke.Messages.Email.MessageData.PlainTextData
             {
-                Body = "New Comment was created. \n" + "Comment Author - " + model.FullName + "\n" +
+                Sender = "Lykke Notifications",
+                Text = "New Comment was created. \n" + "Comment Author - " + model.FullName + "\n" +
                        "Comment - " + model.Comment + "\n" +
                        "Project Link - https://streams.lykke.com/Project/ProjectDetails/" + model.ProjectId + "?commentsActive=true",
-                Subject = "New Comment!",
-                IsHtml = false
+                Subject = "New Comment!"
             };
 
             foreach (var email in _settings.LykkeStreams.ProjectCreateNotificationReceiver)
             {
-                await emailProducer.SendEmailAsync(email, message, "Lykke Notifications");
+                await _emailSender.SendEmailAsync("Lykke", email, message);
             }
         }
     }
