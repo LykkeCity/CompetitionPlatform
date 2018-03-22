@@ -4264,3 +4264,58 @@ tbody.collapse.in { display: table-row-group; }
 @media all and (min-width: 1200px) { .footer_in_view .zEWidget-launcher, .footer_in_view .btn_feedback { bottom: 100px !important; } }
 
 .project-list-header { padding-right: 0 !important; }
+
+
+.error_page {
+    font-weight: 200;
+    text-align: center;
+    color: #333333;
+    font-size: 96px;
+    font-size: 6rem;
+}
+
+    .error_page .status_icon {
+        display: inline-block;
+        vertical-align: middle;
+        position: relative;
+        margin-bottom: 0;
+        margin: 0 10px;
+        margin: 0 0.625rem;
+        top: -10px;
+        top: -0.625rem;
+    }
+
+.form_status {
+    padding: 3vh 0;
+}
+
+    .form_status h2 {
+        text-align: center;
+        margin-bottom: 40px;
+        margin-bottom: 2.5rem;
+    }
+
+    .form_status p {
+        line-height: 1.64;
+        letter-spacing: normal;
+        font-size: 22px;
+        font-size: 1.375rem;
+    }
+
+        .form_status p a {
+            color: #1694fb;
+        }
+
+            .form_status p a:hover {
+                color: #3F4D60;
+            }
+
+.form_status__button {
+    margin-top: 70px;
+    margin-top: 4.375rem;
+}
+
+    .form_status__button .btn {
+        min-width: 150px;
+        min-width: 9.375rem;
+    }
