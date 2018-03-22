@@ -165,7 +165,14 @@ namespace CompetitionPlatform
                 {
                     routes.MapRoute(
                         name: "default",
-                        template: "{controller=Home}/{action=Index}/{id?}");
+                        template: "{controller}/{action}/{id?}",
+                        defaults: new { controller = "Home", action = "Index" });
+
+                    routes.MapRoute(
+                        "404",
+                        "{*url}",
+                        new { controller = "Home", action = "PageNotFound" }
+                    );
                 });
 
                 appLifetime.ApplicationStopped.Register(() => CleanUp().Wait());

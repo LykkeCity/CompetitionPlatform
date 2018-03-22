@@ -1,0 +1,11 @@
+User-agent: *
+Disallow: /?ref=*
+Disallow: *?*
+Disallow: /Home/SignIn*
+Disallow: /home/signin*
+Disallow: /site/signin*
+Disallow: /Project/Home/*
+Disallow: /userfiles/
+Disallow: /images/
+Disallow: */DownloadProjectFile/*
+Disallow: /asset/img/
