@@ -224,7 +224,7 @@ namespace CompetitionPlatform.Controllers
                 }
             }
 
-            return userComments;
+            return userComments.OrderByDescending(x => x.LastModified).ToList();
         }
 
         private async Task<List<ProjectCompactViewModel>> GetCompactProjectsList(IEnumerable<IProjectData> projects)
