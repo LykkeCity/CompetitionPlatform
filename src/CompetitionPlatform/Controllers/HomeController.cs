@@ -453,7 +453,7 @@ namespace CompetitionPlatform.Controllers
 
                     if (winner.Budget != null)
                     {
-                        var winnerStreamsId = await _streamsIdRepository.GetAsync(winner.WinnerIdentifier);
+                        var winnerStreamsId = await _streamsIdRepository.GetOrCreateAsync(winner.WinnerIdentifier);
 
                         latestWinners.Add(
                             new LatestWinner
@@ -476,7 +476,8 @@ namespace CompetitionPlatform.Controllers
 
             foreach (var winner in latestWinners)
             {
-                winner.AvatarUrl = winnerAvatarUrls[winner.Id];
+                winnerAvatarUrls.TryGetValue(winner.Id, out var avatar);
+                winner.AvatarUrl = avatar;
             }
 
             return latestWinners.Take(4).ToList();

@@ -154,7 +154,7 @@ namespace CompetitionPlatform.Models.ProjectModels
         {
             foreach (var project in compactProjectsModelList)
             {
-                var authorStreamsId = await streamsIdRepository.GetAsync(project.BaseProjectData.AuthorIdentifier);
+                var authorStreamsId = await streamsIdRepository.GetOrCreateAsync(project.BaseProjectData.AuthorIdentifier);
                 project.AuthorStreamsId = authorStreamsId.StreamsId;
             }
 

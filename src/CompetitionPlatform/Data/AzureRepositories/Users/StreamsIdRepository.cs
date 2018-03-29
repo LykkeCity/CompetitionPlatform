@@ -53,12 +53,19 @@ namespace CompetitionPlatform.Data.AzureRepositories.Users
             await _streamsIdTableStorage.InsertAsync(newEntity);
         }
 
-        public async Task<IStreamsIdData> GetAsync(string clientId)
+        public async Task<IStreamsIdData> GetOrCreateAsync(string clientId)
         {
             var partitionKey = StreamsIdEntity.GeneratePartitionKey();
             var rowKey = StreamsIdEntity.GenerateRowKey(clientId);
 
-            return await _streamsIdTableStorage.GetDataAsync(partitionKey, rowKey);
+            var data = await _streamsIdTableStorage.GetDataAsync(partitionKey, rowKey);
+
+            if (data != null)
+                return data;
+
+            var newEntity = StreamsIdEntity.Create(new StreamsIdEntity { ClientId = clientId });
+            await _streamsIdTableStorage.InsertAsync(newEntity);
+            return newEntity;
         }
 
         public async Task<IEnumerable<IStreamsIdData>> GetStreamsIdsAsync()

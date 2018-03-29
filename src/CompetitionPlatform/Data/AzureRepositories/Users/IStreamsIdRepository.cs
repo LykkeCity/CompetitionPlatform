@@ -12,7 +12,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Users
     public interface IStreamsIdRepository
     {
         Task SaveAsync(IStreamsIdData streamsIdData);
-        Task<IStreamsIdData> GetAsync(string clientId);
+        Task<IStreamsIdData> GetOrCreateAsync(string clientId);
         Task<IEnumerable<IStreamsIdData>> GetStreamsIdsAsync();
     }
 }

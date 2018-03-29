@@ -312,7 +312,7 @@ namespace CompetitionPlatform.Controllers
         public async Task<IActionResult> DisplayLoggedInProfile()
         {
             var clientId = ClaimsHelper.GetUser(User.Identity).Id;
-            var streamsId = await _streamsIdRepository.GetAsync(clientId);
+            var streamsId = await _streamsIdRepository.GetOrCreateAsync(clientId);
 
             return await DisplayUserProfile(streamsId.StreamsId);
         }
