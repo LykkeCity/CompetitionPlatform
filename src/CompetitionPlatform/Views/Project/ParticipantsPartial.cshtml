@@ -14,10 +14,10 @@
             <tr>
                 <td>
                     <div class="user_badge user_badge--small">
-                        <a href="/userprofile/@participant.UserIdentifier" class="user_badge__img">
+                        <a href="/userprofile/@participant.StreamsId" class="user_badge__img">
                             <img src="@ViewHelper.GetAvatarOrDefault(participantAvatar)" alt="@participant.FullName">
                         </a>
-                        <a href="/userprofile/@participant.UserIdentifier" class="user_badge__info link-text-black">@participant.FullName</a>
+                        <a href="/userprofile/@participant.StreamsId" class="user_badge__info link-text-black">@participant.FullName</a>
                     </div>
                 </td>
                 <td class="text-right">@participant.Registered.ToString("MMMM dd, yyyy hh:mm")</td>

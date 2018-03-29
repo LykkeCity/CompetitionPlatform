@@ -36,14 +36,14 @@
                         <div class="winners_item winners_item--first">
                             <div class="winners_item__user">
                                 <div class="winners_item__img">
-                                    <a href="/userprofile/@winner.WinnerIdentifier">
+                                    <a href="/userprofile/@winner.StreamsId">
                                         <img src="@ViewHelper.GetAvatarOrDefault(winnerAvatar)" alt="@winner.FullName">
                                     </a>
                                 </div>
                                 <span class="winners_item__label">1</span>
                             </div>
                             <div class="winners_item__title">
-                                <a href="/userprofile/@winner.WinnerIdentifier">@winner.FullName</a>
+                                <a href="/userprofile/@winner.StreamsId">@winner.FullName</a>
                             </div>
                             @if (winner.Budget != null && winner.Budget > 0)
                             {
@@ -62,14 +62,14 @@
                         <div class="winners_item">
                             <div class="winners_item__user">
                                 <div class="winners_item__img">
-                                    <a href="/userprofile/@winner.WinnerIdentifier">
+                                    <a href="/userprofile/@winner.StreamsId">
                                         <img src="@ViewHelper.GetAvatarOrDefault(winnerAvatar)" alt="@winner.FullName">
                                     </a>
                                 </div>
                                 <span class="winners_item__label">@winner.Place</span>
                             </div>
                             <div class="winners_item__title">
-                                <a href="/userprofile/@winner.WinnerIdentifier">@winner.FullName</a>
+                                <a href="/userprofile/@winner.StreamsId">@winner.FullName</a>
                             </div>
                             @if (winner.Budget != null && winner.Budget > 0)
                             {

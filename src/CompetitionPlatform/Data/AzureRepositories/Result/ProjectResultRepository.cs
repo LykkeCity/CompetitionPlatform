@@ -28,6 +28,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Result
         public int Score { get; set; }
         public int Votes { get; set; }
         public string UserAgent { get; set; }
+        public string StreamsId { get; set; }
 
         public static ProjectResultEntity Create(IProjectResultData src)
         {

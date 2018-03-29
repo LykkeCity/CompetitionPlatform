@@ -19,5 +19,6 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public int Score { get; set; }
         public int Votes { get; set; }
         public string UserAgent { get; set; }
+        public string StreamsId { get; set; }
     }
 }

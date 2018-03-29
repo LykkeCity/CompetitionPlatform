@@ -11,7 +11,7 @@
         public const string Author = "AUTHOR";
     }
 
-    public static class OrderingConstants
+    public static class OrderingTypes
     {
         public const string All = "All";
         public const string Ascending = "Ascending";
