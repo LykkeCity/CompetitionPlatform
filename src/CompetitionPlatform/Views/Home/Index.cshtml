@@ -63,11 +63,11 @@
                             <div class="card__body">
                                 <div class="card__breadcrumbs">
                                     <div class="user_badge__img">
-                                        <a href="/userprofile/@project.BaseProjectData.AuthorIdentifier">
+                                        <a href="/userprofile/@project.AuthorStreamsId">
                                             <img src="@ViewHelper.GetAvatarOrDefault(project.AuthorAvatarUrl)" alt="@project.BaseProjectData.AuthorFullName">
                                         </a>
                                     </div>
-                                    <a href="/userprofile/@project.BaseProjectData.AuthorIdentifier" class="breadcrumb_elem">@project.BaseProjectData.AuthorFullName</a>
+                                    <a href="/userprofile/@project.AuthorStreamsId" class="breadcrumb_elem">@project.BaseProjectData.AuthorFullName</a>
                                     <i class="icon icon--chevron-thin-right"></i>
                                     <span class="breadcrumb_elem">@project.BaseProjectData.Category</span>
                                 </div>
@@ -195,7 +195,7 @@
                         @foreach (var latestWinner in Model.LatestWinners)
                         {
                             <div class="user_badge user_badge--small">
-                                <a href="/userprofile/@latestWinner.Id" class="user_badge__img">
+                                <a href="/userprofile/@latestWinner.StreamsId" class="user_badge__img">
                                     <span>
                                         @if (string.IsNullOrEmpty(latestWinner.AvatarUrl))
                                         {
@@ -208,7 +208,7 @@
                                     </span>
                                 </a>
                                 <div class="user_badge__info">
-                                    <a href="/userprofile/@latestWinner.Id" class="user_badge__title"><span>@latestWinner.Name</span></a>
+                                    <a href="/userprofile/@latestWinner.StreamsId" class="user_badge__title"><span>@latestWinner.Name</span></a>
                                     <div class="user_badge__desc">
                                         <a asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@latestWinner.ProjectId">@latestWinner.ProjectName</a>
                                     </div>

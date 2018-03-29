@@ -14,5 +14,6 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public bool IsFollowing { get; set; }
         public IProjectData BaseProjectData { get; set; }
         public string AuthorAvatarUrl { get; set; }
+        public string AuthorStreamsId { get; set; }
     }
 }

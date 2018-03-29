@@ -17,6 +17,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
         DateTime LastModified { get; set; }
         string UserAgent { get; set; }
         bool Deleted { get; set; }
+        string StreamsId { get; set; }
     }
 
     public interface IProjectCommentsRepository

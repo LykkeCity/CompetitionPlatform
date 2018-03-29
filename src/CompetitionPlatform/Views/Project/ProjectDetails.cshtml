@@ -355,11 +355,11 @@
                         @if (Model.ProjectExperts == null)
             {
                             <div class="user_badge">
-                                <a href="/userprofile/@Model.AuthorIdentifier" class="user_badge__img">
+                                <a href="/userprofile/@Model.AuthorStreamsId" class="user_badge__img">
                                     <img src="@ViewHelper.GetAvatarOrDefault(Model.AuthorAvatarUrl)" alt="@Model.AuthorFullName">
                                 </a>
                                 <div class="user_badge__info">
-                                    <a href="/userprofile/@Model.AuthorIdentifier" class="user_badge__title">@Model.AuthorFullName</a>
+                                    <a href="/userprofile/@Model.AuthorStreamsId" class="user_badge__title">@Model.AuthorFullName</a>
                                     <div class="user_badge__desc">Creator</div>
                                 </div>
                             </div>

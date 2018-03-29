@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Common;
 using CompetitionPlatform.Data.AzureRepositories.Project;
 using CompetitionPlatform.Data.AzureRepositories.Result;
 using CompetitionPlatform.Data.AzureRepositories.Settings;
@@ -33,12 +34,13 @@ namespace CompetitionPlatform.Controllers
         private readonly IPersonalDataService _personalDataService;
         private readonly IProjectFollowRepository _projectFollowRepository;
         private readonly IUserRolesRepository _userRolesRepository;
+        private readonly IStreamsIdRepository _streamsIdRepository;
 
         public UserProfileController(BaseSettings settings, IProjectRepository projectRepository, 
             IProjectCommentsRepository commentsRepository, IProjectParticipantsRepository participantsRepository, 
             IProjectResultRepository resultsRepository, IProjectWinnersRepository winnersRepository, 
             IPersonalDataService personalDataService, IProjectFollowRepository projectFollowRepository,
-            IUserRolesRepository userRolesRepository)
+            IUserRolesRepository userRolesRepository, IStreamsIdRepository streamsIdRepository)
         {
             _settings = settings;
             _projectRepository = projectRepository;
@@ -49,6 +51,7 @@ namespace CompetitionPlatform.Controllers
             _personalDataService = personalDataService;
             _projectFollowRepository = projectFollowRepository;
             _userRolesRepository = userRolesRepository;
+            _streamsIdRepository = streamsIdRepository;
         }
 
         private async Task<string> GetUserEmailById(string id)
@@ -75,10 +78,18 @@ namespace CompetitionPlatform.Controllers
         [HttpGet("~/userprofile/{id}")]
         public async Task<IActionResult> DisplayUserProfile(string id)
         {
-            if (!IsGuid(id)) return View("ProfileNotFound");
-            var email = await GetUserEmailById(id);
-            var profile = await _personalDataService.GetProfilePersonalDataAsync(id);
-            var user = GetAuthenticatedUser();
+            if (!id.IsGuid()) return View("ProfileNotFound");
+
+            var streamsIds = await _streamsIdRepository.GetStreamsIdsAsync();
+            var userStreamsId = streamsIds.FirstOrDefault(x => x.StreamsId == id);
+
+            if(userStreamsId == null) return View("ProfileNotFound");
+
+            var clientId = userStreamsId.ClientId;
+
+            var email = await GetUserEmailById(clientId);
+            var profile = await _personalDataService.GetProfilePersonalDataAsync(clientId);
+            var user = UserModel.GetAuthenticatedUser(User.Identity);
 
             if (profile.ClientId == user.Id && profile.FirstName != user.FirstName)
             {
@@ -230,7 +241,7 @@ namespace CompetitionPlatform.Controllers
         private async Task<List<ProjectCompactViewModel>> GetCompactProjectsList(IEnumerable<IProjectData> projects)
         {
             var compactModels = new List<ProjectCompactViewModel>();
-            var user = GetAuthenticatedUser();
+            var user = UserModel.GetAuthenticatedUser(User.Identity);
 
             foreach (var project in projects)
             {
@@ -279,19 +290,9 @@ namespace CompetitionPlatform.Controllers
                 compactModels.Add(compactModel);
             }
             compactModels = await CompactProjectList.FetchAuthorAvatars(compactModels, _personalDataService);
+            compactModels = await CompactProjectList.FetchAuthorStreamsIds(compactModels, _streamsIdRepository);
 
             return compactModels;
-        }
-
-        private CompetitionPlatformUser GetAuthenticatedUser()
-        {
-            return ClaimsHelper.GetUser(User.Identity);
-        }
-
-        public static bool IsGuid(string value)
-        {
-            Guid x;
-            return Guid.TryParse(value, out x);
         }
 
         private async Task<bool> IsUserLykkeMember(string email)
@@ -305,6 +306,15 @@ namespace CompetitionPlatform.Controllers
             if (domain == LykkeEmailDomains.LykkeCom || domain == LykkeEmailDomains.LykkexCom)
                 return true;
             return false;
+        }
+
+        [HttpGet("~/profile")]
+        public async Task<IActionResult> DisplayLoggedInProfile()
+        {
+            var clientId = ClaimsHelper.GetUser(User.Identity).Id;
+            var streamsId = await _streamsIdRepository.GetOrCreateAsync(clientId);
+
+            return await DisplayUserProfile(streamsId.StreamsId);
         }
     }
 }

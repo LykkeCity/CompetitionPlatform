@@ -63,7 +63,7 @@ namespace CompetitionPlatform.Controllers
 
         public async Task<IActionResult> Create()
         {
-            var user = GetAuthenticatedUser();
+            var user = UserModel.GetAuthenticatedUser(User.Identity);
             var userRole = (user.Email == null) ? null : await _userRolesRepository.GetAsync(user.Email.ToLower());
             var isAdmin = (userRole != null) && userRole.Role == StreamsRoles.Admin;
 
@@ -78,7 +78,7 @@ namespace CompetitionPlatform.Controllers
 
         public async Task<IActionResult> Edit(string id)
         {
-            var user = GetAuthenticatedUser();
+            var user = UserModel.GetAuthenticatedUser(User.Identity);
             var userRole = (user.Email == null) ? null : await _userRolesRepository.GetAsync(user.Email.ToLower());
             var isAdmin = (userRole != null) && userRole.Role == StreamsRoles.Admin;
 
@@ -95,7 +95,7 @@ namespace CompetitionPlatform.Controllers
 
         public async Task<IActionResult> SaveBlog(BlogViewModel blog)
         {
-            var user = GetAuthenticatedUser();
+            var user = UserModel.GetAuthenticatedUser(User.Identity);
             blog.AuthorName = user.GetFullName();
             blog.AuthorId = user.Email;
 
@@ -188,7 +188,7 @@ namespace CompetitionPlatform.Controllers
         private async Task<BlogViewModel> GetBlogViewModel(string id)
         {
             var blog = await _blogRepository.GetAsync(id);
-            var user = GetAuthenticatedUser();
+            var user = UserModel.GetAuthenticatedUser(User.Identity);
             var userRole = (user.Email == null) ? null : await _userRolesRepository.GetAsync(user.Email.ToLower());
 
             var isAdmin = (userRole != null) && userRole.Role == StreamsRoles.Admin;
@@ -284,11 +284,6 @@ namespace CompetitionPlatform.Controllers
             return model;
         }
 
-        private CompetitionPlatformUser GetAuthenticatedUser()
-        {
-            return ClaimsHelper.GetUser(User.Identity);
-        }
-
         private async Task<BlogListIndexViewModel> GetBlogListViewModel()
         {
             var blogEntries = await _blogRepository.GetBlogsAsync();
@@ -346,7 +341,7 @@ namespace CompetitionPlatform.Controllers
         [Authorize]
         public async Task<IActionResult> AddComment(BlogCommentPartialViewModel model)
         {
-            var user = GetAuthenticatedUser();
+            var user = UserModel.GetAuthenticatedUser(User.Identity);
             model.UserId = user.Email;
             model.FullName = user.GetFullName();
             model.Created = DateTime.UtcNow;
@@ -383,7 +378,7 @@ namespace CompetitionPlatform.Controllers
 
         public IActionResult GetCommentReplyForm(string commentId, string blogId)
         {
-            var user = GetAuthenticatedUser();
+            var user = UserModel.GetAuthenticatedUser(User.Identity);
             var created = DateTime.UtcNow;
 
             var model = new BlogCommentPartialViewModel
@@ -402,7 +397,7 @@ namespace CompetitionPlatform.Controllers
         [Authorize]
         public async Task<IActionResult> RemoveComment(string blogId, string commentId)
         {
-            var user = GetAuthenticatedUser();
+            var user = UserModel.GetAuthenticatedUser(User.Identity);
 
             var userRole = (user.Email == null) ? null : await _userRolesRepository.GetAsync(user.Email.ToLower());
 
@@ -451,7 +446,7 @@ namespace CompetitionPlatform.Controllers
 
         private async Task<bool> CurrentUserIsAdmin()
         {
-            var user = GetAuthenticatedUser();
+            var user = UserModel.GetAuthenticatedUser(User.Identity);
 
             var userRole = (user.Email == null) ? null : await _userRolesRepository.GetAsync(user.Email.ToLower());
 
