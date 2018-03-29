@@ -285,7 +285,7 @@ namespace CompetitionPlatform.Controllers
 
             project.Status = StatusHelper.GetProjectStatusFromString(project.ProjectStatus);
 
-            var user = GetAuthenticatedUser();
+            var user = UserModel.GetAuthenticatedUser(User.Identity);
             var userRole = await _userRolesRepository.GetAsync(user.Email.ToLower());
 
             //Don't let non-admin users edit their draft projects to Initiative status
@@ -318,7 +318,6 @@ namespace CompetitionPlatform.Controllers
 
                 if (projectViewModel.StreamType == "New")
                 {
-                    var user = UserModel.GetAuthenticatedUser(User.Identity);
                     var streamProjects = JsonConvert.DeserializeObject<List<StreamProject>>(projectViewModel.SerializedStream);
 
                     if (streamProjects.Any())
