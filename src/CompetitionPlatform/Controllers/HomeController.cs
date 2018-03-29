@@ -348,6 +348,11 @@ namespace CompetitionPlatform.Controllers
         {
             return View();
         }
+        
+        public IActionResult PageNotFound()
+        {
+            return View("~/Views/Shared/404.cshtml");
+        }
 
         [HttpGet]
         public IActionResult LogOut()

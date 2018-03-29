@@ -12,6 +12,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="robots.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="robots.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="wwwroot\**\*;Views\**\*;Areas\**\Views;Dockerfile">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </None>
