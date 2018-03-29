@@ -2,10 +2,10 @@
 @model CompetitionPlatform.Models.ProjectViewModels.ResultsPartialViewModel
 
 @{
-    var containsFirstPlaceWinner = true;
-    if (Model.Winners != null)
+    var containsWinner = false;
+    if (Model.Winners != null && Model.Winners.Any())
     {
-        containsFirstPlaceWinner = Model.Winners.Any(x => x.Place == 1);
+        containsWinner = true;
     }
 }
 
@@ -15,7 +15,7 @@
     var placeCounter = 0;
     var secondPlaceWinnerStyle = "col-xs-6 col-sm-3";
     <div>
-        @if (!containsFirstPlaceWinner)
+        @if (!containsWinner)
         {
             <p>
                 For this project, none of the submitted results matched our experts expectations, so we decided not to award the first prize.
