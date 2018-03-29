@@ -82,8 +82,8 @@ namespace CompetitionPlatform.Controllers
             _projectExpertsRepository = projectExpertsRepository;
             _streamRepository = streamRepository;
             _personalDataService = personalDataService;
-            _streamsIdRepository = streamsIdRepository;
             _emailSender = emailSender;
+            _streamsIdRepository = streamsIdRepository;
         }
 
 
