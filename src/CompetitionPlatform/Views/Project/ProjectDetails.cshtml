@@ -466,17 +466,20 @@
                             }
                         </a>
                     </li>
-                    <li role="presentation" class="@winnersTabActive">
-                        <a href="#Winners" aria-controls="results" role="tab" data-toggle="tab">
-                            Winners
-                            @if (!string.IsNullOrEmpty(winnersCount))
-                            {
-                                <sup>
-                                    @winnersCount
-                                </sup>
-                            }
-                        </a>
-                    </li>
+                    @if (Model.Status == Status.Voting || Model.Status == Status.Archive)
+                    {
+                        <li role="presentation" class="@winnersTabActive">
+                            <a href="#Winners" aria-controls="results" role="tab" data-toggle="tab">
+                                Winners
+                                @if (!string.IsNullOrEmpty(winnersCount))
+                                {
+                                    <sup>
+                                        @winnersCount
+                                    </sup>
+                                }
+                            </a>
+                        </li>
+                    }
                 </ul>
 
                 <div class="tab-content">
