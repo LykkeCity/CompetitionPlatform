@@ -28,7 +28,7 @@ namespace CompetitionPlatform.Models
 
         public static async void GenerateStreamsId(IStreamsIdRepository streamsIdRepository, string clientId)
         {
-            var streamsId = await streamsIdRepository.GetAsync(clientId);
+            var streamsId = await streamsIdRepository.GetOrCreateAsync(clientId);
 
             if (streamsId == null)
             {

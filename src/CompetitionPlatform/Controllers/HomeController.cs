@@ -453,7 +453,7 @@ namespace CompetitionPlatform.Controllers
 
                     if (winner.Budget != null)
                     {
-                        var winnerStreamsId = await _streamsIdRepository.GetAsync(winner.WinnerIdentifier);
+                        var winnerStreamsId = await _streamsIdRepository.GetOrCreateAsync(winner.WinnerIdentifier);
 
                         latestWinners.Add(
                             new LatestWinner

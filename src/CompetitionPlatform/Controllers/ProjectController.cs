@@ -223,8 +223,7 @@ namespace CompetitionPlatform.Controllers
                 {
                     await SendProjectCreateNotification(projectViewModel);
                 }
-
-                // TODO: Not sure what emailsQueue is, probably needs a comment
+                
                 if (_emailsQueue != null)
                 {
                     var message = NotificationMessageHelper.ProjectCreatedMessage(user.Email, user.GetFullName(),
@@ -637,7 +636,7 @@ namespace CompetitionPlatform.Controllers
                 }
 
                 projectDetailsAvatarIds.Add(comment.UserIdentifier);
-                var commenterStreamsId = await _streamsIdRepository.GetAsync(comment.UserIdentifier);
+                var commenterStreamsId = await _streamsIdRepository.GetOrCreateAsync(comment.UserIdentifier);
                 comment.StreamsId = commenterStreamsId.StreamsId;
 
                 if (!string.IsNullOrEmpty(comment.Comment))
@@ -702,7 +701,7 @@ namespace CompetitionPlatform.Controllers
                 }
 
                 projectDetailsAvatarIds.Add(part.UserIdentifier);
-                var participantStreamsId = await _streamsIdRepository.GetAsync(part.UserIdentifier);
+                var participantStreamsId = await _streamsIdRepository.GetOrCreateAsync(part.UserIdentifier);
                 part.StreamsId = participantStreamsId.StreamsId;
             }
 
@@ -719,7 +718,7 @@ namespace CompetitionPlatform.Controllers
                     resultVotes.FirstOrDefault(x => x.ParticipantId == result.ParticipantId && x.VoterUserId == user.Email);
 
                 userVotedForResults.Add(result.ParticipantId, match != null && user.Email != null);
-                var resultStreamsId = await _streamsIdRepository.GetAsync(result.ParticipantIdentifier);
+                var resultStreamsId = await _streamsIdRepository.GetOrCreateAsync(result.ParticipantIdentifier);
                 result.StreamsId = resultStreamsId.StreamsId;
             }
 
@@ -785,7 +784,7 @@ namespace CompetitionPlatform.Controllers
             resultsPartial.Avatars = avatarsDictionary;
 
             experts = experts.OrderBy(x => x.Priority == 0).ThenBy(x => x.Priority);
-            var authorStreamsId = await _streamsIdRepository.GetAsync(project.AuthorIdentifier);
+            var authorStreamsId = await _streamsIdRepository.GetOrCreateAsync(project.AuthorIdentifier);
 
             var projectViewModel = new ProjectViewModel
             {
@@ -919,7 +918,7 @@ namespace CompetitionPlatform.Controllers
                 {
                     UserModel.GenerateStreamsId(_streamsIdRepository, winner.WinnerIdentifier);
 
-                    var winnerStreamsId = await _streamsIdRepository.GetAsync(winner.WinnerIdentifier);
+                    var winnerStreamsId = await _streamsIdRepository.GetOrCreateAsync(winner.WinnerIdentifier);
                     winner.StreamsId = winnerStreamsId.StreamsId;
                 }
             }
