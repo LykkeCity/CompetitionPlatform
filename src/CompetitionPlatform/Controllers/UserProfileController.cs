@@ -176,7 +176,7 @@ namespace CompetitionPlatform.Controllers
 
             }
 
-            return await GetCompactProjectsList(createdProjects);
+            return await GetCompactProjectsList(createdProjects.OrderBy(x => x.Status == Status.Initiative));
         }
 
         private async Task<double> GetUserWinnigsSum(string email)
@@ -224,7 +224,7 @@ namespace CompetitionPlatform.Controllers
                 }
             }
 
-            return userComments;
+            return userComments.OrderByDescending(x => x.LastModified).ToList();
         }
 
         private async Task<List<ProjectCompactViewModel>> GetCompactProjectsList(IEnumerable<IProjectData> projects)
