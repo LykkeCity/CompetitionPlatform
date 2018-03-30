@@ -137,11 +137,16 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
             return project == null ? null : ChangeNullWithDefault(project);
         }
 
-        public async Task<IEnumerable<IProjectData>> GetProjectsAsync()
+        public async Task<IEnumerable<IProjectData>> GetProjectsAsync(Func<ProjectEntity, bool> where = null)
         {
             var partitionKey = ProjectEntity.GeneratePartitionKey();
 
             var projects = await _projectsTableStorage.GetDataAsync(partitionKey);
+
+            if (where != null)
+            {
+                projects = projects.Where(where);
+            }
 
             return projects.ToList().Select(c =>
             {
