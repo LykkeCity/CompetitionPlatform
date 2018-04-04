@@ -118,5 +118,7 @@ namespace CompetitionPlatform.Models.ProjectViewModels
 
         public string AuthorAvatarUrl { get; set; }
         public string AuthorStreamsId { get; set; }
+
+        public List<WinnerViewModel> Winners { get; set; }
     }
 }

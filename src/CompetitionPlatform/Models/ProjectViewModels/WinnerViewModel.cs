@@ -1,4 +1,5 @@
-﻿using CompetitionPlatform.Data.AzureRepositories.Users;
+﻿using CompetitionPlatform.Data.AzureRepositories.Result;
+using CompetitionPlatform.Data.AzureRepositories.Users;
 
 namespace CompetitionPlatform.Models.ProjectViewModels
 {
@@ -15,5 +16,40 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public double? Budget { get; set; }
         public double WinningScore { get; set; }
         public string StreamsId { get; set; }
+
+        public static WinnerViewModel Create(IProjectResultData result,
+            int winningPlace, double score, double? budget)
+        {
+            return new WinnerViewModel
+            {
+                ProjectId = result.ProjectId,
+                WinnerId = result.ParticipantId,
+                WinnerIdentifier = result.ParticipantIdentifier,
+                FullName = result.ParticipantFullName,
+                Result = result.Link,
+                Votes = result.Votes,
+                Score = result.Score,
+                Place = winningPlace,
+                Budget = budget,
+                WinningScore = score
+            };
+        }
+
+        public static WinnerViewModel Create(IWinnerData winner)
+        {
+            return new WinnerViewModel
+            {
+                ProjectId = winner.ProjectId,
+                WinnerId = winner.WinnerId,
+                WinnerIdentifier = winner.WinnerIdentifier,
+                FullName = winner.FullName,
+                Result = winner.Result,
+                Votes = winner.Votes,
+                Score = winner.Score,
+                Place = winner.Place,
+                Budget = winner.Budget,
+                WinningScore = winner.WinningScore
+            };
+        }
     }
 }
