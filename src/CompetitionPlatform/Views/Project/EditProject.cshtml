@@ -70,10 +70,10 @@
                     <div class="voting_group__value">@numberOfVotes</div>
 
                     @await Html.PartialAsync("VotingBarsPartial", new ProjectVoteViewModel
-               {
-                   VotesFor = Model.VotesFor,
-                   VotesAgainst = Model.VotesAgainst
-               })
+                    {
+                        VotesFor = Model.VotesFor,
+                        VotesAgainst = Model.VotesAgainst
+                    })
                 </div>
             </div>
         }
@@ -371,6 +371,44 @@
                     <span asp-validation-for="PrizeDescription" class="text-danger" />
                 </div>
 
+                <h4 class="form_title">WINNERS</h4>
+                <p class="text-muted">You can leave this empty to set winners automatically.</p>
+
+                <div class="form-group add_winner">
+                    @for (int i = 0; i < (Model.Winners?.Count??0) + 1; i++)
+                    {
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label class="control-label">Winner</label>
+                                <select asp-for="@Model.Winners[i].WinnerId" class="form-control">
+                                    <option></option>
+                                    @foreach (var part in Model.ParticipantsPartial.Participants)
+                                    {
+                                        var selected = "";
+                                        if ((Model.Winners?.Count ?? 0) > 0 && Model.Winners[i].WinnerId == part.UserId)
+                                        {
+                                            selected = "selected";
+                                        }
+
+                                        <option value="@part.UserId" @selected>@part.UserId</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-sm-5">
+                                <label class="control-label">Winning Place</label>
+                                <input asp-for="@Model.Winners[i].Place" class="form-control" />
+                            </div>
+                            <div class="col-sm-1">
+                                <label class="control-label"></label>
+                                <button type="button" class="btn btn--icon btn_delete_winner" style="margin-top:40px;"> 
+                                    <i class="icon icon--trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <button type="button" class="btn btn_add_winner"><i class="icon icon--add"></i></button>
+
                 <h4 class="form_title">PROGRAMMING RESOURCES</h4>
                 <p class="text-muted">You can reference a repository that will help with the development of the project.</p>
 
@@ -392,7 +430,7 @@
                 </div>
 
                 @if (Model.IsAdmin)
-            {
+                {
                     <h4 class="form_title">PROJECT AUTHOR</h4>
 
                     <div class="row">
@@ -502,4 +540,19 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        var winnerCount = @(Model.Winners?.Count ?? 0);
+        $(".btn_add_winner").on("click", function () {
+            var template = $(".add_winner .row:first").prop("outerHTML");
+            $(template.replace(/0/g, winnerCount)).appendTo(".add_winner");
+            winnerCount++;
+        });
+
+        $(".add_winner").on("click", ".btn_delete_winner", function () {
+            if ($(".add_winner .row").length > 1) {
+                $(this).closest(".add_winner .row").remove();
+                winnerCount--;
+            }
+        });
+    </script>
 }

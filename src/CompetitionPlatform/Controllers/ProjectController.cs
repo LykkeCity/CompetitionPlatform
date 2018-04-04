@@ -223,7 +223,7 @@ namespace CompetitionPlatform.Controllers
                 {
                     await SendProjectCreateNotification(projectViewModel);
                 }
-                
+
                 if (_emailsQueue != null)
                 {
                     var message = NotificationMessageHelper.ProjectCreatedMessage(user.Email, user.GetFullName(),
@@ -465,7 +465,7 @@ namespace CompetitionPlatform.Controllers
             {
                 if (!project.SkipVoting)
                 {
-                    await _winnersService.SaveWinners(projectViewModel.Id);
+                    await _winnersService.SaveWinners(projectViewModel.Id, projectViewModel.Winners);
                 }
 
                 await AddArchiveMailToQueue(project);
@@ -862,7 +862,11 @@ namespace CompetitionPlatform.Controllers
             }
 
             if (projectViewModel.Status == Status.Archive)
+            {
                 projectViewModel = await PopulateResultsViewModel(projectViewModel);
+                var winners = await _winnersRepository.GetWinnersAsync(project.Id);
+                projectViewModel.Winners = winners.Select(x => WinnerViewModel.Create(x)).ToList();
+            }
 
             projectViewModel.ProjectUrl = project.Id;
 

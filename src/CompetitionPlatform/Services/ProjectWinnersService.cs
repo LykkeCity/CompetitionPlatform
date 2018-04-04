@@ -30,7 +30,7 @@ namespace CompetitionPlatform.Services
             _resultVoteRepository = resultVoteRepository;
         }
 
-        public async Task SaveWinners(string projectId)
+        public async Task SaveWinners(string projectId, IEnumerable<WinnerViewModel> winners = null)
         {
             var project = await _projectRepository.GetAsync(projectId);
 
@@ -83,51 +83,41 @@ namespace CompetitionPlatform.Services
                 resultScores.Add(result.ParticipantId, resultScore);
             }
 
+            if (winners != null && winners.Any())
+            {
+                foreach (var winner in winners)
+                {
+                    var winnerResult = projectResultDatas.FirstOrDefault(x => x.ParticipantId == winner.WinnerId);
+                    var winnerScore = resultScores.First(x => x.Key == winner.WinnerId);
+                    var budget = winner.Place == 1 ? project.BudgetFirstPlace : project.BudgetSecondPlace;
+
+                    var winnerModel = WinnerViewModel.Create(winnerResult, winner.Place, winnerScore.Value, budget);
+
+                    if (await WinnerIsEligible(winnerResult.ProjectId, winnerModel.WinnerId))
+                        await _winnersRepository.SaveAsync(winnerModel);
+                }
+
+                return;
+            }
+
             var firstPlaceWinner = resultScores.OrderByDescending(pair => pair.Value).Take(1).FirstOrDefault();
-
-            var secondPlaceWinners = resultScores.OrderByDescending(pair => pair.Value).Skip(1).Take(3);
-
             var firstPlaceResult = projectResultDatas.FirstOrDefault(x => x.ParticipantId == firstPlaceWinner.Key);
 
             if (firstPlaceResult != null)
             {
-                var firstWinner = new WinnerViewModel
-                {
-                    ProjectId = firstPlaceResult.ProjectId,
-                    WinnerId = firstPlaceResult.ParticipantId,
-                    WinnerIdentifier = firstPlaceResult.ParticipantIdentifier,
-                    FullName = firstPlaceResult.ParticipantFullName,
-                    Result = firstPlaceResult.Link,
-                    Votes = firstPlaceResult.Votes,
-                    Score = firstPlaceResult.Score,
-                    Place = 1,
-                    Budget = project.BudgetFirstPlace,
-                    WinningScore = firstPlaceWinner.Value
-                };
+                var firstWinner = WinnerViewModel.Create(firstPlaceResult, 1, firstPlaceWinner.Value, project.BudgetFirstPlace);
 
                 if (await WinnerIsEligible(firstWinner.ProjectId, firstWinner.WinnerId))
                     await _winnersRepository.SaveAsync(firstWinner);
             }
 
+            var secondPlaceWinners = resultScores.OrderByDescending(pair => pair.Value).Skip(1).Take(3);
             if (project.BudgetSecondPlace != null)
             {
                 foreach (var winner in secondPlaceWinners)
                 {
                     var secondPlaceResult = projectResultDatas.FirstOrDefault(x => x.ParticipantId == winner.Key);
-
-                    var secondWinner = new WinnerViewModel
-                    {
-                        ProjectId = secondPlaceResult.ProjectId,
-                        WinnerId = secondPlaceResult.ParticipantId,
-                        WinnerIdentifier = secondPlaceResult.ParticipantIdentifier,
-                        FullName = secondPlaceResult.ParticipantFullName,
-                        Result = secondPlaceResult.Link,
-                        Votes = secondPlaceResult.Votes,
-                        Score = secondPlaceResult.Score,
-                        Place = 2,
-                        Budget = project.BudgetSecondPlace,
-                        WinningScore = winner.Value
-                    };
+                    var secondWinner = WinnerViewModel.Create(secondPlaceResult, 2, winner.Value, project.BudgetSecondPlace);
 
                     if (await WinnerIsEligible(secondWinner.ProjectId, secondWinner.WinnerId))
                         await _winnersRepository.SaveAsync(secondWinner);
