@@ -199,10 +199,11 @@
 
                 @if (Model.IsAdmin)
                 {
-                    {
-                        var draft = Model.Status == Status.Draft;
-                        var skipVoting = Model.SkipVoting;
-                    }
+                    
+                    var draft = Model.Status == Status.Draft;
+                    var skipVoting = Model.SkipVoting;
+                    var isArchive = Model.Status == Status.Archive;
+                    
                     <div class="row">
                         <div class="col-sm-6">
                             <label class="control-label">Status</label>
@@ -233,6 +234,45 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="form-group add_winner" style="@(isArchive ? "" : "display: none;")">
+                        @for (int i = 0; i < (Model.Winners?.Count ?? 1); i++)
+                        {
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <label class="control-label">Winner</label>
+                                    <select asp-for="@Model.Winners[i].WinnerId" class="form-control">
+                                        <option></option>
+                                        @foreach (var part in Model.ParticipantsPartial.Participants.Where(x => x.Result))
+                                        {
+                                            var selected = "";
+                                            if ((Model.Winners?.Count ?? 0) > 0 && Model.Winners[i].WinnerId == part.UserId)
+                                            {
+                                                selected = "selected";
+                                            }
+
+                                            <option value="@part.UserId" @selected>@part.UserId</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-sm-5">
+                                    <label class="control-label">Winning Place</label>
+                                    <input asp-for="@Model.Winners[i].Place" class="form-control" />
+                                </div>
+                                <div class="col-sm-1">
+                                    <label class="control-label"></label>
+                                    <button type="button" class="btn btn--icon btn_delete_winner" style="margin-top:40px;">
+                                        <i class="icon icon--trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        }
+                        <button type="button" class="btn btn_add_winner" 
+                                style="width: 24px;height:24px;padding: 0; margin-top: 10px;">
+                            <i class="icon icon--add" style="margin:0;"></i>
+                        </button>
+                    </div>
+
                 }
                 else if (Model.IsAuthor && (Model.Status == Status.Draft || Model.Status == Status.Initiative))
                 {
@@ -371,44 +411,6 @@
                     <span asp-validation-for="PrizeDescription" class="text-danger" />
                 </div>
 
-                <h4 class="form_title">WINNERS</h4>
-                <p class="text-muted">You can leave this empty to set winners automatically.</p>
-
-                <div class="form-group add_winner">
-                    @for (int i = 0; i < (Model.Winners?.Count??1); i++)
-                    {
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <label class="control-label">Winner</label>
-                                <select asp-for="@Model.Winners[i].WinnerId" class="form-control">
-                                    <option></option>
-                                    @foreach (var part in Model.ParticipantsPartial.Participants)
-                                    {
-                                        var selected = "";
-                                        if ((Model.Winners?.Count ?? 0) > 0 && Model.Winners[i].WinnerId == part.UserId)
-                                        {
-                                            selected = "selected";
-                                        }
-
-                                        <option value="@part.UserId" @selected>@part.UserId</option>
-                                    }
-                                </select>
-                            </div>
-                            <div class="col-sm-5">
-                                <label class="control-label">Winning Place</label>
-                                <input asp-for="@Model.Winners[i].Place" class="form-control" />
-                            </div>
-                            <div class="col-sm-1">
-                                <label class="control-label"></label>
-                                <button type="button" class="btn btn--icon btn_delete_winner" style="margin-top:40px;"> 
-                                    <i class="icon icon--trash"></i>
-                                </button>
-                            </div>
-                        </div>
-                    }
-                </div>
-                <button type="button" class="btn btn_add_winner"><i class="icon icon--add"></i></button>
-
                 <h4 class="form_title">PROGRAMMING RESOURCES</h4>
                 <p class="text-muted">You can reference a repository that will help with the development of the project.</p>
 
@@ -542,17 +544,36 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
         var winnerCount = @(Model.Winners?.Count ?? 0);
+
+        $("#Status").on("change", function () {
+            var status = $(this).val();
+            if (status == "@Status.Archive.ToString()") {
+                $(".add_winner").show();
+            } else { 
+                $(".add_winner").hide();
+            }
+        });
+
         $(".btn_add_winner").on("click", function () {
             var template = $(".add_winner .row:first").prop("outerHTML");
-            $(template.replace(/0/g, winnerCount)).appendTo(".add_winner");
+            $(template.replace(/0/g, winnerCount)).insertAfter(".add_winner .row:last");
+            clearForm($(".add_winner .row:last"));
             winnerCount++;
         });
 
         $(".add_winner").on("click", ".btn_delete_winner", function () {
+            var parent = $(this).closest(".add_winner .row");
             if ($(".add_winner .row").length > 1) {
-                $(this).closest(".add_winner .row").remove();
+                parent.remove();
                 winnerCount--;
+            } else { 
+                clearForm(parent);
             }
         });
+
+        function clearForm(form) { 
+            form.find("select").val("");
+            form.find("input").val("");
+        }
     </script>
 }
