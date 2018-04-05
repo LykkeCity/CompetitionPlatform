@@ -93,8 +93,8 @@ namespace CompetitionPlatform.Services
 
                     var winnerModel = WinnerViewModel.Create(winnerResult, winner.Place, winnerScore.Value, budget);
 
-                    if (await WinnerIsEligible(winnerResult.ProjectId, winnerModel.WinnerId))
-                        await _winnersRepository.SaveAsync(winnerModel);
+                    //if (await WinnerIsEligible(winnerResult.ProjectId, winnerModel.WinnerId))
+                    await _winnersRepository.SaveAsync(winnerModel);
                 }
 
                 return;
