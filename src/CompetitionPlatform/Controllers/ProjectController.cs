@@ -461,11 +461,15 @@ namespace CompetitionPlatform.Controllers
                 await AddVotingMailToQueue(project);
             }
 
-            if (project.Status != Status.Archive && projectViewModel.Status == Status.Archive)
+            if (projectViewModel.Status == Status.Archive) //project.Status != Status.Archive && 
             {
                 if (!project.SkipVoting)
                 {
                     await _winnersService.SaveWinners(projectViewModel.Id, projectViewModel.Winners);
+                }
+                else
+                {
+                    await _winnersService.SaveCustomWinners(projectViewModel.Id, projectViewModel.Winners);
                 }
 
                 await AddArchiveMailToQueue(project);
