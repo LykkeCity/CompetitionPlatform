@@ -575,11 +575,10 @@
 
         $(".add_winner").on("click", ".btn_delete_winner", function () {
             var parent = $(this).closest(".add_winner .row");
+            clearForm(parent);
             if ($(".add_winner .row").length > 1) {
-                parent.remove();
-                winnerCount--;
-            } else {
-                clearForm(parent);
+                parent.css("display", "none");
+                //winnerCount--;
             }
         });
 

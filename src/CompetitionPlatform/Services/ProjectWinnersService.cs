@@ -42,10 +42,10 @@ namespace CompetitionPlatform.Services
 
             var resultScores = CalculateScores(projectResultDatas, projectResultVoteDatas);
 
-            if (winners != null && winners.Any())
+            if (winners != null && winners.Any(x => !string.IsNullOrEmpty(x.WinnerId)))
             {
                 //await SaveCustomWinners(projectId, winners);
-                foreach (var winner in winners)
+                foreach (var winner in winners.Where(x => !string.IsNullOrEmpty(x.WinnerId)))
                 {
                     var winnerResult = projectResultDatas.FirstOrDefault(x => x.ParticipantId == winner.WinnerId);
                     var winnerScore = resultScores.First(x => x.Key == winner.WinnerId);
