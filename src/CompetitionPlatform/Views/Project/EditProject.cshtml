@@ -257,10 +257,9 @@
                                         <option></option>
                                         @foreach (var part in Model.ParticipantsPartial.Participants.Where(x => x.Result))
                                         {
-                                            var selected = (winnersCount > i && Model.Winners[i].WinnerId == part.UserId) 
-                                                ? "selected" : "";
-
-                                            <option value="@part.UserId" @selected>@part.UserId</option>
+                                            var selected = (winnersCount > i && Model.Winners[i].WinnerId == part.UserId);
+                                                
+                                            <option value="@part.UserId" selected="@selected">@part.UserId</option>
                                         }
                                     </select>
                                 </div>
