@@ -10,6 +10,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Expert
         string ProjectId { get; set; }
         string UserId { get; set; }
         string UserIdentifier { get; set; }
+        string StreamsId { get; set; }
         string FullName { get; set; }
         string Description { get; set; }
         int Priority { get; set; }
