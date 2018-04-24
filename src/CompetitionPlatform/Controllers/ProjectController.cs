@@ -51,6 +51,7 @@ namespace CompetitionPlatform.Controllers
         private readonly IPersonalDataService _personalDataService;
         private readonly Lykke.Messages.Email.IEmailSender _emailSender;
         private readonly IStreamsIdRepository _streamsIdRepository;
+        private readonly IExpertsService _expertsService;
 
         public ProjectController(IProjectRepository projectRepository, IProjectCommentsRepository commentsRepository,
             IProjectFileRepository fileRepository, IProjectFileInfoRepository fileInfoRepository,
@@ -62,7 +63,7 @@ namespace CompetitionPlatform.Controllers
             ILog log, IProjectExpertsRepository projectExpertsRepository,
             IStreamRepository streamRepository, IPersonalDataService personalDataService,
             Lykke.Messages.Email.IEmailSender emailSender,
-            IStreamsIdRepository streamsIdRepository)
+            IStreamsIdRepository streamsIdRepository, IExpertsService expertsService)
         {
             _projectRepository = projectRepository;
             _commentsRepository = commentsRepository;
@@ -84,6 +85,7 @@ namespace CompetitionPlatform.Controllers
             _personalDataService = personalDataService;
             _emailSender = emailSender;
             _streamsIdRepository = streamsIdRepository;
+            _expertsService = expertsService;
         }
 
 
@@ -475,6 +477,8 @@ namespace CompetitionPlatform.Controllers
                 await AddArchiveMailToQueue(project);
             }
 
+            await _expertsService.SaveExperts(projectViewModel.Id, projectViewModel.Experts);
+
             await SaveProjectFile(projectViewModel.File, projectId);
 
             return RedirectToAction("ProjectDetails", "Project", new { id = projectViewModel.Id });
@@ -764,9 +768,10 @@ namespace CompetitionPlatform.Controllers
                 SubmissionsDeadline = project.ImplementationDeadline
             };
 
-            var experts = await _projectExpertsRepository.GetProjectExpertsAsync(id);
+            var allExperts = await _projectExpertsRepository.GetAllUniqueAsync();
+            var projectExperts = await _projectExpertsRepository.GetProjectExpertsAsync(id);
 
-            foreach (var expert in experts)
+            foreach (var expert in projectExperts)
             {
                 if (string.IsNullOrEmpty(expert.UserIdentifier) && !string.IsNullOrEmpty(expert.UserId))
                 {
@@ -786,7 +791,7 @@ namespace CompetitionPlatform.Controllers
             commentsPartial.Avatars = avatarsDictionary;
             resultsPartial.Avatars = avatarsDictionary;
 
-            experts = experts.OrderBy(x => x.Priority == 0).ThenBy(x => x.Priority);
+            projectExperts = projectExperts.OrderBy(x => x.Priority == 0).ThenBy(x => x.Priority);
             var authorStreamsId = await _streamsIdRepository.GetOrCreateAsync(project.AuthorIdentifier);
 
             var projectViewModel = new ProjectViewModel
@@ -823,14 +828,15 @@ namespace CompetitionPlatform.Controllers
                 ProgrammingResourceLink = project.ProgrammingResourceLink,
                 SkipVoting = project.SkipVoting,
                 SkipRegistration = project.SkipRegistration,
-                ProjectExperts = !experts.Any() ? null : experts,
+                ProjectExperts = !projectExperts.Any() ? null : projectExperts,
                 PrizeDescription = project.PrizeDescription,
                 StreamId = project.StreamId,
                 AllStreamProjects = await GetStreamProjects(),
                 CompactStreams = await GetCompactStreams(),
                 NameTag = project.NameTag,
                 AuthorAvatarUrl = avatarsDictionary[project.AuthorIdentifier],
-                AuthorStreamsId = authorStreamsId.StreamsId
+                AuthorStreamsId = authorStreamsId.StreamsId,
+                Experts = allExperts.Select(ExpertViewModel.Create).ToList()
             };
 
             if (!string.IsNullOrEmpty(project.Tags))

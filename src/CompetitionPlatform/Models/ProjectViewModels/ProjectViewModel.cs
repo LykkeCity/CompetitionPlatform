@@ -120,5 +120,7 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public string AuthorStreamsId { get; set; }
 
         public List<WinnerViewModel> Winners { get; set; }
+        
+        public List<ExpertViewModel> Experts { get; set; }
     }
 }

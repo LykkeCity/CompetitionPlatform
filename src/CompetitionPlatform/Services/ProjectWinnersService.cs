@@ -142,13 +142,13 @@ namespace CompetitionPlatform.Services
 
             return adminVotes.Any() && authorVotes.Any();
         }
-
+        
         public async Task SaveCustomWinners(string projectId, IEnumerable<WinnerViewModel> winners)
         {
             var project = await _projectRepository.GetAsync(projectId);
             var results = await _resultRepository.GetResultsAsync(projectId);
 
-            foreach (var winner in winners)
+            foreach (var winner in winners.Where(x => !string.IsNullOrEmpty(x.WinnerId)))
             {
                 var winnerResult = results.FirstOrDefault(x => x.ParticipantId == winner.WinnerId);
 
