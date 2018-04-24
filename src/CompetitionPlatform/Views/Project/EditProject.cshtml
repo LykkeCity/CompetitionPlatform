@@ -3,8 +3,15 @@
 @model ProjectViewModel
 
 @{
-    ViewData["Title"] = "Edit Project";
+    ViewData["Title"] = "Edit Project"; 
+    var winnersCount = Model.Winners?.Count ?? 0;
 }
+
+<style>
+    .delete_winner.disabled {
+        display: none;
+    }
+</style>
 
 <section class="section section--lead section--padding">
     <div class="container">
@@ -70,10 +77,10 @@
                     <div class="voting_group__value">@numberOfVotes</div>
 
                     @await Html.PartialAsync("VotingBarsPartial", new ProjectVoteViewModel
-               {
-                   VotesFor = Model.VotesFor,
-                   VotesAgainst = Model.VotesAgainst
-               })
+                    {
+                        VotesFor = Model.VotesFor,
+                        VotesAgainst = Model.VotesAgainst
+                    })
                 </div>
             </div>
         }
@@ -199,10 +206,11 @@
 
                 @if (Model.IsAdmin)
                 {
-                    {
-                        var draft = Model.Status == Status.Draft;
-                        var skipVoting = Model.SkipVoting;
-                    }
+
+                    var draft = Model.Status == Status.Draft;
+                    var skipVoting = Model.SkipVoting;
+                    var isArchive = Model.Status == Status.Archive;
+
                     <div class="row">
                         <div class="col-sm-6">
                             <label class="control-label">Status</label>
@@ -233,6 +241,50 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="form-group add_winner" style="@(isArchive ? "" : "display: none;")">
+
+                        @for (int i = 0; i <= winnersCount; i++)
+                        {
+                            var existingWinner = i != winnersCount;
+                            var disabled = existingWinner ? "disabled" : "";
+                            var place = existingWinner ? Model.Winners[i].Place.ToString() : "";
+                            var budget = existingWinner ? Model.Winners[i].Budget.ToString() : "";
+                            <div class="row">
+                                <div class="col-sm-5">
+                                    <label class="control-label">Winner</label>
+                                    <select name="Winners[0].WinnerId" class="form-control" @disabled>
+                                        <option></option>
+                                        @foreach (var part in Model.ParticipantsPartial.Participants.Where(x => x.Result))
+                                        {
+                                            var selected = (winnersCount > i && Model.Winners[i].WinnerId == part.UserId);
+                                                
+                                            <option value="@part.UserId" selected="@selected">@part.UserId</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-sm-3">
+                                    <label class="control-label">Winning Place</label>
+                                    <input name="Winners[0].Place" class="form-control" value="@place" @disabled />
+                                </div>
+                                <div class="col-sm-3">
+                                    <label class="control-label">Custom Budget</label>
+                                    <input name="Winners[0].Budget" class="form-control" value="@budget" @disabled />
+                                </div>
+                                <div class="col-sm-1 delete_winner @disabled">
+                                    <label class="control-label"></label>
+                                    <button type="button" class="btn btn--icon btn_delete_winner" style="margin-top:40px;">
+                                        <i class="icon icon--trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        }
+                        <button type="button" class="btn btn_add_winner"
+                                style="width: 24px;height:24px;padding: 0; margin-top: 10px;">
+                            <i class="icon icon--add" style="margin:0;"></i>
+                        </button>
+                    </div>
+
                 }
                 else if (Model.IsAuthor && (Model.Status == Status.Draft || Model.Status == Status.Initiative))
                 {
@@ -269,7 +321,6 @@
                 </div>
 
                 <p class="text-muted">Title Note will appear near your project's name. Use it to provide additional information - for example if the project is a RFP (tender) or a vacancy.</p>
-
 
                 @if (Model.Status == Status.Draft)
                 {
@@ -392,7 +443,7 @@
                 </div>
 
                 @if (Model.IsAdmin)
-            {
+                {
                     <h4 class="form_title">PROJECT AUTHOR</h4>
 
                     <div class="row">
@@ -502,4 +553,38 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        var winnerCount = 1;
+
+        $("#Status").on("change", function () {
+            var status = $(this).val();
+            if (status == "@Status.Archive.ToString()") {
+                $(".add_winner").show();
+            } else {
+                $(".add_winner").hide();
+            }
+        });
+
+        $(".btn_add_winner").on("click", function () {
+            var template = $(".add_winner .row:first").prop("outerHTML");
+            $(template.replace(/0/g, winnerCount).replace(/disabled/g, ""))
+                .insertAfter(".add_winner .row:last");
+            clearForm($(".add_winner .row:last"));
+            winnerCount++;
+        });
+
+        $(".add_winner").on("click", ".btn_delete_winner", function () {
+            var parent = $(this).closest(".add_winner .row");
+            clearForm(parent);
+            if ($(".add_winner .row").length > 1) {
+                parent.css("display", "none");
+                //winnerCount--;
+            }
+        });
+
+        function clearForm(form) {
+            form.find("select").val("");
+            form.find("input").val("");
+        }
+    </script>
 }

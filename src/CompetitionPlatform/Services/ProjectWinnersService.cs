@@ -30,14 +30,66 @@ namespace CompetitionPlatform.Services
             _resultVoteRepository = resultVoteRepository;
         }
 
-        public async Task SaveWinners(string projectId)
+        public async Task SaveWinners(string projectId, IEnumerable<WinnerViewModel> winners = null)
         {
             var project = await _projectRepository.GetAsync(projectId);
 
             var results = await _resultRepository.GetResultsAsync(projectId);
+            var projectResultDatas = results as IList<IProjectResultData> ?? results.ToList();
 
             var votes = await _resultVoteRepository.GetProjectResultVotesAsync(projectId);
             var projectResultVoteDatas = votes as IList<IProjectResultVoteData> ?? votes.ToList();
+
+            var resultScores = CalculateScores(projectResultDatas, projectResultVoteDatas);
+
+            if (winners != null && winners.Any(x => !string.IsNullOrEmpty(x.WinnerId)))
+            {
+                //await SaveCustomWinners(projectId, winners);
+                foreach (var winner in winners.Where(x => !string.IsNullOrEmpty(x.WinnerId)))
+                {
+                    var winnerResult = projectResultDatas.FirstOrDefault(x => x.ParticipantId == winner.WinnerId);
+                    var winnerScore = resultScores.First(x => x.Key == winner.WinnerId);
+                    var budget = winner.Budget;
+                    if (budget == null)
+                    {
+                        budget = winner.Place == 1 ? project.BudgetFirstPlace : project.BudgetSecondPlace;
+                    }
+
+                    var winnerModel = WinnerViewModel.Create(winnerResult, winner.Place, winnerScore.Value, budget);
+                    await _winnersRepository.SaveAsync(winnerModel);
+                }
+
+                return;
+            }
+
+            var firstPlaceWinner = resultScores.OrderByDescending(pair => pair.Value).Take(1).FirstOrDefault();
+            var firstPlaceResult = projectResultDatas.FirstOrDefault(x => x.ParticipantId == firstPlaceWinner.Key);
+
+            if (firstPlaceResult != null)
+            {
+                var firstWinner = WinnerViewModel.Create(firstPlaceResult, 1, firstPlaceWinner.Value, project.BudgetFirstPlace);
+
+                if (await WinnerIsEligible(firstWinner.ProjectId, firstWinner.WinnerId))
+                    await _winnersRepository.SaveAsync(firstWinner);
+            }
+
+            var secondPlaceWinners = resultScores.OrderByDescending(pair => pair.Value).Skip(1).Take(3);
+            if (project.BudgetSecondPlace != null)
+            {
+                foreach (var winner in secondPlaceWinners)
+                {
+                    var secondPlaceResult = projectResultDatas.FirstOrDefault(x => x.ParticipantId == winner.Key);
+                    var secondWinner = WinnerViewModel.Create(secondPlaceResult, 2, winner.Value, project.BudgetSecondPlace);
+
+                    if (await WinnerIsEligible(secondWinner.ProjectId, secondWinner.WinnerId))
+                        await _winnersRepository.SaveAsync(secondWinner);
+                }
+            }
+        }
+
+        private static Dictionary<string, double> CalculateScores(IList<IProjectResultData> projectResultDatas, IList<IProjectResultVoteData> projectResultVoteDatas)
+        {
+            var resultScores = new Dictionary<string, double>();
 
             var adminVotes = projectResultVoteDatas.Where(x => x.Type == "ADMIN");
             var authorVotes = projectResultVoteDatas.Where(x => x.Type == "AUTHOR");
@@ -47,15 +99,9 @@ namespace CompetitionPlatform.Services
 
             var adminVotesCount = resultVoteDatas.Count;
             var voteDatas = authorVotes as IList<IProjectResultVoteData> ?? authorVotes.ToList();
-
             var authorVotesCount = voteDatas.Count;
 
             var userVotes = totalVotesCount - adminVotesCount - authorVotesCount;
-
-            var resultScores = new Dictionary<string, double>();
-
-            var projectResultDatas = results as IList<IProjectResultData> ?? results.ToList();
-
             foreach (var result in projectResultDatas)
             {
                 double resultScore = 0;
@@ -83,56 +129,7 @@ namespace CompetitionPlatform.Services
                 resultScores.Add(result.ParticipantId, resultScore);
             }
 
-            var firstPlaceWinner = resultScores.OrderByDescending(pair => pair.Value).Take(1).FirstOrDefault();
-
-            var secondPlaceWinners = resultScores.OrderByDescending(pair => pair.Value).Skip(1).Take(3);
-
-            var firstPlaceResult = projectResultDatas.FirstOrDefault(x => x.ParticipantId == firstPlaceWinner.Key);
-
-            if (firstPlaceResult != null)
-            {
-                var firstWinner = new WinnerViewModel
-                {
-                    ProjectId = firstPlaceResult.ProjectId,
-                    WinnerId = firstPlaceResult.ParticipantId,
-                    WinnerIdentifier = firstPlaceResult.ParticipantIdentifier,
-                    FullName = firstPlaceResult.ParticipantFullName,
-                    Result = firstPlaceResult.Link,
-                    Votes = firstPlaceResult.Votes,
-                    Score = firstPlaceResult.Score,
-                    Place = 1,
-                    Budget = project.BudgetFirstPlace,
-                    WinningScore = firstPlaceWinner.Value
-                };
-
-                if (await WinnerIsEligible(firstWinner.ProjectId, firstWinner.WinnerId))
-                    await _winnersRepository.SaveAsync(firstWinner);
-            }
-
-            if (project.BudgetSecondPlace != null)
-            {
-                foreach (var winner in secondPlaceWinners)
-                {
-                    var secondPlaceResult = projectResultDatas.FirstOrDefault(x => x.ParticipantId == winner.Key);
-
-                    var secondWinner = new WinnerViewModel
-                    {
-                        ProjectId = secondPlaceResult.ProjectId,
-                        WinnerId = secondPlaceResult.ParticipantId,
-                        WinnerIdentifier = secondPlaceResult.ParticipantIdentifier,
-                        FullName = secondPlaceResult.ParticipantFullName,
-                        Result = secondPlaceResult.Link,
-                        Votes = secondPlaceResult.Votes,
-                        Score = secondPlaceResult.Score,
-                        Place = 2,
-                        Budget = project.BudgetSecondPlace,
-                        WinningScore = winner.Value
-                    };
-
-                    if (await WinnerIsEligible(secondWinner.ProjectId, secondWinner.WinnerId))
-                        await _winnersRepository.SaveAsync(secondWinner);
-                }
-            }
+            return resultScores;
         }
 
         private async Task<bool> WinnerIsEligible(string projectId, string participantId)
@@ -144,6 +141,26 @@ namespace CompetitionPlatform.Services
             var authorVotes = projectResultVoteDatas.Where(x => x.Type == "AUTHOR" && x.ParticipantId == participantId);
 
             return adminVotes.Any() && authorVotes.Any();
+        }
+
+        public async Task SaveCustomWinners(string projectId, IEnumerable<WinnerViewModel> winners)
+        {
+            var project = await _projectRepository.GetAsync(projectId);
+            var results = await _resultRepository.GetResultsAsync(projectId);
+
+            foreach (var winner in winners)
+            {
+                var winnerResult = results.FirstOrDefault(x => x.ParticipantId == winner.WinnerId);
+
+                var budget = winner.Budget;
+                if (budget == null)
+                {
+                    budget = winner.Place == 1 ? project.BudgetFirstPlace : project.BudgetSecondPlace;
+                }
+
+                var winnerModel = WinnerViewModel.Create(winnerResult, winner.Place, 0, budget);
+                await _winnersRepository.SaveAsync(winnerModel);
+            }
         }
     }
 }
