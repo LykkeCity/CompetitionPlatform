@@ -136,6 +136,7 @@ namespace CompetitionPlatform.Modules
             builder.RegisterType<ProjectFileRepository>().As<IProjectFileRepository>();
             builder.RegisterType<BlogPictureRepository>().As<IBlogPictureRepository>();
             builder.RegisterType<ProjectWinnersService>().As<IProjectWinnersService>();
+            builder.RegisterType<ExpertsService>().As<IExpertsService>();
             builder.RegisterType<BlogCategoriesRepository>().As<IBlogCategoriesRepository>();
         }
     }
