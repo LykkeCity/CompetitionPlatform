@@ -6,6 +6,7 @@ using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Common;
+using CompetitionPlatform.Data.AzureRepositories.Expert;
 using CompetitionPlatform.Data.AzureRepositories.Project;
 using CompetitionPlatform.Data.AzureRepositories.Result;
 using CompetitionPlatform.Data.AzureRepositories.Settings;
@@ -35,12 +36,14 @@ namespace CompetitionPlatform.Controllers
         private readonly IProjectFollowRepository _projectFollowRepository;
         private readonly IUserRolesRepository _userRolesRepository;
         private readonly IStreamsIdRepository _streamsIdRepository;
+        private readonly IProjectExpertsRepository _expertsRepository;
 
-        public UserProfileController(BaseSettings settings, IProjectRepository projectRepository, 
-            IProjectCommentsRepository commentsRepository, IProjectParticipantsRepository participantsRepository, 
-            IProjectResultRepository resultsRepository, IProjectWinnersRepository winnersRepository, 
+        public UserProfileController(BaseSettings settings, IProjectRepository projectRepository,
+            IProjectCommentsRepository commentsRepository, IProjectParticipantsRepository participantsRepository,
+            IProjectResultRepository resultsRepository, IProjectWinnersRepository winnersRepository,
             IPersonalDataService personalDataService, IProjectFollowRepository projectFollowRepository,
-            IUserRolesRepository userRolesRepository, IStreamsIdRepository streamsIdRepository)
+            IUserRolesRepository userRolesRepository, IStreamsIdRepository streamsIdRepository,
+            IProjectExpertsRepository expertsRepository)
         {
             _settings = settings;
             _projectRepository = projectRepository;
@@ -52,6 +55,7 @@ namespace CompetitionPlatform.Controllers
             _projectFollowRepository = projectFollowRepository;
             _userRolesRepository = userRolesRepository;
             _streamsIdRepository = streamsIdRepository;
+            _expertsRepository = expertsRepository;
         }
 
         private async Task<string> GetUserEmailById(string id)
@@ -83,7 +87,7 @@ namespace CompetitionPlatform.Controllers
             var streamsIds = await _streamsIdRepository.GetStreamsIdsAsync();
             var userStreamsId = streamsIds.FirstOrDefault(x => x.StreamsId == id);
 
-            if(userStreamsId == null) return View("ProfileNotFound");
+            if (userStreamsId == null) return View("ProfileNotFound");
 
             var clientId = userStreamsId.ClientId;
 
@@ -114,7 +118,8 @@ namespace CompetitionPlatform.Controllers
                 WonProjects = await GetWonProjects(email),
                 Comments = commentsViewModel,
                 AuthLink = _settings.LykkeStreams.Authentication.Authority,
-                IsLykkeMember = await IsUserLykkeMember(email)
+                IsLykkeMember = await IsUserLykkeMember(email),
+                ExpertedProjects = await GetExpertedProjects(email)
             };
 
             return View("~/Views/UserProfile/UserProfile.cshtml", userProfileViewModel);
@@ -148,21 +153,16 @@ namespace CompetitionPlatform.Controllers
         {
             var wonProjects = new List<IProjectData>();
 
-            var projects = await _projectRepository.GetProjectsAsync();
+            var projects = await _projectRepository.GetProjectsAsync(x =>
+                                x.ProjectStatus != Status.Draft.ToString());
 
             foreach (var project in projects)
             {
-                if (project.ProjectStatus != Status.Draft.ToString())
-                {
-                    var winners = await _winnersRepository.GetWinnersAsync(project.Id);
+                var winners = await _winnersRepository.GetWinnersAsync(project.Id);
 
-                    foreach (var winner in winners)
-                    {
-                        if (winner.WinnerId == userId)
-                        {
-                            wonProjects.Add(project);
-                        }
-                    }
+                if (winners.Any(x => x.WinnerId == userId))
+                {
+                    wonProjects.Add(project);
                 }
             }
 
@@ -171,21 +171,9 @@ namespace CompetitionPlatform.Controllers
 
         private async Task<List<ProjectCompactViewModel>> GetCreatedProjects(string userId)
         {
-            var createdProjects = new List<IProjectData>();
-
-            var projects = await _projectRepository.GetProjectsAsync();
-
-            foreach (var project in projects)
-            {
-                if (project.ProjectStatus != Status.Draft.ToString())
-                {
-                    if (project.AuthorId == userId)
-                    {
-                        createdProjects.Add(project);
-                    }
-                }
-
-            }
+            var createdProjects = await _projectRepository.GetProjectsAsync(x =>
+                    x.ProjectStatus != Status.Draft.ToString() &&
+                    x.AuthorId == userId);
 
             return await GetCompactProjectsList(createdProjects.OrderBy(x => x.Status == Status.Initiative));
         }
@@ -273,7 +261,7 @@ namespace CompetitionPlatform.Controllers
                 }
 
                 var compactModel = new ProjectCompactViewModel
-                {           
+                {
                     CommentsCount = projectCommentsCount,
                     ParticipantsCount = participantsCount,
                     ResultsCount = resultsCount,
@@ -306,6 +294,26 @@ namespace CompetitionPlatform.Controllers
             if (domain == LykkeEmailDomains.LykkeCom || domain == LykkeEmailDomains.LykkexCom)
                 return true;
             return false;
+        }
+
+        private async Task<List<ProjectCompactViewModel>> GetExpertedProjects(string userId)
+        {
+            var expertedProjects = new List<IProjectData>();
+
+            var projects = await _projectRepository.GetProjectsAsync(x =>
+                                x.ProjectStatus != Status.Draft.ToString());
+
+            foreach (var project in projects)
+            {
+                var experts = await _expertsRepository.GetProjectExpertsAsync(project.Id);
+
+                if (experts.Any(x => x.UserId == userId))
+                {
+                    expertedProjects.Add(project);
+                }
+            }
+
+            return await GetCompactProjectsList(expertedProjects);
         }
 
         [HttpGet("~/profile")]

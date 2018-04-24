@@ -544,10 +544,10 @@
                                             <td>
                                                 <div class="user_badge user_badge--small">
                                                     <div class="user_badge__img">
-                                                        @if (!string.IsNullOrEmpty(expert.UserIdentifier))
+                                                        @if (!string.IsNullOrEmpty(expert.StreamsId))
                                                         {
                                                             var expertAvatar = Model.CommentsPartial.Avatars[expert.UserIdentifier];
-                                                            <a href="/userprofile/@expert.UserIdentifier">
+                                                            <a href="/userprofile/@expert.StreamsId">
                                                                 @if (string.IsNullOrEmpty(expertAvatar))
                                                                 {
                                                                     <img src="~/images/avatar.svg" alt="">
@@ -567,7 +567,7 @@
                                                     <div class="user_badge__info">
                                                         @if (!string.IsNullOrEmpty(expert.UserIdentifier))
                                                         {
-                                                            <a href="/userprofile/@expert.UserIdentifier">@expert.FullName</a>
+                                                            <a href="/userprofile/@expert.StreamsId">@expert.FullName</a>
                                                         }
                                                         else
                                                         {

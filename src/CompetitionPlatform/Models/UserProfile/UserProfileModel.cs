@@ -15,6 +15,7 @@ namespace CompetitionPlatform.Models.UserProfile
         public CommentsViewModel Comments { get; set; }
         public string AuthLink { get; set; }
         public bool IsLykkeMember { get; set; }
+        public List<ProjectCompactViewModel> ExpertedProjects { get; set; }
     }
 
     public class UserProfileCommentData

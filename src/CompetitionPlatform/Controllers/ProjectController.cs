@@ -782,7 +782,7 @@ namespace CompetitionPlatform.Controllers
                 if (!string.IsNullOrEmpty(expert.UserIdentifier))
                 {
                     projectDetailsAvatarIds.Add(expert.UserIdentifier);
-                    UserModel.GenerateStreamsId(_streamsIdRepository, expert.UserIdentifier);
+                    expert.StreamsId = (await _streamsIdRepository.GetOrCreateAsync(expert.UserIdentifier)).StreamsId;
                 }
             }
 

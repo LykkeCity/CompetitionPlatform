@@ -37,7 +37,7 @@ namespace CompetitionPlatform.Tests
             Project2.Setup(x => x.ProjectStatus).Returns(Models.Status.Submission.ToString());
 
             mockRepo = new Mock<IProjectRepository>();
-            mockRepo.Setup(x => x.GetProjectsAsync()).ReturnsAsync(new List<IProjectData> { Project1.Object, Project2.Object });
+            mockRepo.Setup(x => x.GetProjectsAsync(null)).ReturnsAsync(new List<IProjectData> { Project1.Object, Project2.Object });
         }
         [Fact]
         public async Task ProjectListShouldBuildList()
@@ -153,7 +153,7 @@ namespace CompetitionPlatform.Tests
             Project3.Setup(x => x.AuthorId).Returns("3");
             Project3.Setup(x => x.ProjectStatus).Returns(Models.Status.Initiative.ToString());
 
-            mockRepo.Setup(x => x.GetProjectsAsync()).ReturnsAsync(new List<IProjectData> { Project1.Object, Project2.Object, Project3.Object });
+            mockRepo.Setup(x => x.GetProjectsAsync(null)).ReturnsAsync(new List<IProjectData> { Project1.Object, Project2.Object, Project3.Object });
 
             var projectList = (await ProjectList.CreateProjectList(mockRepo.Object))
                 .FilterByCurrentProjects()
@@ -208,8 +208,8 @@ namespace CompetitionPlatform.Tests
             var Project3 = new Mock<IProjectData>();
             Project3.Setup(x => x.Id).Returns("Project3");
             
-            mockRepo.Setup(x => x.GetProjectsAsync()).ReturnsAsync(new List<IProjectData> { Project1.Object, Project2.Object });
-            mockRepoToUnion.Setup(x => x.GetProjectsAsync()).ReturnsAsync(new List<IProjectData> { Project2.Object, Project3.Object });
+            mockRepo.Setup(x => x.GetProjectsAsync(null)).ReturnsAsync(new List<IProjectData> { Project1.Object, Project2.Object });
+            mockRepoToUnion.Setup(x => x.GetProjectsAsync(null)).ReturnsAsync(new List<IProjectData> { Project2.Object, Project3.Object });
 
             var projectList = await ProjectList.CreateProjectList(mockRepo.Object);
             var projectListToUnion = await ProjectList.CreateProjectList(mockRepoToUnion.Object);

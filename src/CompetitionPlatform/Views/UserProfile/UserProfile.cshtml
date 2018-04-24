@@ -99,6 +99,10 @@
 
                         <li role="presentation" class="@activeTab"><a href="#created" aria-controls="created" role="tab" data-toggle="tab">Created <sup>@Model.CreatedProjects.Count</sup></a></li>
                         <li role="presentation"><a href="#comments" aria-controls="comments" role="tab" data-toggle="tab">Comments <sup>@Model.Comments.CommentsList.Count</sup></a></li>
+                        @if (Model.IsLykkeMember)
+                        {
+                            <li role="presentation"><a href="#experts" aria-controls="experts" role="tab" data-toggle="tab">Experts <sup>@Model.ExpertedProjects.Count</sup></a></li>
+                        }
                     </ul>
                 </div>
 
@@ -125,6 +129,11 @@
                                     @await Html.PartialAsync("ProfileCommentsListPartial", Model.Comments)
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="experts">
+                        <div class="row">
+                            @await Html.PartialAsync("ProfileProjectListPartial", Model.ExpertedProjects)
                         </div>
                     </div>
                 </div>
