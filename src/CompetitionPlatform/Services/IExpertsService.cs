@@ -1,4 +1,5 @@
-﻿using CompetitionPlatform.Models.ProjectViewModels;
+﻿using CompetitionPlatform.Data.AzureRepositories.Expert;
+using CompetitionPlatform.Models.ProjectViewModels;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

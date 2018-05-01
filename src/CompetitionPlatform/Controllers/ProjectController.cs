@@ -1114,5 +1114,33 @@ namespace CompetitionPlatform.Controllers
 
             return PartialView("EditStreamTablePartial", model);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> AddExpert(string email, string fullName, string projectId)
+        {
+            string userIdentifier;
+            try
+            {
+                userIdentifier = await ClaimsHelper.GetUserIdByEmail(_settings.LykkeStreams.Authentication.Authority,
+                        _settings.LykkeStreams.Authentication.ClientId, email);
+            }
+            catch (Exception)
+            {
+                return Json(new { Error = "User with this email does not exist!"});
+            }
+            
+            var expert = new ExpertViewModel
+            {
+                FullName = fullName,
+                UserId = email,
+                UserIdentifier = userIdentifier,
+                ProjectId = projectId,
+                Description = "Expert"
+            };
+
+            await _projectExpertsRepository.SaveAsync(expert);
+            
+            return Json(expert);
+        }
     }
 }

@@ -14,7 +14,7 @@ namespace CompetitionPlatform.Services
     public class ExpertsService : IExpertsService
     {
         private readonly IProjectExpertsRepository _expertRepository;
-        
+
         public ExpertsService(IProjectExpertsRepository expertRepository)
         {
             _expertRepository = expertRepository;
