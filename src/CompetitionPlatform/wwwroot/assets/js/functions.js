@@ -307,6 +307,10 @@ function updateMainHeight() {
   }).trigger('resize')
 }
 
+function initSelect2() {
+    $('.select2').select2();
+}
+
 $(document).ready(function() {
   initEventsOnResize();
   initEventsOnClick();
@@ -321,4 +325,5 @@ $(document).ready(function() {
   initAffix();
   initFileUpload();
   updateMainHeight();
+  initSelect2();
 });

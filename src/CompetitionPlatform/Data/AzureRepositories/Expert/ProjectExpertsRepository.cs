@@ -75,7 +75,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Expert
                 }
             }
 
-            return unique;
+            return unique.OrderBy(x => x.FullName).ToList();
         }
 
         public async Task<IProjectExpertData> GetAsync(string userId)

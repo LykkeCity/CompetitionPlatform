@@ -21,7 +21,7 @@ namespace CompetitionPlatform.Models.ProjectViewModels
                 ProjectId = data.ProjectId,
                 UserId = data.UserId,
                 UserIdentifier = data.UserIdentifier,
-                //StreamsId = data.StreamsId,
+                StreamsId = data.StreamsId,
                 FullName = data.FullName,
                 Description = data.Description,
                 Priority = data.Priority
