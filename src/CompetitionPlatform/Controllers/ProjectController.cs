@@ -1116,26 +1116,21 @@ namespace CompetitionPlatform.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddExpert(string email, string fullName, string projectId)
+        public async Task<IActionResult> AddExpert(string email, string description, string projectId)
         {
-            string userIdentifier;
-            try
-            {
-                userIdentifier = await ClaimsHelper.GetUserIdByEmail(_settings.LykkeStreams.Authentication.Authority,
-                        _settings.LykkeStreams.Authentication.ClientId, email);
-            }
-            catch (Exception)
+            var profile = await _personalDataService.FindClientsByEmail(email);
+            if (profile == null)
             {
                 return Json(new { Error = "User with this email does not exist!"});
             }
-            
+
             var expert = new ExpertViewModel
             {
-                FullName = fullName,
+                FullName = $"{profile.FullName}",
                 UserId = email,
-                UserIdentifier = userIdentifier,
+                UserIdentifier = profile.Id,
                 ProjectId = projectId,
-                Description = "Expert"
+                Description = description
             };
 
             await _projectExpertsRepository.SaveAsync(expert);

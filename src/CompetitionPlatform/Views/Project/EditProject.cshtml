@@ -614,6 +614,7 @@
             var template = $(".add_expert .form-group:visible:first").prop("outerHTML");
             $(template.replace(/\[0\]/g, "[" + expertCount + "]").replace(/disabled/g, ""))
                 .insertAfter(".add_expert .form-group:last");
+
             var newExpertGroup = $(".add_expert .form-group:last");
             clearForm(newExpertGroup);
             newExpertGroup.find(".select2-container").remove();
@@ -638,6 +639,11 @@
             e.preventDefault();
 
             var form = $("#new_expert_form");
+            form.validate();
+            if (!form.valid()) {
+                return;
+            }
+
             form.find(".text-danger").remove();
             var data = form.serialize();
             data += "&projectId=@(Model.Id)";
