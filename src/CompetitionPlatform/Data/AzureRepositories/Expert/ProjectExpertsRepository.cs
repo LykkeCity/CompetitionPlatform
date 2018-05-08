@@ -65,9 +65,10 @@ namespace CompetitionPlatform.Data.AzureRepositories.Expert
         public async Task<List<IProjectExpertData>> GetAllUniqueAsync()
         {
             var experts = await _projectExpertsTableStorage.GetDataAsync();
+            var newestExperts = experts.OrderByDescending(x => x.Timestamp).ToList();
 
             var unique = new List<IProjectExpertData>();
-            foreach (var expert in experts)
+            foreach (var expert in newestExperts)
             {
                 if (!unique.Any(x => x.UserId == expert.UserId))
                 {

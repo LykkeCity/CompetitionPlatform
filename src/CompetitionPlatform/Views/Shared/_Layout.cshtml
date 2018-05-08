@@ -359,10 +359,10 @@
                                 <form id="new_expert_form" action="@Url.Action("AddExpert", "Project")" method="post">
                                     <div class="text">Add new Expert</div>
                                     <div class="form-group">
-                                        <input name="email" class="form-control" placeholder="Email" />
+                                        <input type="email" name="email" class="form-control" placeholder="Email" required data-rule-required="true"/>
                                     </div>
                                     <div class="form-group">
-                                        <input name="fullName" class="form-control" placeholder="Full Name" />
+                                        <input name="description" class="form-control" placeholder="Description" />
                                     </div>
                                 </form>
                             </div>

@@ -27,7 +27,6 @@ namespace CompetitionPlatform.Services
                 var expert = await _expertRepository.GetAsync(expertUser.UserId);
                 expert.ProjectId = projectId;
                 expert.Priority = 0;
-                expert.Description = "Expert";
                 await _expertRepository.SaveAsync(expert);
             }
         }
