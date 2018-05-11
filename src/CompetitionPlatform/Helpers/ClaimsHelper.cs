@@ -73,23 +73,5 @@ namespace CompetitionPlatform.Helpers
 
             return claimsIdentity;
         }
-
-        public static async Task<string> GetUserIdByEmail(string authLink, string appId, string email)
-        {
-            var webRequest = (HttpWebRequest)WebRequest.Create(authLink + "/getidbyemail?email=" + email);
-            webRequest.Method = "GET";
-            webRequest.ContentType = "text/html";
-            webRequest.Headers["application_id"] = appId;
-            var webResponse = await webRequest.GetResponseAsync();
-
-            using (var receiveStream = webResponse.GetResponseStream())
-            {
-                using (var sr = new StreamReader(receiveStream))
-                {
-                    var userId = await sr.ReadToEndAsync();
-                    return JsonConvert.DeserializeObject(userId).ToString();
-                }
-            }
-        }
     }
 }

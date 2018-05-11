@@ -29,9 +29,11 @@
 
   <ItemGroup>
     <PackageReference Include="HtmlSanitizer" Version="3.4.156" />
-    <PackageReference Include="Lykke.Logs" Version="3.4.1" />
+    <PackageReference Include="Lykke.Logs" Version="4.3.1" />
     <PackageReference Include="Lykke.Messages" Version="1.0.27" />
-    <PackageReference Include="Lykke.Service.PersonalData" Version="1.0.30" />
+    <PackageReference Include="Lykke.Service.Kyc.Abstractions" Version="1.0.177" />
+    <PackageReference Include="Lykke.Service.Kyc.Client" Version="1.0.175" />
+    <PackageReference Include="Lykke.Service.PersonalData" Version="1.0.58" />
     <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel.Https" Version="2.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="1.0.0">
       <PrivateAssets>All</PrivateAssets>
@@ -39,7 +41,7 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.0">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="Quartz" Version="3.0.0-alpha2" />
     <PackageReference Include="PaulMiami.AspNetCore.Mvc.Recaptcha" Version="1.1.1" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />
@@ -48,13 +50,13 @@
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="1.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="1.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="1.0.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Server.IISIntegration" Version="1.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="1.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.Design" Version="1.1.1" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="2.0.2" />
     <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="2.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="1.1.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="1.1.1" />
@@ -65,8 +67,8 @@
     <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="2.1.4" />
     <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="1.1.0" />
     <PackageReference Include="Lykke.EmailContentGenerator" Version="1.0.2" />
-    <PackageReference Include="Lykke.Common" Version="3.0.2" />
-    <PackageReference Include="Lykke.AzureStorage" Version="2.1.4" />
+    <PackageReference Include="Lykke.Common" Version="6.6.0" />
+    <PackageReference Include="Lykke.AzureStorage" Version="8.3.0" />
     <PackageReference Include="iTextSharp.LGPLv2.Core" Version="1.2.3" />
   </ItemGroup>
 

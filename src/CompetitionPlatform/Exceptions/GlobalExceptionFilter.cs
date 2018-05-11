@@ -1,7 +1,9 @@
 ﻿using System;
 using AzureStorage.Queue;
 using Common.Log;
+using CompetitionPlatform.Data.AzureRepositories.Settings;
 using CompetitionPlatform.Models;
+using Lykke.SettingsReader;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -12,13 +14,13 @@ namespace CompetitionPlatform.Exceptions
         private readonly ILog _log;
         private readonly IQueueExt _slackMessageQueue;
 
-        public GlobalExceptionFilter(ILog log, string slackNotificationsConnString)
+        public GlobalExceptionFilter(ILog log, IReloadingManager<BaseSettings> settings)
         {
             _log = log;
-
-            if (!string.IsNullOrEmpty(slackNotificationsConnString))
+            
+            if (!string.IsNullOrEmpty(settings.CurrentValue.SlackNotifications.AzureQueue.ConnectionString))
             {
-                _slackMessageQueue = new AzureQueueExt(slackNotificationsConnString, "slack-notifications");
+                _slackMessageQueue = AzureQueueExt.Create(settings.ConnectionString(x => x.SlackNotifications.AzureQueue.ConnectionString), "slack-notifications");
             }
             else
             {

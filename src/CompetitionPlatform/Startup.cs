@@ -89,13 +89,12 @@ namespace CompetitionPlatform
                         settings.ConnectionString(x => x.LykkeStreams.Azure.StorageConnString));
                     options.Scope.Add("email");
                 });
-
-                var notificationSlackQueueConnString = _settings.SlackNotifications.AzureQueue.ConnectionString;
-
+                
                 services.AddApplicationInsightsTelemetry(Configuration);
                 var mvcBuilder = services.AddMvc();
 
-                mvcBuilder.AddMvcOptions(o => { o.Filters.Add(new GlobalExceptionFilter(Log, notificationSlackQueueConnString)); });
+                mvcBuilder.AddMvcOptions(o => { o.Filters.Add(
+                    new GlobalExceptionFilter(Log, settings)); });
 
                 services.RegisterLyykeServices();
 
