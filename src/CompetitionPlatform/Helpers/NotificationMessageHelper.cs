@@ -334,6 +334,29 @@ namespace CompetitionPlatform.Helpers
             return returnString;
         }
 
+        public static string FeedbackMessage(string userEmail, string userName, string feedback)
+        {
+            var messageData = new MessageData
+            {
+                Subject = "New Feedback",
+                Text = "User " + userName + " (" + userEmail + ") " + "Has Left new feedback - " + feedback
+            };
+
+            var data = new Data
+            {
+                BroadcastGroup = 600,
+                MessageData = messageData
+            };
+
+            var plainTextBroadCast = new PlainTextBroadcast { Data = data };
+
+            var plainTextBroadcastString = JsonConvert.SerializeObject(plainTextBroadCast);
+
+            var returnString = "PlainTextBroadcast:" + plainTextBroadcastString;
+
+            return returnString;
+        }
+
         private static string GetFirstNameFromFullName(string fullName)
         {
             return fullName.Split(' ')[0];
