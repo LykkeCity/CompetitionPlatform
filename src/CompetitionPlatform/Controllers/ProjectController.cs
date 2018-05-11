@@ -119,16 +119,20 @@ namespace CompetitionPlatform.Controllers
 
             if (!string.IsNullOrEmpty(user.Email))
             {
-                var kycStatus = await _kycService.GetStatusAsync(user.Id, KycProfile.Default);
-                var status = (KycStatus)Enum.Parse(typeof(KycStatus), kycStatus.Name);
-
-                if (status == KycStatus.Ok)
+                if (await IsOkKycStatus(user))
                 {
                     return View("CreateProject");
                 }
             }
 
             return View("CreateClosed");
+        }
+
+        private async Task<bool> IsOkKycStatus(UserModel user)
+        {
+            var kycStatus = await _kycService.GetStatusAsync(user.Id, KycProfile.Default);
+            var status = (KycStatus)Enum.Parse(typeof(KycStatus), kycStatus.Name);
+            return status == KycStatus.Ok;
         }
 
         // Edit a project
@@ -212,10 +216,7 @@ namespace CompetitionPlatform.Controllers
                 //Don't let non-admin users create Initiative projects
                 if (userRole == null || userRole.Role != "ADMIN")
                 {
-                    var kycStatus = await _kycService.GetStatusAsync(user.Id, KycProfile.Default);
-                    var status = (KycStatus)Enum.Parse(typeof(KycStatus), kycStatus.Name);
-
-                    if (status == KycStatus.Ok && projectViewModel.Status != Status.Draft)
+                    if (await IsOkKycStatus(user) && projectViewModel.Status != Status.Draft)
                     {
                         return View("CreateInitiativeClosed");
                     }
@@ -303,10 +304,7 @@ namespace CompetitionPlatform.Controllers
             //Don't let non-admin users edit their draft projects to Initiative status
             if (userRole == null || userRole.Role != "ADMIN")
             {
-                var kycStatus = await _kycService.GetStatusAsync(user.Id, KycProfile.Default);
-                var status = (KycStatus)Enum.Parse(typeof(KycStatus), kycStatus.Name);
-
-                if (status == KycStatus.Ok && projectViewModel.Status != Status.Draft)
+                if (await IsOkKycStatus(user) && projectViewModel.Status != Status.Draft)
                 {
                     return View("CreateInitiativeClosed");
                 }
