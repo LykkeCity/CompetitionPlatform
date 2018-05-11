@@ -20,6 +20,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using CompetitionPlatform.Models.ProjectModels;
 using Lykke.Service.PersonalData.Contract;
+using AzureStorage.Queue;
 
 namespace CompetitionPlatform.Controllers
 {
@@ -37,13 +38,15 @@ namespace CompetitionPlatform.Controllers
         private readonly BaseSettings _settings;
         private readonly IPersonalDataService _personalDataService;
         private readonly IStreamsIdRepository _streamsIdRepository;
+        private readonly IQueueExt _emailsQueue;
 
         public HomeController(IProjectRepository projectRepository, IProjectCommentsRepository commentsRepository,
             IProjectCategoriesRepository categoriesRepository, IProjectParticipantsRepository participantsRepository,
             IProjectFollowRepository projectFollowRepository, IProjectResultRepository resultsRepository,
             IProjectWinnersRepository winnersRepository, IUserFeedbackRepository feedbackRepository,
             IUserRolesRepository userRolesRepository, BaseSettings settings,
-            IPersonalDataService personalDataService, IStreamsIdRepository streamsIdRepository)
+            IPersonalDataService personalDataService, IStreamsIdRepository streamsIdRepository,
+            IQueueExt emailsQueue)
         {
             _projectRepository = projectRepository;
             _commentsRepository = commentsRepository;
@@ -57,6 +60,7 @@ namespace CompetitionPlatform.Controllers
             _settings = settings;
             _personalDataService = personalDataService;
             _streamsIdRepository = streamsIdRepository;
+            _emailsQueue = emailsQueue;
         }
 
         public async Task<IActionResult> Index()
@@ -65,7 +69,7 @@ namespace CompetitionPlatform.Controllers
                 .RemoveDrafts()
                 .FilterByCurrentProjects(true)
                 .OrderByLastModified();
-                
+
             // fetch the view model
             var viewModel = await BuildViewModel(projectList);
 
@@ -132,7 +136,7 @@ namespace CompetitionPlatform.Controllers
                 .OrderByLastModified();
 
             var viewModel = await BuildViewModel(completeProjectList);
-           
+
             return View(viewModel);
         }
 
@@ -186,7 +190,7 @@ namespace CompetitionPlatform.Controllers
 
             var projectList = await ProjectList.CreateProjectList(_projectRepository);
             projectList = await projectList.FilterByFollowing(user.Email, _projectFollowRepository);
-                
+
             var viewModel = await BuildViewModel(projectList);
 
             return View("Myprojects", viewModel);
@@ -206,7 +210,7 @@ namespace CompetitionPlatform.Controllers
             projectList = await projectList.FilterByParticipating(user.Email, _participantsRepository);
 
             var viewModel = await BuildViewModel(projectList);
-            
+
             return View("Myprojects", viewModel);
         }
 
@@ -224,7 +228,7 @@ namespace CompetitionPlatform.Controllers
                 .FilterByAuthorId(user.Email);
 
             var viewModel = await BuildViewModel(projectList);
-            
+
             return View("Myprojects", viewModel);
         }
 
@@ -237,7 +241,7 @@ namespace CompetitionPlatform.Controllers
                 Projects = await GetCompactProjectsList(projectList.GetProjects())
             };
         }
-        
+
         private async Task<List<ProjectCompactViewModel>> GetCompactProjectsList(IEnumerable<IProjectData> projectList)
         {
             var compactModels = await CompactProjectList.CreateCompactProjectList(
@@ -285,7 +289,7 @@ namespace CompetitionPlatform.Controllers
             projectList = await projectList.FilterByFollowing(user.Email, _projectFollowRepository);
 
             var viewModel = await BuildViewModel(projectList);
-           
+
             return View("~/Views/Home/Index.cshtml", viewModel);
         }
 
@@ -323,6 +327,14 @@ namespace CompetitionPlatform.Controllers
             feedbackViewModel.Created = DateTime.UtcNow;
 
             await _feedbackRepository.SaveAsync(feedbackViewModel);
+
+            if (_emailsQueue != null)
+            {
+                var message = NotificationMessageHelper.FeedbackMessage(user.Email, user.GetFullName(),
+                    feedbackViewModel.Feedback);
+                await _emailsQueue.PutMessageAsync(message);
+            }
+
             return RedirectToAction("Index", "Home");
         }
 
@@ -351,7 +363,7 @@ namespace CompetitionPlatform.Controllers
         {
             return View();
         }
-        
+
         public IActionResult PageNotFound()
         {
             return View("~/Views/Shared/404.cshtml");
@@ -364,7 +376,7 @@ namespace CompetitionPlatform.Controllers
 
             if (User.Identity.IsAuthenticated)
             {
-                return SignOut(new AuthenticationProperties { RedirectUri = "/"},
+                return SignOut(new AuthenticationProperties { RedirectUri = "/" },
                     CookieAuthenticationDefaults.AuthenticationScheme, OpenIdConnectDefaults.AuthenticationScheme);
             }
 
@@ -471,7 +483,7 @@ namespace CompetitionPlatform.Controllers
                                 StreamsId = winnerStreamsId.StreamsId
                             });
                     }
-                        
+
                 }
                 if (latestWinners.Count >= 4) break;
             }
