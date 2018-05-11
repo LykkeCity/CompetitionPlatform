@@ -12,12 +12,7 @@ namespace CompetitionPlatform
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
         }
-
-        public static void RegisterSlackNotificationServices(this IServiceCollection services, string slackQueueConnString)
-        {
-            services.AddSingleton<IQueueExt>(new AzureQueueExt(slackQueueConnString, "slack-notifications"));
-        }
-
+        
         public static void RegisterInMemoryNotificationServices(this IServiceCollection services)
         {
             services.AddSingleton<IQueueExt>(new QueueExtInMemory());

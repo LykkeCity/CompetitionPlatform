@@ -15,6 +15,8 @@ using CompetitionPlatform.Data.BlogCategory;
 using CompetitionPlatform.Data.ProjectCategory;
 using CompetitionPlatform.Services;
 using Lykke.Messages.Email;
+using Lykke.Service.Kyc.Abstractions.Services;
+using Lykke.Service.Kyc.Client;
 using Lykke.Service.PersonalData.Client;
 using Lykke.Service.PersonalData.Contract;
 using Lykke.Service.PersonalData.Settings;
@@ -38,6 +40,7 @@ namespace CompetitionPlatform.Modules
             var connectionString = _settings.ConnectionString(x => x.LykkeStreams.Azure.StorageConnString);
             var personalDatAapiKey = _settings.CurrentValue.LykkeStreams.PersonalDataService.ApiKey;
             var personalDataServiceUri = _settings.CurrentValue.LykkeStreams.PersonalDataService.ServiceUri;
+            var kycSettings = _settings.CurrentValue.KycServiceClient;
 
             builder.RegisterInstance(
               AzureBlobStorage.Create(connectionString)).As<IBlobStorage>().SingleInstance();
@@ -130,6 +133,10 @@ namespace CompetitionPlatform.Modules
             builder.RegisterInstance(
                 new PersonalDataService(new PersonalDataServiceClientSettings { ApiKey = personalDatAapiKey, ServiceUri = personalDataServiceUri }, _log)
             ).As<IPersonalDataService>().SingleInstance();
+
+            builder.RegisterInstance(
+                new KycProfileServiceV2Client(new KycServiceClientSettings{ApiKey = kycSettings.ApiKey, ServiceUri = kycSettings.ServiceUri }, _log)
+            ).As<IKycProfileServiceV2>().SingleInstance();;
 
             builder.RegisterEmailSenderViaAzureQueueMessageProducer(_settings.ConnectionString(x => x.LykkeStreams.Azure.MessageQueueConnString));
 

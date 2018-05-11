@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using Lykke.Service.Kyc.Abstractions.Services;
+using Lykke.Service.Kyc.Client;
 
 namespace CompetitionPlatform.Data.AzureRepositories.Settings
 {
@@ -6,6 +8,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Settings
     {
         public SlackNotificationSettings SlackNotifications { get; set; }
         public StreamsSettings LykkeStreams { get; set; }
+        public KycServiceClientSettings KycServiceClient { get; set; } 
     }
 
     public class AuthenticationSettings

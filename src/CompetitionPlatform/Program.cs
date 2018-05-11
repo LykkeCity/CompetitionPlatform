@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using AzureStorage.Blob;
 using System.Security.Cryptography.X509Certificates;
 using Common;
+using CompetitionPlatform.Data.AzureRepositories.Settings;
 
 namespace CompetitionPlatform
 {
@@ -37,8 +38,8 @@ namespace CompetitionPlatform
                 var sertContainer = Environment.GetEnvironmentVariable("CertContainer");
                 var sertFilename = Environment.GetEnvironmentVariable("CertFileName");
                 var sertPassword = Environment.GetEnvironmentVariable("CertPassword");
-
-                var certBlob = new AzureBlobStorage(sertConnString);
+                
+                var certBlob = AzureBlobStorage.Create(new BlobConnString(sertConnString));
                 var cert = certBlob.GetAsync(sertContainer, sertFilename).Result.ToBytes();
 
                 var xcert = new X509Certificate2(cert, sertPassword);
