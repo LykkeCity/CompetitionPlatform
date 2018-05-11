@@ -26,6 +26,9 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Ganss.XSS;
 using Lykke.Service.PersonalData.Contract;
+using Lykke.Service.Kyc.Abstractions.Services;
+using Lykke.Service.Kyc.Abstractions.Domain.Profile;
+using Lykke.Service.Kyc.Abstractions.Domain.Verification;
 
 namespace CompetitionPlatform.Controllers
 {
@@ -51,6 +54,7 @@ namespace CompetitionPlatform.Controllers
         private readonly IPersonalDataService _personalDataService;
         private readonly Lykke.Messages.Email.IEmailSender _emailSender;
         private readonly IStreamsIdRepository _streamsIdRepository;
+        private readonly IKycProfileServiceV2 _kycService;
 
         public ProjectController(IProjectRepository projectRepository, IProjectCommentsRepository commentsRepository,
             IProjectFileRepository fileRepository, IProjectFileInfoRepository fileInfoRepository,
@@ -62,7 +66,8 @@ namespace CompetitionPlatform.Controllers
             ILog log, IProjectExpertsRepository projectExpertsRepository,
             IStreamRepository streamRepository, IPersonalDataService personalDataService,
             Lykke.Messages.Email.IEmailSender emailSender,
-            IStreamsIdRepository streamsIdRepository)
+            IStreamsIdRepository streamsIdRepository,
+            IKycProfileServiceV2 kycService)
         {
             _projectRepository = projectRepository;
             _commentsRepository = commentsRepository;
@@ -84,6 +89,7 @@ namespace CompetitionPlatform.Controllers
             _personalDataService = personalDataService;
             _emailSender = emailSender;
             _streamsIdRepository = streamsIdRepository;
+            _kycService = kycService;
         }
 
 
@@ -110,9 +116,10 @@ namespace CompetitionPlatform.Controllers
 
             if (!string.IsNullOrEmpty(user.Email))
             {
-                var kycStatus = await GetUserKycStatus(user.Email);
+                var kycStatus = await _kycService.GetStatusAsync(user.Id, KycProfile.Default);
+                var status = (KycStatus)Enum.Parse(typeof(KycStatus), kycStatus.Name);
 
-                if (kycStatus == "\"Ok\"")
+                if (status == KycStatus.Ok)
                 {
                     return View("CreateProject");
                 }
@@ -202,8 +209,10 @@ namespace CompetitionPlatform.Controllers
                 //Don't let non-admin users create Initiative projects
                 if (userRole == null || userRole.Role != "ADMIN")
                 {
-                    var kycStatus = await GetUserKycStatus(user.Email);
-                    if (kycStatus == "\"Ok\"" && projectViewModel.Status != Status.Draft)
+                    var kycStatus = await _kycService.GetStatusAsync(user.Id, KycProfile.Default);
+                    var status = (KycStatus)Enum.Parse(typeof(KycStatus), kycStatus.Name);
+
+                    if (status == KycStatus.Ok && projectViewModel.Status != Status.Draft)
                     {
                         return View("CreateInitiativeClosed");
                     }
@@ -291,8 +300,10 @@ namespace CompetitionPlatform.Controllers
             //Don't let non-admin users edit their draft projects to Initiative status
             if (userRole == null || userRole.Role != "ADMIN")
             {
-                var kycStatus = await GetUserKycStatus(user.Email);
-                if (kycStatus == "\"Ok\"" && projectViewModel.Status != Status.Draft)
+                var kycStatus = await _kycService.GetStatusAsync(user.Id, KycProfile.Default);
+                var status = (KycStatus)Enum.Parse(typeof(KycStatus), kycStatus.Name);
+
+                if (status == KycStatus.Ok && projectViewModel.Status != Status.Draft)
                 {
                     return View("CreateInitiativeClosed");
                 }
@@ -633,8 +644,8 @@ namespace CompetitionPlatform.Controllers
             {
                 if (string.IsNullOrEmpty(comment.UserIdentifier))
                 {
-                    comment.UserIdentifier = await ClaimsHelper.GetUserIdByEmail(_settings.LykkeStreams.Authentication.Authority,
-                        _settings.LykkeStreams.Authentication.ClientId, comment.UserId);
+                    var profile = await _personalDataService.FindClientsByEmail(comment.UserId);
+                    comment.UserIdentifier = profile.Id;
                     await _commentsRepository.UpdateAsync(comment, id);
                 }
 
@@ -698,8 +709,8 @@ namespace CompetitionPlatform.Controllers
             {
                 if (string.IsNullOrEmpty(part.UserIdentifier))
                 {
-                    part.UserIdentifier = await ClaimsHelper.GetUserIdByEmail(_settings.LykkeStreams.Authentication.Authority,
-                        _settings.LykkeStreams.Authentication.ClientId, part.UserId);
+                    var profile = await _personalDataService.FindClientsByEmail(part.UserId);
+                    part.UserIdentifier = profile.Id;
                     await _participantsRepository.UpdateAsync(part);
                 }
 
@@ -712,8 +723,8 @@ namespace CompetitionPlatform.Controllers
             {
                 if (string.IsNullOrEmpty(result.ParticipantIdentifier))
                 {
-                    result.ParticipantIdentifier = await ClaimsHelper.GetUserIdByEmail(_settings.LykkeStreams.Authentication.Authority,
-                        _settings.LykkeStreams.Authentication.ClientId, result.ParticipantId);
+                    var profile = await _personalDataService.FindClientsByEmail(result.ParticipantId);
+                    result.ParticipantIdentifier = profile.Id;
                     await _resultRepository.UpdateAsync(result);
                 }
 
@@ -770,8 +781,8 @@ namespace CompetitionPlatform.Controllers
             {
                 if (string.IsNullOrEmpty(expert.UserIdentifier) && !string.IsNullOrEmpty(expert.UserId))
                 {
-                    expert.UserIdentifier = await ClaimsHelper.GetUserIdByEmail(_settings.LykkeStreams.Authentication.Authority,
-                         _settings.LykkeStreams.Authentication.ClientId, expert.UserId);
+                    var profile = await _personalDataService.FindClientsByEmail(expert.UserId);
+                    expert.UserIdentifier = profile.Id;
                     await _projectExpertsRepository.UpdateAsync(expert);
                 }
                 if (!string.IsNullOrEmpty(expert.UserIdentifier))
@@ -782,9 +793,9 @@ namespace CompetitionPlatform.Controllers
             }
 
             var avatarsDictionary = await _personalDataService.GetClientAvatarsAsync(projectDetailsAvatarIds);
-            participantsPartial.Avatars = avatarsDictionary;
-            commentsPartial.Avatars = avatarsDictionary;
-            resultsPartial.Avatars = avatarsDictionary;
+            participantsPartial.Avatars = avatarsDictionary.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+            commentsPartial.Avatars = avatarsDictionary.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+            resultsPartial.Avatars = avatarsDictionary.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
             experts = experts.OrderBy(x => x.Priority == 0).ThenBy(x => x.Priority);
             var authorStreamsId = await _streamsIdRepository.GetOrCreateAsync(project.AuthorIdentifier);
@@ -916,9 +927,9 @@ namespace CompetitionPlatform.Controllers
             {
                 if (string.IsNullOrEmpty(winner.WinnerIdentifier))
                 {
+                    var profile = await _personalDataService.FindClientsByEmail(winner.WinnerId);
                     winner.ProjectId = model.Id;
-                    winner.WinnerIdentifier = await ClaimsHelper.GetUserIdByEmail(_settings.LykkeStreams.Authentication.Authority,
-                        _settings.LykkeStreams.Authentication.ClientId, winner.WinnerId);
+                    winner.WinnerIdentifier = profile.Id;
                     await _winnersRepository.UpdateAsync(winner);
                 }
                 if (!string.IsNullOrEmpty(winner.WinnerIdentifier))
@@ -1026,28 +1037,7 @@ namespace CompetitionPlatform.Controllers
 
             return sortedComments;
         }
-
-        private async Task<string> GetUserKycStatus(string email)
-        {
-            var authLink = _settings.LykkeStreams.Authentication.Authority;
-            var appId = _settings.LykkeStreams.Authentication.ClientId;
-
-            var webRequest = (HttpWebRequest)WebRequest.Create(authLink + "/getkycstatus?email=" + email);
-            webRequest.Method = "GET";
-            webRequest.ContentType = "text/html";
-            webRequest.Headers["application_id"] = appId;
-            var webResponse = await webRequest.GetResponseAsync();
-
-            using (var receiveStream = webResponse.GetResponseStream())
-            {
-                using (var sr = new StreamReader(receiveStream))
-                {
-                    return await sr.ReadToEndAsync();
-                }
-
-            }
-        }
-
+        
         private async Task<IActionResult> EditWithProjectUrlError(string projectId, string errorText)
         {
             var projectViewModel = await GetProjectViewModel(projectId);
