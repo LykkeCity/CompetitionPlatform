@@ -39,7 +39,12 @@
                         break;
                     case Status.Archive:
                         statusColor = "label--gray";
-                        projectCount = (project.WinnersCount == 1) ? project.WinnersCount + " winner" : project.WinnersCount + " winners";
+                        if (project.ResultsCount == 0)
+                        {
+                            projectCount = "0 results";
+                        } else { 
+                            projectCount = (project.WinnersCount == 1) ? project.WinnersCount + " winner" : project.WinnersCount + " winners";
+                        }
                         break;
                 }
                 <div class="card card--preview">
