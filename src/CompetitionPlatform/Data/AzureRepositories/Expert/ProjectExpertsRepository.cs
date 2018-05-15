@@ -62,6 +62,29 @@ namespace CompetitionPlatform.Data.AzureRepositories.Expert
             _projectExpertsTableStorage = projectExpertsTableStorage;
         }
 
+        public async Task<List<IProjectExpertData>> GetAllUniqueAsync()
+        {
+            var experts = await _projectExpertsTableStorage.GetDataAsync();
+            var newestExperts = experts.OrderByDescending(x => x.Timestamp).ToList();
+
+            var unique = new List<IProjectExpertData>();
+            foreach (var expert in newestExperts)
+            {
+                if (!unique.Any(x => x.UserId == expert.UserId))
+                {
+                    unique.Add(expert);
+                }
+            }
+
+            return unique.OrderBy(x => x.FullName).ToList();
+        }
+
+        public async Task<IProjectExpertData> GetAsync(string userId)
+        {
+            var experts = await _projectExpertsTableStorage.GetDataAsync(x => x.UserId == userId);
+            return experts.FirstOrDefault();
+        }
+
         public async Task<IProjectExpertData> GetAsync(string projectId, string participantId)
         {
             var partitionKey = ProjectExpertEntity.GeneratePartitionKey(projectId);

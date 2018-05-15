@@ -3,12 +3,13 @@
 @model ProjectViewModel
 
 @{
-    ViewData["Title"] = "Edit Project"; 
+    ViewData["Title"] = "Edit Project";
     var winnersCount = Model.Winners?.Count ?? 0;
+    var expertsCount = Model.ProjectExperts != null ? Model.ProjectExperts.Count() : 0;
 }
 
 <style>
-    .delete_winner.disabled {
+    .delete_winner.disabled, .delete_expert.disabled {
         display: none;
     }
 </style>
@@ -258,7 +259,7 @@
                                         @foreach (var part in Model.ParticipantsPartial.Participants.Where(x => x.Result))
                                         {
                                             var selected = (winnersCount > i && Model.Winners[i].WinnerId == part.UserId);
-                                                
+
                                             <option value="@part.UserId" selected="@selected">@part.UserId</option>
                                         }
                                     </select>
@@ -444,6 +445,48 @@
 
                 @if (Model.IsAdmin)
                 {
+                    <h4 class="form_title">PROJECT EXPERTS</h4>
+                    <div class="form-group">
+                        <button class="btn new_expert" type="button">New Expert</button>
+                    </div>
+                    <div class="add_expert">
+                        @for (int i = 0; i <= expertsCount; i++)
+                        {
+                            var existingExpert = i != expertsCount;
+                            var disabled = existingExpert ? "disabled" : "";
+
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <select name="Experts[0].UserId" class="form-control select2" @disabled>
+                                            <option></option>
+                                            @foreach (var exp in Model.Experts)
+                                            {
+                                                var selected = (expertsCount > i && Model.ProjectExperts.ElementAt(i).UserId == exp.UserId);
+
+                                                <option value="@exp.UserId" selected="@selected">@exp.FullName</option>
+                                            }
+                                        </select>
+                                    </div>
+
+                                    <div class="col-sm-1 delete_expert @disabled">
+                                        <label class="control-label"></label>
+                                        <button type="button" class="btn btn--icon btn_delete_expert" style="margin-top:15px;">
+                                            <i class="icon icon--trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        <button type="button" class="btn btn_add_expert"
+                                style="width: 24px;height:24px;padding: 0; margin-top: 10px;">
+                            <i class="icon icon--add" style="margin:0;"></i>
+                        </button>
+                    </div>
+                }
+
+                @if (Model.IsAdmin)
+                {
                     <h4 class="form_title">PROJECT AUTHOR</h4>
 
                     <div class="row">
@@ -504,21 +547,6 @@
                             </div>
                         </div>
 
-                        @*<table>
-                                <thead>
-                                <tr>
-                                    <th>Select</th>
-                                    <th>Place</th>
-                                    <th>Name</th>
-                                </tr>
-                                </thead>
-                            </table>
-                            <table id="streamProjectsTable" class="streamProjectsTable">
-                                <thead>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>*@
                         <div id="streamProjectsTableEdit">
                             @await Html.PartialAsync("EditStreamTablePartial", Model.EditStreamProjects)
                         </div>
@@ -555,6 +583,7 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
         var winnerCount = 1;
+        var expertCount = 1;
 
         $("#Status").on("change", function () {
             var status = $(this).val();
@@ -566,8 +595,8 @@
         });
 
         $(".btn_add_winner").on("click", function () {
-            var template = $(".add_winner .row:first").prop("outerHTML");
-            $(template.replace(/0/g, winnerCount).replace(/disabled/g, ""))
+            var template = $(".add_winner .row:visible:first").prop("outerHTML");
+            $(template.replace(/\[0\]/g, "[" + winnerCount + "]").replace(/disabled/g, ""))
                 .insertAfter(".add_winner .row:last");
             clearForm($(".add_winner .row:last"));
             winnerCount++;
@@ -576,15 +605,79 @@
         $(".add_winner").on("click", ".btn_delete_winner", function () {
             var parent = $(this).closest(".add_winner .row");
             clearForm(parent);
-            if ($(".add_winner .row").length > 1) {
+            if ($(".add_winner .row:visible").length > 1) {
                 parent.css("display", "none");
-                //winnerCount--;
             }
         });
+
+        $(".btn_add_expert").on("click", function () {
+            var template = $(".add_expert .form-group:visible:first").prop("outerHTML");
+            $(template.replace(/\[0\]/g, "[" + expertCount + "]").replace(/disabled/g, ""))
+                .insertAfter(".add_expert .form-group:last");
+
+            var newExpertGroup = $(".add_expert .form-group:last");
+            clearForm(newExpertGroup);
+            newExpertGroup.find(".select2-container").remove();
+            newExpertGroup.find("select").removeClass("select2-hidden-accessible").select2();
+            expertCount++;
+        });
+
+        $(".add_expert").on("click", ".btn_delete_expert", function () {
+            var parent = $(this).closest(".add_expert .form-group");
+            clearForm(parent);
+            if ($(".add_expert .form-group:visible").length > 1) {
+                parent.css("display", "none");
+            }
+        });
+
+        $(".new_expert").on("click", function (e) {
+            e.preventDefault();
+            $('#modal_new_expert').modal('show');
+        });
+
+        $(".add_expert_submit").on("click", function (e) {
+            e.preventDefault();
+
+            var form = $("#new_expert_form");
+            form.validate();
+            if (!form.valid()) {
+                return;
+            }
+
+            form.find(".text-danger").remove();
+            var data = form.serialize();
+            data += "&projectId=@(Model.Id)";
+
+            $.post(form.attr("action"), data, function (response) {
+                if (response.error) {
+                    form.append("<div class='text-danger '>" + response.error + "</div>");
+                    return;
+                }
+
+                $('#modal_new_expert').modal('hide');
+                clearForm(form);
+                $(".add_expert .form-group:visible select")
+                    .append("<option value='" + response.userId + "'>" + response.fullName + "</option>");
+
+                var firstExpertSelector = ".add_expert .form-group:visible:first";
+                var template = $(firstExpertSelector).prop("outerHTML");
+                $(template).insertBefore(firstExpertSelector);
+
+                var newExpertGroup = $(firstExpertSelector);
+                newExpertGroup.find(".select2-container").remove();
+                newExpertGroup.find(".delete_expert").addClass("disabled");
+
+                var newExpertDropdown = newExpertGroup.find("select");
+                newExpertDropdown.attr("disabled", "disabled");
+                newExpertDropdown.val(response.userId);
+                newExpertDropdown.removeClass("select2-hidden-accessible").select2();
+            });
+        })
 
         function clearForm(form) {
             form.find("select").val("");
             form.find("input").val("");
+            form.find(".select2").trigger('change');
         }
     </script>
 }

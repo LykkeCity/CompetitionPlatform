@@ -17,6 +17,8 @@ namespace CompetitionPlatform.Data.AzureRepositories.Expert
     }
     public interface IProjectExpertsRepository
     {
+        Task<List<IProjectExpertData>> GetAllUniqueAsync();
+        Task<IProjectExpertData> GetAsync(string userId);
         Task<IProjectExpertData> GetAsync(string projectId, string participantId);
         Task<IEnumerable<IProjectExpertData>> GetProjectExpertsAsync(string projectId);
         Task SaveAsync(IProjectExpertData projectExpertData);

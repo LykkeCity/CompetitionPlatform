@@ -149,8 +149,6 @@ $(function() {
   });
 });
 
-
-
 function parallaxScroll(cont, el){
   var pxElem = cont.find(el);
 
@@ -180,5 +178,5 @@ if (!isMobile && wW >= 767) {
 }
 
 $(function () {
-  $('[data-toggle="tooltip"]').tooltip()
+    $('[data-toggle="tooltip"]').tooltip();
 })
