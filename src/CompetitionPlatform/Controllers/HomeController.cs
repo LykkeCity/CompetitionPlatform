@@ -460,10 +460,10 @@ namespace CompetitionPlatform.Controllers
                 {
                     if (string.IsNullOrEmpty(winner.WinnerIdentifier))
                     {
+                        var profile = await _personalDataService.FindClientsByEmail(winner.WinnerId);
+
                         winner.ProjectId = project.Id;
-                        winner.WinnerIdentifier = await ClaimsHelper.GetUserIdByEmail(
-                            _settings.LykkeStreams.Authentication.Authority,
-                            _settings.LykkeStreams.Authentication.ClientId, winner.WinnerId);
+                        winner.WinnerIdentifier = profile.Id;
 
                         await _winnersRepository.UpdateAsync(winner);
                     }

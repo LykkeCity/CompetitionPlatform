@@ -57,28 +57,7 @@ namespace CompetitionPlatform.Controllers
             _streamsIdRepository = streamsIdRepository;
             _expertsRepository = expertsRepository;
         }
-
-        private async Task<string> GetUserEmailById(string id)
-        {
-            var authLink = _settings.LykkeStreams.Authentication.Authority;
-            var appId = _settings.LykkeStreams.Authentication.ClientId;
-
-            var webRequest = (HttpWebRequest)WebRequest.Create(authLink + "/getemailbyid?id=" + id);
-            webRequest.Method = "GET";
-            webRequest.ContentType = "text/html";
-            webRequest.Headers["application_id"] = appId;
-            var webResponse = await webRequest.GetResponseAsync();
-
-            using (var receiveStream = webResponse.GetResponseStream())
-            {
-                using (var sr = new StreamReader(receiveStream))
-                {
-                    var userId = await sr.ReadToEndAsync();
-                    return JsonConvert.DeserializeObject(userId).ToString();
-                }
-            }
-        }
-
+        
         [HttpGet("~/userprofile/{id}")]
         public async Task<IActionResult> DisplayUserProfile(string id)
         {
@@ -90,8 +69,7 @@ namespace CompetitionPlatform.Controllers
             if (userStreamsId == null) return View("ProfileNotFound");
 
             var clientId = userStreamsId.ClientId;
-
-            var email = await GetUserEmailById(clientId);
+            
             var profile = await _personalDataService.GetProfilePersonalDataAsync(clientId);
             var user = UserModel.GetAuthenticatedUser(User.Identity);
 
@@ -105,21 +83,21 @@ namespace CompetitionPlatform.Controllers
 
             var commentsViewModel = new CommentsViewModel
             {
-                CommentsList = await GetUserComments(email),
+                CommentsList = await GetUserComments(profile.Email),
                 CommentAvatar = profile.AvatarUrl
             };
 
             var userProfileViewModel = new UserProfileViewModel
             {
                 Profile = profile,
-                WinningsSum = await GetUserWinnigsSum(email),
-                CreatedProjects = await GetCreatedProjects(email),
-                ParticipatedProjects = await GetParticipatedProjects(email),
-                WonProjects = await GetWonProjects(email),
+                WinningsSum = await GetUserWinnigsSum(profile.Email),
+                CreatedProjects = await GetCreatedProjects(profile.Email),
+                ParticipatedProjects = await GetParticipatedProjects(profile.Email),
+                WonProjects = await GetWonProjects(profile.Email),
                 Comments = commentsViewModel,
                 AuthLink = _settings.LykkeStreams.Authentication.Authority,
-                IsLykkeMember = await IsUserLykkeMember(email),
-                ExpertedProjects = await GetExpertedProjects(email)
+                IsLykkeMember = await IsUserLykkeMember(profile.Email),
+                ExpertedProjects = await GetExpertedProjects(profile.Email)
             };
 
             return View("~/Views/UserProfile/UserProfile.cshtml", userProfileViewModel);
@@ -254,9 +232,8 @@ namespace CompetitionPlatform.Controllers
 
                 if (string.IsNullOrEmpty(project.AuthorIdentifier))
                 {
-                    project.AuthorIdentifier = await ClaimsHelper.GetUserIdByEmail(
-                        _settings.LykkeStreams.Authentication.Authority, _settings.LykkeStreams.Authentication.ClientId,
-                        project.AuthorId);
+                    var profile = await _personalDataService.FindClientsByEmail(project.AuthorId);
+                    project.AuthorIdentifier = profile.Id;
                     await _projectRepository.UpdateAsync(project);
                 }
 
