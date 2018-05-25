@@ -1,4 +1,5 @@
 ﻿using Lykke.SettingsReader;
+using System;
 using System.Threading.Tasks;
 
 namespace CompetitionPlatform.Data.AzureRepositories.Settings
@@ -18,6 +19,11 @@ namespace CompetitionPlatform.Data.AzureRepositories.Settings
         public Task<string> Reload()
         {
             throw new System.NotImplementedException();
+        }
+
+        public bool WasReloadedFrom(DateTime dateTime)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -34,6 +34,7 @@
     <PackageReference Include="Lykke.Service.Kyc.Abstractions" Version="1.0.177" />
     <PackageReference Include="Lykke.Service.Kyc.Client" Version="1.0.175" />
     <PackageReference Include="Lykke.Service.PersonalData" Version="1.0.58" />
+    <PackageReference Include="Lykke.SettingsReader" Version="2.4.0" />
     <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel.Https" Version="2.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="1.0.0">
       <PrivateAssets>All</PrivateAssets>
@@ -65,7 +66,7 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.0.0" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="1.1.1" />
     <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="2.1.4" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="1.1.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="2.0.3" />
     <PackageReference Include="Lykke.EmailContentGenerator" Version="1.0.2" />
     <PackageReference Include="Lykke.Common" Version="6.6.0" />
     <PackageReference Include="Lykke.AzureStorage" Version="8.3.0" />
