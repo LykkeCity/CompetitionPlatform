@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Lykke.Service.Kyc.Abstractions.Services;
 using Lykke.Service.Kyc.Client;
+using Lykke.SettingsReader.Attributes;
 
 namespace CompetitionPlatform.Data.AzureRepositories.Settings
 {
@@ -16,13 +17,17 @@ namespace CompetitionPlatform.Data.AzureRepositories.Settings
         public string ClientId { get; set; }
         public string ClientSecret { get; set; }
         public string PostLogoutRedirectUri { get; set; }
+        [HttpCheck("/api/isalive")]
         public string Authority { get; set; }
     }
 
     public class AzureSettings
     {
+        [AzureBlobCheck]
         public string StorageConnString { get; set; }
+        [AzureTableCheck]
         public string StorageLogConnString { get; set; }
+        [AzureQueueCheck]
         public string MessageQueueConnString { get; set; }
     }
     
@@ -34,6 +39,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Settings
 
     public class SlackNotificationsAzureSettings
     {
+        [AzureQueueCheck]
         public string ConnectionString { get; set; }
         public string QueueName { get; set; }
     }
@@ -48,7 +54,9 @@ namespace CompetitionPlatform.Data.AzureRepositories.Settings
 
     public class PersonalDataServiceSettings
     {
+        [HttpCheck("/api/isalive")]
         public string ServiceUri { get; set; }
+        [HttpCheck("/api/isalive")]
         public string ServiceExternalUri { get; set; }
         public string ApiKey { get; set; }
     }
