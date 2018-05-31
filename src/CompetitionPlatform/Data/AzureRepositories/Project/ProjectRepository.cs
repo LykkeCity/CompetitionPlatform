@@ -49,6 +49,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
         public string PrizeDescription { get; set; }
         public string StreamId { get; set; }
         public string NameTag { get; set; }
+        public string InfoForKycUsers { get; set; }
 
         internal void Update(IProjectData src)
         {
@@ -78,6 +79,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
             PrizeDescription = src.PrizeDescription;
             StreamId = src.StreamId;
             NameTag = src.NameTag;
+            InfoForKycUsers = src.InfoForKycUsers;
         }
 
         public static ProjectEntity Create(IProjectData src)
@@ -112,7 +114,8 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
                 SkipRegistration = src.SkipRegistration,
                 PrizeDescription = src.PrizeDescription,
                 StreamId = src.StreamId,
-                NameTag = src.NameTag
+                NameTag = src.NameTag,
+                InfoForKycUsers = src.InfoForKycUsers
             };
 
             return result;
