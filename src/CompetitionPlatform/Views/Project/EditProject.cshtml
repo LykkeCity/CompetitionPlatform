@@ -507,12 +507,22 @@
                     </div>
                 }
 
+                @if (Model.IsAdmin)
+                {
+                    <h4 class="form_title">info for KYC users</h4>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <label asp-for="InfoForKycUsers" class="control-label col-sm-6"></label>
+                        </div>
+                        <textarea asp-for="InfoForKycUsers" class="form-control richEditor" rows="10"></textarea>
+                        <span asp-validation-for="InfoForKycUsers" class="text-danger" />
+                    </div>
+                }
 
                 @if (Model.IsAdmin)
                 {
-
                     <div class="row">
-
                         <div class="col-sm-6">
                             <p class="text-muted">You can add this project to the overall chain, which is called Stream. The current project will be one of the stages of the Stream.</p>
                             <label class="control-label">Stream:</label>

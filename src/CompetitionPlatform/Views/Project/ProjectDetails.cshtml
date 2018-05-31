@@ -262,7 +262,7 @@
                                 </div>
                             </div>
                             @if (Model.BudgetSecondPlace != null)
-                    {
+                            {
                                 <div class="col-xs-3 hidden-xxs">
                                     <div class="prize">
                                         <div class="prize__value">$@Model.BudgetSecondPlace</div>
@@ -353,7 +353,7 @@
                 <div class="row">
                     <div class="col-xs-6 col-sm-12">
                         @if (Model.ProjectExperts == null)
-            {
+                        {
                             <div class="user_badge">
                                 <a href="/userprofile/@Model.AuthorStreamsId" class="user_badge__img">
                                     <img src="@ViewHelper.GetAvatarOrDefault(Model.AuthorAvatarUrl)" alt="@Model.AuthorFullName">
@@ -488,8 +488,8 @@
                             @Html.Raw(Model.Description)
                         </div>
                         @if (Model.FileInfo != null)
-            {
-                var extension = fileExtension.Length > 2 ? fileExtension.ToUpper().Substring(0, 3) : fileExtension.ToUpper();
+                        {
+                            var extension = fileExtension.Length > 2 ? fileExtension.ToUpper().Substring(0, 3) : fileExtension.ToUpper();
 
                             <div class="extend_block">
                                 <h4>Brief</h4>
@@ -532,8 +532,30 @@
                                 </div>
                             </div>
                         }
+
+                        @if ((bool)ViewBag.IsKycOkStatus)
+                        {
+                            <div class="extend_block">
+                                <div class="text">
+                                    @Html.Raw(Model.InfoForKycUsers)
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="message_card__inner">
+                                <div style="height: 80px; line-height: 60px;" class="form-control" disabled="">
+                                    <div class="text-center">
+                                        Please
+                                        <a class="" href="/Home/SignIn">login</a>
+                                        using a user with KYC to see this info
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
                         @if (Model.ProjectExperts != null)
-            {
+                        {
                             <div class="extend_block">
                                 <h4>Experts</h4>
 

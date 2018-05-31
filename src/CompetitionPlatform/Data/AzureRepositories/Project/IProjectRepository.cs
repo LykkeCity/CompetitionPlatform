@@ -36,6 +36,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
         string PrizeDescription { get; set; }
         string StreamId { get; set; }
         string NameTag { get; set; }
+        string InfoForKycUsers { get; set; }
     }
 
     public interface IProjectRepository
