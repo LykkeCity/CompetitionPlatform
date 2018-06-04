@@ -350,6 +350,55 @@
                     <span asp-validation-for="Description" class="text-danger" />
                 </div>
 
+                @if (Model.IsAdmin)
+                {
+                    <h4 class="form_title">Info for KYC users</h4>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <label asp-for="InfoForKycUsers" class="control-label col-sm-6"></label>
+                        </div>
+                        <textarea asp-for="InfoForKycUsers" class="form-control richEditor" rows="10"></textarea>
+                        <span asp-validation-for="InfoForKycUsers" class="text-danger" />
+                    </div>
+                }
+
+                <div class="form-group">
+                    <div class="row">
+                        <label asp-for="DescriptionFooter" class="control-label col-sm-4"></label>
+
+                    </div>
+                    <textarea name="DescriptionFooter" class="form-control richEditor" rows="10">
+                        @if(!string.IsNullOrEmpty(Model.DescriptionFooter))
+                        {
+                            @Model.DescriptionFooter
+                        }
+                        else
+                        {
+                            <h4 style="font-family: 'Proxima Nova', 'Segoe UI', Roboto, 'Droid Sans', 'Helvetica Neue', Arial, sans-serif; line-height: 1.67; color: #333333; margin-top: 2.8125rem; margin-bottom: 10px; font-size: 1.3125rem;" data-mce-style="font-family: 'Proxima Nova', 'Segoe UI', Roboto, 'Droid Sans', 'Helvetica Neue', Arial, sans-serif; line-height: 1.67; color: #333333; margin-top: 2.8125rem; margin-bottom: 10px; font-size: 1.3125rem;">Support</h4>
+                            <p style="font-weight: normal">
+                                Please refer to the Terms of Use of the organization and remuneration issues. 
+                                If you have any questions, please feel free to ask them in the contest comments.&nbsp;
+                            </p>
+                    
+                            <h4 style="font-family: 'Proxima Nova', 'Segoe UI', Roboto, 'Droid Sans', 'Helvetica Neue', Arial, sans-serif; line-height: 1.67; color: #333333; margin-top: 2.8125rem; margin-bottom: 10px; font-size: 1.3125rem;" data-mce-style="font-family: 'Proxima Nova', 'Segoe UI', Roboto, 'Droid Sans', 'Helvetica Neue', Arial, sans-serif; line-height: 1.67; color: #333333; margin-top: 2.8125rem; margin-bottom: 10px; font-size: 1.3125rem;">Disclaimer</h4>
+                            <p dir="ltr" style="color: #3f4d60; font-family: 'Proxima Nova', 'Segoe UI', Roboto, 'Droid Sans', 'Helvetica Neue', Arial, sans-serif; line-height: 1.67 !important; font-size: 1.125rem !important; margin: 0px 0px 0.9375rem 0px !important;" data-mce-style="color: #3f4d60; font-family: 'Proxima Nova', 'Segoe UI', Roboto, 'Droid Sans', 'Helvetica Neue', Arial, sans-serif; line-height: 1.67 !important; font-size: 1.125rem !important; margin: 0px 0px 0.9375rem 0px !important;">
+                                Submitted results must be publicly available on the GitHub.
+                                There is no guarantee of winning a prize.
+                                The prizes are only awarded to entries that the Lykke judges find worthwhile.
+                                Prizes are awarded in Lykke coins, which may be redeemed for currency and sent to your bank.
+                                You must be at least 18 years of age.
+                                You must not submit twice - your first submission is the one that counts.
+                                You will be responsible for declaring your own income to your local tax authorities.
+                                All submissions will be disclosed to the public. The prizes are given at organizer&#39;s sole discretion.
+                                The decisions of the judges will be final - there is no appeals process if your project does not win a prize.
+                                No other compensation will be given at this stage.
+                            </p>
+                        }
+                    </textarea>
+                    <span asp-validation-for="DescriptionFooter" class="text-danger" />
+                </div>
+
                 <div class="form-group">
                     <label class="control-label">Brief</label>
                     <div class="fileupload">
@@ -504,19 +553,6 @@
                                 <span asp-validation-for="AuthorFullName" class="text-danger" />
                             </div>
                         </div>
-                    </div>
-                }
-
-                @if (Model.IsAdmin)
-                {
-                    <h4 class="form_title">info for KYC users</h4>
-
-                    <div class="form-group">
-                        <div class="row">
-                            <label asp-for="InfoForKycUsers" class="control-label col-sm-6"></label>
-                        </div>
-                        <textarea asp-for="InfoForKycUsers" class="form-control richEditor" rows="10"></textarea>
-                        <span asp-validation-for="InfoForKycUsers" class="text-danger" />
                     </div>
                 }
 
