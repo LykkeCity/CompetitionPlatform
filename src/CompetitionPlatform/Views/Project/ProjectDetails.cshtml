@@ -487,6 +487,32 @@
                         <div class="text">
                             @Html.Raw(Model.Description)
                         </div>
+
+                        @if ((bool)ViewBag.IsKycOkStatus)
+                        {
+                            <div class="extend_block">
+                                <div class="text">
+                                    @Html.Raw(Model.InfoForKycUsers)
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="message_card__inner">
+                                <div style="height: 80px; line-height: 60px;" class="form-control" disabled="">
+                                    <div class="text-center">
+                                        Please
+                                        <a class="" href="/Home/SignIn">login</a>
+                                        using a user with KYC to see this info
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                        <div class="text">
+                            @Html.Raw(Model.DescriptionFooter)
+                        </div>
+
                         @if (Model.FileInfo != null)
                         {
                             var extension = fileExtension.Length > 2 ? fileExtension.ToUpper().Substring(0, 3) : fileExtension.ToUpper();
@@ -528,27 +554,6 @@
                                                 <a asp-area="" asp-controller="ProjectDetails" asp-action="DownloadProjectFile" asp-route-id="@Model.Id">@Model.FileInfo.FileName</a>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                        }
-
-                        @if ((bool)ViewBag.IsKycOkStatus)
-                        {
-                            <div class="extend_block">
-                                <div class="text">
-                                    @Html.Raw(Model.InfoForKycUsers)
-                                </div>
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="message_card__inner">
-                                <div style="height: 80px; line-height: 60px;" class="form-control" disabled="">
-                                    <div class="text-center">
-                                        Please
-                                        <a class="" href="/Home/SignIn">login</a>
-                                        using a user with KYC to see this info
                                     </div>
                                 </div>
                             </div>

@@ -125,7 +125,12 @@ namespace CompetitionPlatform.Models.ProjectViewModels
 
         [StringLength(5000)]
         [DataType(DataType.MultilineText)]
-        [Display(Name = "This text will be wisible only for users with KYC status OK")]
-        public string InfoForKycUsers { get; set;}
+        [Display(Name = "This text will be visible only for users with KYC status OK")]
+        public string InfoForKycUsers { get; set; }
+
+        [StringLength(5000)]
+        [DataType(DataType.MultilineText)]
+        [Display(Name = "Description footer")]
+        public string DescriptionFooter { get; set; }
     }
 }

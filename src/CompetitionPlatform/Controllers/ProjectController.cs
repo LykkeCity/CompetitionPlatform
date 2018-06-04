@@ -476,7 +476,7 @@ namespace CompetitionPlatform.Controllers
                 await AddVotingMailToQueue(project);
             }
 
-            if (projectViewModel.Status == Status.Archive) //project.Status != Status.Archive && 
+            if (projectViewModel.Status == Status.Archive)
             {
                 if (!project.SkipVoting)
                 {
@@ -809,7 +809,8 @@ namespace CompetitionPlatform.Controllers
                 AuthorAvatarUrl = avatarsDictionary[project.AuthorIdentifier],
                 AuthorStreamsId = authorStreamsId.StreamsId,
                 Experts = allExperts.Select(ExpertViewModel.Create).ToList(),
-                InfoForKycUsers = project.InfoForKycUsers
+                InfoForKycUsers = project.InfoForKycUsers,
+                DescriptionFooter = project.DescriptionFooter
             };
 
             if (!string.IsNullOrEmpty(project.Tags))
@@ -913,6 +914,7 @@ namespace CompetitionPlatform.Controllers
                     winner.WinnerIdentifier = profile.Id;
                     await _winnersRepository.UpdateAsync(winner);
                 }
+
                 if (!string.IsNullOrEmpty(winner.WinnerIdentifier))
                 {
                     UserModel.GenerateStreamsId(_streamsIdRepository, winner.WinnerIdentifier);
