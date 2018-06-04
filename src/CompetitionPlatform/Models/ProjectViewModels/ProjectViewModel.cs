@@ -122,5 +122,15 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         public List<WinnerViewModel> Winners { get; set; }
         
         public List<ExpertViewModel> Experts { get; set; }
+
+        [StringLength(5000)]
+        [DataType(DataType.MultilineText)]
+        [Display(Name = "This text will be visible only for users with KYC status OK")]
+        public string InfoForKycUsers { get; set; }
+
+        [StringLength(5000)]
+        [DataType(DataType.MultilineText)]
+        [Display(Name = "Description footer")]
+        public string DescriptionFooter { get; set; }
     }
 }

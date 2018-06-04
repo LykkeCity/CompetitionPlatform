@@ -1,4 +1,6 @@
-﻿namespace CompetitionPlatform.Models.ProjectViewModels
+﻿using CompetitionPlatform.Data.AzureRepositories.Project;
+
+namespace CompetitionPlatform.Models.ProjectViewModels
 {
     public class OtherProjectViewModel
     {
@@ -7,5 +9,17 @@
         public int Members { get; set; }
         public double BudgetFirstPlace { get; set; }
         public double? BudgetSecondPlace { get; set; }
+        
+        public static OtherProjectViewModel Create(IProjectData project)
+        {
+            return new OtherProjectViewModel
+            {
+                Id = project.Id,
+                Name = project.Name,
+                BudgetFirstPlace = project.BudgetFirstPlace,
+                BudgetSecondPlace = project.BudgetSecondPlace,
+                Members = project.ParticipantsCount
+            };
+        }
     }
 }

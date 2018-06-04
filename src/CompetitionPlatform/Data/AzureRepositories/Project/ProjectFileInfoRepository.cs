@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using AzureStorage;
+using Microsoft.AspNetCore.Http;
 using Microsoft.WindowsAzure.Storage.Table;
 
 namespace CompetitionPlatform.Data.AzureRepositories.Project
@@ -28,6 +29,19 @@ namespace CompetitionPlatform.Data.AzureRepositories.Project
                 RowKey = GenerateRowKey(src.ProjectId),
                 FileName = src.FileName,
                 ContentType = src.ContentType
+            };
+
+            return result;
+        }
+
+        public static ProjectFileInfoEntity Create(IFormFile file, string projectId)
+        {
+            var result = new ProjectFileInfoEntity
+            {
+                PartitionKey = GeneratePartitionKey(),
+                RowKey = GenerateRowKey(projectId),
+                FileName = file.FileName,
+                ContentType = file.ContentType
             };
 
             return result;

@@ -119,7 +119,7 @@ namespace CompetitionPlatform.Controllers
 
             if (!string.IsNullOrEmpty(user.Email))
             {
-                if (await IsOkKycStatus(user))
+                if (await IsOkKycStatusAsync(user))
                 {
                     return View("CreateProject");
                 }
@@ -128,8 +128,11 @@ namespace CompetitionPlatform.Controllers
             return View("CreateClosed");
         }
 
-        private async Task<bool> IsOkKycStatus(UserModel user)
+        private async Task<bool> IsOkKycStatusAsync(UserModel user)
         {
+            if (user.Id == null)
+                return false;
+            
             var kycStatus = await _kycService.GetStatusAsync(user.Id, KycProfile.Default);
             var status = (KycStatus)Enum.Parse(typeof(KycStatus), kycStatus.Name);
             return status == KycStatus.Ok;
@@ -216,7 +219,7 @@ namespace CompetitionPlatform.Controllers
                 //Don't let non-admin users create Initiative projects
                 if (userRole == null || userRole.Role != "ADMIN")
                 {
-                    if (await IsOkKycStatus(user) && projectViewModel.Status != Status.Draft)
+                    if (await IsOkKycStatusAsync(user) && projectViewModel.Status != Status.Draft)
                     {
                         return View("CreateInitiativeClosed");
                     }
@@ -304,7 +307,7 @@ namespace CompetitionPlatform.Controllers
             //Don't let non-admin users edit their draft projects to Initiative status
             if (userRole == null || userRole.Role != "ADMIN")
             {
-                if (await IsOkKycStatus(user) && projectViewModel.Status != Status.Draft)
+                if (await IsOkKycStatusAsync(user) && projectViewModel.Status != Status.Draft)
                 {
                     return View("CreateInitiativeClosed");
                 }
@@ -473,7 +476,7 @@ namespace CompetitionPlatform.Controllers
                 await AddVotingMailToQueue(project);
             }
 
-            if (projectViewModel.Status == Status.Archive) //project.Status != Status.Archive && 
+            if (projectViewModel.Status == Status.Archive)
             {
                 if (!project.SkipVoting)
                 {
@@ -573,8 +576,7 @@ namespace CompetitionPlatform.Controllers
             var projectFollows = follows.Where(f => f.ProjectId == projectId).ToList();
             return projectFollows;
         }
-
-        // TODO: Name this something more descriptive - looks like it's filling in the view-specific data for the project?
+        
         public async Task<IActionResult> ProjectDetails(string id, bool commentsActive = false, bool participantsActive = false, bool resultsActive = false, bool winnersActive = false)
         {
             if (TempData["ShowParticipantAddedModal"] != null)
@@ -591,28 +593,14 @@ namespace CompetitionPlatform.Controllers
             {
                 ViewBag.VotedTwice = (bool)TempData["ShowVotedTwiceModal"];
             }
-
-            // TODO: these can just be ViewBag.CommentsActive = commentsActive
-            if (commentsActive)
-            {
-                ViewBag.CommentsActive = true;
-            }
-
-            if (participantsActive)
-            {
-                ViewBag.ParticipantsActive = true;
-            }
-
-            if (winnersActive)
-            {
-                ViewBag.WinnersActive = true;
-            }
-
-            if (resultsActive)
-            {
-                ViewBag.ResultsActive = true;
-            }
-
+            
+            ViewBag.CommentsActive = commentsActive;
+            ViewBag.ParticipantsActive = participantsActive;
+            ViewBag.WinnersActive = winnersActive;
+            ViewBag.ResultsActive = resultsActive;
+            
+            ViewBag.IsKycOkStatus = await IsOkKycStatusAsync(UserModel.GetAuthenticatedUser(User.Identity));
+            
             var projectExists = await _projectRepository.GetAsync(id);
 
             if (projectExists == null)
@@ -625,6 +613,7 @@ namespace CompetitionPlatform.Controllers
 
             return View(viewModel);
         }
+
         // TODO: A lot of this, like the fetch methods should probably be its own ProjectModel class - it's really about the 
         // Project, not just the ProjectView and anything that's related to the view only (like the projectCategories) 
         // can get pushed into the separate ProjectViewModel class that has a ProjectModel property on it.
@@ -641,26 +630,7 @@ namespace CompetitionPlatform.Controllers
             // TODO: And these type of additional fetch methods can be methods on the model - the more we break
             // it up, the easier it is to test and reuse. 
             var comments = await _commentsRepository.GetProjectCommentsAsync(id);
-
-            // TODO: Definitely should be a FormatComments()
-            foreach (var comment in comments)
-            {
-                if (string.IsNullOrEmpty(comment.UserIdentifier))
-                {
-                    var profile = await _personalDataService.FindClientsByEmail(comment.UserId);
-                    comment.UserIdentifier = profile.Id;
-                    await _commentsRepository.UpdateAsync(comment, id);
-                }
-
-                projectDetailsAvatarIds.Add(comment.UserIdentifier);
-                var commenterStreamsId = await _streamsIdRepository.GetOrCreateAsync(comment.UserIdentifier);
-                comment.StreamsId = commenterStreamsId.StreamsId;
-
-                if (!string.IsNullOrEmpty(comment.Comment))
-                {
-                    comment.Comment = Regex.Replace(comment.Comment, @"\r\n?|\n", "<br />");
-                }
-            }
+            await FormatComments(id, projectDetailsAvatarIds, comments);
 
             var participants = await _participantsRepository.GetProjectParticipantsAsync(id);
 
@@ -739,15 +709,7 @@ namespace CompetitionPlatform.Controllers
                 result.StreamsId = resultStreamsId.StreamsId;
             }
 
-            var statusBarPartial = new ProjectDetailsStatusBarViewModel
-            {
-                Status = project.Status,
-                ParticipantsCount = participants.Count(),
-                CompetitionRegistrationDeadline = project.CompetitionRegistrationDeadline,
-                ImplementationDeadline = project.ImplementationDeadline,
-                VotingDeadline = project.VotingDeadline,
-                StatusCompletionPercent = CalculateStatusCompletionPercent(project)
-            };
+            var statusBarPartial = ProjectDetailsStatusBarViewModel.Create(project, participants.Count());
 
             var commentsPartial = new ProjectCommentPartialViewModel
             {
@@ -846,7 +808,9 @@ namespace CompetitionPlatform.Controllers
                 NameTag = project.NameTag,
                 AuthorAvatarUrl = avatarsDictionary[project.AuthorIdentifier],
                 AuthorStreamsId = authorStreamsId.StreamsId,
-                Experts = allExperts.Select(ExpertViewModel.Create).ToList()
+                Experts = allExperts.Select(ExpertViewModel.Create).ToList(),
+                InfoForKycUsers = project.InfoForKycUsers,
+                DescriptionFooter = project.DescriptionFooter
             };
 
             if (!string.IsNullOrEmpty(project.Tags))
@@ -893,6 +857,28 @@ namespace CompetitionPlatform.Controllers
             return projectViewModel;
         }
 
+        private async Task FormatComments(string id, List<string> projectDetailsAvatarIds, IEnumerable<ICommentData> comments)
+        {
+            foreach (var comment in comments)
+            {
+                if (string.IsNullOrEmpty(comment.UserIdentifier))
+                {
+                    var profile = await _personalDataService.FindClientsByEmail(comment.UserId);
+                    comment.UserIdentifier = profile.Id;
+                    await _commentsRepository.UpdateAsync(comment, id);
+                }
+
+                projectDetailsAvatarIds.Add(comment.UserIdentifier);
+                var commenterStreamsId = await _streamsIdRepository.GetOrCreateAsync(comment.UserIdentifier);
+                comment.StreamsId = commenterStreamsId.StreamsId;
+
+                if (!string.IsNullOrEmpty(comment.Comment))
+                {
+                    comment.Comment = Regex.Replace(comment.Comment, @"\r\n?|\n", "<br />");
+                }
+            }
+        }
+
         private async Task<List<OtherProjectViewModel>> GetOtherProjects(string id)
         {
             var projects = await _projectRepository.GetProjectsAsync();
@@ -902,16 +888,7 @@ namespace CompetitionPlatform.Controllers
 
             foreach (var project in filteredProjects)
             {
-                var otherProject = new OtherProjectViewModel
-                {
-                    Id = project.Id,
-                    Name = project.Name,
-                    BudgetFirstPlace = project.BudgetFirstPlace,
-                    BudgetSecondPlace = project.BudgetSecondPlace,
-                    Members = project.ParticipantsCount
-                };
-
-                otherProjects.Add(otherProject);
+                otherProjects.Add(OtherProjectViewModel.Create(project));
             }
 
             return otherProjects;
@@ -937,6 +914,7 @@ namespace CompetitionPlatform.Controllers
                     winner.WinnerIdentifier = profile.Id;
                     await _winnersRepository.UpdateAsync(winner);
                 }
+
                 if (!string.IsNullOrEmpty(winner.WinnerIdentifier))
                 {
                     UserModel.GenerateStreamsId(_streamsIdRepository, winner.WinnerIdentifier);
@@ -971,55 +949,9 @@ namespace CompetitionPlatform.Controllers
             {
                 await _fileRepository.InsertProjectFile(file.OpenReadStream(), projectId);
 
-                var fileInfo = new ProjectFileInfoEntity
-                {
-                    RowKey = projectId,
-                    ContentType = file.ContentType,
-                    FileName = file.FileName
-                };
-
+                var fileInfo = ProjectFileInfoEntity.Create(file, projectId);
                 await _fileInfoRepository.SaveAsync(fileInfo);
             }
-        }
-
-        private int CalculateStatusCompletionPercent(IProjectData projectData)
-        {
-            var completion = 0;
-
-            switch (projectData.Status)
-            {
-                case Status.Initiative:
-                    completion = 100;
-                    break;
-                case Status.Registration:
-                    completion = CalculateDateProgressPercent(projectData.Created,
-                        projectData.CompetitionRegistrationDeadline);
-                    break;
-                case Status.Submission:
-                    completion = CalculateDateProgressPercent(projectData.CompetitionRegistrationDeadline,
-                        projectData.ImplementationDeadline);
-                    break;
-                case Status.Voting:
-                    completion = CalculateDateProgressPercent(projectData.ImplementationDeadline,
-                        projectData.VotingDeadline);
-                    break;
-                case Status.Archive:
-                    completion = 100;
-                    break;
-            }
-            return (completion < 0) ? 0 : completion;
-        }
-
-        private int CalculateDateProgressPercent(DateTime start, DateTime end)
-        {
-            var totalDays = (end - start).Days;
-
-            if (totalDays == 0) return 100;
-
-            var daysPassed = (DateTime.UtcNow - start).Days;
-            var percent = daysPassed * 100 / totalDays;
-
-            return (percent > 100) ? 100 : percent;
         }
 
         private IEnumerable<ICommentData> SortComments(IEnumerable<ICommentData> comments)
@@ -1113,15 +1045,7 @@ namespace CompetitionPlatform.Controllers
                 return Json(new { Error = "User with this email does not exist!"});
             }
 
-            var expert = new ExpertViewModel
-            {
-                FullName = $"{profile.FullName}",
-                UserId = email,
-                UserIdentifier = profile.Id,
-                ProjectId = projectId,
-                Description = description
-            };
-
+            var expert = ExpertViewModel.Create(profile, projectId, description);
             await _projectExpertsRepository.SaveAsync(expert);
             
             return Json(expert);
