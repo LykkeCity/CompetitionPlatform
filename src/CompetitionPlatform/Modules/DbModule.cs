@@ -136,7 +136,7 @@ namespace CompetitionPlatform.Modules
 
             builder.RegisterInstance(
                 new KycProfileServiceV2Client(new KycServiceClientSettings{ApiKey = kycSettings.ApiKey, ServiceUri = kycSettings.ServiceUri }, _log)
-            ).As<IKycProfileServiceV2>().SingleInstance();;
+            ).As<IKycProfileServiceV2>().SingleInstance();
 
             builder.RegisterEmailSenderViaAzureQueueMessageProducer(_settings.ConnectionString(x => x.LykkeStreams.Azure.MessageQueueConnString));
 

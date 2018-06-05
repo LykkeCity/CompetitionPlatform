@@ -20,7 +20,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using CompetitionPlatform.Models.ProjectModels;
 using Lykke.Service.PersonalData.Contract;
-using AzureStorage.Queue;
+using Lykke.Messages.Email;
 
 namespace CompetitionPlatform.Controllers
 {
@@ -38,7 +38,7 @@ namespace CompetitionPlatform.Controllers
         private readonly BaseSettings _settings;
         private readonly IPersonalDataService _personalDataService;
         private readonly IStreamsIdRepository _streamsIdRepository;
-        private readonly IQueueExt _emailsQueue;
+        private readonly IEmailSender _emailSender;
 
         public HomeController(IProjectRepository projectRepository, IProjectCommentsRepository commentsRepository,
             IProjectCategoriesRepository categoriesRepository, IProjectParticipantsRepository participantsRepository,
@@ -46,7 +46,7 @@ namespace CompetitionPlatform.Controllers
             IProjectWinnersRepository winnersRepository, IUserFeedbackRepository feedbackRepository,
             IUserRolesRepository userRolesRepository, BaseSettings settings,
             IPersonalDataService personalDataService, IStreamsIdRepository streamsIdRepository,
-            IQueueExt emailsQueue)
+            IEmailSender emailSender)
         {
             _projectRepository = projectRepository;
             _commentsRepository = commentsRepository;
@@ -60,7 +60,7 @@ namespace CompetitionPlatform.Controllers
             _settings = settings;
             _personalDataService = personalDataService;
             _streamsIdRepository = streamsIdRepository;
-            _emailsQueue = emailsQueue;
+            _emailSender = emailSender;
         }
 
         public async Task<IActionResult> Index()
@@ -328,11 +328,15 @@ namespace CompetitionPlatform.Controllers
 
             await _feedbackRepository.SaveAsync(feedbackViewModel);
 
-            if (_emailsQueue != null)
+            if (_emailSender != null)
             {
                 var message = NotificationMessageHelper.FeedbackMessage(user.Email, user.GetFullName(),
                     feedbackViewModel.Feedback);
-                await _emailsQueue.PutMessageAsync(message);
+
+                foreach (var email in _settings.LykkeStreams.ProjectCreateNotificationReceiver)
+                {
+                    await _emailSender.SendEmailAsync(NotificationMessageHelper.EmailSender, email, message);
+                }
             }
 
             return RedirectToAction("Index", "Home");
