@@ -240,13 +240,6 @@ namespace CompetitionPlatform.Controllers
                     await SendProjectCreateNotification(projectViewModel);
                 }
 
-                if (_emailsQueue != null)
-                {
-                    var message = NotificationMessageHelper.ProjectCreatedMessage(user.Email, user.GetFullName(),
-                        projectViewModel.Name);
-                    await _emailsQueue.PutMessageAsync(message);
-                }
-
                 // TODO: How is this different than the _projectRepository.SaveAsync?
                 await SaveProjectFile(projectViewModel.File, projectId);
                 UserModel.GenerateStreamsId(_streamsIdRepository, user.Id);
@@ -985,17 +978,11 @@ namespace CompetitionPlatform.Controllers
 
         private async Task SendProjectCreateNotification(IProjectData model)
         {
-            var message = new Lykke.Messages.Email.MessageData.PlainTextData
-            {
-                Sender = "Lykke Notifications",
-                Text = "New Project was created. Project name - " + model.Name + ", Project author - " + model.AuthorFullName +
-                ", Project Link - https://streams.lykke.com/Project/ProjectDetails/" + model.Id,
-                Subject = "New Project Created!"
-            };
+            var message = NotificationMessageHelper.CreateProjectMessage(model);
 
             foreach (var email in _settings.LykkeStreams.ProjectCreateNotificationReceiver)
             {
-                await _emailSender.SendEmailAsync("Lykke", email, message);
+                await _emailSender.SendEmailAsync(NotificationMessageHelper.EmailSender, email, message);
             }
         }
 
