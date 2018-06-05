@@ -3,6 +3,7 @@ using System.Linq;
 using CompetitionPlatform.Data.AzureRepositories.Project;
 using CompetitionPlatform.Data.AzureRepositories.Users;
 using CompetitionPlatform.Models;
+using Lykke.Messages.Email.MessageData;
 using Newtonsoft.Json;
 
 namespace CompetitionPlatform.Helpers
@@ -10,7 +11,7 @@ namespace CompetitionPlatform.Helpers
     public static class NotificationMessageHelper
     {
         private const string MailType = "CompetitionPlatformMail:";
-        private const string EmailSender = "Lykke Streams";
+        public const string EmailSender = "Lykke Streams";
 
         public static string GenerateRegistrationMessage(string firstName, string email)
         {
@@ -310,51 +311,29 @@ namespace CompetitionPlatform.Helpers
 
             return MailType + message;
         }
-
-        public static string ProjectCreatedMessage(string userEmail, string userName, string projectName)
+        
+        public static PlainTextData FeedbackMessage(string userEmail, string userName, string feedback)
         {
-            var messageData = new MessageData
+            var messageData = new PlainTextData
             {
-                Subject = "New Project Created - " + projectName,
-                Text = "User " + userName + " (" + userEmail + ") " + "Has Created a new project - " + projectName
-            };
-
-            var data = new Data
-            {
-                BroadcastGroup = 600,
-                MessageData = messageData
-            };
-
-            var plainTextBroadCast = new PlainTextBroadcast { Data = data };
-
-            var plainTextBroadcastString = JsonConvert.SerializeObject(plainTextBroadCast);
-
-            var returnString = "PlainTextBroadcast:" + plainTextBroadcastString;
-
-            return returnString;
-        }
-
-        public static string FeedbackMessage(string userEmail, string userName, string feedback)
-        {
-            var messageData = new MessageData
-            {
+                Sender = EmailSender,
                 Subject = "New Feedback",
                 Text = "User " + userName + " (" + userEmail + ") " + "Has Left new feedback - " + feedback
             };
+            
+            return messageData;
+        }
 
-            var data = new Data
+        public static PlainTextData CreateProjectMessage(IProjectData model)
+        {
+            var message = new PlainTextData
             {
-                BroadcastGroup = 600,
-                MessageData = messageData
+                Sender = EmailSender,
+                Text = "New Project was created. Project name - " + model.Name + ", Project author - " + model.AuthorFullName +
+                ", Project Link - https://streams.lykke.com/Project/ProjectDetails/" + model.Id,
+                Subject = "New Project Created!"
             };
-
-            var plainTextBroadCast = new PlainTextBroadcast { Data = data };
-
-            var plainTextBroadcastString = JsonConvert.SerializeObject(plainTextBroadCast);
-
-            var returnString = "PlainTextBroadcast:" + plainTextBroadcastString;
-
-            return returnString;
+            return message;
         }
 
         private static string GetFirstNameFromFullName(string fullName)
