@@ -12,6 +12,7 @@ namespace CompetitionPlatform.Models.ProjectViewModels
         [Required]
         public string ProjectId { get; set; }
 
+        [Required]
         [DataType(DataType.MultilineText)]
         [Display(Name = "Add custom Terms and Conditions Page for current project")]
         public string Content { get; set; }
