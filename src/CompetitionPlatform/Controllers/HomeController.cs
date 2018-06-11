@@ -21,6 +21,7 @@ using Newtonsoft.Json.Serialization;
 using CompetitionPlatform.Models.ProjectModels;
 using Lykke.Service.PersonalData.Contract;
 using Lykke.Messages.Email;
+using CompetitionPlatform.Data.AzureRepositories.Admin;
 
 namespace CompetitionPlatform.Controllers
 {
@@ -39,6 +40,7 @@ namespace CompetitionPlatform.Controllers
         private readonly IPersonalDataService _personalDataService;
         private readonly IStreamsIdRepository _streamsIdRepository;
         private readonly IEmailSender _emailSender;
+        private readonly ITermsPageRepository _termsPageRepository;
 
         public HomeController(IProjectRepository projectRepository, IProjectCommentsRepository commentsRepository,
             IProjectCategoriesRepository categoriesRepository, IProjectParticipantsRepository participantsRepository,
@@ -46,7 +48,7 @@ namespace CompetitionPlatform.Controllers
             IProjectWinnersRepository winnersRepository, IUserFeedbackRepository feedbackRepository,
             IUserRolesRepository userRolesRepository, BaseSettings settings,
             IPersonalDataService personalDataService, IStreamsIdRepository streamsIdRepository,
-            IEmailSender emailSender)
+            IEmailSender emailSender, ITermsPageRepository termsPageRepository)
         {
             _projectRepository = projectRepository;
             _commentsRepository = commentsRepository;
@@ -61,6 +63,7 @@ namespace CompetitionPlatform.Controllers
             _personalDataService = personalDataService;
             _streamsIdRepository = streamsIdRepository;
             _emailSender = emailSender;
+            _termsPageRepository = termsPageRepository;
         }
 
         public async Task<IActionResult> Index()
@@ -397,8 +400,15 @@ namespace CompetitionPlatform.Controllers
             return View("AuthenticationFailed");
         }
 
-        public IActionResult Terms()
+        public async Task<IActionResult> Terms(string id)
         {
+            if (!string.IsNullOrEmpty(id))
+            {
+                var termsPage = await _termsPageRepository.GetAsync(id);
+                var model = TermsPageViewModel.Create(termsPage);
+                return View("CustomTerms", model);
+            }
+
             return View();
         }
 
@@ -443,6 +453,21 @@ namespace CompetitionPlatform.Controllers
                                            x.ProjectStatus != Status.Draft.ToString());
 
             return projects.Count().ToString();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddCustomTermsPage(TermsPageViewModel model)
+        {
+            try
+            {
+                await _termsPageRepository.SaveAsync(model.ProjectId, model.Content);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Error = ex.Message });
+            }
+            
+            return Json(new { Success = true });
         }
 
         private string GetCurrentVersion()

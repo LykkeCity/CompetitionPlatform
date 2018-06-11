@@ -29,6 +29,7 @@ using Lykke.Service.PersonalData.Contract;
 using Lykke.Service.Kyc.Abstractions.Services;
 using Lykke.Service.Kyc.Abstractions.Domain.Profile;
 using Lykke.Service.Kyc.Abstractions.Domain.Verification;
+using CompetitionPlatform.Data.AzureRepositories.Admin;
 
 namespace CompetitionPlatform.Controllers
 {
@@ -56,6 +57,7 @@ namespace CompetitionPlatform.Controllers
         private readonly IStreamsIdRepository _streamsIdRepository;
         private readonly IExpertsService _expertsService;
         private readonly IKycProfileServiceV2 _kycService;
+        private readonly ITermsPageRepository _termsPageRepository;
 
         public ProjectController(IProjectRepository projectRepository, IProjectCommentsRepository commentsRepository,
             IProjectFileRepository fileRepository, IProjectFileInfoRepository fileInfoRepository,
@@ -67,9 +69,9 @@ namespace CompetitionPlatform.Controllers
             ILog log, IProjectExpertsRepository projectExpertsRepository,
             IStreamRepository streamRepository, IPersonalDataService personalDataService,
             Lykke.Messages.Email.IEmailSender emailSender,
-            IStreamsIdRepository streamsIdRepository,
-            IKycProfileServiceV2 kycService,
-            IExpertsService expertsService)
+            IStreamsIdRepository streamsIdRepository, 
+            IExpertsService expertsService,
+            IKycProfileServiceV2 kycService, ITermsPageRepository termsPageRepository)
         {
             _projectRepository = projectRepository;
             _commentsRepository = commentsRepository;
@@ -91,8 +93,9 @@ namespace CompetitionPlatform.Controllers
             _personalDataService = personalDataService;
             _emailSender = emailSender;
             _streamsIdRepository = streamsIdRepository;
-            _kycService = kycService;
             _expertsService = expertsService;
+            _kycService = kycService;
+            _termsPageRepository = termsPageRepository;
         }
 
 
@@ -146,6 +149,16 @@ namespace CompetitionPlatform.Controllers
 
             var viewModel = await GetProjectViewModel(id);
             viewModel.IsAuthor = viewModel.AuthorId == user.Email;
+            
+            var termsPage = await _termsPageRepository.GetAsync(id);
+            if (termsPage != null)
+            {
+                ViewBag.TermsPage = TermsPageViewModel.Create(termsPage);
+            } 
+            else 
+            { 
+                ViewBag.TermsPage = TermsPageViewModel.Create(id);
+            }
 
             // TODO: move to a bool CanUserEditProject(
             if (viewModel.IsAdmin)

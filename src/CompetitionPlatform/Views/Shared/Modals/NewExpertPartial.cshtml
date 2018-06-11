@@ -1,0 +1,33 @@
+﻿<div class="modal modal--message" id="modal_new_expert" tabindex="-1" role="dialog">
+
+    <div class="modal_valign">
+        <div class="modal_valign__row">
+            <div class="modal_valign__cell">
+
+                <div class="modal__dialog" role="document">
+                    <div class="modal__content">
+                        <button type="button" class="close visible-xs" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+                        <div class="modal__body">
+                            <form id="new_expert_form" action="@Url.Action("AddExpert", "Project")" method="post">
+                                <div class="text">Add new Expert</div>
+                                <div class="form-group">
+                                    <input type="email" name="email" class="form-control" placeholder="Email" required data-rule-required="true" />
+                                </div>
+                                <div class="form-group">
+                                    <input name="description" class="form-control" placeholder="Description" />
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal__footer">
+                            <button type="button" class="btn btn-block add_expert_submit">Ok</button>
+                            <button type="button" class="btn btn-block" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>

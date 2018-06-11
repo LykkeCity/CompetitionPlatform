@@ -163,6 +163,11 @@ namespace CompetitionPlatform
                 app.UseMvc(routes =>
                 {
                     routes.MapRoute(
+                        name: "Terms",
+                        template: "Terms/{id?}",
+                        defaults: new { controller = "Home", action = "Terms" });
+
+                    routes.MapRoute(
                         name: "default",
                         template: "{controller}/{action}/{id?}",
                         defaults: new { controller = "Home", action = "Index" });
