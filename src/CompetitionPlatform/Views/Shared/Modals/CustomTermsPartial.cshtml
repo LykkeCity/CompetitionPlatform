@@ -1,0 +1,40 @@
+﻿@model CompetitionPlatform.Models.ProjectViewModels.TermsPageViewModel
+
+<div class="modal" id="modal_custom_terms" tabindex="-1" role="dialog">
+
+    <div class="modal_valign">
+        <div class="modal_valign__row">
+            <div class="modal_valign__cell">
+
+                <div class="modal__dialog" role="document">
+                    <div class="modal__content">
+                        <button type="button" class="close visible-xs" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+                        <div class="modal__body">
+                            <form id="custom_terms_form" action="@Url.Action("AddCustomTermsPage", "Home")" method="post">
+                                <input type="hidden" asp-for="ProjectId" />
+                                <p class="text-muted">Add custom Terms and Conditions Page for current project</p>
+                                <div class="form-group">
+                                    <textarea asp-for="Content" class="form-control richEditor" rows="20"></textarea>
+                                </div>
+                                <span asp-validation-for="Content" class="text-danger" />
+                            </form>
+                        </div>
+                        <div class="modal__footer">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <button type="button" class="btn btn-block terms_page_submit">Ok</button>
+                                </div>
+                                <div class="col-md-6">
+                                    <button type="button" class="btn btn-block" data-dismiss="modal">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -332,6 +332,31 @@
                         @Html.ValidationMessageFor(x => x.ProjectUrl)
                     </div>
                 }
+                @{
+                    var termsPage = (TermsPageViewModel)ViewBag.TermsPage;
+                    var newTermsPageStyle = "";
+                    var editTermsPageStyle = "";
+                    if (termsPage == null || string.IsNullOrEmpty(termsPage.Content))
+                    {
+                        editTermsPageStyle = "display: none;";
+                    }
+                    else
+                    {
+                        newTermsPageStyle = "display: none;";
+                    }
+                }
+
+                <div class="form-group new-terms-page" style="@newTermsPageStyle">
+                    <button class="btn custom_terms_page" type="button">Create custom Terms and Conditions page</button>
+                </div>
+                <div class="form-group edit-terms-page" style="@editTermsPageStyle">
+                    <button class="btn custom_terms_page col-md-5" type="button">Edit custom Terms and Conditions page</button>
+                    <p class="text-muted col-md-7" style="line-height: 50px;">
+                        <a href="@Context.Request.Scheme://@Context.Request.Host/Terms/@Model.Id" target="_blank">
+                            @Context.Request.Scheme://@Context.Request.Host/Terms/@Model.Id
+                        </a>
+                    </p>
+                </div>
 
                 <div class="form-group">
                     <div class="row">
@@ -375,14 +400,14 @@
                         }
                         else
                         {
-                            <h4 style="font-family: 'Proxima Nova', 'Segoe UI', Roboto, 'Droid Sans', 'Helvetica Neue', Arial, sans-serif; line-height: 1.67; color: #333333; margin-top: 2.8125rem; margin-bottom: 10px; font-size: 1.3125rem;" data-mce-style="font-family: 'Proxima Nova', 'Segoe UI', Roboto, 'Droid Sans', 'Helvetica Neue', Arial, sans-serif; line-height: 1.67; color: #333333; margin-top: 2.8125rem; margin-bottom: 10px; font-size: 1.3125rem;">Support</h4>
-                            <p style="font-weight: normal">
+                    <h4 style="font-family: 'Proxima Nova', 'Segoe UI', Roboto, 'Droid Sans', 'Helvetica Neue', Arial, sans-serif; line-height: 1.67; color: #333333; margin-top: 2.8125rem; margin-bottom: 10px; font-size: 1.3125rem;" data-mce-style="font-family: 'Proxima Nova', 'Segoe UI', Roboto, 'Droid Sans', 'Helvetica Neue', Arial, sans-serif; line-height: 1.67; color: #333333; margin-top: 2.8125rem; margin-bottom: 10px; font-size: 1.3125rem;">Support</h4>
+                    <p style="font-weight: normal">
                                 Please refer to the Terms of Use of the organization and remuneration issues. 
                                 If you have any questions, please feel free to ask them in the contest comments.&nbsp;
                             </p>
                     
-                            <h4 style="font-family: 'Proxima Nova', 'Segoe UI', Roboto, 'Droid Sans', 'Helvetica Neue', Arial, sans-serif; line-height: 1.67; color: #333333; margin-top: 2.8125rem; margin-bottom: 10px; font-size: 1.3125rem;" data-mce-style="font-family: 'Proxima Nova', 'Segoe UI', Roboto, 'Droid Sans', 'Helvetica Neue', Arial, sans-serif; line-height: 1.67; color: #333333; margin-top: 2.8125rem; margin-bottom: 10px; font-size: 1.3125rem;">Disclaimer</h4>
-                            <p dir="ltr" style="color: #3f4d60; font-family: 'Proxima Nova', 'Segoe UI', Roboto, 'Droid Sans', 'Helvetica Neue', Arial, sans-serif; line-height: 1.67 !important; font-size: 1.125rem !important; margin: 0px 0px 0.9375rem 0px !important;" data-mce-style="color: #3f4d60; font-family: 'Proxima Nova', 'Segoe UI', Roboto, 'Droid Sans', 'Helvetica Neue', Arial, sans-serif; line-height: 1.67 !important; font-size: 1.125rem !important; margin: 0px 0px 0.9375rem 0px !important;">
+                    <h4 style="font-family: 'Proxima Nova', 'Segoe UI', Roboto, 'Droid Sans', 'Helvetica Neue', Arial, sans-serif; line-height: 1.67; color: #333333; margin-top: 2.8125rem; margin-bottom: 10px; font-size: 1.3125rem;" data-mce-style="font-family: 'Proxima Nova', 'Segoe UI', Roboto, 'Droid Sans', 'Helvetica Neue', Arial, sans-serif; line-height: 1.67; color: #333333; margin-top: 2.8125rem; margin-bottom: 10px; font-size: 1.3125rem;">Disclaimer</h4>
+                    <p dir="ltr" style="color: #3f4d60; font-family: 'Proxima Nova', 'Segoe UI', Roboto, 'Droid Sans', 'Helvetica Neue', Arial, sans-serif; line-height: 1.67 !important; font-size: 1.125rem !important; margin: 0px 0px 0.9375rem 0px !important;" data-mce-style="color: #3f4d60; font-family: 'Proxima Nova', 'Segoe UI', Roboto, 'Droid Sans', 'Helvetica Neue', Arial, sans-serif; line-height: 1.67 !important; font-size: 1.125rem !important; margin: 0px 0px 0.9375rem 0px !important;">
                                 Submitted results must be publicly available on the GitHub.
                                 There is no guarantee of winning a prize.
                                 The prizes are only awarded to entries that the Lykke judges find worthwhile.
@@ -625,6 +650,11 @@
     </div>
 </section>
 
+@section modals {
+    @Html.Partial("Modals/NewExpertPartial.cshtml")
+    @Html.Partial("Modals/CustomTermsPartial.cshtml", (TermsPageViewModel)ViewBag.TermsPage)
+}
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
@@ -718,7 +748,38 @@
                 newExpertDropdown.val(response.userId);
                 newExpertDropdown.removeClass("select2-hidden-accessible").select2();
             });
-        })
+        });
+
+        $(".custom_terms_page").on("click", function (e) {
+            e.preventDefault();
+            $('#modal_custom_terms').modal('show');
+        });
+
+        $(".terms_page_submit").on("click", function (e) {
+            e.preventDefault();
+
+            tinyMCE.triggerSave();
+            var form = $("#custom_terms_form");
+            form.validate();
+            if (!form.valid()) {
+                return;
+            }
+
+            form.find(".text-danger").remove();
+            var data = form.serialize();
+
+            $.post(form.attr("action"), data, function (response) {
+                if (response.error) {
+                    form.append("<div class='text-danger '>" + response.error + "</div>");
+                    return;
+                }
+
+                $('#modal_custom_terms').modal('hide');
+                clearForm(form);
+                $('.new-terms-page').hide();
+                $('.edit-terms-page').show();
+            });
+        });
 
         function clearForm(form) {
             form.find("select").val("");
