@@ -3,6 +3,7 @@ using AzureStorage;
 using AzureStorage.Blob;
 using AzureStorage.Tables;
 using Common.Log;
+using CompetitionPlatform.Data.AzureRepositories.Admin;
 using CompetitionPlatform.Data.AzureRepositories.Blog;
 using CompetitionPlatform.Data.AzureRepositories.Expert;
 using CompetitionPlatform.Data.AzureRepositories.Project;
@@ -121,6 +122,10 @@ namespace CompetitionPlatform.Modules
             builder.RegisterInstance(
                 new StreamsIdRepository(AzureTableStorage<StreamsIdEntity>.Create(connectionString, "StreamsId", _log))
             ).As<IStreamsIdRepository>().SingleInstance();
+
+            builder.RegisterInstance(
+                new TermsPageRepository(AzureTableStorage<TermsPageEntity>.Create(connectionString, "TermsPage", _log))
+            ).As<ITermsPageRepository>().SingleInstance();
 
             builder.RegisterInstance(
                 new ProjectCategoriesRepository()
