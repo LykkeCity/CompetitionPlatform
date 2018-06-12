@@ -203,7 +203,7 @@
 
     tinymce.init({
         selector: 'textarea.richEditor',
-        plugins: 'lists link image media  preview code',
+        plugins: 'lists link image media  preview code autoresize',
         toolbar1: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media'
     });
 
