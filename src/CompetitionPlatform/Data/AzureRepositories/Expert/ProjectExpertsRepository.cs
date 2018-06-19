@@ -116,5 +116,13 @@ namespace CompetitionPlatform.Data.AzureRepositories.Expert
                 return itm;
             });
         }
+
+        public async Task DeleteAsync(string userId, string projectId)
+        {
+            var partitionKey = ProjectExpertEntity.GeneratePartitionKey(projectId);
+            var rowKey = ProjectExpertEntity.GenerateRowKey(userId);
+            
+            await _projectExpertsTableStorage.DeleteIfExistAsync(partitionKey, rowKey);
+        }
     }
 }
