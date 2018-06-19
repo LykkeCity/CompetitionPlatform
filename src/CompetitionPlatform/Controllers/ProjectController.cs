@@ -1050,5 +1050,13 @@ namespace CompetitionPlatform.Controllers
             
             return Json(expert);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteExpert(string email, string projectId)
+        {
+            await _projectExpertsRepository.DeleteAsync(email, projectId);
+            
+            return Json(new { Success = true, });
+        }
     }
 }
