@@ -719,6 +719,8 @@
 
         $(".add_expert_submit").on("click", function (e) {
             e.preventDefault();
+            var $this = $(this);
+            $this.button('loading');
 
             var form = $("#new_expert_form");
             form.validate();
@@ -732,6 +734,7 @@
 
             $.post(form.attr("action"), data, function (response) {
                 if (response.error) {
+                    $this.button('reset');
                     form.append("<div class='text-danger '>" + response.error + "</div>");
                     return;
                 }
@@ -752,6 +755,7 @@
                 newExpertDropdown.attr("disabled", "disabled");
                 newExpertDropdown.val(response.userId);
                 newExpertDropdown.removeClass("select2-hidden-accessible").select2();
+                $this.button('reset');
             });
         });
 
