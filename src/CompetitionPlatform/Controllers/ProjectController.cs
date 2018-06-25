@@ -293,7 +293,7 @@ namespace CompetitionPlatform.Controllers
 
             if (projectViewModel.VotingDeadline == DateTime.MinValue)
                 projectViewModel.VotingDeadline = DateTime.UtcNow.Date;
-
+             
             var project = await _projectRepository.GetAsync(projectViewModel.Id);
 
             if (projectViewModel.AuthorId == null)
@@ -325,7 +325,7 @@ namespace CompetitionPlatform.Controllers
 
             projectViewModel.ParticipantsCount = project.ParticipantsCount;
 
-            var projectId = projectViewModel.Id;
+            var projectId = projectViewModel.Id; 
             var statusAndUrlChanged = projectViewModel.Status != Status.Draft &&
                                       projectViewModel.ProjectUrl != projectId;
 
@@ -1046,7 +1046,14 @@ namespace CompetitionPlatform.Controllers
             }
 
             var expert = ExpertViewModel.Create(profile, projectId, description);
-            await _projectExpertsRepository.SaveAsync(expert);
+            try
+            {
+                await _projectExpertsRepository.SaveAsync(expert);
+            }
+            catch (Exception)
+            {
+                return Json(new { Error = "This user is already an expert for this project!"});
+            }
             
             return Json(expert);
         }

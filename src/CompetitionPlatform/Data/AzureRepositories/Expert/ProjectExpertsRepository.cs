@@ -102,7 +102,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Expert
         public async Task SaveAsync(IProjectExpertData projectExpertData)
         {
             var newEntity = ProjectExpertEntity.Create(projectExpertData);
-            await _projectExpertsTableStorage.InsertOrMergeAsync(newEntity);
+            await _projectExpertsTableStorage.InsertAsync(newEntity);
         }
 
         public Task UpdateAsync(IProjectExpertData projectExpertData)
