@@ -70,10 +70,12 @@ namespace CompetitionPlatform.Controllers
 
             var clientId = userStreamsId.ClientId;
             
-            var profile = await _personalDataService.GetProfilePersonalDataAsync(clientId);
-            var user = UserModel.GetAuthenticatedUser(User.Identity);
+            var profile = await _personalDataService.GetAsync(clientId);
+            var avatars = await _personalDataService.GetClientAvatarsAsync(new List<string>{ clientId });
 
-            if (profile.ClientId == user.Id && profile.FirstName != user.FirstName)
+            var user = UserModel.GetAuthenticatedUser(User.Identity);
+            
+            if (profile.Id == user.Id && profile.FirstName != user.FirstName)
             {
                 var newIdentity = ClaimsHelper.UpdateFirstNameClaim(User.Identity, profile.FirstName);
                 var principal = new ClaimsPrincipal();
@@ -84,12 +86,13 @@ namespace CompetitionPlatform.Controllers
             var commentsViewModel = new CommentsViewModel
             {
                 CommentsList = await GetUserComments(profile.Email),
-                CommentAvatar = profile.AvatarUrl
+                CommentAvatar = avatars[clientId]
             };
 
             var userProfileViewModel = new UserProfileViewModel
             {
                 Profile = profile,
+                AvatarUrl = avatars[clientId],
                 WinningsSum = await GetUserWinnigsSum(profile.Email),
                 CreatedProjects = await GetCreatedProjects(profile.Email),
                 ParticipatedProjects = await GetParticipatedProjects(profile.Email),

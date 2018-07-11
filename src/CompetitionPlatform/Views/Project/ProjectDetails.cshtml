@@ -366,17 +366,17 @@
                         }
 
                         @await Html.PartialAsync("ProjectDetailsStatusPartial", new ProjectDetailsStatusViewModel
-                   {
-                       ProjectId = Model.Id,
-                       Status = Model.Status,
-                       VotesFor = Model.VotesFor,
-                       VotesAgainst = Model.VotesAgainst,
-                       CompetitionRegistrationDeadline = Model.CompetitionRegistrationDeadline,
-                       ImplementationDeadline = Model.ImplementationDeadline,
-                       VotingDeadline = Model.VotingDeadline,
-                       IsParticipant = Model.IsParticipant,
-                       HasResult = Model.ParticipantsPartial.HasResult
-                   })
+                       {
+                           ProjectId = Model.Id,
+                           Status = Model.Status,
+                           VotesFor = Model.VotesFor,
+                           VotesAgainst = Model.VotesAgainst,
+                           CompetitionRegistrationDeadline = Model.CompetitionRegistrationDeadline,
+                           ImplementationDeadline = Model.ImplementationDeadline,
+                           VotingDeadline = Model.VotingDeadline,
+                           IsParticipant = Model.IsParticipant,
+                           HasResult = Model.ParticipantsPartial.HasResult
+                       })
                     </div>
                     <div class="col-xs-6 col-sm-12">
 
