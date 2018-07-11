@@ -12,7 +12,7 @@
     <div class="container container--extend">
         <div class="row">
             <div class="pull-right">
-                @if (ClaimsHelper.GetUser(User.Identity).Id != null && ClaimsHelper.GetUser(User.Identity).Id == Model.Profile.ClientId)
+                @if (ClaimsHelper.GetUser(User.Identity).Id != null && ClaimsHelper.GetUser(User.Identity).Id == Model.Profile.Id)
                 {
                     <a href="@editProfileLink"><button class="btn btn-sm btn_edit">Edit Profile</button></a>
                 }
@@ -24,13 +24,13 @@
                     <div class="col-sm-8 user_profile__main">
                         <div class="user_badge">
                             <div class="user_badge__img">
-                                @if (Model.Profile.AvatarUrl == null)
+                                @if (Model.AvatarUrl == null)
                                 {
                                     <img src="~/assets/img/competition/user_default.svg" alt="user_image" width="160" height="160">
                                 }
                                 else
                                 {
-                                    <img src="@Model.Profile.AvatarUrl" alt="user_image" width="160" height="160">
+                                    <img src="@Model.AvatarUrl" alt="user_image" width="160" height="160">
                                 }
                             </div>
                             <div class="user_badge__content">
@@ -45,7 +45,7 @@
                                         <a target="_blank" href="@Model.Profile.Website">@Model.Profile.Website</a>
                                     }
                                 </div>
-                                <p>@Model.Profile.ShortBio</p>
+                                <p>@Html.Raw(Model.Profile.ShortBio)</p>
 
                                 <div class="user_badge__contacts">
                                     <div class="social">
