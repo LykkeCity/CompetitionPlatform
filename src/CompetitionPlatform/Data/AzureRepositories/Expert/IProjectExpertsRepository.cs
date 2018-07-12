@@ -23,5 +23,6 @@ namespace CompetitionPlatform.Data.AzureRepositories.Expert
         Task<IEnumerable<IProjectExpertData>> GetProjectExpertsAsync(string projectId);
         Task SaveAsync(IProjectExpertData projectExpertData);
         Task UpdateAsync(IProjectExpertData projectExpertData);
+        Task DeleteAsync(string userId, string projectId);
     }
 }
