@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using CompetitionPlatform.Models.ProjectViewModels;
 using Lykke.Service.PersonalData.Client.Models;
+using Lykke.Service.PersonalData.Contract.Models;
 
 namespace CompetitionPlatform.Models.UserProfile
 {
     public class UserProfileViewModel
     {
-        public ProfilePersonalData Profile { get; set; }
+        public IPersonalData Profile { get; set; }
+        public string AvatarUrl { get; set; }
         public double WinningsSum { get; set; }
         public List<ProjectCompactViewModel> ParticipatedProjects { get; set; }
         public List<ProjectCompactViewModel> WonProjects { get; set; }
