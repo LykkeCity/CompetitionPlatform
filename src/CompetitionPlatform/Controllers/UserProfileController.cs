@@ -175,7 +175,7 @@ namespace CompetitionPlatform.Controllers
                 }
             }
 
-            return sum;
+            return sum; 
         }
 
         private async Task<List<UserProfileCommentData>> GetUserComments(string email)
