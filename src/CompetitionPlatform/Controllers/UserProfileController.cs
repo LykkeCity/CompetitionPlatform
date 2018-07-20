@@ -232,7 +232,7 @@ namespace CompetitionPlatform.Controllers
                     if (follow != null)
                         following = true;
                 }
-
+                
                 if (string.IsNullOrEmpty(project.AuthorIdentifier))
                 {
                     var profile = await _personalDataService.FindClientsByEmail(project.AuthorId);
