@@ -22,6 +22,7 @@ using Lykke.Logs;
 using Lykke.SettingsReader;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.HttpOverrides;
+using Lykke.Common.ApiLibrary.Middleware;
 
 namespace CompetitionPlatform
 {
@@ -144,16 +145,7 @@ namespace CompetitionPlatform
                     app.UseBrowserLink();
                 }
 
-                var forwardingOptions = new ForwardedHeadersOptions
-                {
-                    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
-                };
-
-                forwardingOptions.KnownNetworks.Clear(); //its loopback by default
-                forwardingOptions.KnownProxies.Clear();
-
-                app.UseForwardedHeaders(forwardingOptions);
-
+                app.UseLykkeForwardedHeaders();
                 app.UseAuthentication();
 
                 app.UseStaticFiles();
