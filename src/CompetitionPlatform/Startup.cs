@@ -23,6 +23,7 @@ using Lykke.SettingsReader;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.HttpOverrides;
 using Lykke.Common.ApiLibrary.Middleware;
+using Lykke.Common.Api.Contract.Responses;
 
 namespace CompetitionPlatform
 {
@@ -100,12 +101,7 @@ namespace CompetitionPlatform
                 services.RegisterLyykeServices();
 
                 services.RegisterInMemoryNotificationServices();
-
-                services.Configure<ForwardedHeadersOptions>(options =>
-                {
-                    options.ForwardedHeaders = ForwardedHeaders.XForwardedProto;
-                });
-
+                
                 JobScheduler.Start(settings.ConnectionString(x => x.LykkeStreams.Azure.StorageConnString), Log);
 
                 var builder = new ContainerBuilder();
