@@ -141,6 +141,7 @@ namespace CompetitionPlatform
                     app.UseBrowserLink();
                 }
 
+                app.UseLykkeMiddleware("Streams", ex => new { ex.Message });
                 app.UseLykkeForwardedHeaders();
                 app.UseAuthentication();
 
