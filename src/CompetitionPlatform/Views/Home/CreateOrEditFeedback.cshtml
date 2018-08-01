@@ -1,0 +1,52 @@
+﻿@model CompetitionPlatform.Data.AzureRepositories.Users.PublicFeedbackEntity
+@{
+    ViewData["Title"] = "Edit Feedback";
+}
+
+<div class="container container--extend">
+    <section class="section section--competition_edit">
+        <div class="container">
+            <div class="content__left">
+                <form asp-action="SavePublicFeedback" class="form form--default">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="row">
+                                <label class="control-label col-sm-4">Title</label>
+                            </div>
+                            <input asp-for="Title" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="control-label col-sm-4">Feedback</label>
+                        </div>
+                        <textarea asp-for="Feedback" class="form-control richEditor" rows="10"></textarea>
+                        <span asp-validation-for="Feedback" class="text-danger" />
+                    </div>
+
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="row">
+                                <label class="control-label col-sm-4">Name of the user</label>
+                            </div>
+                            <input asp-for="User" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="form__submit">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <input asp-for="RowKey" type="hidden" />
+                                <button type="submit" class="btn">Save changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>
+<br />
+<br />
+<br />
