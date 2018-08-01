@@ -21,7 +21,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Users
         public string User { get; set; }
         public string Title { get; set; }
         public string Feedback { get; set; }
-
+        
         public static PublicFeedbackEntity Create(IPublicFeedbackData src)
         {
             var result = new PublicFeedbackEntity

@@ -10,6 +10,7 @@ namespace CompetitionPlatform.Data.AzureRepositories.Users
         string Title { get; set; }
         string Feedback { get; set; }
         string RowKey { get; set; }
+        DateTimeOffset Timestamp { get; set; }
     }
 
     public interface IPublicFeedbackRepository
