@@ -69,7 +69,7 @@ namespace CompetitionPlatform.Controllers
             ILog log, IProjectExpertsRepository projectExpertsRepository,
             IStreamRepository streamRepository, IPersonalDataService personalDataService,
             Lykke.Messages.Email.IEmailSender emailSender,
-            IStreamsIdRepository streamsIdRepository, 
+            IStreamsIdRepository streamsIdRepository,
             IExpertsService expertsService,
             IKycProfileServiceV2 kycService, ITermsPageRepository termsPageRepository)
         {
@@ -135,7 +135,7 @@ namespace CompetitionPlatform.Controllers
         {
             if (user.Id == null)
                 return false;
-            
+
             var kycStatus = await _kycService.GetStatusAsync(user.Id, KycProfile.Default);
             var status = (KycStatus)Enum.Parse(typeof(KycStatus), kycStatus.Name);
             return status == KycStatus.Ok;
@@ -149,14 +149,14 @@ namespace CompetitionPlatform.Controllers
 
             var viewModel = await GetProjectViewModel(id);
             viewModel.IsAuthor = viewModel.AuthorId == user.Email;
-            
+
             var termsPage = await _termsPageRepository.GetAsync(id);
             if (termsPage != null)
             {
                 ViewBag.TermsPage = TermsPageViewModel.Create(termsPage);
-            } 
-            else 
-            { 
+            }
+            else
+            {
                 ViewBag.TermsPage = TermsPageViewModel.Create(id);
             }
 
@@ -293,7 +293,7 @@ namespace CompetitionPlatform.Controllers
 
             if (projectViewModel.VotingDeadline == DateTime.MinValue)
                 projectViewModel.VotingDeadline = DateTime.UtcNow.Date;
-             
+
             var project = await _projectRepository.GetAsync(projectViewModel.Id);
 
             if (projectViewModel.AuthorId == null)
@@ -303,7 +303,13 @@ namespace CompetitionPlatform.Controllers
                 projectViewModel.AuthorFullName = project.AuthorFullName;
 
             if (projectViewModel.AuthorIdentifier == null)
+            {
                 projectViewModel.AuthorIdentifier = project.AuthorIdentifier;
+
+                var profile = await _personalDataService.FindClientsByEmail(projectViewModel.AuthorId);
+                if (profile != null)
+                    projectViewModel.AuthorIdentifier = profile.Id;
+            }
 
             project.Status = StatusHelper.GetProjectStatusFromString(project.ProjectStatus);
 
@@ -325,7 +331,7 @@ namespace CompetitionPlatform.Controllers
 
             projectViewModel.ParticipantsCount = project.ParticipantsCount;
 
-            var projectId = projectViewModel.Id; 
+            var projectId = projectViewModel.Id;
             var statusAndUrlChanged = projectViewModel.Status != Status.Draft &&
                                       projectViewModel.ProjectUrl != projectId;
 
@@ -582,7 +588,7 @@ namespace CompetitionPlatform.Controllers
             var projectFollows = follows.Where(f => f.ProjectId == projectId).ToList();
             return projectFollows;
         }
-        
+
         public async Task<IActionResult> ProjectDetails(string id, bool commentsActive = false, bool participantsActive = false, bool resultsActive = false, bool winnersActive = false)
         {
             if (TempData["ShowParticipantAddedModal"] != null)
@@ -599,14 +605,14 @@ namespace CompetitionPlatform.Controllers
             {
                 ViewBag.VotedTwice = (bool)TempData["ShowVotedTwiceModal"];
             }
-            
+
             ViewBag.CommentsActive = commentsActive;
             ViewBag.ParticipantsActive = participantsActive;
             ViewBag.WinnersActive = winnersActive;
             ViewBag.ResultsActive = resultsActive;
-            
+
             ViewBag.IsKycOkStatus = await IsOkKycStatusAsync(UserModel.GetAuthenticatedUser(User.Identity));
-            
+
             var projectExists = await _projectRepository.GetAsync(id);
 
             if (projectExists == null)
@@ -980,7 +986,7 @@ namespace CompetitionPlatform.Controllers
 
             return sortedComments;
         }
-        
+
         private async Task<IActionResult> EditWithProjectUrlError(string projectId, string errorText)
         {
             var projectViewModel = await GetProjectViewModel(projectId);
@@ -1042,7 +1048,7 @@ namespace CompetitionPlatform.Controllers
             var profile = await _personalDataService.FindClientsByEmail(email);
             if (profile == null)
             {
-                return Json(new { Error = "User with this email does not exist!"});
+                return Json(new { Error = "User with this email does not exist!" });
             }
 
             var expert = ExpertViewModel.Create(profile, projectId, description);
@@ -1052,9 +1058,9 @@ namespace CompetitionPlatform.Controllers
             }
             catch (Exception)
             {
-                return Json(new { Error = "This user is already an expert for this project!"});
+                return Json(new { Error = "This user is already an expert for this project!" });
             }
-            
+
             return Json(expert);
         }
 
@@ -1062,7 +1068,7 @@ namespace CompetitionPlatform.Controllers
         public async Task<IActionResult> DeleteExpert(string email, string projectId)
         {
             await _projectExpertsRepository.DeleteAsync(email, projectId);
-            
+
             return Json(new { Success = true, });
         }
     }
