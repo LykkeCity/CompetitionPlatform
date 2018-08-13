@@ -98,6 +98,10 @@ namespace CompetitionPlatform.Modules
             builder.RegisterInstance(
                 new UserFeedbackRepository(AzureTableStorage<UserFeedbackEntity>.Create(connectionString, "UserFeedback", _log))
             ).As<IUserFeedbackRepository>().SingleInstance();
+            
+            builder.RegisterInstance(
+                new PublicFeedbackRepository(AzureTableStorage<PublicFeedbackEntity>.Create(connectionString, "PublicFeedback", _log))
+            ).As<IPublicFeedbackRepository>().SingleInstance();
 
             builder.RegisterInstance(
                 new BlogRepository(AzureTableStorage<BlogEntity>.Create(connectionString, "Blogs", _log))

@@ -200,11 +200,13 @@
                         var allProjects = ViewBag.AllProjects;
                         var myProjects = ViewBag.MyProjects;
                         var faq = ViewBag.Faq;
+                        var feedback = ViewBag.Feedback;
                         var blog = ViewBag.Blog;
 
                         var allProjectsActive = allProjects != null && allProjects ? "nav_list__item--active" : "";
                         var myProjectsActive = myProjects != null && myProjects ? "nav_list__item--active" : "";
                         var faqActive = faq != null && faq ? "nav_list__item--active" : "";
+                        var feedbackActive = feedback != null && feedback ? "nav_list__item--active" : "";
                         var blogActive = blog != null && blog ? "nav_list__item--active" : "";
                     }
 
@@ -213,6 +215,7 @@
                         <li class="nav_list__item @myProjectsActive"><a asp-area="" asp-controller="Home" asp-action="Myprojects">My projects</a></li>
                         <li class="nav_list__item @blogActive"><a asp-area="" asp-controller="Blog" asp-action="BlogList">Blog</a></li>
                         <li class="nav_list__item @faqActive"><a href="/Home/Faq">FAQ</a></li>
+                        <li class="nav_list__item @feedbackActive"><a href="/Home/Feedbacks">Feedbacks</a></li>
                     </ul>
                 </div>
             </div>

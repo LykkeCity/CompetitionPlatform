@@ -41,14 +41,16 @@ namespace CompetitionPlatform.Controllers
         private readonly IStreamsIdRepository _streamsIdRepository;
         private readonly IEmailSender _emailSender;
         private readonly ITermsPageRepository _termsPageRepository;
-
+        private readonly IPublicFeedbackRepository _publicFeedbackRepository;
+        
         public HomeController(IProjectRepository projectRepository, IProjectCommentsRepository commentsRepository,
             IProjectCategoriesRepository categoriesRepository, IProjectParticipantsRepository participantsRepository,
             IProjectFollowRepository projectFollowRepository, IProjectResultRepository resultsRepository,
             IProjectWinnersRepository winnersRepository, IUserFeedbackRepository feedbackRepository,
             IUserRolesRepository userRolesRepository, BaseSettings settings,
             IPersonalDataService personalDataService, IStreamsIdRepository streamsIdRepository,
-            IEmailSender emailSender, ITermsPageRepository termsPageRepository)
+            IEmailSender emailSender, ITermsPageRepository termsPageRepository,
+            IPublicFeedbackRepository publicFeedbackRepository)
         {
             _projectRepository = projectRepository;
             _commentsRepository = commentsRepository;
@@ -64,6 +66,7 @@ namespace CompetitionPlatform.Controllers
             _streamsIdRepository = streamsIdRepository;
             _emailSender = emailSender;
             _termsPageRepository = termsPageRepository;
+            _publicFeedbackRepository = publicFeedbackRepository;
         }
 
         public async Task<IActionResult> Index()
@@ -420,6 +423,51 @@ namespace CompetitionPlatform.Controllers
             ViewBag.Blog = false;
 
             return View();
+        }
+
+        public async Task<IActionResult> Feedbacks()
+        {
+            ViewBag.Feedback = true;
+            
+            var user = UserModel.GetAuthenticatedUser(User.Identity);
+            var userRole = (user.Email == null) ? null : await _userRolesRepository.GetAsync(user.Email.ToLower());
+
+            ViewBag.IsAdmin = (userRole != null) && userRole.Role == StreamsRoles.Admin;
+
+            var model = await _publicFeedbackRepository.GetFeedbacksAsync();
+            model = model.OrderByDescending(x => x.Timestamp);
+
+            return View(model);
+        }
+
+        
+        public async Task<IActionResult> CreateOrEditFeedback(string id)
+        {
+            ViewBag.Feedback = true;
+            IPublicFeedbackData model = null;
+
+            if (!string.IsNullOrEmpty(id))
+            {
+                model = await _publicFeedbackRepository.GetFeedbackAsync(id);
+            }
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SavePublicFeedback(PublicFeedbackEntity model)
+        {
+            if(!ModelState.IsValid)
+                return RedirectToAction("CreateOrEditFeedback", model);
+
+            await _publicFeedbackRepository.SaveAsync(model);
+            return RedirectToAction("Feedbacks");
+        }
+        
+        public async Task<IActionResult> DeleteFeedback(string id)
+        {
+            await _publicFeedbackRepository.DeleteFeedbacksAsync(id);
+            return RedirectToAction("Feedbacks");
         }
 
         public string Version()
