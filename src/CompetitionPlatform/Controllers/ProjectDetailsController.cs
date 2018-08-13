@@ -11,6 +11,7 @@ using CompetitionPlatform.Data.AzureRepositories.Vote;
 using CompetitionPlatform.Helpers;
 using CompetitionPlatform.Models;
 using CompetitionPlatform.Models.ProjectViewModels;
+using Lykke.Common.Log;
 using Lykke.Messages.Email;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -43,7 +44,7 @@ namespace CompetitionPlatform.Controllers
             IProjectResultRepository resultRepository, IProjectResultVoteRepository resultVoteRepository,
             IProjectFollowRepository projectFollowRepository, IFollowMailSentRepository mailSentRepository,
             IQueueExt emailsQueue, IUserRolesRepository userRolesRepository,
-            IProjectWinnersRepository winnersRepository, ILog log,
+            IProjectWinnersRepository winnersRepository, ILogFactory logFactory,
             IEmailSender emailSender,
             BaseSettings settings, IStreamsIdRepository streamsIdRepository)
         {
@@ -60,10 +61,13 @@ namespace CompetitionPlatform.Controllers
             _emailsQueue = emailsQueue;
             _userRolesRepository = userRolesRepository;
             _winnersRepository = winnersRepository;
-            _log = log;
             _settings = settings;
             _emailSender = emailSender;
             _streamsIdRepository = streamsIdRepository;
+
+            if (logFactory == null)
+                throw new ArgumentNullException(nameof(logFactory));
+            _log = logFactory.CreateLog(this);
         }
 
         [Authorize]

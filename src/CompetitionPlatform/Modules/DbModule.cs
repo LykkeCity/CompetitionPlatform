@@ -15,6 +15,7 @@ using CompetitionPlatform.Data.AzureRepositories.Vote;
 using CompetitionPlatform.Data.BlogCategory;
 using CompetitionPlatform.Data.ProjectCategory;
 using CompetitionPlatform.Services;
+using Lykke.Common.Log;
 using Lykke.Messages.Email;
 using Lykke.Service.Kyc.Abstractions.Services;
 using Lykke.Service.Kyc.Client;
@@ -22,6 +23,7 @@ using Lykke.Service.PersonalData.Client;
 using Lykke.Service.PersonalData.Contract;
 using Lykke.Service.PersonalData.Settings;
 using Lykke.SettingsReader;
+using System;
 
 namespace CompetitionPlatform.Modules
 {
@@ -29,11 +31,17 @@ namespace CompetitionPlatform.Modules
     {
         private readonly IReloadingManager<BaseSettings> _settings;
         private readonly ILog _log;
+        private readonly ILogFactory _logFactory;
 
-        public DbModule(IReloadingManager<BaseSettings> settings, ILog log)
+
+        public DbModule(IReloadingManager<BaseSettings> settings, ILogFactory logFactory)
         {
             _settings = settings;
-            _log = log;
+
+            if (logFactory == null)
+                throw new ArgumentNullException(nameof(logFactory));
+            _logFactory = logFactory;
+            _log = logFactory.CreateLog(this);
         }
 
         protected override void Load(ContainerBuilder builder)
@@ -47,88 +55,88 @@ namespace CompetitionPlatform.Modules
               AzureBlobStorage.Create(connectionString)).As<IBlobStorage>().SingleInstance();
 
             builder.RegisterInstance(
-                new ProjectRepository(AzureTableStorage<ProjectEntity>.Create(connectionString, "Projects", _log))
+                new ProjectRepository(AzureTableStorage<ProjectEntity>.Create(connectionString, "Projects", _logFactory))
             ).As<IProjectRepository>().SingleInstance();
 
 
             builder.RegisterInstance(
-                new UsersRepository(AzureTableStorage<UserEntity>.Create(connectionString, "Users", _log))
+                new UsersRepository(AzureTableStorage<UserEntity>.Create(connectionString, "Users", _logFactory))
             ).As<IUsersRepository>().SingleInstance();
 
             builder.RegisterInstance(
-                new ProjectCommentsRepository(AzureTableStorage<CommentEntity>.Create(connectionString, "ProjectComments", _log))
+                new ProjectCommentsRepository(AzureTableStorage<CommentEntity>.Create(connectionString, "ProjectComments", _logFactory))
             ).As<IProjectCommentsRepository>().SingleInstance();
 
             builder.RegisterInstance(
-                new ProjectFileInfoRepository(AzureTableStorage<ProjectFileInfoEntity>.Create(connectionString, "ProjectFilesInfo", _log))
+                new ProjectFileInfoRepository(AzureTableStorage<ProjectFileInfoEntity>.Create(connectionString, "ProjectFilesInfo", _logFactory))
             ).As<IProjectFileInfoRepository>().SingleInstance();
 
             builder.RegisterInstance(
-                new ProjectVoteRepository(AzureTableStorage<ProjectVoteEntity>.Create(connectionString, "ProjectVotes", _log))
+                new ProjectVoteRepository(AzureTableStorage<ProjectVoteEntity>.Create(connectionString, "ProjectVotes", _logFactory))
             ).As<IProjectVoteRepository>().SingleInstance();
 
             builder.RegisterInstance(
-                new ProjectParticipantsRepository(AzureTableStorage<ProjectParticipateEntity>.Create(connectionString, "ProjectParticipants", _log))
+                new ProjectParticipantsRepository(AzureTableStorage<ProjectParticipateEntity>.Create(connectionString, "ProjectParticipants", _logFactory))
             ).As<IProjectParticipantsRepository>().SingleInstance();
 
             builder.RegisterInstance(
-                new ProjectResultRepository(AzureTableStorage<ProjectResultEntity>.Create(connectionString, "ProjectResults", _log))
+                new ProjectResultRepository(AzureTableStorage<ProjectResultEntity>.Create(connectionString, "ProjectResults", _logFactory))
             ).As<IProjectResultRepository>().SingleInstance();
 
             builder.RegisterInstance(
-                new ProjectResultVoteRepository(AzureTableStorage<ProjectResultVoteEntity>.Create(connectionString, "ProjectResultVotes", _log))
+                new ProjectResultVoteRepository(AzureTableStorage<ProjectResultVoteEntity>.Create(connectionString, "ProjectResultVotes", _logFactory))
             ).As<IProjectResultVoteRepository>().SingleInstance();
 
             builder.RegisterInstance(
-                new ProjectFollowRepository(AzureTableStorage<ProjectFollowEntity>.Create(connectionString, "ProjectFollows", _log))
+                new ProjectFollowRepository(AzureTableStorage<ProjectFollowEntity>.Create(connectionString, "ProjectFollows", _logFactory))
             ).As<IProjectFollowRepository>().SingleInstance();
 
             builder.RegisterInstance(
-                new ProjectWinnersRepository(AzureTableStorage<WinnerEntity>.Create(connectionString, "Winners", _log))
+                new ProjectWinnersRepository(AzureTableStorage<WinnerEntity>.Create(connectionString, "Winners", _logFactory))
             ).As<IProjectWinnersRepository>().SingleInstance();
 
             builder.RegisterInstance(
-                new UserRolesRepository(AzureTableStorage<UserRoleEntity>.Create(connectionString, "UserRoles", _log))
+                new UserRolesRepository(AzureTableStorage<UserRoleEntity>.Create(connectionString, "UserRoles", _logFactory))
             ).As<IUserRolesRepository>().SingleInstance();
 
             builder.RegisterInstance(
-                new FollowMailSentRepository(AzureTableStorage<FollowMailSentEntity>.Create(connectionString, "FollowMailSent", _log))
+                new FollowMailSentRepository(AzureTableStorage<FollowMailSentEntity>.Create(connectionString, "FollowMailSent", _logFactory))
             ).As<IFollowMailSentRepository>().SingleInstance();
 
             builder.RegisterInstance(
-                new UserFeedbackRepository(AzureTableStorage<UserFeedbackEntity>.Create(connectionString, "UserFeedback", _log))
+                new UserFeedbackRepository(AzureTableStorage<UserFeedbackEntity>.Create(connectionString, "UserFeedback", _logFactory))
             ).As<IUserFeedbackRepository>().SingleInstance();
             
             builder.RegisterInstance(
-                new PublicFeedbackRepository(AzureTableStorage<PublicFeedbackEntity>.Create(connectionString, "PublicFeedback", _log))
+                new PublicFeedbackRepository(AzureTableStorage<PublicFeedbackEntity>.Create(connectionString, "PublicFeedback", _logFactory))
             ).As<IPublicFeedbackRepository>().SingleInstance();
 
             builder.RegisterInstance(
-                new BlogRepository(AzureTableStorage<BlogEntity>.Create(connectionString, "Blogs", _log))
+                new BlogRepository(AzureTableStorage<BlogEntity>.Create(connectionString, "Blogs", _logFactory))
             ).As<IBlogRepository>().SingleInstance();
 
             builder.RegisterInstance(
-                new BlogCommentsRepository(AzureTableStorage<BlogCommentEntity>.Create(connectionString, "BlogComments", _log))
+                new BlogCommentsRepository(AzureTableStorage<BlogCommentEntity>.Create(connectionString, "BlogComments", _logFactory))
             ).As<IBlogCommentsRepository>().SingleInstance();
 
             builder.RegisterInstance(
-                new BlogPictureInfoRepository(AzureTableStorage<BlogPictureInfoEntity>.Create(connectionString, "BlogPicturesInfo", _log))
+                new BlogPictureInfoRepository(AzureTableStorage<BlogPictureInfoEntity>.Create(connectionString, "BlogPicturesInfo", _logFactory))
             ).As<IBlogPictureInfoRepository>().SingleInstance();
 
             builder.RegisterInstance(
-                new ProjectExpertsRepository(AzureTableStorage<ProjectExpertEntity>.Create(connectionString, "ProjectExperts", _log))
+                new ProjectExpertsRepository(AzureTableStorage<ProjectExpertEntity>.Create(connectionString, "ProjectExperts", _logFactory))
             ).As<IProjectExpertsRepository>().SingleInstance();
 
             builder.RegisterInstance(
-                new StreamRepository(AzureTableStorage<StreamEntity>.Create(connectionString, "ProjectStreams", _log))
+                new StreamRepository(AzureTableStorage<StreamEntity>.Create(connectionString, "ProjectStreams", _logFactory))
             ).As<IStreamRepository>().SingleInstance();
 
             builder.RegisterInstance(
-                new StreamsIdRepository(AzureTableStorage<StreamsIdEntity>.Create(connectionString, "StreamsId", _log))
+                new StreamsIdRepository(AzureTableStorage<StreamsIdEntity>.Create(connectionString, "StreamsId", _logFactory))
             ).As<IStreamsIdRepository>().SingleInstance();
 
             builder.RegisterInstance(
-                new TermsPageRepository(AzureTableStorage<TermsPageEntity>.Create(connectionString, "TermsPage", _log))
+                new TermsPageRepository(AzureTableStorage<TermsPageEntity>.Create(connectionString, "TermsPage", _logFactory))
             ).As<ITermsPageRepository>().SingleInstance();
 
             builder.RegisterInstance(
