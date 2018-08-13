@@ -6,6 +6,7 @@ using AzureStorage.Tables;
 using Common.Log;
 using CompetitionPlatform.Data.AzureRepositories.Users;
 using CompetitionPlatform.Helpers;
+using Lykke.Common.Log;
 using Lykke.SettingsReader;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -22,19 +23,11 @@ namespace CompetitionPlatform.Authentication
         {
             _mailSentRepository = new RegisterMailSentRepository(AzureTableStorage<RegisterMailSentEntity>.Create(connString, "RegisterMailSent", log));
             _log = log;
-            //if (hostingEnvironment.IsProduction() && !string.IsNullOrEmpty(emailsQueueConnString))
-            //{
-            //    _emailsQueue = new AzureQueueExt(emailsQueueConnString, "emailsqueue");
-            //}
-            //else
-            //{
-            //    _emailsQueue = new QueueExtInMemory();
-            //}
         }
 
         public override Task RemoteFailure(RemoteFailureContext context)
         {
-            _log.WriteErrorAsync("Authentication", "RemoteFailure", context.Failure.Message + context.Failure.InnerException, context.Failure).Wait();
+            _log.Error(context.Failure.Message + context.Failure.InnerException, context.Failure);
 
             context.HandleResponse();
             context.Response.Redirect("/Home/AuthenticationFailed");
