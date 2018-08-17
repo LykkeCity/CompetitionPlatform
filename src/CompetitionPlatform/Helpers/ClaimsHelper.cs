@@ -29,10 +29,7 @@ namespace CompetitionPlatform.Helpers
 
             var email = claimsList.Where(c => c.Type == ClaimTypes.Email)
                 .Select(c => c.Value).SingleOrDefault();
-
-            var documents = claimsList.Where(c => c.Type == "documents")
-                .Select(c => c.Value).SingleOrDefault();
-
+            
             var id = claimsList.Where(c => c.Type == ClaimTypes.NameIdentifier)
                 .Select(c => c.Value).SingleOrDefault();
 
@@ -41,8 +38,7 @@ namespace CompetitionPlatform.Helpers
                 Id = id,
                 Email = email,
                 FirstName = firstName,
-                LastName = lastName,
-                Documents = documents
+                LastName = lastName
             };
 
             return user;
