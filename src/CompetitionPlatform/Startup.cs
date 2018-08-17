@@ -25,6 +25,8 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Lykke.Common.ApiLibrary.Middleware;
 using Lykke.Common.Api.Contract.Responses;
 using Lykke.Common.Log;
+using Microsoft.AspNetCore.DataProtection;
+using System.IO;
 
 namespace CompetitionPlatform
 {
@@ -90,6 +92,9 @@ namespace CompetitionPlatform
                         settings.ConnectionString(x => x.LykkeStreams.Azure.StorageConnString));
                     options.Scope.Add("email");
                 });
+
+                services.AddDataProtection()
+                    .PersistKeysToFileSystem(new DirectoryInfo(@"/"));
                 
                 services.AddApplicationInsightsTelemetry(Configuration);
                 var mvcBuilder = services.AddMvc();
