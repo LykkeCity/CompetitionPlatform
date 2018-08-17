@@ -82,8 +82,8 @@ namespace CompetitionPlatform
                     options.Authority = _settings.LykkeStreams.Authentication.Authority;
                     options.ClientId = _settings.LykkeStreams.Authentication.ClientId;
                     options.ClientSecret = _settings.LykkeStreams.Authentication.ClientSecret;
-                    options.RequireHttpsMetadata = true;
-                    //options.SaveTokens = true;
+                    options.RequireHttpsMetadata = false;
+                    options.SaveTokens = false;
                     options.CallbackPath = "/auth";
                     options.ResponseType = OpenIdConnectResponseType.Code;
                     options.Events = new CompPlatformAuthenticationEvents(Log, HostingEnvironment,
