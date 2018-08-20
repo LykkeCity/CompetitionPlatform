@@ -92,7 +92,7 @@ namespace CompetitionPlatform
                         settings.ConnectionString(x => x.LykkeStreams.Azure.StorageConnString));
                     options.Scope.Add("email");
                 });
-                
+                                
                 services.AddApplicationInsightsTelemetry(Configuration);
                 var mvcBuilder = services.AddMvc();
 
