@@ -12,6 +12,7 @@ using Lykke.SettingsReader;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Hosting;
+using Newtonsoft.Json;
 
 namespace CompetitionPlatform.Authentication
 {
@@ -28,6 +29,10 @@ namespace CompetitionPlatform.Authentication
 
         public override Task RemoteFailure(RemoteFailureContext context)
         {
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine($"RemoteFailure: {JsonConvert.SerializeObject(context)}");
+            Console.ResetColor();
+
             _log.Error(context.Failure.Message + context.Failure.InnerException, context.Failure);
 
             context.HandleResponse();
@@ -38,8 +43,6 @@ namespace CompetitionPlatform.Authentication
 
         public override async Task TokenValidated(TokenValidatedContext context)
         {
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine("TokenValidated: Start");
             var email = context.Principal.Claims.Where(c => c.Type == ClaimTypes.Email)
                    .Select(c => c.Value).SingleOrDefault();
 
@@ -55,16 +58,11 @@ namespace CompetitionPlatform.Authentication
 
                 await _mailSentRepository.SaveRegisterAsync(email);
             }
-
-            Console.WriteLine("TokenValidated: Finish");
-            Console.ResetColor();
             await base.TokenValidated(context);
         }
 
         public override Task TicketReceived(TicketReceivedContext context)
         {
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine("TicketReceived: Start");
             context.Properties.Items.Clear();
 
             context.Properties.Items.Clear();
@@ -73,9 +71,7 @@ namespace CompetitionPlatform.Authentication
             {
                 principalClaim.Properties.Clear();
             }
-
-            Console.WriteLine("TicketReceived: Finish");
-            Console.ResetColor();
+            
             return base.TicketReceived(context);
         }
 
