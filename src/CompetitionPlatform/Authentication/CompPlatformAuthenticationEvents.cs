@@ -30,7 +30,7 @@ namespace CompetitionPlatform.Authentication
         public override Task RemoteFailure(RemoteFailureContext context)
         {
             Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine($"RemoteFailure: {JsonConvert.SerializeObject(context, new JsonSerializerSettings(){ ReferenceLoopHandling = ReferenceLoopHandling.Ignore})}");
+            Console.WriteLine($"RemoteFailure: {JsonConvert.SerializeObject(context, new JsonSerializerSettings(){ ReferenceLoopHandling = ReferenceLoopHandling.Ignore, MaxDepth = 4})}");
             Console.ResetColor();
 
             _log.Error(context.Failure.Message + context.Failure.InnerException, context.Failure);
@@ -77,10 +77,8 @@ namespace CompetitionPlatform.Authentication
 
         public override Task RedirectToIdentityProvider(RedirectContext context)
         {
-            Console.ForegroundColor = ConsoleColor.Cyan;
+            context.ProtocolMessage.RedirectUri = context.ProtocolMessage.RedirectUri.Replace("https", "http");
             Console.WriteLine($"RedirectUri: {context.ProtocolMessage.RedirectUri}");
-            Console.ResetColor();
-            //context.ProtocolMessage.RedirectUri = urlWithHttps;
             return base.RedirectToIdentityProvider(context);
         }
     }
