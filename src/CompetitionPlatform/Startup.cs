@@ -147,8 +147,18 @@ namespace CompetitionPlatform
                     app.UseBrowserLink();
                 }
 
-                app.UseLykkeMiddleware(ex => new { ex.Message });
-                app.UseLykkeForwardedHeaders();
+                //app.UseLykkeMiddleware(ex => new { ex.Message });
+                //app.UseLykkeForwardedHeaders();
+                var forwardingOptions = new ForwardedHeadersOptions
+                {
+                    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+                };
+
+                forwardingOptions.KnownNetworks.Clear(); //its loopback by default
+                forwardingOptions.KnownProxies.Clear();
+
+                app.UseForwardedHeaders(forwardingOptions);
+
                 app.UseAuthentication();
 
                 app.UseStaticFiles();
