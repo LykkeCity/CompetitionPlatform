@@ -74,12 +74,5 @@ namespace CompetitionPlatform.Authentication
             
             return base.TicketReceived(context);
         }
-
-        public override Task RedirectToIdentityProvider(RedirectContext context)
-        {
-            context.ProtocolMessage.RedirectUri = context.ProtocolMessage.RedirectUri.Replace("https", "http");
-            Console.WriteLine($"RedirectUri: {context.ProtocolMessage.RedirectUri}");
-            return base.RedirectToIdentityProvider(context);
-        }
     }
 }
