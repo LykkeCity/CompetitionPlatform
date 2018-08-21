@@ -93,8 +93,7 @@ namespace CompetitionPlatform
                     options.Scope.Add("email");
                 });
                      
-                //services.AddDataProtection()
-                //    .PersistKeysToFileSystem(new DirectoryInfo("/app"));
+                services.AddDataProtection();
 
                 services.AddApplicationInsightsTelemetry(Configuration);
                 var mvcBuilder = services.AddMvc();
