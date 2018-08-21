@@ -95,7 +95,6 @@ namespace CompetitionPlatform
                      
                 services.AddDataProtection()
                     .PersistKeysToFileSystem(new DirectoryInfo("/app"));
-                Console.WriteLine($"PersistKeysToFileSystem: {new DirectoryInfo("/app").FullName}");
 
                 services.AddApplicationInsightsTelemetry(Configuration);
                 var mvcBuilder = services.AddMvc();
@@ -147,8 +146,6 @@ namespace CompetitionPlatform
                     app.UseBrowserLink();
                 }
 
-                //app.UseLykkeMiddleware(ex => new { ex.Message });
-                //app.UseLykkeForwardedHeaders();
                 var forwardingOptions = new ForwardedHeadersOptions
                 {
                     ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
@@ -158,6 +155,9 @@ namespace CompetitionPlatform
                 forwardingOptions.KnownProxies.Clear();
 
                 app.UseForwardedHeaders(forwardingOptions);
+
+                app.UseLykkeMiddleware(ex => new { ex.Message });
+                app.UseLykkeForwardedHeaders();
 
                 app.UseAuthentication();
 
