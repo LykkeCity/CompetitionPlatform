@@ -95,6 +95,7 @@ namespace CompetitionPlatform
                      
                 services.AddDataProtection()
                     .PersistKeysToFileSystem(new DirectoryInfo("/app"));
+                Console.WriteLine($"PersistKeysToFileSystem: {new DirectoryInfo("/app").FullName}");
 
                 services.AddApplicationInsightsTelemetry(Configuration);
                 var mvcBuilder = services.AddMvc();
