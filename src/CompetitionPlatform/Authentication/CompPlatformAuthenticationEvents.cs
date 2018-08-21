@@ -30,7 +30,7 @@ namespace CompetitionPlatform.Authentication
         public override Task RemoteFailure(RemoteFailureContext context)
         {
             Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine($"RemoteFailure: {JsonConvert.SerializeObject(context, new JsonSerializerSettings(){ ReferenceLoopHandling = ReferenceLoopHandling.Ignore, MaxDepth = 4})}");
+            Console.WriteLine($"RemoteFailure: {JsonConvert.SerializeObject(context, new JsonSerializerSettings(){ ReferenceLoopHandling = ReferenceLoopHandling.Ignore, MaxDepth = 3})}");
             Console.ResetColor();
 
             _log.Error(context.Failure.Message + context.Failure.InnerException, context.Failure);
