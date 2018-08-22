@@ -34,7 +34,7 @@ namespace CompetitionPlatform.Exceptions
             var controller = context.RouteData.Values["controller"];
             var action = context.RouteData.Values["action"];
 
-            _log.Error($"Controller: {controller}, action: {action}", context.Exception);
+            _log.Error("LykkeStreams", context.Exception, context.Exception.Message, $"Controller: {controller}, action: {action}");
 
             var message = new SlackMessage
             {
