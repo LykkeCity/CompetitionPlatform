@@ -116,7 +116,7 @@ namespace CompetitionPlatform
             }
             catch (Exception ex)
             {
-                Log?.Critical(ex);
+                Log?.Critical(nameof(ConfigureServices), ex);
                 throw;
             }
         }
@@ -172,7 +172,7 @@ namespace CompetitionPlatform
             }
             catch (Exception ex)
             {
-                Log.Error(ex);
+                Log.Error(nameof(Configure), ex, ex.Message, "Configuring App and Authentication");
             }
         }
         
@@ -205,7 +205,7 @@ namespace CompetitionPlatform
             {
                 if (Log != null)
                 {
-                    Log.Critical(ex);
+                    Log.Critical(nameof(CleanUp), ex);
                     (Log as IDisposable)?.Dispose();
                 }
                 throw;

@@ -27,7 +27,7 @@ namespace CompetitionPlatform.Authentication
 
         public override Task RemoteFailure(RemoteFailureContext context)
         {
-            _log.Error(context.Failure.Message + context.Failure.InnerException, context.Failure);
+            _log.Error("RemoteFailure", context.Failure, context.Failure.Message, context.Failure.Message + context.Failure.InnerException);
 
             context.HandleResponse();
             context.Response.Redirect("/Home/AuthenticationFailed");
