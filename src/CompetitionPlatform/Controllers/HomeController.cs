@@ -312,7 +312,7 @@ namespace CompetitionPlatform.Controllers
             var userRole = await _userRolesRepository.GetAsync(user.Email.ToLower());
 
             if (userRole == null) return View("AccessDenied");
-
+            
             var feedback = await _feedbackRepository.GetFeedbacksAsync();
             feedback = feedback.OrderByDescending(x => x.Created);
 

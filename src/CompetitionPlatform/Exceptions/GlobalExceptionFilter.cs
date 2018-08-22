@@ -3,6 +3,7 @@ using AzureStorage.Queue;
 using Common.Log;
 using CompetitionPlatform.Data.AzureRepositories.Settings;
 using CompetitionPlatform.Models;
+using Lykke.Common.Log;
 using Lykke.SettingsReader;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -33,7 +34,7 @@ namespace CompetitionPlatform.Exceptions
             var controller = context.RouteData.Values["controller"];
             var action = context.RouteData.Values["action"];
 
-            _log.WriteErrorAsync("Exception", "LykkeStreams", $"Controller: {controller}, action: {action}", context.Exception).Wait();
+            _log.Error("LykkeStreams", context.Exception, context.Exception.Message, $"Controller: {controller}, action: {action}");
 
             var message = new SlackMessage
             {

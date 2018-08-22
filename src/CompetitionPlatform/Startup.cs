@@ -24,6 +24,7 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.HttpOverrides;
 using Lykke.Common.ApiLibrary.Middleware;
 using Lykke.Common.Api.Contract.Responses;
+using Lykke.Common.Log;
 
 namespace CompetitionPlatform
 {
@@ -60,9 +61,7 @@ namespace CompetitionPlatform
             {
                 var settings = Configuration.LoadSettings<BaseSettings>();
                 _settings = settings.CurrentValue;
-
-                Log = CreateLog(services, settings);
-
+                
                 // Add framework services.
                 services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
@@ -105,18 +104,19 @@ namespace CompetitionPlatform
                 JobScheduler.Start(settings.ConnectionString(x => x.LykkeStreams.Azure.StorageConnString), Log);
 
                 var builder = new ContainerBuilder();
-                builder.RegisterInstance(Log).As<ILog>().SingleInstance();
-
-                builder.RegisterModule(new DbModule(settings, Log));
-
+                var logFactory = CreateLog(builder, settings);
+                
+                builder.RegisterModule(new DbModule(settings, logFactory));
                 builder.Populate(services);
-
+                
                 ApplicationContainer = builder.Build();
+                Log = ApplicationContainer.Resolve<ILogFactory>().CreateLog(this);
+
                 return new AutofacServiceProvider(ApplicationContainer);
             }
             catch (Exception ex)
             {
-                Log?.WriteFatalErrorAsync(nameof(Startup), nameof(ConfigureServices), "", ex);
+                Log?.Critical(nameof(ConfigureServices), ex);
                 throw;
             }
         }
@@ -141,7 +141,7 @@ namespace CompetitionPlatform
                     app.UseBrowserLink();
                 }
 
-                app.UseLykkeMiddleware("Streams", ex => new { ex.Message });
+                app.UseLykkeMiddleware(ex => new { ex.Message });
                 app.UseLykkeForwardedHeaders();
                 app.UseAuthentication();
 
@@ -168,45 +168,33 @@ namespace CompetitionPlatform
                     );
                 });
 
-                appLifetime.ApplicationStopped.Register(() => CleanUp().Wait());
+                appLifetime.ApplicationStopped.Register(CleanUp);
             }
             catch (Exception ex)
             {
-                Log.WriteErrorAsync("Startup", "Configure", "Configuring App and Authentication", ex).Wait();
+                Log.Error(nameof(Configure), ex, ex.Message, "Configuring App and Authentication");
             }
         }
-
-        private static ILog CreateLog(IServiceCollection services, IReloadingManager<BaseSettings> settings)
+        
+        private static ILogFactory CreateLog(ContainerBuilder builder, IReloadingManager<BaseSettings> settings)
         {
-            var consoleLogger = new LogToConsole();
-            var aggregateLogger = new AggregateLogger();
+            var services = new ServiceCollection();
+            
+            services.AddLykkeLogging(
+                settings.ConnectionString(x => x.LykkeStreams.Azure.StorageLogConnString),
+                "LogCompPlatform",
+                settings.CurrentValue.SlackNotifications.AzureQueue.ConnectionString,
+                settings.CurrentValue.SlackNotifications.AzureQueue.QueueName
+            );
 
-            aggregateLogger.AddLog(consoleLogger);
+            builder.Populate(services);
 
-            var dbLogConnectionStringManager = settings.ConnectionString(x => x.LykkeStreams.Azure.StorageLogConnString);
-            var dbLogConnectionString = dbLogConnectionStringManager.CurrentValue;
+            var provider = services.BuildServiceProvider();
 
-            // Creating azure storage logger, which logs own messages to console log
-            if (!string.IsNullOrEmpty(dbLogConnectionString) && !(dbLogConnectionString.StartsWith("${") && dbLogConnectionString.EndsWith("}")))
-            {
-                var persistenceManager = new LykkeLogToAzureStoragePersistenceManager(
-                    AzureTableStorage<LogEntity>.Create(dbLogConnectionStringManager, "LogCompPlatform", consoleLogger),
-                    consoleLogger);
-
-                var azureStorageLogger = new LykkeLogToAzureStorage(
-                    persistenceManager,
-                    null,
-                    consoleLogger);
-
-                azureStorageLogger.Start();
-
-                aggregateLogger.AddLog(azureStorageLogger);
-            }
-
-            return aggregateLogger;
+            return provider.GetRequiredService<ILogFactory>();
         }
 
-        private async Task CleanUp()
+        private void CleanUp()
         {
             try
             {
@@ -217,7 +205,7 @@ namespace CompetitionPlatform
             {
                 if (Log != null)
                 {
-                    await Log.WriteFatalErrorAsync(nameof(Startup), nameof(CleanUp), "", ex);
+                    Log.Critical(nameof(CleanUp), ex);
                     (Log as IDisposable)?.Dispose();
                 }
                 throw;
