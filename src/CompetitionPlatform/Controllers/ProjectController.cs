@@ -30,6 +30,7 @@ using Lykke.Service.Kyc.Abstractions.Services;
 using Lykke.Service.Kyc.Abstractions.Domain.Profile;
 using Lykke.Service.Kyc.Abstractions.Domain.Verification;
 using CompetitionPlatform.Data.AzureRepositories.Admin;
+using Lykke.Common.Log;
 
 namespace CompetitionPlatform.Controllers
 {
@@ -66,12 +67,12 @@ namespace CompetitionPlatform.Controllers
             IProjectWinnersRepository winnersRepository, IUserRolesRepository userRolesRepository,
             IProjectWinnersService winnersService, IQueueExt emailsQueue,
             IProjectResultVoteRepository resultVoteRepository, BaseSettings settings,
-            ILog log, IProjectExpertsRepository projectExpertsRepository,
+            IProjectExpertsRepository projectExpertsRepository,
             IStreamRepository streamRepository, IPersonalDataService personalDataService,
             Lykke.Messages.Email.IEmailSender emailSender,
-            IStreamsIdRepository streamsIdRepository,
-            IExpertsService expertsService,
-            IKycProfileServiceV2 kycService, ITermsPageRepository termsPageRepository)
+            IStreamsIdRepository streamsIdRepository, IExpertsService expertsService,
+            IKycProfileServiceV2 kycService, ITermsPageRepository termsPageRepository,
+            ILogFactory logFactory)
         {
             _projectRepository = projectRepository;
             _commentsRepository = commentsRepository;
@@ -87,7 +88,6 @@ namespace CompetitionPlatform.Controllers
             _emailsQueue = emailsQueue;
             _resultVoteRepository = resultVoteRepository;
             _settings = settings;
-            _log = log;
             _projectExpertsRepository = projectExpertsRepository;
             _streamRepository = streamRepository;
             _personalDataService = personalDataService;
@@ -96,6 +96,10 @@ namespace CompetitionPlatform.Controllers
             _expertsService = expertsService;
             _kycService = kycService;
             _termsPageRepository = termsPageRepository;
+            
+            if (logFactory == null)
+                throw new ArgumentNullException(nameof(logFactory));
+            _log = logFactory.CreateLog(this);
         }
 
 
@@ -334,9 +338,7 @@ namespace CompetitionPlatform.Controllers
             var projectId = projectViewModel.Id;
             var statusAndUrlChanged = projectViewModel.Status != Status.Draft &&
                                       projectViewModel.ProjectUrl != projectId;
-
-            // TODO: This definitely needs some love. Not totally sure what's happening here, we should dissect
-            // but it's definitely too complicated
+            
             if (!statusAndUrlChanged)
             {
                 var currentProjectIsInStream = false;
