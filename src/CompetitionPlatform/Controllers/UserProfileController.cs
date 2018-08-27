@@ -57,7 +57,7 @@ namespace CompetitionPlatform.Controllers
             _streamsIdRepository = streamsIdRepository;
             _expertsRepository = expertsRepository;
         }
-        
+
         [HttpGet("~/userprofile/{id}")]
         public async Task<IActionResult> DisplayUserProfile(string id)
         {
@@ -69,12 +69,14 @@ namespace CompetitionPlatform.Controllers
             if (userStreamsId == null) return View("ProfileNotFound");
 
             var clientId = userStreamsId.ClientId;
-            
+
             var profile = await _personalDataService.GetAsync(clientId);
-            var avatars = await _personalDataService.GetClientAvatarsAsync(new List<string>{ clientId });
+            if (profile == null) return View("ProfileNotFound");
+
+            var avatars = await _personalDataService.GetClientAvatarsAsync(new List<string> { clientId });
 
             var user = UserModel.GetAuthenticatedUser(User.Identity);
-            
+
             if (profile.Id == user.Id && profile.FirstName != user.FirstName)
             {
                 var newIdentity = ClaimsHelper.UpdateFirstNameClaim(User.Identity, profile.FirstName);
@@ -232,12 +234,15 @@ namespace CompetitionPlatform.Controllers
                     if (follow != null)
                         following = true;
                 }
-                
+
                 if (string.IsNullOrEmpty(project.AuthorIdentifier))
                 {
                     var profile = await _personalDataService.FindClientsByEmail(project.AuthorId);
-                    project.AuthorIdentifier = profile.Id;
-                    await _projectRepository.UpdateAsync(project);
+                    if (profile != null)
+                    {
+                        project.AuthorIdentifier = profile.Id;
+                        await _projectRepository.UpdateAsync(project);
+                    }
                 }
 
                 var compactModel = new ProjectCompactViewModel

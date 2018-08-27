@@ -96,7 +96,7 @@ namespace CompetitionPlatform.Controllers
             _expertsService = expertsService;
             _kycService = kycService;
             _termsPageRepository = termsPageRepository;
-            
+
             if (logFactory == null)
                 throw new ArgumentNullException(nameof(logFactory));
             _log = logFactory.CreateLog(this);
@@ -338,7 +338,7 @@ namespace CompetitionPlatform.Controllers
             var projectId = projectViewModel.Id;
             var statusAndUrlChanged = projectViewModel.Status != Status.Draft &&
                                       projectViewModel.ProjectUrl != projectId;
-            
+
             if (!statusAndUrlChanged)
             {
                 var currentProjectIsInStream = false;
@@ -697,8 +697,11 @@ namespace CompetitionPlatform.Controllers
                 if (string.IsNullOrEmpty(part.UserIdentifier))
                 {
                     var profile = await _personalDataService.FindClientsByEmail(part.UserId);
-                    part.UserIdentifier = profile.Id;
-                    await _participantsRepository.UpdateAsync(part);
+                    if (profile != null)
+                    {
+                        part.UserIdentifier = profile.Id;
+                        await _participantsRepository.UpdateAsync(part);
+                    }
                 }
 
                 projectDetailsAvatarIds.Add(part.UserIdentifier);
@@ -762,8 +765,11 @@ namespace CompetitionPlatform.Controllers
                 if (string.IsNullOrEmpty(expert.UserIdentifier) && !string.IsNullOrEmpty(expert.UserId))
                 {
                     var profile = await _personalDataService.FindClientsByEmail(expert.UserId);
-                    expert.UserIdentifier = profile.Id;
-                    await _projectExpertsRepository.UpdateAsync(expert);
+                    if (profile != null)
+                    {
+                        expert.UserIdentifier = profile.Id;
+                        await _projectExpertsRepository.UpdateAsync(expert);
+                    }
                 }
                 if (!string.IsNullOrEmpty(expert.UserIdentifier))
                 {
@@ -878,8 +884,11 @@ namespace CompetitionPlatform.Controllers
                 if (string.IsNullOrEmpty(comment.UserIdentifier))
                 {
                     var profile = await _personalDataService.FindClientsByEmail(comment.UserId);
-                    comment.UserIdentifier = profile.Id;
-                    await _commentsRepository.UpdateAsync(comment, id);
+                    if (profile != null)
+                    {
+                        comment.UserIdentifier = profile.Id;
+                        await _commentsRepository.UpdateAsync(comment, id);
+                    }
                 }
 
                 projectDetailsAvatarIds.Add(comment.UserIdentifier);
@@ -924,8 +933,10 @@ namespace CompetitionPlatform.Controllers
                 if (string.IsNullOrEmpty(winner.WinnerIdentifier))
                 {
                     var profile = await _personalDataService.FindClientsByEmail(winner.WinnerId);
+                    if (profile != null)
+                        winner.WinnerIdentifier = profile.Id;
+
                     winner.ProjectId = model.Id;
-                    winner.WinnerIdentifier = profile.Id;
                     await _winnersRepository.UpdateAsync(winner);
                 }
 

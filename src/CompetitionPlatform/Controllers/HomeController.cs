@@ -42,7 +42,7 @@ namespace CompetitionPlatform.Controllers
         private readonly IEmailSender _emailSender;
         private readonly ITermsPageRepository _termsPageRepository;
         private readonly IPublicFeedbackRepository _publicFeedbackRepository;
-        
+
         public HomeController(IProjectRepository projectRepository, IProjectCommentsRepository commentsRepository,
             IProjectCategoriesRepository categoriesRepository, IProjectParticipantsRepository participantsRepository,
             IProjectFollowRepository projectFollowRepository, IProjectResultRepository resultsRepository,
@@ -312,7 +312,7 @@ namespace CompetitionPlatform.Controllers
             var userRole = await _userRolesRepository.GetAsync(user.Email.ToLower());
 
             if (userRole == null) return View("AccessDenied");
-            
+
             var feedback = await _feedbackRepository.GetFeedbacksAsync();
             feedback = feedback.OrderByDescending(x => x.Created);
 
@@ -428,7 +428,7 @@ namespace CompetitionPlatform.Controllers
         public async Task<IActionResult> Feedbacks()
         {
             ViewBag.Feedback = true;
-            
+
             var user = UserModel.GetAuthenticatedUser(User.Identity);
             var userRole = (user.Email == null) ? null : await _userRolesRepository.GetAsync(user.Email.ToLower());
 
@@ -440,7 +440,7 @@ namespace CompetitionPlatform.Controllers
             return View(model);
         }
 
-        
+
         public async Task<IActionResult> CreateOrEditFeedback(string id)
         {
             ViewBag.Feedback = true;
@@ -457,13 +457,13 @@ namespace CompetitionPlatform.Controllers
         [HttpPost]
         public async Task<IActionResult> SavePublicFeedback(PublicFeedbackEntity model)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
                 return RedirectToAction("CreateOrEditFeedback", model);
 
             await _publicFeedbackRepository.SaveAsync(model);
             return RedirectToAction("Feedbacks");
         }
-        
+
         public async Task<IActionResult> DeleteFeedback(string id)
         {
             await _publicFeedbackRepository.DeleteFeedbacksAsync(id);
@@ -514,7 +514,7 @@ namespace CompetitionPlatform.Controllers
             {
                 return Json(new { Error = ex.Message });
             }
-            
+
             return Json(new { Success = true });
         }
 
@@ -538,11 +538,12 @@ namespace CompetitionPlatform.Controllers
                     if (string.IsNullOrEmpty(winner.WinnerIdentifier))
                     {
                         var profile = await _personalDataService.FindClientsByEmail(winner.WinnerId);
+                        if (profile != null)
+                        {
+                            winner.WinnerIdentifier = profile.Id;
+                            await _winnersRepository.UpdateAsync(winner);
+                        }
 
-                        winner.ProjectId = project.Id;
-                        winner.WinnerIdentifier = profile.Id;
-
-                        await _winnersRepository.UpdateAsync(winner);
                     }
 
                     if (winner.Budget != null)
