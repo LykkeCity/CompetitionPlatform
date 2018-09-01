@@ -10,7 +10,7 @@
         </tr>
         @foreach (var participant in Model.Participants)
         {
-            var participantAvatar = Model.Avatars[participant.UserIdentifier];
+            Model.Avatars.TryGetValue(participant.UserIdentifier, out string participantAvatar);
             <tr>
                 <td>
                     <div class="user_badge user_badge--small">
