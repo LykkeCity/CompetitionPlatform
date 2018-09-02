@@ -90,7 +90,7 @@ namespace CompetitionPlatform.Controllers
                 await SendNewCommentNotification(model);
                 UserModel.GenerateStreamsId(_streamsIdRepository, user.Id);
             }
-            return RedirectToAction("ProjectDetails", "Project", new { id = model.ProjectId, commentsActive = true });
+            return RedirectToAction("ProjectDetails", "Project", new { id = model.ProjectId }, "tab_Comments");
         }
 
         public IActionResult GetCommentReplyForm(string commentId, string projectId)
@@ -388,7 +388,7 @@ namespace CompetitionPlatform.Controllers
 
                 TempData["ShowVotedForResultModal"] = true;
 
-                return RedirectToAction("ProjectDetails", "Project", new { id = model.ProjectId, resultsActive = true });
+                return RedirectToAction("ProjectDetails", "Project", new { id = model.ProjectId }, "tab_Results");
             }
             else
             {
@@ -405,7 +405,7 @@ namespace CompetitionPlatform.Controllers
 
                 TempData["ShowVotedTwiceModal"] = true;
 
-                return RedirectToAction("ProjectDetails", "Project", new { id = model.ProjectId, resultsActive = true });
+                return RedirectToAction("ProjectDetails", "Project", new { id = model.ProjectId }, "tab_Results");
             }
         }
 
@@ -485,7 +485,7 @@ namespace CompetitionPlatform.Controllers
                 await _commentsRepository.UpdateAsync(comment, projectId);
             }
 
-            return RedirectToAction("ProjectDetails", "Project", new { commentsActive = true, id = projectId });
+            return RedirectToAction("ProjectDetails", "Project", new { id = projectId }, "tab_Comments");
         }
 
         [Authorize]
@@ -514,7 +514,7 @@ namespace CompetitionPlatform.Controllers
                 await _winnersRepository.UpdateAsync(winner);
             }
 
-            return RedirectToAction("ProjectDetails", "Project", new { winnersActive = true, id = projectId });
+            return RedirectToAction("ProjectDetails", "Project", new { id = projectId }, "tab_Winners");
         }
 
         [Authorize]
@@ -524,7 +524,7 @@ namespace CompetitionPlatform.Controllers
 
             await _winnersRepository.DeleteAsync(projectId, winnerId);
 
-            return RedirectToAction("ProjectDetails", "Project", new { winnersActive = true, id = projectId });
+            return RedirectToAction("ProjectDetails", "Project", new { id = projectId }, "tab_Winners");
         }
 
         private async Task<bool> CurrentUserIsAdmin()
@@ -545,7 +545,7 @@ namespace CompetitionPlatform.Controllers
                 Sender = "Lykke Notifications",
                 Text = "New Comment was created. \n" + "Comment Author - " + model.FullName + "\n" +
                        "Comment - " + model.Comment + "\n" +
-                       "Project Link - https://streams.lykke.com/Project/ProjectDetails/" + model.ProjectId + "?commentsActive=true",
+                       "Project Link - https://streams.lykke.com/Project/ProjectDetails/" + model.ProjectId + "#tab_Comments",
                 Subject = "New Comment!"
             };
 
