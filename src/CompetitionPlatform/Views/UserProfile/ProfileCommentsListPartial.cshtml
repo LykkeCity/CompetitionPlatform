@@ -20,7 +20,7 @@
                             <p>@comment.Comment</p>
                             <div class="card__actions">
                                 <span class="action_text">Posted in</span>
-                                <a class="action_link" asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@comment.ProjectId" asp-route-commentsActive=true>@comment.ProjectName</a>
+                                <a class="action_link" asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@comment.ProjectId" asp-fragment="tab_Comments">@comment.ProjectName</a>
                             </div>
 
                         </div>
