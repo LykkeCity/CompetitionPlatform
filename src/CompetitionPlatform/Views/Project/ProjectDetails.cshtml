@@ -50,34 +50,7 @@
     {
         winnersCount = Model.ResultsPartial.Winners.Count().ToString();
     }
-
-    var infoTabActive = "";
-    var commentsTabActive = "";
-    var participantsTabActive = "";
-    var resultsTabActive = "";
-    var winnersTabActive = "";
-
-    if (ViewBag.CommentsActive == true)
-    {
-        commentsTabActive = "active";
-    }
-    else if (ViewBag.ParticipantsActive == true)
-    {
-        participantsTabActive = "active";
-    }
-    else if (ViewBag.WinnersActive == true)
-    {
-        winnersTabActive = "active";
-    }
-    else if (ViewBag.ResultsActive == true)
-    {
-        resultsTabActive = "active";
-    }
-    else
-    {
-        infoTabActive = "active";
-    }
-
+    
     var checkCompetition = "";
     var checkSubmission = "";
     var checkVoting = "";
@@ -297,7 +270,7 @@
                                 </div>
                             }
                         </div>
-                     }
+                    }
                 }
                 else
                 {
@@ -432,8 +405,8 @@
             <div class="col-xs-12 col-sm-8 content__left">
 
                 <ul class="nav nav-tabs" role="tablist" id="projectDetailsTabs">
-                    <li role="presentation" class="@infoTabActive"><a href="#info" aria-controls="info" role="tab" data-toggle="tab">Info</a></li>
-                    <li role="presentation" class="@participantsTabActive">
+                    <li role="presentation"><a href="#info" aria-controls="info" role="tab" data-toggle="tab">Info</a></li>
+                    <li role="presentation">
                         <a href="#Participants" aria-controls="participants" role="tab" data-toggle="tab">
                             Participants
                             @if (!string.IsNullOrEmpty(participantsCount))
@@ -444,7 +417,7 @@
                             }
                         </a>
                     </li>
-                    <li role="presentation" class="@commentsTabActive">
+                    <li role="presentation">
                         <a href="#Comments" aria-controls="comments" role="tab" data-toggle="tab">
                             Comments
                             @if (!string.IsNullOrEmpty(commentsCount))
@@ -455,7 +428,7 @@
                             }
                         </a>
                     </li>
-                    <li role="presentation" class="@resultsTabActive">
+                    <li role="presentation">
                         <a href="#Results" aria-controls="results" role="tab" data-toggle="tab">
                             Results
                             @if (!string.IsNullOrEmpty(resultsCount))
@@ -468,7 +441,7 @@
                     </li>
                     @if (Model.Status == Status.Voting || Model.Status == Status.Archive)
                     {
-                        <li role="presentation" class="@winnersTabActive">
+                        <li role="presentation">
                             <a href="#Winners" aria-controls="results" role="tab" data-toggle="tab">
                                 Winners
                                 @if (!string.IsNullOrEmpty(winnersCount))
@@ -483,7 +456,7 @@
                 </ul>
 
                 <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane @infoTabActive" id="info">
+                    <div role="tabpanel" class="tab-pane" id="info">
                         <div class="text">
                             @Html.Raw(Model.Description)
                         </div>
@@ -623,19 +596,19 @@
                             </div>
                         }
                     </div>
-                    <div role="tabpanel" class="tab-pane @participantsTabActive" id="Participants">
+                    <div role="tabpanel" class="tab-pane" id="Participants">
                         @await Html.PartialAsync("ParticipantsPartial", Model.ParticipantsPartial)
                     </div>
 
-                    <div role="tabpanel" class="tab-pane @commentsTabActive" id="Comments">
+                    <div role="tabpanel" class="tab-pane" id="Comments">
                         @await Html.PartialAsync("CommentsPartial", Model.CommentsPartial)
                     </div>
 
-                    <div role="tabpanel" class="tab-pane @resultsTabActive" id="Results">
+                    <div role="tabpanel" class="tab-pane" id="Results">
                         @await Html.PartialAsync("ResultsPartial", Model.ResultsPartial)
                     </div>
 
-                    <div role="tabpanel" class="tab-pane @winnersTabActive" id="Winners">
+                    <div role="tabpanel" class="tab-pane" id="Winners">
                         @await Html.PartialAsync("WinnersPartial", Model.ResultsPartial)
                     </div>
                 </div>

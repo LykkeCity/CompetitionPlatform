@@ -69,7 +69,7 @@
                                 <div class="card__title h3">
                                     @if (project.BaseProjectData.Status == Status.Voting)
                                     {
-                                        <a asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.BaseProjectData.Id" asp-route-resultsActive=true>@project.BaseProjectData.Name</a>
+                                        <a asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.BaseProjectData.Id" asp-fragment="tab_Results">@project.BaseProjectData.Name</a>
                                     }
                                     else
                                     {
@@ -159,7 +159,7 @@
                                 }
                                 @if (project.BaseProjectData.Status == Status.Voting)
                                 {
-                                    <a asp-area="" asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.BaseProjectData.Id" asp-route-resultsActive=true class="action_link">Read more</a>
+                                    <a asp-area="" asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.BaseProjectData.Id" asp-fragment="tab_Results" class="action_link">Read more</a>
                                 }
                                 else
                                 {
@@ -169,10 +169,10 @@
                                 &middot;
                                 <a href="@facebookSharingUrl" class="action_link">Share</a>
                                 &middot;
-                                <a asp-area="" asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.BaseProjectData.Id" asp-route-commentsActive=true class="action_link">@commentsCount</a>
+                                <a asp-area="" asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.BaseProjectData.Id" asp-fragment="tab_Comments" class="action_link">@commentsCount</a>
                                 &middot;
                                 @*<div class="action_link cursor-default">@projectCount</div>*@
-                                <a asp-area="" asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.BaseProjectData.Id" asp-route-participantsActive=true class="action_link">@projectCount</a>
+                                <a asp-area="" asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@project.BaseProjectData.Id" asp-fragment="tab_Participants" class="action_link">@projectCount</a>
                             </div>
                         </div>
                     </div>
