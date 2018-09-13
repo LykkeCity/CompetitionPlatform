@@ -405,7 +405,7 @@
             <div class="col-xs-12 col-sm-8 content__left">
 
                 <ul class="nav nav-tabs" role="tablist" id="projectDetailsTabs">
-                    <li role="presentation"><a href="#info" aria-controls="info" role="tab" data-toggle="tab">Info</a></li>
+                    <li role="presentation" class="active"><a href="#info" aria-controls="info" role="tab" data-toggle="tab">Info</a></li>
                     <li role="presentation">
                         <a href="#Participants" aria-controls="participants" role="tab" data-toggle="tab">
                             Participants
@@ -456,7 +456,7 @@
                 </ul>
 
                 <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane" id="info">
+                    <div role="tabpanel" class="tab-pane active" id="info">
                         <div class="text">
                             @Html.Raw(Model.Description)
                         </div>
@@ -545,7 +545,7 @@
 
                                 <table class="table table--experts">
                                     @foreach (var expert in Model.ProjectExperts)
-                                    {
+                                    { 
                                         <tr>
                                             <td>
                                                 <div class="user_badge user_badge--small">
@@ -565,7 +565,7 @@
                                                             </a>
                                                         }
                                                         else
-                                                        {
+                                                        { 
                                                             <span><img src="~/images/avatar.svg" alt=""></span>
                                                         }
 
