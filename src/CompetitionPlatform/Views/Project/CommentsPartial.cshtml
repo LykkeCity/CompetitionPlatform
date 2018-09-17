@@ -53,7 +53,7 @@ else
 <div class="messages_list">
     @foreach (var comment in Model.Comments)
     {
-        var commenterAvatar = Model.Avatars[comment.UserIdentifier];
+        Model.Avatars.TryGetValue(comment.UserIdentifier, out var commenterAvatar);
 
         <div class="message_card @(!string.IsNullOrEmpty(comment.ParentId) ? "message_card--accent" : "")">
             <div class="user_badge user_badge--small">
