@@ -36,8 +36,8 @@
             </tr>
             @foreach (var result in Model.Results)
             {
-                var userVotedForResult = Model.UserVotedForResults.ContainsKey(result.ParticipantId) && Model.UserVotedForResults[result.ParticipantId].Equals(true);
-                var resultsAvatar = Model.Avatars[result.ParticipantIdentifier];
+                var userVotedForResult = Model.UserVotedForResults.ContainsKey(result.ParticipantId) && Model.UserVotedForResults[result.ParticipantId];
+                Model.Avatars.TryGetValue(result.ParticipantIdentifier, out var resultsAvatar);
 
                 <tr>
                     <td class="board_name">
