@@ -593,6 +593,11 @@ namespace CompetitionPlatform.Controllers
 
         public async Task<IActionResult> ProjectDetails(string id)
         {
+            if (string.IsNullOrEmpty(id))
+            {
+                return View("ProjectNotFound");
+            }
+
             if (TempData["ShowParticipantAddedModal"] != null)
             {
                 ViewBag.ParticipantAdded = (bool)TempData["ShowParticipantAddedModal"];
